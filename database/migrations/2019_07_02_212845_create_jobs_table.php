@@ -8,7 +8,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Dwij\Laraadmin\Models\Module;
 
-class CreateUsersTable extends Migration
+class CreateJobsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -17,23 +17,11 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Module::generate("Users", 'users', 'name', 'fa-group', [
-            ["name", "Name", "Name", false, "", 5, 250, true],
-            ["email", "Email", "Email", true, "", 0, 250, false],
-            ["password", "Password", "Password", false, "", 6, 250, true],
-            ["type", "User Type", "Dropdown", false, "", 0, 0, true, "@roles"],
-            ["is_verified", "Verified", "Checkbox", false, "0", 0, 0, true],
+        Module::generate("Jobs", 'jobs', 'job_title', 'fa-joomla', [
             ["job_title", "Job Title", "TextField", false, "", 0, 256, false],
-            ["company_title", "Company", "TextField", false, "", 0, 256, false],
-            ["photo", "Photo", "Image", false, "", 0, 0, false],
-            ["photo_id", "Photo ID", "Image", false, "", 0, 0, false],
-            ["photo_selfie", "Photo Selfie", "Image", false, "", 0, 0, false],
-            ["location_title", "Location", "TextField", false, "", 0, 256, false],
-            ["top_skills", "Top Skills", "Textarea", false, "", 0, 0, false],
-            ["soft_skills", "Soft Skills", "Textarea", false, "", 0, 0, false],
+            ["description", "Description", "HTML", false, "", 0, 0, false],
+            ["location_title", "Location title", "TextField", false, "", 0, 256, false],
             ["location_coords", "Location Coords", "Textarea", false, "", 0, 0, false],
-            ["impress", "Impress", "Textarea", false, "", 0, 0, false],
-            ["phone", "Phone", "TextField", false, "", 0, 256, false],
         ]);
 		
 		/*
@@ -79,8 +67,8 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        if (Schema::hasTable('users')) {
-            Schema::drop('users');
+        if (Schema::hasTable('jobs')) {
+            Schema::drop('jobs');
         }
     }
 }
