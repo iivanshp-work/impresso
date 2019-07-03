@@ -20,18 +20,16 @@ class HomeController extends Controller
      *
      * @return void
      */
-    public function __construct()
-    {
-
+    public function __construct() {
+        $this->middleware('guest');
     }
 
     /**
-     * Show the application dashboard.
+     * Homepage
      *
      * @return Response
      */
-    public function index()
-    {
+    public function index() {
         return view('home');
     }
 }

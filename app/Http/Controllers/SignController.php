@@ -9,76 +9,182 @@ use App\Http\Requests;
 use Auth;
 use Validator;
 use Redirect;
+use Hash;
+
+use App\Http\Controllers\LA\UploadsController as UploadsController;
 
 class SignController extends Controller
 {
+    /**
+     * SignController constructor.
+     * @param Request $request
+     */
+    public function __construct(Request $request) {
+        $this->middleware('guest', ['except' => ['validation', 'validationPage']]);
+        $this->middleware('auth', ['only' => ['validation', 'validationPage']]);
+    }
+
+    /**
+     * Sign In Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function signinPage(Request $request) {
         return view('frontend.pages.signin');
     }
 
+    /**
+     * Sign Up Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
     public function signupPage(Request $request) {
         return view('frontend.pages.signup');
     }
 
+    /**
+     * Sign In functionality
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function signin(Request $request) {
+        $responseData = [
+            'has_error' => false,
+            'message' => '',
+            'redirect' => ''
+        ];
+
         $rules = array(
-            'email'    => 'required|email', // make sure the email is an actual email
+            'email' => 'required|email', // make sure the email is an actual email
             'password' => 'required|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
         );
 
-        // run the validation rules on the inputs from the form
         $validator = Validator::make($request->all(), $rules);
 
-        // if the validator fails, redirect back to the form
         if ($validator->fails()) {
-            return Redirect::to('sign-in')
-                ->withErrors($validator) // send back all errors to the login form
-                ->withInput($request->except('password')); // send back the input (not the password) so that we can repopulate the form
-        } else {
-
-            // create our user data for the authentication
-            $userdata = array(
-                'email'     => $request->input('email'),
-                'password'  => $request->input('password')
-            );
-
-            // attempt to do the login
-            if (Auth::attempt($userdata)) {
-
-                // validation successful!
-                // redirect them to the secure section or whatever
-                // return Redirect::to('secure');
-                // for now we'll just echo success (even though echoing in a controller is bad)
-                echo 'SUCCESS!';
-
-            } else {
-                // validation not successful, send back to form
-                return Redirect::to('login');
-
+            $responseData['has_error'] = true;
+            $messages = $validator->errors();
+            foreach ($messages->all() as $message) {
+                $responseData['message'] .= $message . '<br>';
             }
-
+        } else {
+            $userdata = array(
+                'email' => $request->input('email'),
+                'password' => $request->input('password')
+            );
+            if (Auth::attempt($userdata)) {
+                $user = Auth::user();
+                $redirectURL = $user && $user->is_verified ? getenv('BASE_LOGEDIN_PAGE') : getenv('VALIDATION_PAGE');
+                $responseData['redirect'] = url($redirectURL);
+                $responseData['user'] = Auth::user();
+            } else {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= 'Login failed wrong user credentials.';
+            }
         }
-
-        return view('frontend.pages.signin');
+        return response()->json($responseData);
     }
 
+    /**
+     * Sign up functionality
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function signup(Request $request) {
-        dd($request->all());
+        $responseData = [
+            'has_error' => false,
+            'message' => '',
+            'redirect' => ''
+        ];
 
-        /*
-        $user = User::where(['email' => $request->input('email')])->first();
-        if ($user) {
-            Auth::login($user);
-            return redirect()->route('home');
+        $rules = array(
+            'email' => 'required|email', // make sure the email is an actual email
+            'password' => 'required|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
+        );
+
+        $validator = Validator::make($request->all(), $rules);
+
+        if ($validator->fails()) {
+            $responseData['has_error'] = true;
+            $messages = $validator->errors();
+            foreach ($messages->all() as $message) {
+                $responseData['message'] .= $message . '<br>';
+            }
         } else {
-            $user = User::create([
-                'name' => $userSocial->getName(),
-                'email' => $userSocial->getEmail(),
-                'provider_id' => $userSocial->getId(),
-                'provider' => $provider,
-            ]);
-            return redirect()->route('home');
-        }*/
-        return view('frontend.pages.signup');
+            $checkUser = User::where('email', '=', $request->input('email'))->first();
+            if ($checkUser) {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= 'User with entered email already exists.';
+            } else {
+                $user = User::create([
+                    'name' => '',
+                    'email' => $request->input('email'),
+                    'password' => Hash::make($request->input('password')),
+                    'provider_id' => uniqid(),
+                    'provider' => 'site',
+                    'is_verified' => 0,
+                    'type' => 3, // default user
+                ]);
+                if (isset($user->id)) {
+                    $userdata = array(
+                        'email' => $request->input('email'),
+                        'password' => $request->input('password')
+                    );
+                    if (Auth::attempt($userdata)) {
+                        //send mail to register user //TODO???
+                        $responseData['redirect'] = url(getenv('VALIDATION_PAGE'));
+                    } else {
+                        $responseData['has_error'] = true;
+                        $responseData['message'] = 'Error while sign-in.';
+                    }
+                } else {
+                    $responseData['has_error'] = true;
+                    $responseData['message'] = 'Error while saving data.';
+                }
+            }
+        }
+        return response()->json($responseData);
+    }
+
+    /**
+     * Validation Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function validationPage(Request $request) {
+        return view('frontend.pages.validation');
+    }
+
+    /**
+     * Validation functionality
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function validation(Request $request) {
+        $responseData = [
+            'has_error' => false,
+            'message' => '',
+            'redirect' => '',
+            'id' => '',
+            'image' => null,
+        ];
+
+        $action = $request->has('action') ? trim($request->input('action')) : '';
+        $id = $request->has('id') ? trim($request->input('id')) : '';
+        if ($action == 'upload') {
+            $user = Auth::user();
+            $uploadController = new UploadsController();
+            $responseImage = $uploadController->upload_files(true);
+            if($responseImage["status"] == "success"){
+                $user->{$id} = $responseImage["upload"]->id;
+                $user->save();
+                $responseData['image'] = $responseImage["upload"];
+                $responseData['id'] = $id;
+            } else {
+                $responseData['has_error'] = true;
+                $responseData['message'] = 'An error occurred while submited photo. Please try again later.';
+            }
+        }
+        return response()->json($responseData);
     }
 }

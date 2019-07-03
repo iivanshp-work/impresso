@@ -21,6 +21,9 @@ Route::get('sign-in', 'SignController@signinPage')->name('singin');
 Route::post('sign-in', 'SignController@signin')->name('singin_post');
 Route::get('sign-up', 'SignController@signupPage')->name('singup');
 Route::post('sign-up', 'SignController@signup')->name('singup_post');
+Route::get('validation', 'SignController@validationPage')->name('validation');
+Route::post('validation', 'SignController@validation')->name('validation_post');
+
 
 /* ================== Homepage + Admin Routes ================== */
 

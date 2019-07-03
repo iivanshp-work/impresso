@@ -5,6 +5,7 @@
     <title>@hasSection('htmlheader_title')@yield('htmlheader_title') - @endif{{ LAConfigs::getByKey('sitename') }}</title>
     <meta name="description" content="@hasSection('meta_description')@yield('meta_description') @endif{{ LAConfigs::getByKey('site_description') }}">
     <meta name="keywords" content="@hasSection('meta_keywords')@yield('meta_keywords') @endif{{ LAConfigs::getByKey('site_keywords') }}">
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('/la-assets/favicon.ico') }}" type="image/x-icon">
     <!-- fonts google -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap" rel="stylesheet" />

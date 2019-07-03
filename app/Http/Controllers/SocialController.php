@@ -11,17 +11,34 @@ use Socialite;
 
 class SocialController extends Controller
 {
-    public function redirect($provider)
-    {
+    /**
+     * SocialController constructor.
+     * @param Request $request
+     */
+    public function __construct(Request $request) {
+        $this->middleware('guest');
+    }
+
+    /**
+     * redirect to provider
+     * @param $provider
+     * @return mixed
+     */
+    public function redirect($provider) {
         return Socialite::driver($provider)->redirect();
     }
 
-    public function Callback($provider){
+    /**
+     * provider callback and Sign in / Sign up
+     * @param $provider
+     * @return \Illuminate\Http\RedirectResponse
+     */
+    public function Callback($provider) {
         ini_set("display_errors", 1);
         error_reporting(E_ALL);
-        try{
-            $userSocial =  Socialite::driver($provider)->stateless()->user();
-        }catch (Exception $exception){
+        try {
+            $userSocial = Socialite::driver($provider)->stateless()->user();
+        } catch (Exception $exception) {
             $userSocial = null;
             dd($exception->getMessage());
         }
