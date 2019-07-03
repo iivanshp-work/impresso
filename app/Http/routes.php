@@ -11,9 +11,16 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+
+Route::get('/', 'HomeController@index')->name('home');
+
+Route::get('sign-in/{provider}', 'SocialController@redirect')->where('provider','twitter|facebook|linkedin|google');
+Route::get('sign-in/{provider}/callback','SocialController@Callback')->where('provider','twitter|facebook|linkedin|google');
+
+Route::get('sign-in', 'SignController@signinPage')->name('singin');
+Route::post('sign-in', 'SignController@signin')->name('singin_post');
+Route::get('sign-up', 'SignController@signupPage')->name('singup');
+Route::post('sign-up', 'SignController@signup')->name('singup_post');
 
 /* ================== Homepage + Admin Routes ================== */
 

@@ -1,0 +1,209 @@
+.user {
+	width: 100%;
+	background: url(../img/bg-login.png) no-repeat top center;
+	background-size: 375px;
+	min-height: 100vh;
+	padding-top: 1px;
+	&__header {
+		position: relative;
+		width: 122px;
+		margin: 40px auto 27px;
+		.edit-icon {
+			position: absolute;
+			bottom: 0;
+			left: -2px;
+		}
+	}
+	&__avatar {
+		position: relative;
+		@include circle-img(122px, 122px);
+		> img {
+			width: 100%;
+		}
+		.edit-photo {
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			background: linear-gradient(
+				180deg,
+				rgba(255, 255, 255, 0.8) 0%,
+				rgba(255, 255, 255, 0) 462.85%
+			);
+			display: none;
+			align-items: center;
+			justify-content: center;
+		}
+	}
+	&__checked {
+		display: flex;
+		position: absolute;
+		bottom: -15px;
+		left: 50%;
+		margin-left: -15px;
+	}
+	&__name {
+		font-weight: 500;
+		font-size: $base-fs + 2px;
+		line-height: 22px;
+		margin-bottom: 2px;
+		text-align: center;
+	}
+	.job-title {
+		display: flex;
+		align-items: center;
+		font-size: $base-fs - 3px;
+		text-align: center;
+		margin-bottom: 20px;
+		> span {
+			display: inline-block;
+			padding: 0 4px 0 2px;
+		}
+	}
+	&__info {
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+		max-width: 300px;
+		margin: 0 auto 28px;
+		font-size: $base-fs - 3px;
+		> p {
+			display: flex;
+			align-items: center;
+			> img {
+				margin-right: 7px;
+			}
+		}
+	}
+	&__card {
+		position: relative;
+		padding: 10px 13px 20px;
+		font-size: $base-fs - 2px;
+		line-height: $base-line-height + 4px;
+		.edit-info {
+			position: absolute;
+			top: 10px;
+			right: 13px;
+			z-index: 10;
+			display: none;
+		}
+		&_title {
+			margin-bottom: 20px;
+			font-size: $base-fs;
+			line-height: $base-line-height;
+			color: $text-color;
+		}
+		&_info {
+			display: flex;
+			padding-bottom: 24px;
+			position: relative;
+		}
+		&_icon {
+			@include circle-img(40px, 40px);
+			background-color: $border-light-gray;
+			margin-right: 11px;
+			min-width: 40px;
+		}
+		&_text {
+			width: 100%;
+		}
+		&_group-btn {
+			position: absolute;
+			left: 50px;
+			right: 0;
+			bottom: 0;
+			z-index: 10;
+			display: flex;
+			justify-content: space-between;
+			.btn {
+				height: 17px;
+				width: auto;
+				font-size: $base-fs - 5px;
+			}
+			&.edit-group-btn {
+				display: none;
+			}
+		}
+	}
+	&__validated {
+		position: absolute;
+		bottom: 0;
+		right: 0;
+		display: flex;
+		align-items: center;
+		color: $violet;
+		font-size: $base-fs - 5px;
+		font-weight: 500;
+		height: 18px;
+		> img {
+			margin-left: 6px;
+		}
+	}
+	.btn-save {
+		position: fixed;
+		bottom: 70px;
+		left: 50%;
+		@include transform(translateX(-50%));
+		display: none;
+		z-index: 100;
+	}
+}
+
+.user {
+	&.edit-profile {
+		padding-bottom: 45px;
+		.edit-info {
+			display: block;
+		}
+		.edit-photo {
+			display: flex;
+		}
+		.btn-save {
+			display: flex;
+		}
+		.edit-group-btn {
+			display: flex;
+		}
+	}
+}
+
+.style-input-text {
+	font-size: inherit;
+	font-weight: 300;
+	height: 21px;
+	border: none;
+	background: $base-bg;
+	color: $text-color;
+	width: 100%;
+	box-shadow: none;
+	@include radius(0);
+	&_right {
+		text-align: right;
+	}
+	&_15 {
+		font-size: $base-fs;
+	}
+	&_12 {
+		font-size: $base-fs - 3px;
+	}
+	&::placeholder {
+		color: $gray;
+	}
+	&[disabled] {
+		color: $text-color;
+	}
+}
+
+.style-textarea {
+	font-size: inherit;
+	font-weight: 300;
+	line-height: $base-line-height + 4px;
+	width: 100%;
+	background: $base-bg;
+	color: $text-color;
+	resize: none;
+	&::placeholder {
+		color: $gray;
+	}
+}

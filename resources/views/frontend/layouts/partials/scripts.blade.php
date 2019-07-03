@@ -1,8 +1,5 @@
-{{--
-<script src="{{ asset('/la-assets/js/bootstrap.min.js') }}" type="text/javascript"></script>
---}}
-<script src="{{ asset('/la-assets/plugins/jQuery/jQuery-2.1.4.min.js') }}"></script>
-<script src="{{ asset('/la-assets/plugins/jQuery/jquery.autocomplete.js') }}"></script>
-<script src="{{ asset('/la-assets/js/index.js') }}" type="text/javascript"></script>
-<script src="{{ asset('/la-assets/js/custom.js') }}" type="text/javascript"></script>
+<script src="{{ asset('/js/jquery-3.0.0.min.js') }}"></script>
+<script src="{{ asset('/js/components/slick.js') }}"></script>
+<script src="{{ asset('/js/custom.js') }}"></script>
+<script src="{{ asset('/js/custom-dev.js') }}"></script>
 @stack('scripts')

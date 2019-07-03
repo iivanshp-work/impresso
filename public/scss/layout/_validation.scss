@@ -1,0 +1,183 @@
+.validation {
+    width: 100%;
+    &__step {
+        position: relative;
+        height: 100vh;
+        display: none;
+        &_first {
+            background: url(../../img/bg-login.png) no-repeat top center/contain;
+            display: block;
+            padding: 20px 28px;
+        }
+    }
+    &__title {
+        margin: 30px 0 70px;
+        font-size: $font-size-h2;
+        line-height: $line-height-h2;
+        letter-spacing: 0.35px;
+    }
+    &__user-img {
+        @include circle-img(200px, 200px);
+        margin: 43px auto 33px;
+    }
+    &__text {
+        padding-bottom: 20px;
+    }
+    &__btn {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 20px;
+        span {
+            margin-bottom: 20px;
+            color: $text-gray;
+            font-size: $base-fs + 1px;
+            display: block;
+        }
+    }
+    .header {
+        margin-bottom: 26px;
+    }
+    &__icon {
+        width: 186px;
+        margin: 104px auto;
+        &_big {
+            margin: 104px auto 47px;
+        }
+    }
+    .text-gray {
+        margin: 16px 28px 17px;
+    }
+    &__group-btn {
+        height: 90px;
+        position: absolute;
+        bottom: 20px;
+        left: 0;
+        right: 0;
+        .btn-violet {
+            margin-bottom: 10px;
+        }
+    }
+    &__picture {
+        max-width: 345px;
+        height: 194px;
+        border: 5px solid $border-light-gray;
+        @include radius(15px);
+        position: relative;
+        margin: 84px auto 60px;
+        overflow: hidden;
+        > img {
+            width: 100%;
+        }
+    }
+}
+
+@media only screen and (max-width: 370px) {
+    .validation {
+        width: 100%;
+        &__step {
+            position: relative;
+            height: 100vh;
+            display: none;
+            &_first {
+                background: url(../../img/bg-login.png) no-repeat top
+                    center/contain;
+                display: block;
+                padding: 20px 28px;
+            }
+        }
+        &__title {
+            margin: 20px 0 50px;
+        }
+        &__user-img {
+            width: 160px;
+            height: 160px;
+            margin: 30px auto 23px;
+        }
+        .header {
+            margin-bottom: 20px;
+        }
+        &__icon {
+            width: 146px;
+            margin: 74px auto;
+            &_big {
+                width: 132px;
+                margin: 74px auto 20px;
+            }
+        }
+        .text-gray {
+            margin: 16px 28px 17px;
+            font-size: $base-fs - 2px;
+        }
+        &__picture {
+            width: 290px;
+            height: 166px;
+            margin: 50px auto 40px;
+        }
+    }
+}
+
+@media only screen and (max-width: 860px) and (orientation: landscape) {
+    .validation {
+        &__step {
+            height: auto;
+        }
+        &__btn,
+        &__group-btn {
+            position: relative;
+            bottom: 0;
+            .btn {
+                display: flex;
+                margin: 10px auto;
+            }
+        }
+        &__btn {
+            margin-top: 20px;
+        }
+        &__group-btn {
+            margin-bottom: 20px;
+        }
+        &__icon {
+            margin: 56px auto;
+        }
+        &__picture {
+            margin: 50px auto 40px;
+        }
+    }
+}
+
+@media only screen and (max-width: 350px) and (max-height: 500px) {
+    .validation {
+        &__step {
+            height: auto;
+        }
+        &__btn,
+        &__group-btn {
+            position: relative;
+            bottom: 0;
+            .btn {
+                width: 264px;
+            }
+        }
+        &__btn {
+            margin-top: 20px;
+        }
+        &__group-btn {
+            margin-bottom: 20px;
+        }
+        &__icon {
+            margin: 56px auto;
+        }
+        &__picture {
+            margin: 50px auto 40px;
+        }
+    }
+}
+
+@media only screen and (min-height: 800px) {
+    .validation {
+        &__title {
+            margin: 30px 0 90px;
+        }
+    }
+}

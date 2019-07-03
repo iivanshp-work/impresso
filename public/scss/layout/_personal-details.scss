@@ -1,0 +1,32 @@
+.personal-details {
+	.user__header {
+		margin: 30px auto 36px;
+	}
+	&__list {
+		padding: 0 26px;
+		margin-bottom: 50px;
+		span {
+			display: block;
+			color: $text-gray;
+			font-size: $base-fs - 4px;
+			letter-spacing: -0.41px;
+		}
+		> li {
+			margin-bottom: 18px;
+			position: relative;
+			.style-input-text {
+				font-size: $base-fs;
+				padding: 0 0 24px;
+				height: 20px;
+				&[disabled] {
+					color: $text-color;
+				}
+			}
+			.edit-info {
+				position: absolute;
+				top: 23px;
+				right: 0;
+			}
+		}
+	}
+}

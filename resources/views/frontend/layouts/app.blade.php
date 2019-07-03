@@ -1,21 +1,20 @@
 <!DOCTYPE html>
-<html lang="{{App::getLocale()}}">
+<html lang="{{App::getLocale()}}" xmlns="http://www.w3.org/1999/xhtml">
 @section('htmlheader')
-	{{--@include('frontend.layouts.partials.htmlheader')--}}
+    @include('frontend.layouts.partials.htmlheader')
 @show
-<body>
+<body class="loaded">
 {{--@include('frontend.layouts.partials.header')--}}
-<div class="container">
-	{{--@include('frontend.layouts.partials.navigations')--}}
-	@hasSection('news-line')@yield('news-line')@endif
-	@yield('main-content')
-</div><!-- ./wrapper -->
+{{--@hasSection('news-line')@yield('news-line')@endif--}}
+@yield('main-content')
 @section('footer')
-	{{--@include('frontend.layouts.partials.footer')--}}
+    @include('frontend.layouts.partials.footer')
 @show
-
+@section('popups')
+    @include('frontend.layouts.partials.popups')
+@show
 @section('scripts')
-	@include('frontend.layouts.partials.scripts')
+    @include('frontend.layouts.partials.scripts')
 @show
 </body>
 
