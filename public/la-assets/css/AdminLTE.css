@@ -7754,7 +7754,7 @@ div.uploaded_image {
   margin-top: 7px;
 }
 div.uploaded_image img {
-  max-width: 120px;
+  max-width: 200px;
   border-radius: 3px;
 }
 div.uploaded_image i.fa {

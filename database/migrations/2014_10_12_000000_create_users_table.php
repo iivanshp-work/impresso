@@ -34,6 +34,9 @@ class CreateUsersTable extends Migration
             ["location_coords", "Location Coords", "Textarea", false, "", 0, 0, false],
             ["impress", "Impress", "Textarea", false, "", 0, 0, false],
             ["phone", "Phone", "TextField", false, "", 0, 256, false],
+            ["provider", "Provider", "TextField", false, "", 0, 256, false],
+            ["provider_id", "Provider ID", "TextField", false, "", 0, 256, false],
+            ["varification_pending", "Pending Verification", "Checkbox", false, "0", 0, 0, false],
         ]);
 		
 		/*

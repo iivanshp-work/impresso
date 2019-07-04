@@ -21,7 +21,7 @@ class Authenticate
             if ($request->ajax() || $request->wantsJson()) {
                 return response('Unauthorized.', 401);
             } else {
-                $path = strpos($request->getRequestUri(), '/admin') !== 0 ? '/login' : '/sign-in';
+                $path = strpos($request->getRequestUri(), '/admin') === false ? '/sign-in' : '/login';
                 return redirect()->guest($path);
             }
         }

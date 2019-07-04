@@ -24,6 +24,12 @@ Route::post('sign-up', 'SignController@signup')->name('singup_post');
 Route::get('validation', 'SignController@validationPage')->name('validation');
 Route::post('validation', 'SignController@validation')->name('validation_post');
 
+Route::get('profile', 'ProfileSettingsController@profilePage')->name('profile');
+Route::get('profile/edit', 'ProfileSettingsController@profileEditPage')->name('profile_edit');
+Route::post('profile/edit', 'ProfileSettingsController@profileEdit')->name('profile_edit_post');
+
+Route::get('feeds', 'FeedsController@feeds')->name('feeds');
+
 
 /* ================== Homepage + Admin Routes ================== */
 

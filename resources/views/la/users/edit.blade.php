@@ -49,6 +49,9 @@
 					@la_input($module, 'location_coords')
 					@la_input($module, 'impress')
 					@la_input($module, 'phone')
+					@la_input($module, 'provider')
+					@la_input($module, 'provider_id')
+					@la_input($module, 'varification_pending')
 					--}}
                     <br>
 					<div class="form-group">

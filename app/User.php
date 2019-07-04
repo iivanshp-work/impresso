@@ -51,4 +51,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         return $this->hasMany('App\Upload');
     }
+
+    /**
+     * @return mixed
+     */
+    public function getCreditsCountAttribute()
+    {
+        return $this->calculateCreditsCount($this->id);
+    }
+
+    /**
+     * Calculate Credit Count
+     * @param $id
+     * @return mixed
+     */
+    public function calculateCreditsCount($id) {
+        return $id; // TODO????????
+    }
+
 }

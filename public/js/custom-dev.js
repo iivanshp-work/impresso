@@ -116,11 +116,14 @@ $(document).ready(function(){
         $('[data-validation-step="' + step + '"]').trigger('click');
     }
 
+    // upload button click
     $(document).on('change click', '[data-validation-send-file]', function(e){
        e.preventDefault();
         var $this = $(this), item = $this.parent(), btn = item.find('[data-validation-send-file-hidden]');
         btn.trigger('click');
     });
+
+    // upload file so server
     $(document).on('change', '[data-validation-send-file-hidden]', function(e){
         var $this = $(this), item = $this.parent(), btn = item.find('[data-validation-send-file]'),
             id = $this.data('image-id'), formData = new FormData(), targetLink = base_url + '/validation';
@@ -173,11 +176,13 @@ $(document).ready(function(){
         });
     });
 
-    $(document).on('change', '[data-validation-check]', function(e){
+    //final validation step, set user to pending validation
+    $(document).on('change click', '[data-validation-check]', function(e){
         var $this = $(this), targetLink = base_url + '/validation';
         var data = {
             action: 'check_validation'
         };
+        console.log(data);
         //if ($this.data("busy")) return;
         $this.data("busy", true);
         loadingStart();
@@ -189,14 +194,12 @@ $(document).ready(function(){
             type: 'post',
             data: data,
             dataType: 'json',
-            processData: false,
-            contentType: false,
             success: function(response){
                 $this.prop('disabled', false);
                 if (response.has_error) {
                     showError(response.message ? response.message : 'An error occurred. Please try again later.');
                 } else {
-                    redirect(response.redirect);
+                    $('#clickThankYou').trigger('click');
                 }
             },
             error: function(){
@@ -208,6 +211,15 @@ $(document).ready(function(){
             }
         });
     });
+    //validation profile end
+
+    //feeds start
+    // show Feeds LetStartImpressing popup
+    if ($('#showFeedsLetStartImpressing').length) {
+        $('#showFeedsLetStartImpressing').trigger('click');
+    }
+    //feeds end
+
 
 
 

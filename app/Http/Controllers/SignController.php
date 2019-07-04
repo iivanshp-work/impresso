@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Models\Mails;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -131,7 +132,10 @@ class SignController extends Controller
                         'password' => $request->input('password')
                     );
                     if (Auth::attempt($userdata)) {
-                        //send mail to register user //TODO???
+                        /*
+                        $mail = new Mails;
+                        $mail->signup_email($user, $request->input('password'));
+                        */
                         $responseData['redirect'] = url(getenv('VALIDATION_PAGE'));
                     } else {
                         $responseData['has_error'] = true;
@@ -152,6 +156,10 @@ class SignController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function validationPage(Request $request) {
+        $user = Auth::user();
+        if ($user && ($user->varification_pending || $user->is_verified)) {
+            return redirect(getenv('BASE_LOGEDIN_PAGE'));
+        }
         return view('frontend.pages.validation');
     }
 
@@ -190,9 +198,8 @@ class SignController extends Controller
                 case 'check_validation':
                     $user = Auth::user();
                     if ($user && $user->photo_id && $user->photo_selfie) {
-                        $user->is_verified = 1;
+                        $user->varification_pending = 1;
                         $user->save();
-                        $responseData['redirect'] = url(getenv('BASE_LOGEDIN_PAGE'));
                     } else {
                         $responseData['has_error'] = true;
                         $responseData['message'] = 'Profile cannot be validated, try again upload data.';

@@ -23,7 +23,7 @@ class UsersController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'name';
-	public $listing_cols = ['id', 'name', 'email', 'type', 'is_verified'];
+	public $listing_cols = ['id', 'name', 'email', 'is_verified', 'varification_pending'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns
@@ -64,7 +64,7 @@ class UsersController extends Controller
 	 */
 	public function create()
 	{
-		//test//
+		//
 	}
 
 	/**

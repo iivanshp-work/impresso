@@ -126,8 +126,20 @@
 @endsection
 
 @push('popups')
-    <button style="display:none;" class="hide" data-target="#validationMyProfile">success validation</button>
-
+    <button style="display:none;" class="hide open-pop-up" id="clickThankYou" data-target="#thankYou">success validation</button>
+    <div class="modal-window" id="thankYou">
+        <div class="modal-window__content">
+            <div class="modal-window__body validation-modal text-center">
+                <h3 class="title mb-34">Thank you!</h3>
+                <p>
+                    We are now processing the information. Your validation status will be available shortly.
+                </p>
+                <a href="{{url(getenv('BASE_LOGEDIN_PAGE') . '?show_profile_setup_profile=1')}}" type="button" class="btn btn-violet">
+                    Continue
+                </a>
+            </div>
+        </div>
+    </div>
 
     <div class="modal-window" id="validationMyProfile">
         <div class="modal-window__content">

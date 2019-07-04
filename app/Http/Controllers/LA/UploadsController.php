@@ -275,6 +275,7 @@ class UploadsController extends Controller
      */
     public function uploaded_files()
     {
+        // TODO???????
         if(Module::hasAccess("Uploads", "view")) {
             $uploads = array();
 
