@@ -57,17 +57,18 @@
                 </header>
                 <p>Step 1 / 2</p>
                 <div class="validation__picture">
-                    <img src="{{ asset('img/image-1.png') }}" alt=""/>
+                    <img data-validation-photo_id-src="" src="{{ asset('img/image-1.png') }}" alt=""/>
                 </div>
                 <p>1. Upload a clear photo of your ID</p>
                 <p class="text-gray">
                     Accepted IDs: national ID, passport and driver’s license.
                 </p>
                 <div class="validation__group-btn">
-                    <button type="button" class="btn btn-violet">
+                    <button type="button" class="btn btn-violet" data-validation-step="step4">
                         Upload ID photo
                     </button>
-                    <button type="button" class="btn btn-border">
+                    <input type="file" style="display: none;" data-validation-send-file-hidden="" data-image-id="photo_id">
+                    <button type="button" class="btn btn-border" data-validation-send-file="">
                         Retake
                     </button>
                 </div>
@@ -88,11 +89,13 @@
                     This will not be used as your profile photo and nobody else will be able to see it.
                 </p>
                 <div class="validation__group-btn">
-                    <button type="button" class="btn btn-violet">
+                    <input type="file" style="display: none;" data-validation-send-file-hidden="" data-image-id="photo_selfie">
+                    <button type="button" class="btn btn-violet" data-validation-send-file="">
                         Take a photo
                     </button>
                 </div>
             </div>
+            <div class="hide" data-validation-step="step5" style="display: none;"></div>
             <div id="step5" class="validation__step">
                 <header class="header">
                     <h4>Profile Validation</h4>
@@ -102,17 +105,18 @@
                 </header>
                 <p>Step 2 / 2</p>
                 <div class="validation__picture">
-                    <img src="{{ asset('img/image-2.png') }}" alt=""/>
+                    <img data-validation-photo_selfie-src=""  src="{{ asset('img/image-2.png') }}" alt=""/>
                 </div>
                 <p>2. Take a selfie with the same ID</p>
                 <p class="text-gray">
                     This will not be used as your profile photo and nobody else will be able to see it.
                 </p>
                 <div class="validation__group-btn">
-                    <button type="button" class="btn btn-violet">
+                    <button type="button" class="btn btn-violet" data-validation-check="">
                         Upload photo
                     </button>
-                    <button type="button" class="btn btn-border">
+                    <input type="file" style="display: none;" data-validation-send-file-hidden="" data-image-id="photo_selfie">
+                    <button type="button" class="btn btn-border" data-validation-send-file="">
                         Retake
                     </button>
                 </div>
@@ -122,6 +126,9 @@
 @endsection
 
 @push('popups')
+    <button style="display:none;" class="hide" data-target="#validationMyProfile">success validation</button>
+
+
     <div class="modal-window" id="validationMyProfile">
         <div class="modal-window__content">
             <div class="modal-window__body validation-modal text-center">

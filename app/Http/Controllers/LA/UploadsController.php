@@ -220,7 +220,7 @@ class UploadsController extends Controller
                         }
                     }
                     $upload->save();
-
+                    $upload->url = url('files/' . $upload->hash . '/' . $upload->name);
                     if($returnToCode){
                         return [
                             "status" => "success",

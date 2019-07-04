@@ -84,6 +84,7 @@ $(document).ready(function(){
             dataType: 'json',
             data: form.serialize(),
             success: function(response){
+                console.log(response);
                 if(response.has_error){
                     showError(response.message ? response.message : 'An error occurred. Please try again later.');
                 }else{
@@ -111,6 +112,10 @@ $(document).ready(function(){
         }
     });
 
+    function goToValidationStep(step) {
+        $('[data-validation-step="' + step + '"]').trigger('click');
+    }
+
     $(document).on('change click', '[data-validation-send-file]', function(e){
        e.preventDefault();
         var $this = $(this), item = $this.parent(), btn = item.find('[data-validation-send-file-hidden]');
@@ -119,6 +124,11 @@ $(document).ready(function(){
     $(document).on('change', '[data-validation-send-file-hidden]', function(e){
         var $this = $(this), item = $this.parent(), btn = item.find('[data-validation-send-file]'),
             id = $this.data('image-id'), formData = new FormData(), targetLink = base_url + '/validation';
+
+        //if ($this.data("busy")) return;
+        $this.data("busy", true);
+        loadingStart();
+
         btn.prop('disabled', true);
         $this.prop('disabled', true);
         $this.after('<span class="spinner base-indent-left"></span>');
@@ -137,20 +147,68 @@ $(document).ready(function(){
                 btn.prop('disabled', false);
                 $this.prop('disabled', false);
                 item.find('.spinner').remove();
-                if(response.error){
-                    btn.after('<div class="alert alert-small alert-error base-indent-top">' + response.error + '</div>');
-                    setTimeout(function(){
-                        item.find('.alert-error').remove();
-                    }, 3000);
-                }else{
-                    var imageUrlInput = $('[data-script-segment-image-url]', item),
-                        imageUrl = imageUrlInput.data('scriptSegmentImageUrl') + response.image;
-                    imageUrlInput.val(imageUrl);
-                    $('.image-preview', item).show().find('img').attr('src', imageUrl);
+                if (response.has_error) {
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                } else {
+                    if (response.image && response.image.url) {
+                        selector = '[data-validation-' + id + '-src]';
+                        $(selector).attr('src', response.image.url);
+                        if (id == 'photo_id') {
+                            goToValidationStep('step3');
+                        } else {
+                            goToValidationStep('step5');
+                        }
+                    } else {
+                        showError('An error occurred. Please try again later.');
+                    }
                 }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                $this.data("busy", false);
             }
         });
     });
+
+    $(document).on('change', '[data-validation-check]', function(e){
+        var $this = $(this), targetLink = base_url + '/validation';
+        var data = {
+            action: 'check_validation'
+        };
+        //if ($this.data("busy")) return;
+        $this.data("busy", true);
+        loadingStart();
+
+        $this.prop('disabled', true);
+
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            data: data,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function(response){
+                $this.prop('disabled', false);
+                if (response.has_error) {
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                } else {
+                    redirect(response.redirect);
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                $this.data("busy", false);
+            }
+        });
+    });
+
 
 
 });

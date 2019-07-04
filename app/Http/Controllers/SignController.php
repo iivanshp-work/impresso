@@ -171,18 +171,35 @@ class SignController extends Controller
 
         $action = $request->has('action') ? trim($request->input('action')) : '';
         $id = $request->has('id') ? trim($request->input('id')) : '';
-        if ($action == 'upload') {
-            $user = Auth::user();
-            $uploadController = new UploadsController();
-            $responseImage = $uploadController->upload_files(true);
-            if($responseImage["status"] == "success"){
-                $user->{$id} = $responseImage["upload"]->id;
-                $user->save();
-                $responseData['image'] = $responseImage["upload"];
-                $responseData['id'] = $id;
-            } else {
-                $responseData['has_error'] = true;
-                $responseData['message'] = 'An error occurred while submited photo. Please try again later.';
+        if ($action) {
+            switch ($action) {
+                case 'upload':
+                    $user = Auth::user();
+                    $uploadController = new UploadsController();
+                    $responseImage = $uploadController->upload_files(true);
+                    if ($responseImage["status"] == "success") {
+                        $user->{$id} = $responseImage["upload"]->id;
+                        $user->save();
+                        $responseData['image'] = $responseImage["upload"];
+                        $responseData['id'] = $id;
+                    } else {
+                        $responseData['has_error'] = true;
+                        $responseData['message'] = 'An error occurred while submited photo. Please try again later.';
+                    }
+                    break;
+                case 'check_validation':
+                    $user = Auth::user();
+                    if ($user && $user->photo_id && $user->photo_selfie) {
+                        $user->is_verified = 1;
+                        $user->save();
+                        $responseData['redirect'] = url(getenv('BASE_LOGEDIN_PAGE'));
+                    } else {
+                        $responseData['has_error'] = true;
+                        $responseData['message'] = 'Profile cannot be validated, try again upload data.';
+                    }
+                    break;
+                default:
+                    break;
             }
         }
         return response()->json($responseData);
