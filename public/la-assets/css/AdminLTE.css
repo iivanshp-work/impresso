@@ -7678,6 +7678,26 @@ ul.files_container li:hover {
 #fm .fm_folder_selector form#fm_dropzone div.dz-message i.fa {
   font-size: 40px;
 }
+
+.media_popup_drop_zone {
+    width: 100%;
+}
+.media_popup_drop_zone.visible_files_listing {
+    width: 25%;
+}
+.media_popup_drop_zone + .media_popup_files_listing{
+    display: none;
+}
+.media_popup_drop_zone.visible_files_listing + .media_popup_files_listing{
+    display: block;
+}
+.media_popup_drop_zone{
+    text-align: center;
+}
+.media_popup_drop_zone .media_popup_show_files_listing,
+.media_popup_drop_zone .media_popup_hide_files_listing{
+    margin: 0 auto 10px;
+}
 #fm .nav {
   background: #EEE;
 }

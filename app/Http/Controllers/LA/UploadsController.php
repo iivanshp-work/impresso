@@ -273,21 +273,34 @@ class UploadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function uploaded_files()
+    public function uploaded_files(Request $request)
     {
+        $page = $request->has('page') ? intval($request->input('page')) : 1;
+        $keyword = $request->has('keyword') ? trim($request->input('keyword')) : '';
+        $limit = 10;
+        $offset = ($page - 1) * $limit;
         // TODO???????
         if(Module::hasAccess("Uploads", "view")) {
             $uploads = array();
 
             // print_r(Auth::user()->roles);
             if(Entrust::hasRole('SUPER_ADMIN')) {
-                $uploads = Upload::all();
+                if ($keyword) {
+                    $uploads = Upload::where('name', 'like', '%' . $keyword . '$%')->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
+                } else {
+                    $uploads = Upload::where('id', '<>', 0)->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
+                }
+
             } else {
                 if(config('laraadmin.uploads.private_uploads')) {
                     // Upload::where('user_id', 0)->first();
                     $uploads = Auth::user()->uploads;
                 } else {
-                    $uploads = Upload::all();
+                    if ($keyword) {
+                        $uploads = Upload::where('name', 'like', '%' . $keyword . '$%')->orderBy('created_at', 'desc')->offset($offset)->limit($limit)->get();
+                    } else {
+                        $uploads = Upload::where('id', '<>', 0)->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
+                    }
                 }
             }
             $uploads2 = array();

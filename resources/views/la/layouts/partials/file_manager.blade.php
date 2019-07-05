@@ -9,14 +9,14 @@
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
 				<h4 class="modal-title" id="fileManagerLabel">Select File</h4>
 			</div>
-			<div class="modal-body p0">
+			<div class="modal-body p0" style="overflow: hidden;">
 				<div class="row">
-					<div class="col-xs-3 col-sm-3 col-md-3">
+					<div class="col-xs-3 col-sm-3 col-md-3 media_popup_drop_zone">
 						<div class="fm_folder_selector">
 							<form action="{{ url(config('laraadmin.adminRoute') . '/upload_files')}}" id="fm_dropzone" enctype="multipart/form-data" method="POST">
 								{{ csrf_field() }}
 								<div class="dz-message"><i class="fa fa-cloud-upload"></i><br>Drop files here to upload</div>
-								
+
 								@if(!config('laraadmin.uploads.private_uploads'))
 									<label class="fm_folder_title">Is Public ?</label>
 									{{ Form::checkbox("public", "public", config("laraadmin.uploads.default_public"), []) }}
@@ -24,21 +24,26 @@
 								@endif
 							</form>
 						</div>
+                        <div class="media_popup_show_files_listing btn btn-success">Show files</div>
+                        <div class="media_popup_hide_files_listing btn btn-primary" style="display: none;">Hide files</div>
 					</div>
-					<div class="col-xs-9 col-sm-9 col-md-9 pl0">
+					<div class="col-xs-9 col-sm-9 col-md-9 pl0 media_popup_files_listing">
 						<div class="nav">
 							<div class="row">
 								<div class="col-xs-2 col-sm-7 col-md-7"></div>
 								<div class="col-xs-10 col-sm-5 col-md-5">
-									<input type="search" class="form-control pull-right" placeholder="Search file name">
+									<input type="search" class="form-control pull-right" id="files_listing_keyword" placeholder="Search file name">
 								</div>
 							</div>
 						</div>
 						<div class="fm_file_selector">
 							<ul>
-								
+
 							</ul>
 						</div>
+                        <div class="load-more-wrapper" style="display: inline-block;width: 100%;text-align: center;">
+                            <div class="load_more_files_listing btn btn-success" style="margin: 0 auto;" data-page="1">Load more</div>
+                        </div>
 					</div>
 				</div>
 			</div>
