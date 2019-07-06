@@ -1,5 +1,5 @@
 <?php
-
+function test($value, $exit = 1) {echo "<pre>"; print_r($value); if ($exit) exit;}
 /*
 |--------------------------------------------------------------------------
 | Create The Application

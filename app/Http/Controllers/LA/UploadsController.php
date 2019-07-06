@@ -286,7 +286,7 @@ class UploadsController extends Controller
             // print_r(Auth::user()->roles);
             if(Entrust::hasRole('SUPER_ADMIN')) {
                 if ($keyword) {
-                    $uploads = Upload::where('name', 'like', '%' . $keyword . '$%')->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
+                    $uploads = Upload::where('name', 'like', '%' . $keyword . '$%')->offset($offset)->limit($limit)->get();
                 } else {
                     $uploads = Upload::where('id', '<>', 0)->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
                 }
@@ -297,7 +297,7 @@ class UploadsController extends Controller
                     $uploads = Auth::user()->uploads;
                 } else {
                     if ($keyword) {
-                        $uploads = Upload::where('name', 'like', '%' . $keyword . '$%')->orderBy('created_at', 'desc')->offset($offset)->limit($limit)->get();
+                        $uploads = Upload::where('name', 'like', '%' . $keyword . '$%')->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
                     } else {
                         $uploads = Upload::where('id', '<>', 0)->offset($offset)->limit($limit)->orderBy('created_at', 'desc')->get();
                     }

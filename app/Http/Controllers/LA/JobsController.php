@@ -23,7 +23,7 @@ class JobsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'job_title';
-	public $listing_cols = ['id', 'job_title', 'location_title'];
+	public $listing_cols = ['id', 'job_title', 'description', 'location_title', 'longitude', 'latitude', 'company_title', 'short_description', 'status'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

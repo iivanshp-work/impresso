@@ -120,12 +120,13 @@
 						@la_display($module, 'location_title')
 						@la_display($module, 'top_skills')
 						@la_display($module, 'soft_skills')
-						@la_display($module, 'location_coords')
 						@la_display($module, 'impress')
 						@la_display($module, 'phone')
 						@la_display($module, 'provider')
 						@la_display($module, 'provider_id')
 						@la_display($module, 'varification_pending')
+						@la_display($module, 'longitude')
+						@la_display($module, 'latitude')
 					</div>
 				</div>
 			</div>

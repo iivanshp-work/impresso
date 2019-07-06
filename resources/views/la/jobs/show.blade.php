@@ -110,7 +110,11 @@
 						@la_display($module, 'job_title')
 						@la_display($module, 'description')
 						@la_display($module, 'location_title')
-						@la_display($module, 'location_coords')
+						@la_display($module, 'longitude')
+						@la_display($module, 'latitude')
+						@la_display($module, 'company_title')
+						@la_display($module, 'short_description')
+						@la_display($module, 'status')
 					</div>
 				</div>
 			</div>

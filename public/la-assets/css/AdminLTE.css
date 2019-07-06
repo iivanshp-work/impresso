@@ -7717,14 +7717,15 @@ ul.files_container li:hover {
   display: inline-block;
   height: 100%;
   width: 100%;
-  min-height: 300px;
-  overflow: scroll;
+  min-height: 200px;
+  max-height: 300px;
+  overflow-y: auto;
 }
 #fm .fm_file_selector ul li {
   display: inline-block;
-  max-width: 104px;
-  max-height: 104px;
-  min-height: 104px;
+  max-width: 100px;
+  max-height: 100px;
+  min-height: 100px;
   float: left;
   margin-bottom: 5px;
   margin-right: 5px;

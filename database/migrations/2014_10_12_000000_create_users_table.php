@@ -31,12 +31,13 @@ class CreateUsersTable extends Migration
             ["location_title", "Location", "TextField", false, "", 0, 256, false],
             ["top_skills", "Top Skills", "Textarea", false, "", 0, 0, false],
             ["soft_skills", "Soft Skills", "Textarea", false, "", 0, 0, false],
-            ["location_coords", "Location Coords", "Textarea", false, "", 0, 0, false],
             ["impress", "Impress", "Textarea", false, "", 0, 0, false],
             ["phone", "Phone", "TextField", false, "", 0, 256, false],
             ["provider", "Provider", "TextField", false, "", 0, 256, false],
             ["provider_id", "Provider ID", "TextField", false, "", 0, 256, false],
             ["varification_pending", "Pending Verification", "Checkbox", false, "0", 0, 0, false],
+            ["longitude", "Location Longitude", "TextField", false, "", 0, 256, false],
+            ["latitude", "Location Latitude", "TextField", false, "", 0, 256, false],
         ]);
 		
 		/*

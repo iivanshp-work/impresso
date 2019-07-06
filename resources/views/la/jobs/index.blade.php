@@ -62,7 +62,11 @@
 					@la_input($module, 'job_title')
 					@la_input($module, 'description')
 					@la_input($module, 'location_title')
-					@la_input($module, 'location_coords')
+					@la_input($module, 'longitude')
+					@la_input($module, 'latitude')
+					@la_input($module, 'company_title')
+					@la_input($module, 'short_description')
+					@la_input($module, 'status')
 					--}}
 				</div>
 			</div>

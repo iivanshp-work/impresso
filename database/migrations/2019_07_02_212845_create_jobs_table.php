@@ -21,7 +21,11 @@ class CreateJobsTable extends Migration
             ["job_title", "Job Title", "TextField", false, "", 0, 256, false],
             ["description", "Description", "HTML", false, "", 0, 0, false],
             ["location_title", "Location title", "TextField", false, "", 0, 256, false],
-            ["location_coords", "Location Coords", "Textarea", false, "", 0, 0, false],
+            ["longitude", "Location Longitude", "TextField", false, "", 0, 256, false],
+            ["latitude", "Location Latitude", "TextField", false, "", 0, 256, false],
+            ["company_title", "Company", "TextField", false, "", 0, 256, false],
+            ["short_description", "Short description", "TextField", false, "", 0, 256, false],
+            ["status", "Status", "Checkbox", false, "1", 0, 0, true],
         ]);
 		
 		/*

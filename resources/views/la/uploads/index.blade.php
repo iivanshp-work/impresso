@@ -36,6 +36,9 @@
 		<ul class="files_container">
 
         </ul>
+        <div class="load-more-wrapper" style="display: inline-block;width: 100%;text-align: center;">
+            <div class="load_more_files_listing btn btn-success" style="margin: 0 auto;" data-page="1">Load more</div>
+        </div>
 	</div>
 </div>
 
@@ -235,15 +238,23 @@ $(function () {
 	
     loadUploadedFiles();
 });
-function loadUploadedFiles() {
+$(".load_more_files_listing").on("click", function() {
+    var $this = $(this);
+    var page = $(this).data('page');
+    loadUploadedFiles(page);
+});
+function loadUploadedFiles(page) {
+    page = parseInt(page) || 1;
     // load folder files
     $.ajax({
         dataType: 'json',
-        url: "{{ url(config('laraadmin.adminRoute') . '/uploaded_files') }}",
+        url: "{{ url(config('laraadmin.adminRoute') . '/uploaded_files') }}?page=" + page,
         success: function ( json ) {
             console.log(json);
             cntFiles = json.uploads;
-            $("ul.files_container").empty();
+            if (page == 1) {
+                $("ul.files_container").empty();
+            }
             if(cntFiles.length) {
                 for (var index = 0; index < cntFiles.length; index++) {
                     var element = cntFiles[index];
@@ -251,8 +262,14 @@ function loadUploadedFiles() {
                     $("ul.files_container").append(li);
                 }
             } else {
-                $("ul.files_container").html("<div class='text-center text-danger' style='margin-top:40px;'>No Files</div>");
+                if (page == 1){
+                    $("ul.files_container").html("<div class='text-center text-danger' style='margin-top:40px;'>No Files</div>");
+                }
             }
+        },
+        complete: function(){
+            var newPage = page+1;
+            $('.load_more_files_listing').data('page', newPage).attr("data-page", newPage);
         }
     });
 }
