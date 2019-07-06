@@ -2,7 +2,10 @@
     @foreach($jobs as $job)
         <div class="cards cards-jobs">
             <div class="cards-jobs__avatar">
-                <img src="{{asset('img/avatars/color-5.png')}}" alt="{{$job->job_title}}">
+                @php
+                    $imageColor = rand(1, 13);
+                @endphp
+                <img src="{{asset('img/avatars/color-' . $imageColor . '.png')}}" alt="{{$job->job_title}}">
             </div>
             <div class="cards-jobs__detail">
                 <a href="{{url('/jobs/' . $job->id)}}">{{$job->job_title}}</a>
@@ -10,7 +13,7 @@
                     @if($job->short_description)<span>{{$job->short_description}}</span>@endif
                     <span>{{$job->location_title}}</span>
                 </div>
-                @if($job->company)<a href="{{url('/jobs/' . $job->id)}}" class="cards-jobs__company">@ {{$job->company}}</a>@endif
+                @if($job->company_title)<a href="{{url('/jobs/' . $job->id)}}" class="cards-jobs__company">@ {{$job->company_title}}</a>@endif
             </div>
         </div>
     @endforeach

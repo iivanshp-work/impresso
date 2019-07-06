@@ -34,7 +34,7 @@ class FeedsController extends Controller
      */
     public function feedsPage() {
         $userData = Auth::user();
-        $jobs = Job::withDistance($userData)->limit($this->paginationLimit)->orderBy('distance')->get();
+        $jobs = Job::where('status', '=', 1)->withDistance($userData)->limit($this->paginationLimit)->orderBy('distance')->get();
         $professionals = User::where('is_verified', '0')->limit($this->paginationLimit)->get();
         return view('frontend.pages.feeds', [
             'jobs' => $jobs,
