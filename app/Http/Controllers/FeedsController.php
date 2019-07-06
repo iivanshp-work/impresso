@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 class FeedsController extends Controller
 {
     private $paginationLimit = 5;
+
     /**
      * Create a new controller instance.
      *
@@ -33,9 +34,12 @@ class FeedsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function feedsPage() {
+        config('ASSETS_VERSION', date("Y.m.d.h.i.s"));
         $userData = Auth::user();
-        $jobs = Job::where('status', '=', 1)->withDistance($userData)->limit($this->paginationLimit)->orderBy('distance')->get();
+        $jobs = Job::withDistance($userData)->notDeleted()->where('status', '=', 1)->orderBy('distance')->limit($this->paginationLimit)->get();
+        if ($jobs->count() == 0) $jobs = null;
         $professionals = User::where('is_verified', '0')->limit($this->paginationLimit)->get();
+        if ($professionals->count() == 0) $professionals = null;
         return view('frontend.pages.feeds', [
             'jobs' => $jobs,
             'professionals' => $professionals
@@ -49,10 +53,44 @@ class FeedsController extends Controller
      */
     public function feeds(Request $request) {
         $responseData = [
-            'has_error' => '',
-            'records' => null,
-            'has_records' => false
+            'has_more' => false,
+            'html' => '',
+            'page' => 1,
+            'keyword' => '',
         ];
+        $userData = Auth::user();
+
+        $type = $request->has('type') ? $request->input('type') : '';
+        $keyword = $request->has('keyword') ? trim($request->input('keyword')) : '';
+        $page = $request->has('page') ? intval($request->input('page')) : 1;
+        $offset = ($page - 1) * $this->paginationLimit;
+
+        switch ($type) {
+            case 'jobs':
+                $jobs = Job::withDistance($userData)
+                    ->notDeleted()
+                    ->where('status', '=', 1)
+                    ->where(function ($query) use ($keyword) {
+                        $query->orWhere("job_title", "like", "%" . $keyword . "%");
+                        $query->orWhere("company_title", "like", "%" . $keyword . "%");
+                        $query->orWhere("short_description", "like", "%" . $keyword . "%");
+                        $query->orWhere("description", "like", "%" . $keyword . "%");
+                        $query->orWhere("location_title", "like", "%" . $keyword . "%");
+                    })
+                    ->orderBy('distance')
+                    ->offset($offset)
+                    ->limit($this->paginationLimit)
+                    ->get();
+                if ($jobs->count() == 0) $jobs = null;
+                $html = view('frontend.pages.includes.feeds_jobs_items', [
+                    'jobs' => $jobs,
+                ])->render();
+                $responseData['html'] = $html;
+                $responseData['has_more'] = $html ? true : false;
+                $responseData['page'] = $page;
+                $responseData['keyword'] = $keyword;
+                break;
+        }
         return response()->json($responseData);
     }
 }

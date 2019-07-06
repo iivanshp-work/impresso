@@ -1,6 +1,10 @@
 @if ($jobs)
+    @php
+        $items = $jobs->toArray();
+        $lastItem = end($items);
+    @endphp
     @foreach($jobs as $job)
-        <div class="cards cards-jobs">
+        <div class="cards cards-jobs" @if($job->id == $lastItem['id']) data-load-more="1" @endif>
             <div class="cards-jobs__avatar">
                 @php
                     $imageColor = rand(1, 13);
@@ -11,7 +15,7 @@
                 <a href="{{url('/jobs/' . $job->id)}}">{{$job->job_title}}</a>
                 <div>
                     @if($job->short_description)<span>{{$job->short_description}}</span>@endif
-                    <span>{{$job->location_title}}</span>
+                    @if($job->location_title)<span>{{$job->location_title}}</span>@endif
                 </div>
                 @if($job->company_title)<a href="{{url('/jobs/' . $job->id)}}" class="cards-jobs__company">@ {{$job->company_title}}</a>@endif
             </div>
@@ -21,6 +25,6 @@
         <p>Your CV makes money.<br />
             What about you?</p>
         <span class="icon icon_top">Ad</span>
-        <span class="icon icon_bottom"><img src="img/icons/logo-impresso-labs.png" alt=""></span>
+        <span class="icon icon_bottom"><img src="{{asset('img/icons/logo-impresso-labs.png')}}" alt="Ad"></span>
     </div>
 @endif
