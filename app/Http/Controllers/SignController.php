@@ -73,7 +73,9 @@ class SignController extends Controller
                 'email' => $request->input('email'),
                 'password' => $request->input('password')
             );
-            if (Auth::attempt($userdata)) {
+            if (Auth::attempt($userdata, 1)) {
+                $user = User::where('email', '=', $request->input('email'))->first();
+                Auth::login($user, 1);
                 $user = Auth::user();
                 $redirectURL = $user && $user->is_verified ? getenv('BASE_LOGEDIN_PAGE') : getenv('VALIDATION_PAGE');
                 $responseData['redirect'] = url($redirectURL);
@@ -131,7 +133,9 @@ class SignController extends Controller
                         'email' => $request->input('email'),
                         'password' => $request->input('password')
                     );
-                    if (Auth::attempt($userdata)) {
+                    if (Auth::attempt($userdata, 1)) {
+                        $user = User::where('email', '=', $request->input('email'))->first();
+                        Auth::login($user, 1);
                         /*
                         $mail = new Mails;
                         $mail->signup_email($user, $request->input('password'));

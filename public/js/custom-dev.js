@@ -221,6 +221,7 @@ $document.ready(function(){
     $document.on('click', '[data-feeds-tab]', function(e){
         let type = $(this).data('ftype');
         $('[data-feeds-search-page]').val(1);
+        $('[data-feeds-search-keyword]').val('');
         $('[data-feeds-search-type]').val(type);
         setTimeout(function(){
             $('[data-feeds-search-form]').submit();

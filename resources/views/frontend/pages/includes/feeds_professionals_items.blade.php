@@ -1,40 +1,63 @@
-
-<div class="cards cards-professionals">
-    <div class="cards-professionals__header">
-        <div class="cards-professionals__avatar checked">
-            <a href="#" class="avatar">
-                <img src="img/avatars/user-3.png" alt="">
-            </a>
-        </div>
-        <div class="cards-professionals__info">
-            <a href="#">Victor McCormick</a>
-            <div class="d-flex justify-content-between">
-                <span>Project Manager</span>
-                <span>NYC</span>
+@if ($professionals)
+    @php
+        $items = $professionals->toArray();
+        $lastItem = end($professionals);
+    @endphp
+    @foreach($professionals as $professional)
+        <div class="cards cards-professionals">
+            <div class="cards-professionals__header">
+                <div class="cards-professionals__avatar @if($professional->is_verified) checked @endif">
+                    <a href="{{url('/profile/' . $professional->id)}}" class="avatar">
+                        @if($professional->photo)
+                            <img src="img/avatars/user-3.png" alt="">
+                        @else
+                            @php
+                                $imageColor = rand(1, 6);
+                            @endphp
+                            <img src="{{asset('img/avatars/color-' . $imageColor . '.png')}}" alt="">
+                        @endif
+                    </a>
+                </div>
+                <div class="cards-professionals__info">
+                    <a href="{{url('/profile/' . $professional->id)}}">@if($professional->name){{$professional->name}}@else{{$professional->email}}@endif</a>
+                    <div class="d-flex justify-content-between">
+                        @if($professional->job_title)<span>{{$professional->job_title}}</span>@endif
+                        @if($professional->location_title)<span>{{$professional->location_title}}</span>@endif
+                    </div>
+                    @if($professional->company_title)<span>@ {{$professional->company_title}}</span>@endif
+                </div>
             </div>
-            <span>@ Awesome Company</span>
-        </div>
-    </div>
-    <ul class="cards-professionals__desc">
-        <li>
-            <span>Top Skills / Area of Interest</span>
-            <ul class="list-type-circle">
-                <li>Investment</li>
-                <li>Photography</li>
-                <li>Blockchain Technology</li>
+            <ul class="cards-professionals__desc">
+                @if($professional->top_skills)
+                    @php
+                        $topSkills = explode("\n", $professional->top_skills);
+                        array_map('trim', $topSkills);
+                    @endphp
+                    @if(!empty($topSkills))
+                        <li>
+                            <span>Top Skills / Area of Interest</span>
+                            <ul class="list-type-circle">
+                                @foreach($topSkills as $skill)
+                                    <li>{{$skill}}</li>
+                                @endforeach
+                            </ul>
+                        </li>
+                    @endif
+                @endif
+                @if($professional->impress)
+                    <li>
+                        <span>IMPRESSIVE BIO:</span>
+                        <div class="border-violet">{{$professional->impress}}</div>
+                    </li>
+                @endif
+                @if(0)
+                    <li>
+                        <p>Bachelor of Science (Physiotherapy) <span><img src="img/icons/checked.svg" alt="checked"></span></p>
+                        <p>University of Copenhagen <span><img src="img/icons/checked.svg" alt="checked"></span></p>
+                    </li>
+                @endif
             </ul>
-        </li>
-        <li>
-            <span>IMPRESSIVE BIO:</span>
-            <div class="border-violet">Lorem ipsum dolor sit amet, consectetur adipiscing elit,
-                sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
-        </li>
-        <li>
-            <p>Bachelor of Science (Physiotherapy) <span><img src="img/icons/checked.svg"
-                                                              alt="checked"></span></p>
-            <p>University of Copenhagen <span><img src="img/icons/checked.svg"
-                                                   alt="checked"></span></p>
-        </li>
-    </ul>
-    <a href="#" class="btn btn-border">Meetup</a>
-</div>
+            <a href="{{url('/profile/' . $professional->id . '#meetup')}}" class="btn btn-border disabled">Meetup</a>
+        </div>
+    @endforeach
+@endif

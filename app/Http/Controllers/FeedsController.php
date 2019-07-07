@@ -34,12 +34,13 @@ class FeedsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function feedsPage() {
-        config('ASSETS_VERSION', date("Y.m.d.h.i.s"));
         $userData = Auth::user();
+
         $jobs = Job::withDistance($userData)->notDeleted()->where('status', '=', 1)->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($jobs->count() == 0) $jobs = null;
-        $professionals = User::where('is_verified', '0')->limit($this->paginationLimit)->get();
+        $professionals = User::withDistance($userData)->users()->notMe()->orderBy('distance')->limit($this->paginationLimit)->get();//->where('is_verified', '1')
         if ($professionals->count() == 0) $professionals = null;
+        //test($professionals);
         return view('frontend.pages.feeds', [
             'jobs' => $jobs,
             'professionals' => $professionals
