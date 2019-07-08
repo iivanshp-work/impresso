@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class FeedsController extends Controller
 {
-    private $paginationLimit = 2;
+    private $paginationLimit = 5;
 
     /**
      * Create a new controller instance.
@@ -27,6 +27,7 @@ class FeedsController extends Controller
      */
     public function __construct() {
         $this->middleware('auth');
+        $this->middleware('redirects');
     }
 
     /**
@@ -38,7 +39,7 @@ class FeedsController extends Controller
 
         $jobs = Job::withDistance($userData)->notDeleted()->where('status', '=', 1)->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($jobs->count() == 0) $jobs = null;
-        $professionals = User::withDistance($userData)->notDeleted()->users()->notMe()->orderBy('distance')->limit($this->paginationLimit)->get();//->where('is_verified', '1')
+        $professionals = User::withDistance($userData)->notDeleted()->users()->notMe()->where('is_verified', '1')->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($professionals->count() == 0) $professionals = null;
 
         return view('frontend.pages.feeds', [
@@ -97,7 +98,7 @@ class FeedsController extends Controller
                     ->notDeleted()
                     ->users()
                     ->notMe()
-                    //->where('is_verified', '1')
+                    ->where('is_verified', '1')
                     ->where(function ($query) use ($keyword) {
                         $query->orWhere("name", "like", "%" . $keyword . "%");
                         $query->orWhere("email", "like", "%" . $keyword . "%");

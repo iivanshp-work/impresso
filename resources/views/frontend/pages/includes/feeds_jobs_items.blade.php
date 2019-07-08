@@ -2,8 +2,18 @@
     @php
         $items = $jobs->toArray();
         $lastItem = end($items);
+        $adPosition = rand(1, 4);
     @endphp
-    @foreach($jobs as $job)
+    @foreach($jobs as $key => $job)
+        @if($key == $adPosition)
+            <div class="cards cards-jobs bg-violet-gradient">
+                <p>Your CV makes money.<br />
+                    What about you?</p>
+                <span class="icon icon_top">Ad</span>
+                <span class="icon icon_bottom"><img src="{{asset('img/icons/logo-impresso-labs.png')}}" alt="Ad"></span>
+            </div>
+            <!--<div>ADD google adwords // TODO???????</div>-->
+        @endif
         <div class="cards cards-jobs" @if(isset($lastItem['id']) && $job->id == $lastItem['id']) data-load-more-jobs="1" @endif>
             <div class="cards-jobs__avatar">
                 @php
@@ -21,10 +31,5 @@
             </div>
         </div>
     @endforeach
-    <div class="cards cards-jobs bg-violet-gradient">
-        <p>Your CV makes money.<br />
-            What about you?</p>
-        <span class="icon icon_top">Ad</span>
-        <span class="icon icon_bottom"><img src="{{asset('img/icons/logo-impresso-labs.png')}}" alt="Ad"></span>
-    </div>
+
 @endif

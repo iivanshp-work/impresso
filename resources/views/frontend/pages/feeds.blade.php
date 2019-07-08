@@ -45,31 +45,6 @@
 @endsection
 
 @push('popups')
-
-    @if (app('request')->has('show_profile_setup_profile'))
-        <button class="btn btn-violet open-pop-up" id="showFeedsLetStartImpressing" data-target="#letStartImpressing">
-            Let's start Impressing
-        </button>
-        <div class="modal-window" id="letStartImpressing">
-            <div class="modal-window__content">
-                <div class="modal-window__body validation-modal text-center">
-                    <h3 class="title mb-34">
-                        Let’s start impressing!
-                    </h3>
-                    <p>
-                        Complete your profile in order to show others how impressive you are ;)
-                    </p>
-                    <a href="{{url('/profile')}}" type="button" class="btn btn-violet">
-                        Go to Profile
-                    </a>
-                    <button type="button" class="btn btn-border close-modal">
-                        Do this later
-                    </button>
-                </div>
-            </div>
-        </div>
-    @endif
-
 @endpush
 
 @push('styles')

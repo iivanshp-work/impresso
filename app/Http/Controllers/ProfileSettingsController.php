@@ -22,6 +22,7 @@ class ProfileSettingsController extends Controller
      */
     public function __construct(Request $request) {
         $this->middleware('auth');
+        $this->middleware('redirects');
     }
 
     /**
@@ -29,8 +30,13 @@ class ProfileSettingsController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function profilePage(Request $request) {
+    public function profilePage(Request $request, $id = '') {
         $user = Auth::user();
+        $mode = !$id || ($id && $user && $user->id == $id) ? 'me' : 'other';
+        if ($mode != 'me') {
+            $userData = User::where('id', '=', $id)->first();
+            test($userData);
+        }
         return view('frontend.pages.profile', [
             'user' => $user
         ]);

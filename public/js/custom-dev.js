@@ -212,12 +212,8 @@ $document.ready(function(){
     //validation profile end
 
     //feeds start
-    // show Feeds LetStartImpressing popup
-    if($('#showFeedsLetStartImpressing').length){
-        $('#showFeedsLetStartImpressing').trigger('click');
-    }
 
-    //set search form type when switch between tabs
+    //set search form type when switch between tabs and submit form
     $document.on('click', '[data-feeds-tab]', function(e){
         let type = $(this).data('ftype');
         $('[data-feeds-search-page]').val(1);
@@ -227,18 +223,18 @@ $document.ready(function(){
             $('[data-feeds-search-form]').submit();
         }, 100);
     });
-
+    //submit form on change search field
     $document.on('input', '[data-feeds-search-keyword]', function(e){
         e.preventDefault();
         $('[data-feeds-search-page]').val(1);
         $(this).closest('[data-feeds-search-form]').submit();
     });
-
+    //submit feed form
     $document.on('submit', '[data-feeds-search-form]', function(e){
         e.preventDefault();
         feedsLoadItems();
     });
-
+    // general feed submit Load items function
     function feedsLoadItems(){
         let frm = $('[data-feeds-search-form]'), targetLink = base_url + '/feeds';
         let data = frm.serialize();
@@ -293,6 +289,7 @@ $document.ready(function(){
     }
 
     var needloadmore = 0;
+    //load more for jobs
     function loadMoreJobs() {
         $('[data-load-more-jobs]').each(function () {
             let element = $(this), container = $(this).parent(), win = $(window), busy = false, errors = 0, retry = 3;
@@ -342,6 +339,7 @@ $document.ready(function(){
             check();
         });
     }
+    //load more for professionals
     function loadMoreProfessionals(){
         $('[data-load-more-professionals]').each(function(){
             let element = $(this), container = $(this).parent(), win = $(window), busy = false, errors = 0, retry = 3;
@@ -391,9 +389,19 @@ $document.ready(function(){
             check();
         });
     }
-
+    //default jobs check
     loadMoreJobs();
     //feeds end
+
+    //profile start
+    // show profile LetStartImpressing popup
+    if($('#showFeedsLetStartImpressing').length){
+        $('#showFeedsLetStartImpressing').trigger('click');
+    }
+    if($('#showPendingPopup').length){
+        $('#showPendingPopup').trigger('click');
+    }
+    //profile end
 
 
 });

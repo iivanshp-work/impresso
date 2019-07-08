@@ -27,8 +27,10 @@ Route::post('validation', 'SignController@validation')->name('validation_post');
 
 /* profile */
 Route::get('profile', 'ProfileSettingsController@profilePage')->name('profile');
+Route::get('profile/{id}', 'ProfileSettingsController@profilePage')->name('profile_other');
 Route::get('profile/edit', 'ProfileSettingsController@profileEditPage')->name('profile_edit');
 Route::post('profile/edit', 'ProfileSettingsController@profileEdit')->name('profile_edit_post');
+
 
 /* feeds */
 Route::get('feeds', 'FeedsController@feedsPage')->name('feeds');
