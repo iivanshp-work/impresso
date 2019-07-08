@@ -10,44 +10,48 @@
         <header class="header">
             <h4 class="header-title">Profile</h4>
             <span class="header__icon-right">
-                <a href="#"><img src="img/icons/settings.svg" alt="" /></a>
-                <img src="img/icons/bell.svg" alt="" />
+                <a href="#"><img src="{{asset('img/icons/settings.svg')}}" alt="" /></a>
+                <img src="{{asset('img/icons/bell.svg')}}" alt="" />
             </span>
         </header>
         <main>
             <div class="user">
                 <div class="user__header">
                     <div class="user__avatar">
-                        <img src="img/avatars/avatar-big.png" alt="" />
+                        <img src="{{asset('img/avatars/avatar-big.png')}}" alt="" />
                         <a href="#" download class="edit-photo">edit photo</a>
                     </div>
-                    <span class="edit-icon" id="edit-profile">
-                        <img src="img/icons/edit.svg" alt="" />
-                    </span>
-                    <span class="user__checked">
-                        <img src="img/icons/icon-checked.svg" alt="" />
-                    </span>
+                    @if($mode == "me")
+                        <span class="edit-icon" id="edit-profile">
+                            <a href="{{url('profile/edit')}}" class="edit-photo"><img src="{{asset('img/icons/edit.svg')}}" alt="" /></a>
+                        </span>
+                    @endif
+                    @if($userData->is_verified)
+                        <span class="user__checked">
+                            <img src="{{asset('img/icons/icon-checked.svg')}}" alt="" />
+                        </span>
+                    @endif
                 </div>
-                <h4 class="user__name">Lilly Barton</h4>
+                <h4 class="user__name">@if($userData->name){{$userData->name}}@else{{'None'}}@endif</h4>
                 <div class="job-title">
-                    <input class="style-input-text style-input-text_right" type="text" value="Project Manager"
-                           placeholder="Job title ">
+                    <input readonly="" class="style-input-text style-input-text_right" type="text" value="@if($userData->job_title){{$userData->job_title}}@endif" placeholder="Job title ">
                     <span>at</span>
-                    <input class="style-input-text" type="text" value="Surfs Up Chill" placeholder="Company">
+                    <input readonly="" class="style-input-text" type="text" value="@if($userData->company){{$userData->company}}@endif" placeholder="Company">
                 </div>
                 <div class="user__info">
                     <p>
-                        <img src="img/icons/maps-and-flags.png" alt="" />
-                        Phone location
+                        <img src="{{asset('img/icons/maps-and-flags.png')}}" alt="" />
+                        @if($userData->location_title){{$userData->location_title}}@else{{'Phone location'}}@endif
+
                     </p>
                     <p>
-                        <img src="img/icons/multiple-users-silhouette.png" alt="" />
-                        0 Meetups
+                        <img src="{{asset('img/icons/multiple-users-silhouette.png')}}" alt="" />
+                        @if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif Meetups
                     </p>
                 </div>
                 <div class="cards user__card">
                     <h5 class="user__card_title">Basic Information</h5>
-                    <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
+                    <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     <ul class="list-type-circle">
                         <li>
                             <input class="style-input-text" type="text" value="Project Manager"
@@ -69,13 +73,13 @@
                 </div>
                 <div class="cards user__card">
                     <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
-                    <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
+                    <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     <textarea class="style-textarea border-violet" rows="4" cols="50" disabled
                               placeholder="Write something to impress your recruiters and future meetups!">I am developing a mobile app to help students find free food on campus in partnerships with organizations to increase traffic at their events.</textarea>
                 </div>
                 <div class="cards user__card">
                     <h5 class="user__card_title">Top Skills / Areas of Interest</h5>
-                    <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
+                    <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     <ul class="list-type-circle">
                         <li>
                             <input class="style-input-text" type="text" value="Investment"
@@ -93,7 +97,7 @@
                 </div>
                 <div class="cards user__card">
                     <h5 class="user__card_title">Soft Skills</h5>
-                    <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
+                    <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     <ul class="list-type-circle">
                         <li>
                             <input class="style-input-text" type="text" value="Time Management"
@@ -110,10 +114,10 @@
                 </div>
                 <div class="cards user__card">
                     <h5 class="user__card_title">Education:</h5>
-                    <span class="edit-info"><img src="img/icons/plus.svg" alt="" /></span>
+                    <span class="edit-info"><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
                     <div class="user__card_info">
                         <span class="user__card_icon">
-                            <img src="img/icons/graduate-cap.svg" alt="" />
+                            <img src="{{asset('img/icons/graduate-cap.svg')}}" alt="" />
                         </span>
                         <div class="user__card_text">
                             <input class="style-input-text style-input-text_15" type="text"
@@ -131,10 +135,10 @@
                 </div>
                 <div class="cards user__card">
                     <h5 class="user__card_title">Skill Certifications:</h5>
-                    <span class="edit-info"><img src="img/icons/plus.svg" alt="" /></span>
+                    <span class="edit-info"><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
                     <div class="user__card_info">
                         <span class="user__card_icon">
-                            <img src="img/icons/guarantee-certificate.svg" alt="" />
+                            <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
                         </span>
                         <div class="user__card_text">
                             <input class="style-input-text style-input-text_15" type="text"
@@ -146,7 +150,7 @@
                                 Request Validation
                             </button>
                         </div>
-                        <span class="user__validated">Validated <img src="img/icons/checked.svg" alt=""></span>
+                        <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
                     </div>
                 </div>
                 <button type="button" id="save" class="btn btn-violet btn-save">Save</button>

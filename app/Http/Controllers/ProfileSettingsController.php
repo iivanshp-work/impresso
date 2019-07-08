@@ -35,10 +35,11 @@ class ProfileSettingsController extends Controller
         $mode = !$id || ($id && $user && $user->id == $id) ? 'me' : 'other';
         if ($mode != 'me') {
             $userData = User::where('id', '=', $id)->first();
-            test($userData);
         }
         return view('frontend.pages.profile', [
-            'user' => $user
+            'user' => $user,
+            'mode' => $mode,
+            'userData' => $userData
         ]);
     }
 

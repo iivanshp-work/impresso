@@ -79,6 +79,8 @@
 					@la_input($module, 'varification_pending')
 					@la_input($module, 'longitude')
 					@la_input($module, 'latitude')
+					@la_input($module, 'university_title')
+					@la_input($module, 'certificate_title')
 					--}}
 				</div>
 			</div>

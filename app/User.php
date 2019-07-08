@@ -69,4 +69,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $id; // TODO????????
     }
 
+    /**
+     * @return mixed
+     */
+    public function getMeetupCountAttribute()
+    {
+        return $this->calculateMeetupCount($this->id);
+    }
+
+    /**
+     * Calculate Meetup Count
+     * @param $id
+     * @return mixed
+     */
+    public function calculateMeetupCount($id) {
+        return $id; // TODO????????
+    }
+
 }
