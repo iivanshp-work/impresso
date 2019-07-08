@@ -270,7 +270,11 @@ $document.ready(function(){
                         }
                         wrapper.append(response.html);
                         if(needloadmore || response.page == 1){
-                            loadMore();
+                            if (type == 'jobs') {
+                                loadMoreJobs();
+                            } else {
+                                loadMoreProfessionals();
+                            }
                         }
                     } else if (response.keyword) {
                         wrapper.empty();
@@ -289,62 +293,60 @@ $document.ready(function(){
     }
 
     var needloadmore = 0;
-    function loadMore(){
-        console.log("loadMore");
-        $('[data-load-more-jobs]').each(function(){
+    function loadMoreJobs() {
+        $('[data-load-more-jobs]').each(function () {
             let element = $(this), container = $(this).parent(), win = $(window), busy = false, errors = 0, retry = 3;
             let frm = $('[data-feeds-search-form]'), targetLink = base_url + '/feeds';
-            function error(){
+            function error() {
                 errors++;
-                if(errors >= retry) unbind();
+                if (errors >= retry) unbind();
             }
 
-            function unbind(){
+            function unbind() {
                 win.unbind('scroll resize orientationchange', check);
                 needloadmore = 1;
             }
 
-            function check(){
-                console.log("check");
-                if(busy) return;
-                console.log(container.offset().top, container.height(), win.scrollTop() + win.height(), containerd);
-                console.log(container.offset().top + container.height(), win.scrollTop() + win.height());
-                if(container.offset().top + container.height() > win.scrollTop() + win.height()) return;
+            function check() {
+                let type = frm.find('[data-feeds-search-type]').val();
+                if (type != 'jobs') return;
+                if (container.offset().top + container.height() > win.scrollTop() + win.height()) return;
+                if (busy) return;
+                busy = true;
                 loadingStart();
                 $.ajax({
                     url: targetLink,
                     type: 'post',
                     data: frm.serialize(),
                     dataType: 'json',
-                    success: function(response){
-                        if(response.html){
+                    success: function (response) {
+                        if (response.html) {
                             container.append(response.html);
                             element = container.find("[data-load-more-jobs]").last();
                             let page = response.page || frm.find('[data-feeds-search-page]').val();
                             $('[data-feeds-search-page]').val((parseInt(page) + 1));
-                        }else error();
+                        } else error();
 
-                        if(response.has_more) check();
+                        if (response.has_more) check();
                         else unbind();
                     },
                     error: error,
-                    complete: function(){
+                    complete: function (response) {
                         busy = false;
                         loadingEnd();
                     }
                 });
-                busy = true;
             }
 
             win.bind('scroll resize orientationchange', check);
             check();
         });
-
+    }
+    function loadMoreProfessionals(){
         $('[data-load-more-professionals]').each(function(){
             let element = $(this), container = $(this).parent(), win = $(window), busy = false, errors = 0, retry = 3;
             let frm = $('[data-feeds-search-form]'), targetLink = base_url + '/feeds';
             function error(response){
-                console.log("error", response);
                 errors++;
                 if(errors >= retry) unbind();
             }
@@ -355,9 +357,11 @@ $document.ready(function(){
             }
 
             function check(){
+                let type = frm.find('[data-feeds-search-type]').val();
+                if (type != 'professionals') return;
+                if(container.offset().top + container.height() > win.scrollTop() + win.height()) return;
                 if(busy) return;
                 busy = true;
-                if(container.offset().top + container.height() > win.scrollTop() + win.height()) return;
                 loadingStart();
                 $.ajax({
                     url: targetLink,
@@ -365,8 +369,6 @@ $document.ready(function(){
                     data: frm.serialize(),
                     dataType: 'json',
                     success: function(response){
-                        console.log('success', response);
-                        console.log(container);
                         if(response.html){
                             container.append(response.html);
                             element = container.find("[data-load-more-professionals]").last();
@@ -379,7 +381,6 @@ $document.ready(function(){
                     },
                     error: error,
                     complete: function(response){
-                        console.log("complete", response);
                         busy = false;
                         loadingEnd();
                     }
@@ -391,7 +392,7 @@ $document.ready(function(){
         });
     }
 
-    loadMore();
+    loadMoreJobs();
     //feeds end
 
 
