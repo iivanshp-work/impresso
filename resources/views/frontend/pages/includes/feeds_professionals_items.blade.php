@@ -1,20 +1,20 @@
 @if ($professionals)
     @php
         $items = $professionals->toArray();
-        $lastItem = end($professionals);
+        $lastItem = end($items);
     @endphp
     @foreach($professionals as $professional)
-        <div class="cards cards-professionals">
+        <div class="cards cards-professionals" @if(isset($lastItem['id']) && $professional->id == $lastItem['id']) data-load-more-professionals="1" @endif>
             <div class="cards-professionals__header">
                 <div class="cards-professionals__avatar @if($professional->is_verified) checked @endif">
                     <a href="{{url('/profile/' . $professional->id)}}" class="avatar">
                         @if($professional->photo)
-                            <img src="img/avatars/user-3.png" alt="">
+                            <img src="{{url('/files/' . $professional->photo)}}" alt="@if($professional->name){{$professional->name}}@else{{$professional->email}}@endif">
                         @else
                             @php
                                 $imageColor = rand(1, 6);
                             @endphp
-                            <img src="{{asset('img/avatars/color-' . $imageColor . '.png')}}" alt="">
+                            <img src="{{asset('img/avatars/color-' . $imageColor . '.png')}}" alt="@if($professional->name){{$professional->name}}@else{{$professional->email}}@endif">
                         @endif
                     </a>
                 </div>

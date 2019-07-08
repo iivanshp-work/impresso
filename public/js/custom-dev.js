@@ -269,7 +269,7 @@ $document.ready(function(){
                             wrapper.empty();
                         }
                         wrapper.append(response.html);
-                        if(needloadmore){
+                        if(needloadmore || response.page == 1){
                             loadMore();
                         }
                     } else if (response.keyword) {
@@ -290,7 +290,8 @@ $document.ready(function(){
 
     var needloadmore = 0;
     function loadMore(){
-        $('[data-load-more]').each(function(){
+        console.log("loadMore");
+        $('[data-load-more-jobs]').each(function(){
             let element = $(this), container = $(this).parent(), win = $(window), busy = false, errors = 0, retry = 3;
             let frm = $('[data-feeds-search-form]'), targetLink = base_url + '/feeds';
             function error(){
@@ -304,7 +305,10 @@ $document.ready(function(){
             }
 
             function check(){
+                console.log("check");
                 if(busy) return;
+                console.log(container.offset().top, container.height(), win.scrollTop() + win.height(), containerd);
+                console.log(container.offset().top + container.height(), win.scrollTop() + win.height());
                 if(container.offset().top + container.height() > win.scrollTop() + win.height()) return;
                 loadingStart();
                 $.ajax({
@@ -315,7 +319,7 @@ $document.ready(function(){
                     success: function(response){
                         if(response.html){
                             container.append(response.html);
-                            element = container.find("[data-load-more]").last();
+                            element = container.find("[data-load-more-jobs]").last();
                             let page = response.page || frm.find('[data-feeds-search-page]').val();
                             $('[data-feeds-search-page]').val((parseInt(page) + 1));
                         }else error();
@@ -334,7 +338,56 @@ $document.ready(function(){
 
             win.bind('scroll resize orientationchange', check);
             check();
+        });
 
+        $('[data-load-more-professionals]').each(function(){
+            let element = $(this), container = $(this).parent(), win = $(window), busy = false, errors = 0, retry = 3;
+            let frm = $('[data-feeds-search-form]'), targetLink = base_url + '/feeds';
+            function error(response){
+                console.log("error", response);
+                errors++;
+                if(errors >= retry) unbind();
+            }
+
+            function unbind(){
+                win.unbind('scroll resize orientationchange', check);
+                needloadmore = 1;
+            }
+
+            function check(){
+                if(busy) return;
+                busy = true;
+                if(container.offset().top + container.height() > win.scrollTop() + win.height()) return;
+                loadingStart();
+                $.ajax({
+                    url: targetLink,
+                    type: 'post',
+                    data: frm.serialize(),
+                    dataType: 'json',
+                    success: function(response){
+                        console.log('success', response);
+                        console.log(container);
+                        if(response.html){
+                            container.append(response.html);
+                            element = container.find("[data-load-more-professionals]").last();
+                            let page = response.page || frm.find('[data-feeds-search-page]').val();
+                            $('[data-feeds-search-page]').val((parseInt(page) + 1));
+                        }else error();
+
+                        if(response.has_more) check();
+                        else unbind();
+                    },
+                    error: error,
+                    complete: function(response){
+                        console.log("complete", response);
+                        busy = false;
+                        loadingEnd();
+                    }
+                });
+            }
+
+            win.bind('scroll resize orientationchange', check);
+            check();
         });
     }
 

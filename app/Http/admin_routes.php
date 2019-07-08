@@ -7,6 +7,7 @@ Route::auth();
 
 /* ================== Access Uploaded Files ================== */
 Route::get('files/{hash}/{name}', 'LA\UploadsController@get_file');
+Route::get('files/{id}', 'LA\UploadsController@get_file');
 
 /*
 |--------------------------------------------------------------------------

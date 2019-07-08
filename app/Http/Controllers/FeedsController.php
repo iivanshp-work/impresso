@@ -18,7 +18,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class FeedsController extends Controller
 {
-    private $paginationLimit = 5;
+    private $paginationLimit = 2;
 
     /**
      * Create a new controller instance.
@@ -38,9 +38,9 @@ class FeedsController extends Controller
 
         $jobs = Job::withDistance($userData)->notDeleted()->where('status', '=', 1)->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($jobs->count() == 0) $jobs = null;
-        $professionals = User::withDistance($userData)->users()->notMe()->orderBy('distance')->limit($this->paginationLimit)->get();//->where('is_verified', '1')
+        $professionals = User::withDistance($userData)->notDeleted()->users()->notMe()->orderBy('distance')->limit($this->paginationLimit)->get();//->where('is_verified', '1')
         if ($professionals->count() == 0) $professionals = null;
-        //test($professionals);
+
         return view('frontend.pages.feeds', [
             'jobs' => $jobs,
             'professionals' => $professionals
@@ -90,6 +90,39 @@ class FeedsController extends Controller
                 $responseData['has_more'] = $html ? true : false;
                 $responseData['page'] = $page;
                 $responseData['keyword'] = $keyword;
+                break;
+
+            case 'professionals':
+                $professionals = User::withDistance($userData)
+                    ->notDeleted()
+                    ->users()
+                    ->notMe()
+                    //->where('is_verified', '1')
+                    ->where(function ($query) use ($keyword) {
+                        $query->orWhere("name", "like", "%" . $keyword . "%");
+                        $query->orWhere("email", "like", "%" . $keyword . "%");
+                        $query->orWhere("job_title", "like", "%" . $keyword . "%");
+                        $query->orWhere("company_title", "like", "%" . $keyword . "%");
+                        $query->orWhere("location_title", "like", "%" . $keyword . "%");
+                        $query->orWhere("top_skills", "like", "%" . $keyword . "%");
+                        $query->orWhere("soft_skills", "like", "%" . $keyword . "%");
+                        $query->orWhere("impress", "like", "%" . $keyword . "%");
+                    })
+                    ->orderBy('distance')
+                    ->offset($offset)
+                    ->limit($this->paginationLimit)
+                    ->get();
+                if ($professionals->count() == 0) $professionals = null;
+                $html = view('frontend.pages.includes.feeds_professionals_items', [
+                    'professionals' => $professionals,
+                ])->render();
+                $responseData['html'] = $html;
+                $responseData['has_more'] = $html ? true : false;
+                $responseData['page'] = $page;
+                $responseData['keyword'] = $keyword;
+                break;
+
+            default:
                 break;
         }
         return response()->json($responseData);

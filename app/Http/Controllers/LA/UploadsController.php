@@ -72,16 +72,16 @@ class UploadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function get_file($hash, $name)
+    public function get_file($hash, $name = '')
     {
 
         try{
-            $upload = DB::table("uploads")->where("hash", $hash)->first();
+            $upload = DB::table("uploads")->where("hash", $hash)->orWhere("id", $hash)->first();
         }catch (\PDOException $e) {
 
         }
         // Validate Upload Hash & Filename
-        if(!isset($upload->id) || $upload->name != $name) {
+        if(!isset($upload->id) || ($name && $upload->name != $name)) {
             return response()->json([
                 'status' => "failure",
                 'message' => "Unauthorized Access 1"

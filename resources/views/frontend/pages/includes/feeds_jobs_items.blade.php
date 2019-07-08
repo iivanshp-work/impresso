@@ -4,7 +4,7 @@
         $lastItem = end($items);
     @endphp
     @foreach($jobs as $job)
-        <div class="cards cards-jobs" @if($job->id == $lastItem['id']) data-load-more="1" @endif>
+        <div class="cards cards-jobs" @if(isset($lastItem['id']) && $job->id == $lastItem['id']) data-load-more-jobs="1" @endif>
             <div class="cards-jobs__avatar">
                 @php
                     $imageColor = rand(1, 13);
