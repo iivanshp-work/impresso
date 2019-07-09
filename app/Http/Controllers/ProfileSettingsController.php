@@ -35,6 +35,8 @@ class ProfileSettingsController extends Controller
         $mode = !$id || ($id && $user && $user->id == $id) ? 'me' : 'other';
         if ($mode != 'me') {
             $userData = User::where('id', '=', $id)->first();
+        } else {
+            $userData = $user;
         }
         return view('frontend.pages.profile', [
             'user' => $user,
@@ -51,7 +53,7 @@ class ProfileSettingsController extends Controller
     public function profileEditPage(Request $request) {
         $user = Auth::user();
         return view('frontend.pages.profile_edit', [
-            'user' => $user
+            'userData' => $user
         ]);
     }
 

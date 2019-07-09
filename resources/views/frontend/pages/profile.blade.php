@@ -18,8 +18,14 @@
             <div class="user">
                 <div class="user__header">
                     <div class="user__avatar">
-                        <img src="{{asset('img/avatars/avatar-big.png')}}" alt="" />
-                        <a href="#" download class="edit-photo">edit photo</a>
+                        @if($userData->photo)
+                            <img src="{{url('/files/' . $userData->photo . '?s=200')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
+                        @else
+                            <img src="{{asset('img/icons/user-icon.svg')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
+                        @endif
+                        @if($mode == "me")
+                            <a href="{{url('profile/edit')}}" download class="edit-photo">edit photo</a>
+                        @endif
                     </div>
                     @if($mode == "me")
                         <span class="edit-icon" id="edit-profile">
@@ -33,11 +39,25 @@
                     @endif
                 </div>
                 <h4 class="user__name">@if($userData->name){{$userData->name}}@else{{'None'}}@endif</h4>
-                <div class="job-title">
-                    <input readonly="" class="style-input-text style-input-text_right" type="text" value="@if($userData->job_title){{$userData->job_title}}@endif" placeholder="Job title ">
-                    <span>at</span>
-                    <input readonly="" class="style-input-text" type="text" value="@if($userData->company){{$userData->company}}@endif" placeholder="Company">
-                </div>
+                @if ($mode == 'me')
+                    <div class="job-title">
+                        <input readonly="" class="style-input-text style-input-text_right" type="text" value="@if($userData->job_title){{$userData->job_title}}@endif" placeholder="Job title ">
+                        <span>at</span>
+                        <input readonly="" class="style-input-text" type="text" value="@if($userData->company_title){{$userData->company_title}}@endif" placeholder="Company">
+                    </div>
+                @else
+                    <div class="job-title">
+                        @if($userData->job_title)
+                            <input readonly="" class="style-input-text style-input-text_right" type="text" value="{{$userData->job_title}}" placeholder="Job title ">
+                        @endif
+                        @if($userData->job_title && $userData->company_title)
+                            <span>at</span>
+                        @endif
+                        @if($userData->company_title)
+                            <input readonly="" class="style-input-text" type="text" value="{{$userData->company_title}}" placeholder="Company">
+                        @endif
+                    </div>
+                @endif
                 <div class="user__info">
                     <p>
                         <img src="{{asset('img/icons/maps-and-flags.png')}}" alt="" />
@@ -53,65 +73,224 @@
                     <h5 class="user__card_title">Basic Information</h5>
                     <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     <ul class="list-type-circle">
-                        <li>
-                            <input class="style-input-text" type="text" value="Project Manager"
-                                   placeholder="Add company" disabled>
-                        </li>
-                        <li>
-                            <input class="style-input-text" type="text" value="Surfs Up Chill"
-                                   placeholder="Add university" disabled>
-                        </li>
-                        <li>
-                            <input class="style-input-text" type="text" value="University of Copenhagen"
-                                   placeholder="Add job title / status" disabled>
-                        </li>
-                        <li>
-                            <input class="style-input-text" type="text" value="Bachelor of Science (Physiotherapy)"
-                                   placeholder="Add certificate" disabled>
-                        </li>
+                        @if ($mode == 'me')
+                            <li>
+                                <input class="style-input-text" type="text" value="@if($userData->company_title){{$userData->company_title}}@else{{''}}@endif"
+                                       placeholder="Add company" disabled>
+                            </li>
+                            <li>
+                                <input class="style-input-text" type="text" value="@if($userData->job_title){{$userData->job_title}}@else{{''}}@endif"
+                                       placeholder="Add job title / status" disabled>
+                            </li>
+                            <li>
+                                <input class="style-input-text" type="text" value="@if($userData->university_title){{$userData->university_title}}@else{{''}}@endif"
+                                       placeholder="Add university" disabled>
+                            </li>
+                            <li>
+                                <input class="style-input-text" type="text" value="@if($userData->certificate_title){{$userData->certificate_title}}@else{{''}}@endif"
+                                       placeholder="Add certificate" disabled>
+                            </li>
+                        @else
+                            @if (!$userData->company_title && !$userData->job_title && !$userData->university_title && !$userData->certificate_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="NO DATA YET."
+                                           placeholder="NO DATA YET." disabled>
+                                </li>
+                            @endif
+                            @if($userData->company_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="{{$userData->company_title}}"
+                                           placeholder="Add company" disabled>
+                                </li>
+                            @endif
+                            @if($userData->job_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="{{$userData->job_title}}"
+                                           placeholder="Add job title / status" disabled>
+                                </li>
+                            @endif
+                            @if($userData->university_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="{{$userData->university_title}}"
+                                           placeholder="Add university" disabled>
+                                </li>
+                            @endif
+                            @if($userData->certificate_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="{{$userData->certificate_title}}"
+                                           placeholder="Add certificate" disabled>
+                                </li>
+                            @endif
+                        @endif
+
                     </ul>
                 </div>
-                <div class="cards user__card">
-                    <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
-                    <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
-                    <textarea class="style-textarea border-violet" rows="4" cols="50" disabled
-                              placeholder="Write something to impress your recruiters and future meetups!">I am developing a mobile app to help students find free food on campus in partnerships with organizations to increase traffic at their events.</textarea>
-                </div>
-                <div class="cards user__card">
-                    <h5 class="user__card_title">Top Skills / Areas of Interest</h5>
-                    <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
-                    <ul class="list-type-circle">
-                        <li>
-                            <input class="style-input-text" type="text" value="Investment"
-                                   placeholder="Add skill / interest" disabled>
-                        </li>
-                        <li>
-                            <input class="style-input-text" type="text" value="Photography"
-                                   placeholder="Add skill / interest" disabled>
-                        </li>
-                        <li>
-                            <input class="style-input-text" type="text" value="Blockchain"
-                                   placeholder="Add skill / interest" disabled>
-                        </li>
-                    </ul>
-                </div>
-                <div class="cards user__card">
-                    <h5 class="user__card_title">Soft Skills</h5>
-                    <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
-                    <ul class="list-type-circle">
-                        <li>
-                            <input class="style-input-text" type="text" value="Time Management"
-                                   placeholder="Add soft skill" disabled>
-                        </li>
-                        <li>
-                            <input class="style-input-text" type="text" value="Teamwork" placeholder="Add soft skill"
-                                   disabled>
-                        </li>
-                        <li><input class="style-input-text" type="text" value="Creativity" placeholder="Add soft skill"
-                                   disabled>
-                        </li>
-                    </ul>
-                </div>
+                @if ($mode == 'me')
+                    <div class="cards user__card">
+                        <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
+                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                        <textarea class="style-textarea border-violet" rows="4" cols="50" disabled
+                                  placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
+                    </div>
+                @else
+                    @if($userData->impress)
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
+                            <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                            <textarea class="style-textarea border-violet" rows="4" cols="50" disabled
+                                      placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
+                        </div>
+                    @endif
+
+                @endif
+
+                @if($mode == 'me')
+                    @if($userData->top_skills)
+                        @php
+                            $topSkills = explode("\n", $userData->top_skills);
+                            array_map('trim', $topSkills);
+                            $topSkillIteration = 0;
+                        @endphp
+                    @else
+                        @php
+                            $topSkills = [];
+                            $topSkillIteration = 0;
+                        @endphp
+                    @endif
+
+                    <div class="cards user__card">
+                        <h5 class="user__card_title">Top Skills / Areas of Interest</h5>
+                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                        <ul class="list-type-circle">
+                            @if(!empty($topSkills))
+                                @foreach($topSkills as $skill)
+                                    @if($skill)
+                                        <li>
+                                            <input class="style-input-text" type="text" value="{{$skill}}"
+                                                   placeholder="Add skill / interest" disabled>
+                                        </li>
+                                        @php
+                                            $topSkillIteration++;
+                                        @endphp
+                                    @endif
+                                @endforeach
+                            @endif
+                            @if ($topSkillIteration < 3)
+                                @while($topSkillIteration < 3)
+                                    <li>
+                                        <input class="style-input-text" type="text" value=""
+                                               placeholder="Add skill / interest" disabled>
+                                    </li>
+                                    @php
+                                        $topSkillIteration++;
+                                    @endphp
+                                @endwhile
+                            @endif
+                        </ul>
+                    </div>
+                @else
+                    @if($userData->top_skills)
+                        @php
+                            $topSkills = explode("\n", $userData->top_skills);
+                            array_map('trim', $topSkills);
+                        @endphp
+                    @else
+                        @php
+                            $topSkills = [];
+                        @endphp
+                    @endif
+                    @if(!empty($topSkills))
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">Top Skills / Areas of Interest</h5>
+                            <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                            <ul class="list-type-circle">
+                                @foreach($topSkills as $skill)
+                                    @if($skill)
+                                        <li>
+                                            <input class="style-input-text" type="text" value="{{$skill}}"
+                                                   placeholder="Add skill / interest" disabled>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                @endif
+
+                @if($mode == 'me')
+                    @if($userData->soft_skills)
+                        @php
+                            $softSkills = explode("\n", $userData->soft_skills);
+                            array_map('trim', $softSkills);
+                            $softkillIteration = 0;
+                        @endphp
+                    @else
+                        @php
+                            $softSkills = [];
+                            $softSkillIteration = 0;
+                        @endphp
+                    @endif
+
+                    <div class="cards user__card">
+                        <h5 class="user__card_title">Soft Skills</h5>
+                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                        <ul class="list-type-circle">
+                            @if(!empty($softSkills))
+                                @foreach($softSkills as $skill)
+                                    @if($skill)
+                                        <li>
+                                            <input class="style-input-text" type="text" value="{{$skill}}"
+                                                   placeholder="Add skill / interest" disabled>
+                                        </li>
+                                        @php
+                                            $softSkillIteration++;
+                                        @endphp
+                                    @endif
+                                @endforeach
+                            @endif
+                            @if ($softSkillIteration < 3)
+                                @while($softSkillIteration < 3)
+                                    <li>
+                                        <input class="style-input-text" type="text" value=""
+                                               placeholder="Add soft skill" disabled>
+                                    </li>
+                                    @php
+                                        $softSkillIteration++;
+                                    @endphp
+                                @endwhile
+                            @endif
+                        </ul>
+                    </div>
+                @else
+                    @if($userData->soft_skills)
+                        @php
+                            $softSkills = explode("\n", $userData->soft_skills);
+                            array_map('trim', $softSkills);
+                        @endphp
+                    @else
+                        @php
+                            $softSkills = [];
+                        @endphp
+                    @endif
+                    @if(!empty($softSkills))
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">Soft Skills</h5>
+                            <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                            <ul class="list-type-circle">
+                                @foreach($softSkills as $skill)
+                                    @if($skill)
+                                        <li>
+                                            <input class="style-input-text" type="text" value="{{$skill}}"
+                                                   placeholder="Add soft skill" disabled>
+                                        </li>
+                                    @endif
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+                @endif
+                {{--
+
                 <div class="cards user__card">
                     <h5 class="user__card_title">Education:</h5>
                     <span class="edit-info"><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
@@ -153,7 +332,7 @@
                         <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
                     </div>
                 </div>
-                <button type="button" id="save" class="btn btn-violet btn-save">Save</button>
+                --}}
             </div>
         </main>
         @include('frontend.layouts.partials.footer_fixed')

@@ -155,6 +155,110 @@ class UploadsController extends Controller
         }
     }
 
+
+    /**
+     * Crop Image
+     * @param $imagesPath
+     * @param $filePath
+     * @param $newFileName
+     * @param $fileType
+     * @param $thumb
+     * @param $credit
+     * @return bool
+     */
+    function cropImage($imagesPath, $filePath, $newFileName, $fileType, $thumb, $credit) {
+        $result = false;
+        switch ($fileType) {
+            case "image/gif":
+            case "gif":
+                $oldImg = imagecreatefromgif($filePath);
+                break;
+            case "image/jpeg":
+            case "image/pjpeg":
+            case "jpeg":
+            case "jpg":
+                $oldImg = imagecreatefromjpeg($filePath);
+                break;
+            default:
+                $oldImg = imagecreatefrompng($filePath);
+        }
+
+        if ($oldImg) {
+            $newImg = imagecreatetruecolor($thumb["width"], $thumb["height"]);
+            imagecopyresampled($newImg, $oldImg, 0, 0, $thumb["crop"]->x, $thumb["crop"]->y, $thumb["width"], $thumb["height"], $thumb["crop"]->w, $thumb["crop"]->h);
+
+            // applying credit to the image
+            if ($credit && isset($thumb["font_path"]) && isset($thumb["font_size"]) && $thumb["font_path"] && $thumb["font_size"]) {
+                $newImg = $this->addCredit($newImg, $thumb, $credit);
+            }
+
+            $newFilePath = $imagesPath . $thumb["folder"] . "/" . $newFileName;
+            @unlink($newFilePath);
+
+            switch ($fileType) {
+                case "image/gif":
+                case "gif":
+                    $result = @imagegif($newImg, $newFilePath);
+                    break;
+                case "image/jpeg":
+                case "image/pjpeg":
+                case "jpeg":
+                case "jpg":
+                    $result = @imagejpeg($newImg, $newFilePath, 100);
+                    break;
+                default:
+                    $result = @imagepng($newImg, $newFilePath);
+            }
+            if (!is_writeable($newFilePath)) @chmod($newFilePath, 0777);
+            @imagedestroy($newImg);
+        }
+
+        return $result ? true : false;
+    }
+
+    /*
+     * $result = $this->storyImageModel->crop("videos", $record->image, $this->storyImageModel->newFileName(), $credit);
+    function crop($folder, $fileName, $newFileName = "", $credit = "") {
+    $error = false;
+    $status = "";
+
+    $folderModel = new FolderModel();
+    $imagesPath = $folderModel->getFolder();
+    $filePath = $imagesPath . "orig/" . $fileName;
+    $destination = $folderModel->getDestination();
+
+    if (!file_exists($filePath)) {
+      $this->aws->downloadFile("images/" . $folder . "/orig/", $fileName, $destination);
+    }
+
+    $fileExt = strtolower(pathinfo($filePath, PATHINFO_EXTENSION));
+    $newFileName = ($newFileName ? $newFileName : $this->newFileName()) . "." . $fileExt;
+
+    if (!empty($this->thumbs)) {
+      foreach ($this->thumbs as $thumb) {
+        $folderModel->prepareDirectory($thumb["folder"]);
+        if (!$this->cropImage($imagesPath, $filePath, $newFileName, $fileExt, $thumb, $credit)) {
+          $error = "error_crop_image";
+          break;
+        }
+        $tmpName = $imagesPath . $thumb["folder"] . "/" . $newFileName;
+        exec("convert " . $tmpName . " -sampling-factor 4:2:0 -strip -quality " . self::JPEG_QUALITY . " -interlace JPEG " . $tmpName);
+        $awsKey = "images/" . $folder . "/" . $thumb["folder"] . "/" . $newFileName;
+        $this->aws->uploadFile($awsKey, $tmpName);
+      }
+    }
+
+    if ($error) $status = $this->message($error);
+    else {
+      $awsKey = "images/" . $folder . "/orig/" . $newFileName;
+      $this->aws->uploadFile($awsKey, $filePath);
+    }
+
+    $folderModel->cleanUp();
+
+    return array("error" => $error, "status" => $status, "image" => $newFileName);
+  }*/
+
     /**
      * Upload fiels via DropZone.js
      *
