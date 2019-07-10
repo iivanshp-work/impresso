@@ -101,15 +101,15 @@ $(document).ready(function() {
 	});
 
 	// edit profile
-	$("#edit-profile").click(function() {
-		$(".user").addClass("edit-profile");
-		$(".header-title").text("Edit Profile");
-	});
+	//  $("#edit-profile").click(function() {
+	//  	$(".user").addClass("edit-profile");
+	//  	$(".header-title").text("Edit Profile");
+	//  });
 
-	$("#save").click(function() {
-		$(".user").removeClass("edit-profile");
-		$(".header-title").text("Profile");
-	});
+	//  $("#save").click(function() {
+	//  	$(".user").removeClass("edit-profile");
+	//  	$(".header-title").text("Profile");
+	//  });
 
 	// $(".edit-info").click(function() {
 	// 	$(this)

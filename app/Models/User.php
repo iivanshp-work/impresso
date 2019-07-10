@@ -68,4 +68,70 @@ class User extends Model
         return $query->where('type', '=', 3); // 3 - Users, 1 - Admins
     }
 
+    /**
+     * @return mixed
+     */
+    public function getCreditsCountAttribute()
+    {
+        return $this->calculateCreditsCount($this->id);
+    }
+
+    /**
+     * Calculate Credit Count
+     * @param $id
+     * @return mixed
+     */
+    public function calculateCreditsCount($id) {
+        return $id; // TODO????????
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getMeetupCountAttribute()
+    {
+        return $this->calculateMeetupCount($this->id);
+    }
+
+    /**
+     * Calculate Meetup Count
+     * @param $id
+     * @return mixed
+     */
+    public function calculateMeetupCount($id) {
+        return $id; // TODO????????
+    }
+
+    /**
+     * @return mixed
+     */
+    public function educations()
+    {
+        return $this->hasMany('App\Models\User_Education')->notDeleted();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function educations_verified()
+    {
+        return $this->hasMany('App\Models\User_Education')->notDeleted()->verified();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function certifications()
+    {
+        return $this->hasMany('App\Models\User_certification')->notDeleted();
+    }
+
+    /**
+     * @return mixed
+     */
+    public function certifications_verified()
+    {
+        return $this->hasMany('App\Models\User_certification')->notDeleted()->verified();
+    }
+
 }

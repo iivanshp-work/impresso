@@ -42,7 +42,7 @@
                     Accepted IDs: national ID, passport and driver’s license.
                 </p>
                 <div class="validation__group-btn">
-                    <input type="file" style="display: none;" data-validation-send-file-hidden="" data-image-id="photo_id">
+                    <input type="file" data-validation-send-file-hidden="" data-image-id="photo_id">
                     <button type="button" class="btn btn-violet" data-validation-send-file="">
                         Upload ID photo
                     </button>
@@ -67,7 +67,7 @@
                     <button type="button" class="btn btn-violet" data-validation-step="step4">
                         Upload ID photo
                     </button>
-                    <input type="file" style="display: none;" data-validation-send-file-hidden="" data-image-id="photo_id">
+                    <input type="file" data-validation-send-file-hidden="" data-image-id="photo_id">
                     <button type="button" class="btn btn-border" data-validation-send-file="">
                         Retake
                     </button>
@@ -89,13 +89,13 @@
                     This will not be used as your profile photo and nobody else will be able to see it.
                 </p>
                 <div class="validation__group-btn">
-                    <input type="file" style="display: none;" data-validation-send-file-hidden="" data-image-id="photo_selfie">
+                    <input type="file" data-validation-send-file-hidden="" data-image-id="photo_selfie">
                     <button type="button" class="btn btn-violet" data-validation-send-file="">
                         Take a photo
                     </button>
                 </div>
             </div>
-            <div class="hide" data-validation-step="step5" style="display: none;"></div>
+            <div class="hide" data-validation-step="step5"></div>
             <div id="step5" class="validation__step">
                 <header class="header">
                     <h4>Profile Validation</h4>
@@ -115,7 +115,7 @@
                     <button type="button" class="btn btn-violet" data-validation-check="">
                         Upload photo
                     </button>
-                    <input type="file" style="display: none;" data-validation-send-file-hidden="" data-image-id="photo_selfie">
+                    <input type="file" data-validation-send-file-hidden="" data-image-id="photo_selfie">
                     <button type="button" class="btn btn-border" data-validation-send-file="">
                         Retake
                     </button>
@@ -126,7 +126,7 @@
 @endsection
 
 @push('popups')
-    <button style="display:none;" class="hide open-pop-up" id="clickThankYou" data-target="#thankYou">success validation</button>
+    <button class="hide open-pop-up" id="clickThankYou" data-target="#thankYou">success validation</button>
     <div class="modal-window" id="thankYou">
         <div class="modal-window__content">
             <div class="modal-window__body validation-modal text-center">

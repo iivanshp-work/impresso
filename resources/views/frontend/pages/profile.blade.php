@@ -38,7 +38,7 @@
                         </span>
                     @endif
                 </div>
-                <h4 class="user__name">@if($userData->name){{$userData->name}}@else{{'None'}}@endif</h4>
+                <h4 class="user__name">@if($userData->name){{$userData->name}}@else @if ($mode == 'me'){{'Name'}}@else{{'None'}}@endif @endif</h4>
                 @if ($mode == 'me')
                     <div class="job-title">
                         <input readonly="" class="style-input-text style-input-text_right" type="text" value="@if($userData->job_title){{$userData->job_title}}@endif" placeholder="Job title ">
@@ -62,7 +62,6 @@
                     <p>
                         <img src="{{asset('img/icons/maps-and-flags.png')}}" alt="" />
                         @if($userData->location_title){{$userData->location_title}}@else{{'Phone location'}}@endif
-
                     </p>
                     <p>
                         <img src="{{asset('img/icons/multiple-users-silhouette.png')}}" alt="" />
@@ -289,50 +288,112 @@
                         </div>
                     @endif
                 @endif
-                {{--
 
-                <div class="cards user__card">
-                    <h5 class="user__card_title">Education:</h5>
-                    <span class="edit-info"><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
-                    <div class="user__card_info">
-                        <span class="user__card_icon">
-                            <img src="{{asset('img/icons/graduate-cap.svg')}}" alt="" />
-                        </span>
-                        <div class="user__card_text">
-                            <input class="style-input-text style-input-text_15" type="text"
-                                   value="University of Copenhagen" placeholder="School Name" disabled>
-                            <input class="style-input-text style-input-text_12" type="text"
-                                   value="Applied Modern Languages" placeholder="Speciality / Domain" disabled>
-                        </div>
-                        <div class="user__card_group-btn edit-group-btn">
-                            <button class="btn btn-border">Remove</button>
-                            <button class="btn btn-violet">
-                                Request Validation
-                            </button>
-                        </div>
+                @if($mode == 'me')
+                    <div class="cards user__card">
+                        <h5 class="user__card_title">Education:</h5>
+                        <span class="edit-info" style="display: block;"><a href="{{url('/profile/edit#educations')}}"><img src="{{asset('img/icons/plus.svg')}}" alt="Edit" /></a></span>
+                            @if($userData->educations->count())
+                                @foreach($userData->educations as $education)
+                                    <div class="user__card_info">
+                                        <span class="user__card_icon">
+                                            <img src="{{asset('img/icons/graduate-cap.svg')}}" alt="" />
+                                        </span>
+                                        <div class="user__card_text">
+                                            <input class="style-input-text style-input-text_15" type="text"
+                                                   value="{{$education->title}}" placeholder="School Name" disabled>
+                                            <input class="style-input-text style-input-text_12" type="text"
+                                                   value="{{$education->speciality}}" placeholder="Speciality / Domain" disabled>
+                                        </div>
+                                        @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                            <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            @else
+                                <div class="user__card_info">
+                                    <span class="user__card_icon">
+                                        <img src="{{asset('img/icons/graduate-cap.svg')}}" alt="" />
+                                    </span>
+                                    <div class="user__card_text">
+                                        <input class="style-input-text style-input-text_15" type="text"
+                                               value="" placeholder="Add School Name" disabled>
+                                        <input class="style-input-text style-input-text_12" type="text"
+                                               value="" placeholder="Add Speciality / Domain" disabled>
+                                    </div>
+                                </div>
+                            @endif
                     </div>
-                </div>
-                <div class="cards user__card">
-                    <h5 class="user__card_title">Skill Certifications:</h5>
-                    <span class="edit-info"><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
-                    <div class="user__card_info">
-                        <span class="user__card_icon">
-                            <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
-                        </span>
-                        <div class="user__card_text">
-                            <input class="style-input-text style-input-text_15" type="text"
-                                   value="Blockchain Council Certificate" placeholder="Certificate Name" disabled>
-                        </div>
-                        <div class="user__card_group-btn edit-group-btn">
-                            <button class="btn btn-border">Remove</button>
-                            <button class="btn btn-violet">
-                                Request Validation
-                            </button>
-                        </div>
-                        <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                    <div class="cards user__card">
+                        <h5 class="user__card_title">Skill Certifications:</h5>
+
+                        <span class="edit-info" style="display: block;"><a href="{{url('/profile/edit#certifications')}}"><img src="{{asset('img/icons/plus.svg')}}" alt="Edit" /></a></span>
+                        @if($userData->certifications->count())
+                            @foreach($userData->certifications as $certificate)
+                                <div class="user__card_info">
+                                <span class="user__card_icon">
+                                    <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
+                                </span>
+                                    <div class="user__card_text">
+                                        <input class="style-input-text style-input-text_15" type="text"
+                                               value="{{$certificate->title}}" placeholder="Certificate Name" disabled>
+                                    </div>
+                                </div>
+                            @endforeach
+                        @else
+                            <div class="user__card_info">
+                                <span class="user__card_icon">
+                                    <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
+                                </span>
+                                <div class="user__card_text">
+                                    <input class="style-input-text style-input-text_15" type="text"
+                                           value="" placeholder="Add Certificate Name" disabled>
+                                </div>
+                            </div>
+                        @endif
                     </div>
-                </div>
-                --}}
+                @else
+                    @if($userData->educations->count())
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">Education:</h5>
+                            @foreach($userData->educations as $education)
+                                <div class="user__card_info">
+                                    <span class="user__card_icon">
+                                        <img src="{{asset('img/icons/graduate-cap.svg')}}" alt=""/>
+                                    </span>
+                                    <div class="user__card_text">
+                                        <input class="style-input-text style-input-text_15" type="text"
+                                               value="{{$education->title}}" placeholder="School Name" disabled>
+                                        <input class="style-input-text style-input-text_12" type="text"
+                                               value="{{$education->speciality}}" placeholder="Speciality / Domain" disabled>
+                                    </div>
+                                    @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                        <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                    @if($userData->certifications->count())
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">Skill Certifications:</h5>
+                            @foreach($userData->certifications as $certificate)
+                                <div class="user__card_info">
+                                    <span class="user__card_icon">
+                                        <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt=""/>
+                                    </span>
+                                    <div class="user__card_text">
+                                        <input class="style-input-text style-input-text_15" type="text"
+                                               value="{{$certificate->title}}" placeholder="Certificate Name" disabled>
+                                    </div>
+                                    @if($certificate->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                        <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                @endif
             </div>
         </main>
         @include('frontend.layouts.partials.footer_fixed')

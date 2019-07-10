@@ -50,10 +50,18 @@
                         <div class="border-violet">{{$professional->impress}}</div>
                     </li>
                 @endif
-                @if(0)
+                @if($professional->educations_verified->count() || $professional->certifications_verified->count())
                     <li>
-                        <p>Bachelor of Science (Physiotherapy) <span><img src="img/icons/checked.svg" alt="checked"></span></p>
-                        <p>University of Copenhagen <span><img src="img/icons/checked.svg" alt="checked"></span></p>
+                        @if($professional->educations_verified->count())
+                            @foreach($professional->educations_verified as $education)
+                                @if($education->title)<p>{{$education->title}}@if($education->speciality)({{$education->speciality}})@endif<span><img src="{{asset('img/icons/checked.svg')}}" alt="checked"></span></p>@endif
+                            @endforeach
+                        @endif
+                            @if($professional->certifications_verified->count())
+                                @foreach($professional->certifications_verified as $certificate)
+                                    @if($certificate->title)<p>{{$certificate->title}} <span><img src="{{asset('img/icons/checked.svg')}}" alt="checked"></span></p>@endif
+                                @endforeach
+                            @endif
                     </li>
                 @endif
             </ul>

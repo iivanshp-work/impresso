@@ -9,7 +9,7 @@
         </div>
     </div>
 </div>
-<button style="display:none;" class="btn btn-violet open-pop-up hide customValidateSuccess" data-target="#customValidateSuccess">Custom Validate success</button>
+<button class="btn btn-violet open-pop-up hide customValidateSuccess" data-target="#customValidateSuccess">Custom Validate success</button>
 
 <div class="modal-window" id="customValidateError">
     <div class="modal-window__content">
@@ -22,5 +22,5 @@
         </div>
     </div>
 </div>
-<button style="display:none;" class="btn btn-violet open-pop-up hide customValidateError" data-target="#customValidateError">Custom Validate error</button>
+<button class="btn btn-violet open-pop-up hide customValidateError" data-target="#customValidateError">Custom Validate error</button>
 @stack('popups')

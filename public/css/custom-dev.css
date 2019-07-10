@@ -1,0 +1,13 @@
+.hide{
+    display: none;
+}
+[data-validation-send-file-hidden]{
+    display: none;
+}
+.style-input-text.user__name{
+    font-weight: 500 !important;
+    font-size: 17px !important;
+    line-height: 22px !important;
+    margin-bottom: 2px !important;
+    text-align: center;
+}

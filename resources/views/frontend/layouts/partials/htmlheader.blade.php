@@ -10,8 +10,8 @@
     <!-- fonts google -->
     <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap" rel="stylesheet" />
     <!-- main style -->
-    <link rel="stylesheet" type="text/css" href="css/style.css" />
     <link href="{{ asset('css/style.css?v=' . getenv('ASSETS_VERSION')) }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('css/custom-dev.css?v=' . getenv('ASSETS_VERSION')) }}" rel="stylesheet" type="text/css">
     <script>
         var base_url = '{{url('/')}}';
     </script>

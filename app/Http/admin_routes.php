@@ -60,4 +60,16 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Jobs ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/jobs', 'LA\JobsController');
 	Route::get(config('laraadmin.adminRoute') . '/job_dt_ajax', 'LA\JobsController@dtajax');
+
+	/* ================== Validation_statuses ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/validation_statuses', 'LA\Validation_statusesController');
+	Route::get(config('laraadmin.adminRoute') . '/validation_status_dt_ajax', 'LA\Validation_statusesController@dtajax');
+
+	/* ================== User_Educations ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/user_educations', 'LA\User_EducationsController');
+	Route::get(config('laraadmin.adminRoute') . '/user_education_dt_ajax', 'LA\User_EducationsController@dtajax');
+
+	/* ================== User_certifications ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/user_certifications', 'LA\User_certificationsController');
+	Route::get(config('laraadmin.adminRoute') . '/user_certification_dt_ajax', 'LA\User_certificationsController@dtajax');
 });
