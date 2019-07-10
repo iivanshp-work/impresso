@@ -15,20 +15,21 @@
             </span>
         </header>
         <main>
-            <form id="editProfileForm" method="post">
+            <form id="edit_profile_form" action="{{url('/profile/edit')}}" method="post" data-edit-profile-form="">
                 <div class="user edit-profile">
                     <div class="user__header">
                         <div class="user__avatar">
                             <input type="hidden" name="photo" data-photo-hidden value="{{$userData->photo}}">
+                            <input type="file" class="hide" data-edit-profile-send-photo-hidden="" data-image-id="photo">
                             @if($userData->photo)
-                                <img src="{{url('/files/' . $userData->photo . '?s=200')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
+                                <img data-edit-profile-src="" src="{{url('/files/' . $userData->photo . '?s=200')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
                             @else
-                                <img src="{{asset('img/icons/user-icon.svg')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
+                                <img data-edit-profile-src="" src="{{asset('img/icons/user-icon.svg')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
                             @endif
-                            <a href="{{url('profile/edit')}}" download class="edit-photo">edit photo</a>
+                            <a href="#" data-edit-profile-send-photo="" class="edit-photo">edit photo</a>
                         </div>
                         <span class="edit-icon" id="edit-profile">
-                            <a href="{{url('profile/edit')}}" class="edit-photo"><img src="{{asset('img/icons/edit.svg')}}" alt="" /></a>
+                            <a href="#" data-edit-profile-send-photo="" class="edit-photo"><img src="{{asset('img/icons/edit.svg')}}" alt="" /></a>
                         </span>
                         @if($userData->is_verified)
                             <span class="user__checked">
@@ -36,7 +37,7 @@
                             </span>
                         @endif
                     </div>
-                    <input class="user__name style-input-text" autocomplete="off" type="text" name="job_title_top" value="@if($userData->name){{$userData->name}}@endif" placeholder="Add name">
+                    <input class="user__name style-input-text" autocomplete="off" type="text" name="name" value="@if($userData->name){{$userData->name}}@endif" placeholder="Add name">
                     <div class="job-title">
                         <input class="style-input-text style-input-text_right" autocomplete="off" type="text" name="job_title_top" value="@if($userData->job_title){{$userData->job_title}}@endif" placeholder="Add job title ">
                         <span>at</span>
@@ -135,7 +136,7 @@
                         @php
                             $softSkills = explode("\n", $userData->soft_skills);
                             array_map('trim', $softSkills);
-                            $softkillIteration = 0;
+                            $softSkillIteration = 0;
                         @endphp
                     @else
                         @php

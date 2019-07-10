@@ -403,5 +403,113 @@ $document.ready(function(){
     }
     //profile end
 
+    //edit profile start
+    $document.on('submit', '[data-edit-profile-form]', function(e){
+        e.preventDefault();
+        let form = $(this);
+        //if (form.data("busy")) return;
+        form.data("busy", true);
+        loadingStart();
+        $.ajax({
+            url: form.attr("action"),
+            type: 'post',
+            dataType: 'json',
+            data: form.serialize(),
+            success: function(response){
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                }else{
+                    showSuccess(response.message);
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                form.data("busy", false);
+            }
+        });
+    });
+
+    $document.on('change', '[name="company_title_top"]', function(e){
+       let val = $(this).val();
+       $(this).closest("form").find('[name="company_title"]').val(val);
+    })
+    $document.on('change', '[name="company_title"]', function(e){
+        let val = $(this).val();
+        $(this).closest("form").find('[name="company_title_top"]').val(val);
+    });
+    $document.on('change', '[name="job_title_top"]', function(e){
+        let val = $(this).val();
+        $(this).closest("form").find('[name="job_title"]').val(val);
+    })
+    $document.on('change', '[name="job_title"]', function(e){
+        let val = $(this).val();
+        $(this).closest("form").find('[name="job_title_top"]').val(val);
+    });
+
+
+    // upload button click
+    $document.on('change click', '[data-edit-profile-send-photo]', function(e){
+        e.preventDefault();
+        let $this = $(this), itemForm = $this.closest('[data-edit-profile-form]'), btn = itemForm.find('[data-edit-profile-send-photo-hidden]');
+        btn.trigger('click');
+    });
+
+    // upload file so server
+    $document.on('change', '[data-edit-profile-send-photo-hidden]', function(e){
+        let $this = $(this), item = $this.parent(), btn = item.find('[data-validation-send-file]'),
+            id = $this.data('image-id'), formData = new FormData(), targetLink = base_url + '/profile/edit';
+
+        //if ($this.data("busy")) return;
+        $this.data("busy", true);
+        loadingStart();
+
+        btn.prop('disabled', true);
+        $this.prop('disabled', true);
+        $this.after('<span class="spinner base-indent-left"></span>');
+        formData.append('action', 'upload_photo');
+        formData.append('id', id);
+        formData.append('file', $this.get(0).files[0]);
+
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            data: formData,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function(response){
+                btn.prop('disabled', false);
+                $this.prop('disabled', false);
+                item.find('.spinner').remove();
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                }else{
+                    if(response.image && response.image.url){
+                        if (response.image.crop_url) {
+                            response.image.url = response.image.crop_url;
+                        }
+                        selector = '[data-edit-profile-src]';
+                        $(selector).attr('src', response.image.url);
+                        $('[data-photo-hidden]').val(response.image.id);
+                    }else{
+                        showError('An error occurred. Please try again later.');
+                    }
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                $this.data("busy", false);
+            }
+        });
+    });
+
+    //edit profile end
+
 
 });

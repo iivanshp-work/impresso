@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\User;
+use App\Models\User as UserModel;
 use App\Models\Mails;
 use Exception;
 use Illuminate\Http\Request;
@@ -68,14 +69,29 @@ class ProfileSettingsController extends Controller
             'message' => '',
             'redirect' => ''
         ];
+        $action = $request->has('action') ? trim($request->input('action')) : '';
+        if ($action == 'upload_photo') {
+            $id = $request->has('id') ? trim($request->input('id')) : '';
+            $uploadController = new UploadsController();
+            $responseImage = $uploadController->upload_files(true, null, ["width" => 200, "height" => 200]);
+            if ($responseImage["status"] == "success") {
+                $responseData['image'] = $responseImage["upload"];
+                $responseData['id'] = $responseImage["upload"]->id;;
+            } else {
+                $responseData['has_error'] = true;
+                $responseData['message'] = 'An error occurred while submited photo. Please try again later.';
+            }
+            return $responseData;
+        }
 
-        /*$rules = array(
-            'email' => 'required|email', // make sure the email is an actual email
-            'password' => 'required|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
+        $rules = array(
+            'name' => 'required|string', // make sure the name is an actual string
+            'company_title' => 'required|string', // company_title can only be alphanumeric
+            'job_title' => 'required|string', // company_title can only be alphanumeric,
+            'impress' => 'required|string', // impress can only be alphanumeric
         );
 
         $validator = Validator::make($request->all(), $rules);
-
         if ($validator->fails()) {
             $responseData['has_error'] = true;
             $messages = $validator->errors();
@@ -83,20 +99,31 @@ class ProfileSettingsController extends Controller
                 $responseData['message'] .= $message . '<br>';
             }
         } else {
-            $userdata = array(
-                'email' => $request->input('email'),
-                'password' => $request->input('password')
-            );
-            if (Auth::attempt($userdata)) {
-                $user = Auth::user();
-                $redirectURL = $user && $user->is_verified ? getenv('BASE_LOGEDIN_PAGE') : getenv('VALIDATION_PAGE');
-                $responseData['redirect'] = url($redirectURL);
-                $responseData['user'] = Auth::user();
-            } else {
+            $topSkills = $request->has('top_skills') ? implode("\n", $request->input('top_skills')) : '';
+            $softSkills = $request->has('soft_skills') ? implode("\n", $request->input('soft_skills')) : '';
+            $id = Auth::id();
+            $user = UserModel::find($id);
+            $user->photo = $request->has('photo') ? intval($request->input('photo')) : 0;
+            $user->name = $request->has('name') ? trim($request->input('name')) : '';
+            $user->company_title = $request->has('company_title') ? trim($request->input('company_title')) : '';
+            $user->job_title = $request->has('job_title') ? trim($request->input('job_title')) : '';
+            $user->university_title = $request->has('university_title') ? trim($request->input('university_title')) : '';
+            $user->certificate_title = $request->has('certificate_title') ? trim($request->input('certificate_title')) : '';
+            $user->impress = $request->has('impress') ? trim($request->input('impress')) : '';
+            $user->top_skills = $topSkills;
+            $user->soft_skills = $softSkills;
+            try {
+                if ($user->save()) {
+                    $responseData['message'] = 'Success';
+                } else {
+                    $responseData['has_error'] = true;
+                    $responseData['message'] .= 'An error occurred while saving data.' . '<br>';
+                }
+            }catch(\Exception $e){
                 $responseData['has_error'] = true;
-                $responseData['message'] .= 'Login failed wrong user credentials.';
+                $responseData['message'] .= $e->getMessage() . '<br>';
             }
-        }*/
+        }
         return response()->json($responseData);
     }
 }

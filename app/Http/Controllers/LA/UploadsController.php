@@ -179,10 +179,93 @@ class UploadsController extends Controller
             default:
                 $oldImg = imagecreatefrompng($filePath);
         }
+        list($width, $height) = getimagesize($filePath);
+        if($width == $height) {
+            $x = $y = 0;
+            $smallestSideWidth = $width;
+            $smallestSideHeight = $height;
+
+        }else if ($width > $height) {
+            $y = 0;
+            $x = ($width - $height) / 2;
+            $smallestSideHeight = $height;
+            $smallestSideWidth = $height;
+
+        } else {
+            $x = 0;
+            $y = ($height - $width) / 2;
+            $smallestSideHeight = $width;
+            $smallestSideWidth = $width;
+        }
+        $ratio = $thumb["width"] / $thumb["height"];
+        if ($oldImg) {
+            $newImg = imagecreatetruecolor($thumb["width"], $thumb["height"]);
+            imagecopyresampled($newImg, $oldImg,
+                0, 0,
+                $x, $y,
+                $thumb["width"], $thumb["height"],
+                $smallestSideWidth*$ratio, $smallestSideHeight
+            );
+
+            /*
+             * if($width == $height) {
+
+            $thumb_width = $width;
+            $thumb_height = $height;
+
+        }else if ($width > $height) {
+            $y = 0;
+            $x = ($width - $height) / 2;
+            $thumb_width = $height;
+            $thumb_height = $height;
+
+        } else {
+            $x = 0;
+            $y = ($height - $width) / 2;
+            $thumb_width = $width;
+            $thumb_height = $width;
+        }
+
+        $original_aspect = $width / $height;
+        $thumb_aspect = $thumb_width / $thumb_height;
+
+        if ( $original_aspect >= $thumb_aspect ) {
+
+            // If image is wider than thumbnail (in aspect ratio sense)
+            $smallestSideHeight = $thumb_height;
+            $smallestSideWidth = $width / ($height / $thumb_height);
+
+        }
+        else {
+            // If the thumbnail is wider than the image
+            $smallestSideWidth = $thumb_width;
+            $smallestSideHeight = $height / ($width / $thumb_width);
+        }
+
 
         if ($oldImg) {
             $newImg = imagecreatetruecolor($thumb["width"], $thumb["height"]);
-            imagecopyresampled($newImg, $oldImg, 0, 0, $thumb["crop"]->x, $thumb["crop"]->y, $thumb["width"], $thumb["height"], $thumb["crop"]->w, $thumb["crop"]->h);
+            imagecopyresampled($newImg, $oldImg,
+                0, 0,
+                $x, $y,
+                $thumb["width"], $thumb["height"],
+                $smallestSideWidth, $smallestSideHeight
+            );
+
+            test([$width, $height,
+                $thumb_width, $thumb_height,
+                $original_aspect, $thumb_aspect,
+                $x, $y,
+                $thumb["width"], $thumb["height"],
+                $smallestSideWidth, $smallestSideHeight]);
+
+            /*imagecopyresampled($newImg, $oldImg,
+                0 - ($smallestSideWidth - $thumb_width) / 2, // Center the image horizontally
+                0 - ($smallestSideHeight - $thumb_height) / 2, // Center the image vertically
+                0, 0,
+                $smallestSideWidth, $smallestSideHeight,
+                $width, $height
+            );*/
 
             $newFilePath = $imagesPath . "/" . $newFileName;
             @unlink($newFilePath);
@@ -207,7 +290,7 @@ class UploadsController extends Controller
 
         return $result ? true : false;
     }
-
+    /*
     function resizeImage($imagesPath, $filePath, $newFileName, $fileType, $thumb) {
         $result = false;
         switch ($fileType) {
@@ -245,7 +328,10 @@ class UploadsController extends Controller
             imagecopyresampled($newImg, $oldImg,
                 ($newWidth == $thumb["width"] ? 0 : intval(($thumb["width"] - $newWidth) / 2)),
                 ($newHeight == $thumb["height"] ? 0 : intval(($thumb["height"] - $newHeight) / 2)),
-                0, 0, $newWidth, $newHeight, $oldWidth, $oldHeight);
+                0, 0,
+                $newWidth, $newHeight,
+                $oldWidth, $oldHeight
+            );
 
             $newFilePath = $imagesPath . "/" . $newFileName;
             @unlink($newFilePath);
@@ -299,7 +385,7 @@ class UploadsController extends Controller
                 ];
             default: return [0, $imageSize];
         }
-    }
+    }*/
 
     /*
      *
@@ -357,7 +443,7 @@ class UploadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function upload_files($returnToCode = false, $file = null) {
+    public function upload_files($returnToCode = false, $file = null, $cropParams = []) {
 
         if (1) {
             $input = Input::all();
@@ -420,23 +506,21 @@ class UploadsController extends Controller
 
                     $imagesPath = storage_path("thumbnails/");
                     //crop start
-                    $size = $size2 = 200;
-                    $path = $upload->path;
-                    $newFileName = basename($path) . "-" . $size . "x" . $size2;
-                    $fileType = File::mimeType($path);
-                    $thumb = [
-                        'width' => 200,
-                        'height' => 200,
-                        'crop' => (object)[
-                            'x' => 0,
-                            'y' => 0,
-                            'w' => 200,
-                            'h' => 200
-                        ]
-                    ];
-                    //$this->cropImage($imagesPath, $path, $newFileName, $fileType, $thumb);
-                    $this->resizeImage($imagesPath, $path, $newFileName, $fileType, $thumb);
-
+                    if (!empty($cropParams) && isset($cropParams['width']) && $cropParams['height']){
+                        $size1 = $cropParams['width'];
+                        $size2 = $cropParams['height'];
+                        $path = $upload->path;
+                        $newFileName = basename($path) . "-" . $size1 . "x" . $size2;
+                        $fileType = File::mimeType($path);
+                        $thumb = [
+                            'width' => $size1,
+                            'height' => $size2
+                        ];
+                        $cropped = $this->cropImage($imagesPath, $path, $newFileName, $fileType, $thumb);
+                        if ($cropped) {
+                            $upload->crop_url = url('files/' . $upload->hash . '/' . $upload->name . '?s=' . $size1 . '-' . $size2);
+                        }
+                    }
                     //crop end
                     $upload->url = url('files/' . $upload->hash . '/' . $upload->name);
                     if ($returnToCode) {
