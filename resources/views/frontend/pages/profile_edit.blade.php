@@ -176,37 +176,67 @@
                         </ul>
                     </div>
 
-                    <div class="cards user__card" id="educations">
+                    <div class="cards user__card" id="educations" data-education-wrapper="">
                         <h5 class="user__card_title">Education:</h5>
-                        <span class="edit-info"><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
-                        <div class="user__card_info">
-                            <span class="user__card_icon">
-                                <img src="{{asset('img/icons/graduate-cap.svg')}}" alt="" />
-                            </span>
-                            <div class="user__card_text">
-                                <input class="style-input-text style-input-text_15" type="text"
-                                       value="University of Copenhagen" placeholder="School Name">
-                                <input class="style-input-text style-input-text_12" type="text"
-                                       value="Applied Modern Languages" placeholder="Speciality / Domain">
-                            </div>
-                            <div class="user__card_group-btn edit-group-btn">
-                                <button class="btn btn-border">Remove</button>
-                                <button class="btn btn-violet">
-                                    Request Validation
-                                </button>
+                        <span class="edit-info" data-add-new-education=""><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
+                        <div data-education-template="" class="hide">
+                            <div data-education-item="" class="user__card_info">
+                                <span class="user__card_icon">
+                                    <img src="{{asset('img/icons/graduate-cap.svg')}}" alt="" />
+                                </span>
+                                <div class="user__card_text">
+                                    <input data-id-field="" type="hidden" name="education[%KEY%][id]" value="" >
+                                    <input data-title-field="" class="style-input-text style-input-text_15" type="text"
+                                           name="education[%KEY%][title]" value="" placeholder="School Name">
+                                    <input data-speciality-field="" class="style-input-text style-input-text_12" type="text"
+                                           name="education[%KEY%][speciality]" value="" placeholder="Speciality / Domain">
+                                </div>
+                                <div class="user__card_group-btn edit-group-btn">
+                                    <button type="button" data-remove-item="" data-id="" class="btn btn-border">Remove</button>
+                                    <button type="button" data-request-validation-item="" data-id="" class="btn btn-violet">
+                                        Request Validation
+                                    </button>
+                                </div>
                             </div>
                         </div>
+                        @if($userData->educations->count())
+                            @foreach($userData->educations as $education)
+                                <div class="user__card_info" data-education-item="">
+                                        <span class="user__card_icon">
+                                            <img src="{{asset('img/icons/graduate-cap.svg')}}" alt="" />
+                                        </span>
+                                    <div class="user__card_text">
+                                        <input data-id-field="" type="hidden" name="education[{{$education->id}}][id]" value="{{$education->id}}">
+                                        <input data-title-field="" class="style-input-text style-input-text_15" type="text"
+                                               name="education[{{$education->id}}][title]" value="{{$education->title}}" placeholder="School Name">
+                                        <input data-speciality-field="" class="style-input-text style-input-text_12" type="text"
+                                               name="education[{{$education->id}}][speciality]" value="{{$education->speciality}}" placeholder="Speciality / Domain">
+                                    </div>
+                                    <div class="user__card_group-btn edit-group-btn">
+                                        <button type="button" data-remove-item="" data-id="{{$education->id}}" class="btn btn-border">Remove</button>
+                                        <button type="button" data-request-validation-item="" data-id="{{$education->id}}" class="btn btn-violet">
+                                            Request Validation
+                                        </button>
+                                    </div>
+                                    @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                        <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                    @endif
+                                </div>
+                            @endforeach
+                        @endif
+
                     </div>
                     <div class="cards user__card" id="certifications">
                         <h5 class="user__card_title">Skill Certifications:</h5>
-                        <span class="edit-info"><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
-                        <div class="user__card_info">
+                        <span class="edit-info" data-add-new-certificate=""><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
+
+                        <div data-certificate-template="" class="user__card_info hide">
                             <span class="user__card_icon">
                                 <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
                             </span>
                             <div class="user__card_text">
                                 <input class="style-input-text style-input-text_15" type="text"
-                                       value="Blockchain Council Certificate" placeholder="Certificate Name">
+                                       name="cartificate[%KEY%][title]" value="" placeholder="Certificate Name">
                             </div>
                             <div class="user__card_group-btn edit-group-btn">
                                 <button class="btn btn-border">Remove</button>
@@ -214,7 +244,7 @@
                                     Request Validation
                                 </button>
                             </div>
-                            <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                            {{--<span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>--}}
                         </div>
                     </div>
 

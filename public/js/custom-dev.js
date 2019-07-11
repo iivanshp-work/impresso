@@ -18,6 +18,26 @@ function showSuccess(message, title){
     $('.customValidateError').click().trigger('click');
 }
 
+//default success popup
+function showConfirm(message, title, callback, callbackBtnText){
+    title = title || 'Confirm!';
+    message = message || '';
+    callbackBtnText = callbackBtnText || 'Continue';
+    $('#customValidateConfirm .custom-title').text(title);
+    $('#customValidateConfirm .custom-message').html(message);
+    $('#customValidateConfirm .custom-button').text(callbackBtnText);
+    $('.customValidateConfirm').click().trigger('click');
+    $('#customValidateConfirm [data-callback-button]').on('click', function(e){
+        e.preventDefault();
+        if (callback && typeof (callback) === "function"){
+            callback();
+        } else {
+            $('.customValidateConfirm .close-modal').trigger('click');
+        }
+    })
+
+}
+
 function redirect(location){
     location = location || base_url;
     window.location = location;
@@ -171,6 +191,8 @@ $document.ready(function(){
             complete: function(){
                 loadingEnd();
                 $this.data("busy", false);
+                btn.prop('disabled', false);
+                $this.prop('disabled', false);
             }
         });
     });
@@ -507,6 +529,37 @@ $document.ready(function(){
                 $this.data("busy", false);
             }
         });
+    });
+
+    $document.on('click change', '[data-education-wrapper] [data-add-new-education]', function(e){
+       e.preventDefault();
+       let template = $('[data-education-wrapper] [data-education-template]').html();
+       template = $(template.replace(/%KEY%/g, Date.now()));
+        let wrapper = $('[data-education-wrapper]');
+       wrapper.append(template);
+    });
+
+    $document.on('click change', '[data-education-wrapper] [data-education-item] [data-remove-item]', function(e){
+        e.preventDefault();
+        let $this = $(this);
+        let id = $this.data('id');
+        let item = $this.closest('[data-education-item]');
+        showConfirm('Are you sure?', 'Remove Item', function(){
+            item.remove();
+        });
+    });
+
+    $document.on('click change', '[data-education-wrapper] [data-education-item] [data-request-validation-item]', function(e){
+        e.preventDefault();
+        let $this = $(this);
+        let id = $this.data('id');
+        let item = $this.closest('[data-education-item]');
+        let data = {
+            id: $('[data-id-field]', item).val(),
+            title: $('[data-title-field]', item).val(),
+            speciality: $('[data-speciality-field]', item).val(),
+        };
+        console.log(data);
     });
 
     //edit profile end
