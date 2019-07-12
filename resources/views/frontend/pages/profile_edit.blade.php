@@ -226,26 +226,50 @@
                         @endif
 
                     </div>
-                    <div class="cards user__card" id="certifications">
+                    <div class="cards user__card" id="certifications" data-certificate-wrapper="">
                         <h5 class="user__card_title">Skill Certifications:</h5>
                         <span class="edit-info" data-add-new-certificate=""><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
-
-                        <div data-certificate-template="" class="user__card_info hide">
-                            <span class="user__card_icon">
-                                <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
-                            </span>
-                            <div class="user__card_text">
-                                <input class="style-input-text style-input-text_15" type="text"
-                                       name="cartificate[%KEY%][title]" value="" placeholder="Certificate Name">
+                        <div data-certificate-template="" class="hide">
+                            <div data-certificate-item="" class="user__card_info">
+                                <span class="user__card_icon">
+                                    <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
+                                </span>
+                                <div class="user__card_text">
+                                    <input data-id-field="" type="hidden" name="certificate[%KEY%][id]" value="" >
+                                    <input data-title-field="" class="style-input-text style-input-text_15" type="text"
+                                           name="cartificate[%KEY%][title]" value="" placeholder="Certificate Name">
+                                </div>
+                                <div class="user__card_group-btn edit-group-btn">
+                                    <button type="button" data-remove-item="" data-id="" class="btn btn-border">Remove</button>
+                                    <button type="button" data-request-validation-item="" data-id="" class="btn btn-violet">
+                                        Request Validation
+                                    </button>
+                                </div>
                             </div>
-                            <div class="user__card_group-btn edit-group-btn">
-                                <button class="btn btn-border">Remove</button>
-                                <button class="btn btn-violet">
-                                    Request Validation
-                                </button>
-                            </div>
-                            {{--<span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>--}}
                         </div>
+                        @if($userData->certifications->count())
+                            @foreach($userData->certifications as $certificate)
+                                <div class="user__card_info" data-certificate-item="">
+                                        <span class="user__card_icon">
+                                            <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
+                                        </span>
+                                    <div class="user__card_text">
+                                        <input data-id-field="" type="hidden" name="certificate[{{$certificate->id}}][id]" value="{{$certificate->id}}">
+                                        <input data-title-field="" class="style-input-text style-input-text_15" type="text"
+                                               name="certificate[{{$certificate->id}}][title]" value="{{$certificate->title}}" placeholder="Certificate Name" >
+                                    </div>
+                                    <div class="user__card_group-btn edit-group-btn">
+                                        <button type="button" data-remove-item="" data-id="{{$certificate->id}}" class="btn btn-border">Remove</button>
+                                        <button type="button" data-request-validation-item="" data-id="{{$certificate->id}}" class="btn btn-violet">
+                                            Request Validation
+                                        </button>
+                                    </div>
+                                    @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                        <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                    @endif
+                                </div>
+                            @endforeach
+                        @endif
                     </div>
 
                     <button type="submit" id="save" class="btn btn-violet btn-save">Save</button>
@@ -257,6 +281,104 @@
 @endsection
 
 @push('popups')
+
+
+    <button btn-upload-popup="" class="hide btn btn-violet open-pop-up" data-target="#upload">Upload</button>
+    <button btn-upload2-popup="" class="hide btn btn-violet open-pop-up" data-target="#uploadFile2">Upload file 2</button>
+    <button btn-validate-popup="" class="hide btn btn-violet open-pop-up" data-target="#validate">Validate</button>
+    <button btn-validate-success-popup="" class="hide btn btn-violet open-pop-up" data-target="#validateSuccess">Validate success</button>
+    <button btn-validate-not_xims-popup="" class="hide btn btn-violet open-pop-up" data-target="#notEnoughMinerals">Not enough minerals</button>
+
+    <div class="modal-window" id="upload" data-upload-popup="">
+        <div class="modal-window__content">
+            <form id="edit_profile_upload_attach_form" action="" method="post">
+                <div class="modal-window__body upload-modal text-center">
+                    <p class="upload-modal__title">
+                        Add URL certificate
+                    </p>
+                    <input name="url" type="text" class="gray-input" placeholder="Enter URL" />
+                    <input name="files" type="hidden" value=""/>
+                    <span class="or">OR</span>
+                    <a href="#" class="btn btn-border btn-download" download>Upload document</a>
+                    <span class="text-color-gray default_title">Accepted files: PDF, JPG, PNG, DOC.</span>
+                    <span class="text-color-gray hide selected_files_title" ></span>
+                    <button type="button" class="btn btn-violet" data-profile-edit-upload-btn="">
+                        Continue
+                    </button>
+                    <button type="button" class="btn btn-border close-modal">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-window" id="uploadFile2" data-upload2-popup="">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <p>
+                    You are about to remove this file.
+                </p>
+                <p class="my-10">Are you sure?</p>
+                <button type="button" class="btn btn-violet">
+                    Continue
+                </button>
+                <button type="button" class="btn btn-border close-modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-window" id="validate" data-validate-popup="">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <p>
+                    A Certificate validation will cost you 30 XIMs.
+                </p>
+                <p>Do you want to proceed?</p>
+                <button type="button" class="btn btn-violet" data-profile-edit-validate-btn="">
+                    Continue
+                </button>
+                <button type="button" class="btn btn-border close-modal" data-profile-edit-validate-btn-cancel="">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-window" id="validateSuccess" data-validate-success-popup="">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <img src="{{asset('img/icons/like.png')}}" alt="like" class="modal-window__img-top" />
+                <h3 class="title mb-34">Success!</h3>
+                <p>Please be patient, as the validation process can take a few hours, up to a few days.</p>
+                <p>Note: Your XIM balance will take a while to refresh.</p>
+                <button type="button" class="btn btn-violet close-modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-window" id="notEnoughMinerals" data-validate-not_xims-popup="">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <h3 class="mb-34">Uh-oh!</h3>
+                <p>
+                    Looks like you don’t have enough XIMs.
+                </p>
+                <p>A Certificate validation costs 30 XIMs.</p>
+                <a href="{{url('/settings')}}" type="button" class="btn btn-violet">
+                    Buy XIMs
+                </a>
+                <button type="button" class="btn btn-border close-modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
 @endpush
 
 @push('styles')

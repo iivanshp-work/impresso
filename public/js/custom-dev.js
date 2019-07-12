@@ -1,21 +1,37 @@
 const $window = $(window), $document = $(document);
 
 //default error popup
-function showError(message, title){
+function showError(message, title, callback){
     title = title || 'Error!';
     message = message || '';
     $('#customValidateSuccess .custom-title').text(title);
     $('#customValidateSuccess .custom-message').html(message);
     $('.customValidateSuccess').click().trigger('click');
+    $('#customValidateSuccess [data-callback-button]').on('click', function(e){
+        e.preventDefault();
+        if (callback && typeof (callback) === "function"){
+            callback();
+        } else {
+            $('.customValidateSuccess .close-modal').trigger('click');
+        }
+    });
 }
 
 //default success popup
-function showSuccess(message, title){
+function showSuccess(message, title, callback){
     title = title || 'Success!';
     message = message || '';
     $('#customValidateError .custom-title').text(title);
     $('#customValidateError .custom-message').html(message);
     $('.customValidateError').click().trigger('click');
+    $('#customValidateError [data-callback-button]').on('click', function(e){
+        e.preventDefault();
+        if (callback && typeof (callback) === "function"){
+            callback();
+        } else {
+            $('.customValidateError .close-modal').trigger('click');
+        }
+    });
 }
 
 //default success popup
@@ -531,6 +547,11 @@ $document.ready(function(){
         });
     });
 
+    //request validation data
+    var requestValidationData = {};
+    var requestItem = null;
+
+    // add new education
     $document.on('click change', '[data-education-wrapper] [data-add-new-education]', function(e){
        e.preventDefault();
        let template = $('[data-education-wrapper] [data-education-template]').html();
@@ -539,29 +560,158 @@ $document.ready(function(){
        wrapper.append(template);
     });
 
+    //remove education
     $document.on('click change', '[data-education-wrapper] [data-education-item] [data-remove-item]', function(e){
         e.preventDefault();
         let $this = $(this);
         let id = $this.data('id');
         let item = $this.closest('[data-education-item]');
-        showConfirm('Are you sure?', 'Remove Item', function(){
+        showConfirm('Are you sure, you want to remove this item?', 'Remove', function(){
             item.remove();
         });
     });
 
+    //click on request-validation-item
     $document.on('click change', '[data-education-wrapper] [data-education-item] [data-request-validation-item]', function(e){
         e.preventDefault();
         let $this = $(this);
         let id = $this.data('id');
         let item = $this.closest('[data-education-item]');
+
+        //validete title and speciality
+        if (!$('[data-title-field]', item).val() || !$('[data-speciality-field]', item).val()) {
+            let message = '';
+            if (!$('[data-title-field]', item).val()) {
+                message += 'School Name is empty.<br>';
+            }
+            if (!$('[data-speciality-field]', item).val()) {
+                message += 'Speciality is empty.<br>';
+            }
+            showError(message);
+            return;
+        }
+
         let data = {
             id: $('[data-id-field]', item).val(),
             title: $('[data-title-field]', item).val(),
             speciality: $('[data-speciality-field]', item).val(),
+            type: 'education',
         };
-        console.log(data);
+        requestValidationData = data;
+        clearUploadForm();
+        openProfileEditPopup('upload');
     });
 
+    // add new certificate
+    $document.on('click change', '[data-certificate-wrapper] [data-add-new-certificate]', function(e){
+        e.preventDefault();
+        let template = $('[data-certificate-wrapper] [data-certificate-template]').html();
+        template = $(template.replace(/%KEY%/g, Date.now()));
+        let wrapper = $('[data-certificate-wrapper]');
+        wrapper.append(template);
+    });
+
+    //remove certificate
+    $document.on('click change', '[data-certificate-wrapper] [data-certificate-item] [data-remove-item]', function(e){
+        e.preventDefault();
+        let $this = $(this);
+        let id = $this.data('id');
+        let item = $this.closest('[data-certificate-item]');
+        showConfirm('Are you sure, you want to remove this item? This action cannot be undone.', 'Remove', function(){
+            item.remove();
+        });
+    });
+
+    //click on request-validation-item
+    $document.on('click change', '[data-certificate-wrapper] [data-certificate-item] [data-request-validation-item]', function(e){
+        e.preventDefault();
+        let $this = $(this);
+        let id = $this.data('id');
+        let item = $this.closest('[data-certificate-item]');
+
+        //validete title and speciality
+        if (!$('[data-title-field]', item).val()) {
+            let message = '';
+            if (!$('[data-title-field]', item).val()) {
+                message += 'Certificate Name.<br>';
+            }
+            showError(message);
+            return;
+        }
+
+        let data = {
+            id: $('[data-id-field]', item).val(),
+            title: $('[data-title-field]', item).val(),
+            type: 'certificate',
+        };
+        requestValidationData = data;
+        requestItem = item;
+        clearUploadForm();
+        openProfileEditPopup('upload');
+    });
+
+    //cleanup upload form
+    function clearUploadForm() {
+        $('#edit_profile_upload_attach_form [name="url"]').val('');
+        $('#edit_profile_upload_attach_form [name="files"]').val('');
+        $('#edit_profile_upload_attach_form .default_title').show();
+        $('#edit_profile_upload_attach_form .selected_files_title').hide().text('');
+    }
+
+    //click on upload button: require url or files
+    $('[data-profile-edit-upload-btn]').on('click change', function(e){
+        e.preventDefault();
+        let form = $('#edit_profile_upload_attach_form');
+        //validete url or files
+        if (!$('[name="url"]', form).val() && !$('[name="files"]', form).val()) {
+            let message = 'URL or files are required.';
+            closeProfileEditPopup('upload');
+            showError(message, 'Error', function(){
+                openProfileEditPopup('upload');
+            });
+            return;
+        }
+
+        requestValidationData.url = $('[name="url"]', form).val();
+        requestValidationData.files = $('[name="files"]', form).val();
+        openProfileEditPopup('validate');
+    });
+
+    //send request to server
+    $('[data-profile-edit-validate-btn]').on('click change', function(e){
+        e.preventDefault();
+        console.log(requestValidationData);
+        //send request to server
+
+        requestValidationData = {};
+        //change requestItem
+        requestItem.find('[data-request-validation-item]').text("pending");
+        openProfileEditPopup('validate-success');
+        //openProfileEditPopup('validate-not_xims');
+    });
+
+    //back to prev step
+    $('[data-profile-edit-validate-btn-cancel]').on('click change', function(e){
+        e.preventDefault();
+        openProfileEditPopup('upload');
+    });
+
+    //function to open needed edit profile popup
+    function openProfileEditPopup(id) {
+        console.log('[openProfileEditPopup-' + id);
+        let selector = '[btn-' + id + '-popup]';
+        if($(selector).length) {
+            $(selector).click().trigger('click');
+        }
+    }
+
+    //function to open needed edit profile popup
+    function closeProfileEditPopup(id) {
+        let selector = '[data-' + id + '-popup]';
+        if($(selector).length) {
+            $(selector + ' .close-modal').trigger('click');
+        }
+    }
     //edit profile end
 
 

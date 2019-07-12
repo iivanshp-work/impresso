@@ -221,7 +221,7 @@
                         @php
                             $softSkills = explode("\n", $userData->soft_skills);
                             array_map('trim', $softSkills);
-                            $softkillIteration = 0;
+                            $softSkillIteration = 0;
                         @endphp
                     @else
                         @php
