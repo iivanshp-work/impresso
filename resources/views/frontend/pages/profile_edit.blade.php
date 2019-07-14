@@ -10,7 +10,7 @@
         <header class="header">
             <h4 class="header-title">Edit Profile</h4>
             <span class="header__icon-right">
-                <a href="#"><img src="{{asset('img/icons/settings.svg')}}" alt="" /></a>
+                <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" /></a>
                 <img src="{{asset('img/icons/bell.svg')}}" alt="" />
             </span>
         </header>
@@ -24,7 +24,7 @@
                             @if($userData->photo)
                                 <img data-edit-profile-src="" src="{{url('/files/' . $userData->photo . '?s=200')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
                             @else
-                                <img data-edit-profile-src="" src="{{asset('img/icons/user-icon.svg')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
+                                <img data-edit-profile-src="" src="{{asset('img/icons/icon-user.png')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
                             @endif
                             <a href="#" data-edit-profile-send-photo="" class="edit-photo">edit photo</a>
                         </div>
@@ -197,6 +197,7 @@
                                         Request Validation
                                     </button>
                                 </div>
+                                <span class="user__validated hide">Pending</span>
                             </div>
                         </div>
                         @if($userData->educations->count())
@@ -207,19 +208,27 @@
                                         </span>
                                     <div class="user__card_text">
                                         <input data-id-field="" type="hidden" name="education[{{$education->id}}][id]" value="{{$education->id}}">
-                                        <input data-title-field="" class="style-input-text style-input-text_15" type="text"
+                                        <input data-title-field="" class="style-input-text style-input-text_15" type="text" @if($education->status != getenv('VERIFIED_STATUSES_NEW')) disabled="disabled" @endif
                                                name="education[{{$education->id}}][title]" value="{{$education->title}}" placeholder="School Name">
-                                        <input data-speciality-field="" class="style-input-text style-input-text_12" type="text"
+                                        <input data-speciality-field="" class="style-input-text style-input-text_12" type="text" @if($education->status != getenv('VERIFIED_STATUSES_NEW')) disabled="disabled" @endif
                                                name="education[{{$education->id}}][speciality]" value="{{$education->speciality}}" placeholder="Speciality / Domain">
                                     </div>
                                     <div class="user__card_group-btn edit-group-btn">
                                         <button type="button" data-remove-item="" data-id="{{$education->id}}" class="btn btn-border">Remove</button>
-                                        <button type="button" data-request-validation-item="" data-id="{{$education->id}}" class="btn btn-violet">
-                                            Request Validation
-                                        </button>
+                                        @if($education->status == getenv('VERIFIED_STATUSES_NEW'))
+                                            <button type="button" data-request-validation-item="" data-id="{{$education->id}}" class="btn btn-violet">
+                                                Request Validation
+                                            </button>
+                                        @endif
                                     </div>
                                     @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                         <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                    @elseif($education->status == getenv('VERIFIED_STATUSES_REQUEST_VERIFICATION'))
+                                        <span class="user__validated">Pending</span>
+                                    @elseif($education->status == getenv('VERIFIED_STATUSES_FAILED'))
+                                        <span class="user__validated">Failed</span>
+                                    @else
+                                        <span class="user__validated hide">Pending</span>
                                     @endif
                                 </div>
                             @endforeach
@@ -237,7 +246,7 @@
                                 <div class="user__card_text">
                                     <input data-id-field="" type="hidden" name="certificate[%KEY%][id]" value="" >
                                     <input data-title-field="" class="style-input-text style-input-text_15" type="text"
-                                           name="cartificate[%KEY%][title]" value="" placeholder="Certificate Name">
+                                           name="certificate[%KEY%][title]" value="" placeholder="Certificate Name">
                                 </div>
                                 <div class="user__card_group-btn edit-group-btn">
                                     <button type="button" data-remove-item="" data-id="" class="btn btn-border">Remove</button>
@@ -245,6 +254,7 @@
                                         Request Validation
                                     </button>
                                 </div>
+                                <span class="user__validated hide">Pending</span>
                             </div>
                         </div>
                         @if($userData->certifications->count())
@@ -255,17 +265,25 @@
                                         </span>
                                     <div class="user__card_text">
                                         <input data-id-field="" type="hidden" name="certificate[{{$certificate->id}}][id]" value="{{$certificate->id}}">
-                                        <input data-title-field="" class="style-input-text style-input-text_15" type="text"
+                                        <input data-title-field="" class="style-input-text style-input-text_15" type="text" @if($certificate->status != getenv('VERIFIED_STATUSES_NEW')) disabled="disabled" @endif
                                                name="certificate[{{$certificate->id}}][title]" value="{{$certificate->title}}" placeholder="Certificate Name" >
                                     </div>
                                     <div class="user__card_group-btn edit-group-btn">
                                         <button type="button" data-remove-item="" data-id="{{$certificate->id}}" class="btn btn-border">Remove</button>
-                                        <button type="button" data-request-validation-item="" data-id="{{$certificate->id}}" class="btn btn-violet">
-                                            Request Validation
-                                        </button>
+                                        @if($certificate->status == getenv('VERIFIED_STATUSES_NEW'))
+                                            <button type="button" data-request-validation-item="" data-id="{{$certificate->id}}" class="btn btn-violet">
+                                                Request Validation
+                                            </button>
+                                        @endif
                                     </div>
-                                    @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                    @if($certificate->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                         <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                    @elseif($certificate->status == getenv('VERIFIED_STATUSES_REQUEST_VERIFICATION'))
+                                        <span class="user__validated">Pending</span>
+                                    @elseif($certificate->status == getenv('VERIFIED_STATUSES_FAILED'))
+                                        <span class="user__validated">Failed</span>
+                                    @else
+                                        <span class="user__validated hide">Pending</span>
                                     @endif
                                 </div>
                             @endforeach
@@ -282,7 +300,6 @@
 
 @push('popups')
 
-
     <button btn-upload-popup="" class="hide btn btn-violet open-pop-up" data-target="#upload">Upload</button>
     <button btn-upload2-popup="" class="hide btn btn-violet open-pop-up" data-target="#uploadFile2">Upload file 2</button>
     <button btn-validate-popup="" class="hide btn btn-violet open-pop-up" data-target="#validate">Validate</button>
@@ -297,9 +314,10 @@
                         Add URL certificate
                     </p>
                     <input name="url" type="text" class="gray-input" placeholder="Enter URL" />
-                    <input name="files" type="hidden" value=""/>
+                    <input name="files" type="hidden" data-files-value="" value=""/>
                     <span class="or">OR</span>
-                    <a href="#" class="btn btn-border btn-download" download>Upload document</a>
+                    <input type="file" name="files_hidden" class="hide" multiple="multiple" data-edit-profile-send-popup-files-hidden="">
+                    <a href="#" class="btn btn-border btn-download" data-edit-profile-send-popup-files="">Upload document</a>
                     <span class="text-color-gray default_title">Accepted files: PDF, JPG, PNG, DOC.</span>
                     <span class="text-color-gray hide selected_files_title" ></span>
                     <button type="button" class="btn btn-violet" data-profile-edit-upload-btn="">

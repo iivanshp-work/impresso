@@ -9,9 +9,9 @@ function showError(message, title, callback){
     $('.customValidateSuccess').click().trigger('click');
     $('#customValidateSuccess [data-callback-button]').on('click', function(e){
         e.preventDefault();
-        if (callback && typeof (callback) === "function"){
+        if(callback && typeof (callback) === "function"){
             callback();
-        } else {
+        }else{
             $('.customValidateSuccess .close-modal').trigger('click');
         }
     });
@@ -26,9 +26,9 @@ function showSuccess(message, title, callback){
     $('.customValidateError').click().trigger('click');
     $('#customValidateError [data-callback-button]').on('click', function(e){
         e.preventDefault();
-        if (callback && typeof (callback) === "function"){
+        if(callback && typeof (callback) === "function"){
             callback();
-        } else {
+        }else{
             $('.customValidateError .close-modal').trigger('click');
         }
     });
@@ -45,9 +45,9 @@ function showConfirm(message, title, callback, callbackBtnText){
     $('.customValidateConfirm').click().trigger('click');
     $('#customValidateConfirm [data-callback-button]').on('click', function(e){
         e.preventDefault();
-        if (callback && typeof (callback) === "function"){
+        if(callback && typeof (callback) === "function"){
             callback();
-        } else {
+        }else{
             $('.customValidateConfirm .close-modal').trigger('click');
         }
     })
@@ -272,6 +272,7 @@ $document.ready(function(){
         e.preventDefault();
         feedsLoadItems();
     });
+
     // general feed submit Load items function
     function feedsLoadItems(){
         let frm = $('[data-feeds-search-form]'), targetLink = base_url + '/feeds';
@@ -294,7 +295,7 @@ $document.ready(function(){
                 if(response.has_error){
                     showError(response.message ? response.message : 'An error occurred. Please try again later.');
                 }else{
-                    if (response.has_more) {
+                    if(response.has_more){
                         page = response.page || frm.find('[data-feeds-search-page]').val();
                         $('[data-feeds-search-page]').val((parseInt(page) + 1));
                     }
@@ -304,13 +305,13 @@ $document.ready(function(){
                         }
                         wrapper.append(response.html);
                         if(needloadmore || response.page == 1){
-                            if (type == 'jobs') {
+                            if(type == 'jobs'){
                                 loadMoreJobs();
-                            } else {
+                            }else{
                                 loadMoreProfessionals();
                             }
                         }
-                    } else if (response.keyword) {
+                    }else if(response.keyword){
                         wrapper.empty();
                         wrapper.append("<div class='text-center'>No record found.</div>");
                     }
@@ -327,26 +328,28 @@ $document.ready(function(){
     }
 
     var needloadmore = 0;
+
     //load more for jobs
-    function loadMoreJobs() {
-        $('[data-load-more-jobs]').each(function () {
+    function loadMoreJobs(){
+        $('[data-load-more-jobs]').each(function(){
             let element = $(this), container = $(this).parent(), win = $(window), busy = false, errors = 0, retry = 3;
             let frm = $('[data-feeds-search-form]'), targetLink = base_url + '/feeds';
-            function error() {
+
+            function error(){
                 errors++;
-                if (errors >= retry) unbind();
+                if(errors >= retry) unbind();
             }
 
-            function unbind() {
+            function unbind(){
                 win.unbind('scroll resize orientationchange', check);
                 needloadmore = 1;
             }
 
-            function check() {
+            function check(){
                 let type = frm.find('[data-feeds-search-type]').val();
-                if (type != 'jobs') return;
-                if (container.offset().top + container.height() > win.scrollTop() + win.height()) return;
-                if (busy) return;
+                if(type != 'jobs') return;
+                if(container.offset().top + container.height() > win.scrollTop() + win.height()) return;
+                if(busy) return;
                 busy = true;
                 loadingStart();
                 $.ajax({
@@ -354,19 +357,19 @@ $document.ready(function(){
                     type: 'post',
                     data: frm.serialize(),
                     dataType: 'json',
-                    success: function (response) {
-                        if (response.html) {
+                    success: function(response){
+                        if(response.html){
                             container.append(response.html);
                             element = container.find("[data-load-more-jobs]").last();
                             let page = response.page || frm.find('[data-feeds-search-page]').val();
                             $('[data-feeds-search-page]').val((parseInt(page) + 1));
-                        } else error();
+                        }else error();
 
-                        if (response.has_more) check();
+                        if(response.has_more) check();
                         else unbind();
                     },
                     error: error,
-                    complete: function (response) {
+                    complete: function(response){
                         busy = false;
                         loadingEnd();
                     }
@@ -377,11 +380,13 @@ $document.ready(function(){
             check();
         });
     }
+
     //load more for professionals
     function loadMoreProfessionals(){
         $('[data-load-more-professionals]').each(function(){
             let element = $(this), container = $(this).parent(), win = $(window), busy = false, errors = 0, retry = 3;
             let frm = $('[data-feeds-search-form]'), targetLink = base_url + '/feeds';
+
             function error(response){
                 errors++;
                 if(errors >= retry) unbind();
@@ -394,7 +399,7 @@ $document.ready(function(){
 
             function check(){
                 let type = frm.find('[data-feeds-search-type]').val();
-                if (type != 'professionals') return;
+                if(type != 'professionals') return;
                 if(container.offset().top + container.height() > win.scrollTop() + win.height()) return;
                 if(busy) return;
                 busy = true;
@@ -427,6 +432,7 @@ $document.ready(function(){
             check();
         });
     }
+
     //default jobs check
     loadMoreJobs();
     //feeds end
@@ -471,8 +477,8 @@ $document.ready(function(){
     });
 
     $document.on('change', '[name="company_title_top"]', function(e){
-       let val = $(this).val();
-       $(this).closest("form").find('[name="company_title"]').val(val);
+        let val = $(this).val();
+        $(this).closest("form").find('[name="company_title"]').val(val);
     })
     $document.on('change', '[name="company_title"]', function(e){
         let val = $(this).val();
@@ -491,7 +497,8 @@ $document.ready(function(){
     // upload button click
     $document.on('change click', '[data-edit-profile-send-photo]', function(e){
         e.preventDefault();
-        let $this = $(this), itemForm = $this.closest('[data-edit-profile-form]'), btn = itemForm.find('[data-edit-profile-send-photo-hidden]');
+        let $this = $(this), itemForm = $this.closest('[data-edit-profile-form]'),
+            btn = itemForm.find('[data-edit-profile-send-photo-hidden]');
         btn.trigger('click');
     });
 
@@ -526,7 +533,7 @@ $document.ready(function(){
                     showError(response.message ? response.message : 'An error occurred. Please try again later.');
                 }else{
                     if(response.image && response.image.url){
-                        if (response.image.crop_url) {
+                        if(response.image.crop_url){
                             response.image.url = response.image.crop_url;
                         }
                         selector = '[data-edit-profile-src]';
@@ -543,6 +550,8 @@ $document.ready(function(){
             complete: function(){
                 loadingEnd();
                 $this.data("busy", false);
+                btn.prop('disabled', false);
+                $this.prop('disabled', false);
             }
         });
     });
@@ -553,11 +562,11 @@ $document.ready(function(){
 
     // add new education
     $document.on('click change', '[data-education-wrapper] [data-add-new-education]', function(e){
-       e.preventDefault();
-       let template = $('[data-education-wrapper] [data-education-template]').html();
-       template = $(template.replace(/%KEY%/g, Date.now()));
+        e.preventDefault();
+        let template = $('[data-education-wrapper] [data-education-template]').html();
+        template = $(template.replace(/%KEY%/g, Date.now()));
         let wrapper = $('[data-education-wrapper]');
-       wrapper.append(template);
+        wrapper.append(template);
     });
 
     //remove education
@@ -579,12 +588,12 @@ $document.ready(function(){
         let item = $this.closest('[data-education-item]');
 
         //validete title and speciality
-        if (!$('[data-title-field]', item).val() || !$('[data-speciality-field]', item).val()) {
+        if(!$('[data-title-field]', item).val() || !$('[data-speciality-field]', item).val()){
             let message = '';
-            if (!$('[data-title-field]', item).val()) {
+            if(!$('[data-title-field]', item).val()){
                 message += 'School Name is empty.<br>';
             }
-            if (!$('[data-speciality-field]', item).val()) {
+            if(!$('[data-speciality-field]', item).val()){
                 message += 'Speciality is empty.<br>';
             }
             showError(message);
@@ -596,6 +605,7 @@ $document.ready(function(){
             title: $('[data-title-field]', item).val(),
             speciality: $('[data-speciality-field]', item).val(),
             type: 'education',
+            action: 'request_validation'
         };
         requestValidationData = data;
         clearUploadForm();
@@ -630,9 +640,9 @@ $document.ready(function(){
         let item = $this.closest('[data-certificate-item]');
 
         //validete title and speciality
-        if (!$('[data-title-field]', item).val()) {
+        if(!$('[data-title-field]', item).val()){
             let message = '';
-            if (!$('[data-title-field]', item).val()) {
+            if(!$('[data-title-field]', item).val()){
                 message += 'Certificate Name.<br>';
             }
             showError(message);
@@ -643,6 +653,7 @@ $document.ready(function(){
             id: $('[data-id-field]', item).val(),
             title: $('[data-title-field]', item).val(),
             type: 'certificate',
+            action: 'request_validation'
         };
         requestValidationData = data;
         requestItem = item;
@@ -651,20 +662,128 @@ $document.ready(function(){
     });
 
     //cleanup upload form
-    function clearUploadForm() {
+    function clearUploadForm(){
         $('#edit_profile_upload_attach_form [name="url"]').val('');
         $('#edit_profile_upload_attach_form [name="files"]').val('');
         $('#edit_profile_upload_attach_form .default_title').show();
         $('#edit_profile_upload_attach_form .selected_files_title').hide().text('');
     }
 
+    function isUrlValid(value){
+        var res = value.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+        if(res == null)
+            return false;
+        else
+            return true;
+    }
+
+    $('[data-edit-profile-send-popup-files]').on('click change', function(e){
+        e.preventDefault();
+        let $this = $(this), itemForm = $this.closest('#edit_profile_upload_attach_form'),
+            btn = itemForm.find('[data-edit-profile-send-popup-files-hidden]');
+        btn.trigger('click');
+    });
+
+    // upload file so server
+    $('[data-edit-profile-send-popup-files-hidden]').on('change', function(e){
+        let $this = $(this), item = $this.parent(), btn = item.find('[data-edit-profile-send-popup-files]'),
+            formData = new FormData(), targetLink = base_url + '/profile/edit';
+        let availableExtensions = ["jpg" , "jpeg", "png", "pdf", "doc", "docx"];
+        let files = $this.get(0).files;
+        let notAvailable = false;
+        let selectedFiles = '';
+        $('#edit_profile_upload_attach_form .default_title').show();
+        $('#edit_profile_upload_attach_form .selected_files_title').text('').hide();
+        $('#edit_profile_upload_attach_form [data-files-value]').val('');
+        if (files.length) {
+            selectedFiles += files.length + ' file' + (files.length > 1 ? 's ' : ' ') + 'selected:';
+            $.each(files, function(index, file){
+                let ext = file.name.split(".");
+                ext = ext[ext.length-1].toLowerCase();
+                if ($.inArray(ext, availableExtensions) == -1){
+                    notAvailable = true;
+                }
+                if (index == 0) {
+                    selectedFiles += '“' + file.name + '...”';
+                }
+            });
+            if (notAvailable) {
+                showError('Selected file has not allowed extension.', 'Error!', function(){
+                    openProfileEditPopup('upload');
+                });
+                return;
+            }
+        } else {
+            showError('No files selected.', 'Error!', function(){
+                openProfileEditPopup('upload');
+            });
+            return;
+        }
+        //if ($this.data("busy")) return;
+        $this.data("busy", true);
+        loadingStart();
+
+        btn.prop('disabled', true);
+        $this.prop('disabled', true);
+        $this.after('<span class="spinner base-indent-left"></span>');
+        formData.append('action', 'upload_profile_files');
+        $.each($this.get(0).files, function(index, file){
+            formData.append('files[]', file);
+        });
+
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            data: formData,
+            dataType: 'json',
+            processData: false,
+            contentType: false,
+            success: function(response){
+                btn.prop('disabled', false);
+                $this.prop('disabled', false);
+                item.find('.spinner').remove();
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                }else{
+                    if(response.files){
+                        $('#edit_profile_upload_attach_form .default_title').hide();
+                        $('#edit_profile_upload_attach_form .selected_files_title').text(selectedFiles).show();
+                        $('#edit_profile_upload_attach_form [data-files-value]').val(response.files);
+                    }else{
+                        showError('An error occurred. Please try again later.', 'Error', function(){
+                            openProfileEditPopup('upload');
+                        });
+                    }
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.', 'Error', function(){
+                    openProfileEditPopup('upload');
+                });
+            },
+            complete: function(){
+                loadingEnd();
+                $this.data("busy", false);
+                btn.prop('disabled', false);
+                $this.prop('disabled', false);
+            }
+        });
+    });
+
     //click on upload button: require url or files
     $('[data-profile-edit-upload-btn]').on('click change', function(e){
         e.preventDefault();
         let form = $('#edit_profile_upload_attach_form');
         //validete url or files
-        if (!$('[name="url"]', form).val() && !$('[name="files"]', form).val()) {
+        if(!$('[name="url"]', form).val() && !$('[name="files"]', form).val()){
             let message = 'URL or files are required.';
+            closeProfileEditPopup('upload');
+            showError(message, 'Error', function(){
+                openProfileEditPopup('upload');
+            });
+            return;
+        }else if($('[name="url"]', form).val() && !isUrlValid($('[name="url"]', form).val())){
+            let message = 'URL is invalid.';
             closeProfileEditPopup('upload');
             showError(message, 'Error', function(){
                 openProfileEditPopup('upload');
@@ -680,14 +799,44 @@ $document.ready(function(){
     //send request to server
     $('[data-profile-edit-validate-btn]').on('click change', function(e){
         e.preventDefault();
+        let btn = $(this), targetLink = base_url + '/profile/edit';
         console.log(requestValidationData);
         //send request to server
+        //if (btn.data("busy")) return;
+        btn.data("busy", true);
+        loadingStart();
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            dataType: 'json',
+            data: requestValidationData,
+            success: function(response){
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.', 'Error', function(){
+                        closeProfileEditPopup('validate');
+                    });
+                }else{
+                    if(response.no_xims){
+                        openProfileEditPopup('validate-not_xims');
+                    }else if(response.id){
+                        openProfileEditPopup('validate-success');
+                        requestValidationData = {};
+                        requestItem.find('[data-request-validation-item]').hide();
+                        requestItem.find('.user__validated').removeClass('hide');
+                        requestItem.find('[data-id-field]').val(response.id);
+                        requestItem.find('input[type="text"]').attr('disabled', 'disabled');
+                    }
 
-        requestValidationData = {};
-        //change requestItem
-        requestItem.find('[data-request-validation-item]').text("pending");
-        openProfileEditPopup('validate-success');
-        //openProfileEditPopup('validate-not_xims');
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                btn.data("busy", false);
+            }
+        });
     });
 
     //back to prev step
@@ -697,22 +846,63 @@ $document.ready(function(){
     });
 
     //function to open needed edit profile popup
-    function openProfileEditPopup(id) {
+    function openProfileEditPopup(id){
         console.log('[openProfileEditPopup-' + id);
         let selector = '[btn-' + id + '-popup]';
-        if($(selector).length) {
+        if($(selector).length){
             $(selector).click().trigger('click');
         }
     }
 
     //function to open needed edit profile popup
-    function closeProfileEditPopup(id) {
+    function closeProfileEditPopup(id){
         let selector = '[data-' + id + '-popup]';
-        if($(selector).length) {
+        if($(selector).length){
             $(selector + ' .close-modal').trigger('click');
         }
     }
     //edit profile end
 
+    //edit settings start
+    //edit profile start
+    $document.on('submit', '[data-edit-settings-form]', function(e){
+        e.preventDefault();
+        let form = $(this);
+        let disabled = form.find(':input:disabled').removeAttr('disabled');
+        let data = form.serialize();
+        disabled.attr('disabled','disabled');
+        //if (form.data("busy")) return;
+        form.data("busy", true);
+        loadingStart();
+        $.ajax({
+            url: form.attr("action"),
+            type: 'post',
+            dataType: 'json',
+            data: data,
+            success: function(response){
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                }else{
+                    showSuccess(response.message);
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                form.data("busy", false);
+            }
+        });
+    });
+    $document.on('click', '[data-edit-settings-form] .edit-info', function(e){
+        //$(this).closest('[data-edit-settings-form]').find("input, textarea").attr("disabled", "disabled");
+        //$(this).parent().find("input, textarea").removeAttr("disabled");
+        //$(this).parent().find("input, textarea").first().focus();
+
+    });
+
+
+    //edit settings end
 
 });

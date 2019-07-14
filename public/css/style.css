@@ -518,7 +518,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 300; }
 
 .style-input-text::placeholder { color: #979797; }
 
-.style-input-text[disabled] { color: #000; }
+.style-input-text:disabled { color: #000; -webkit-text-fill-color: #000; opacity: 1; }
 
 .style-textarea { font-size: inherit; font-weight: 300; line-height: 24px; width: 100%; background: #fff; color: #000; resize: none; }
 
@@ -527,6 +527,8 @@ h1, h2, h3, h4, h5, h6 { font-weight: 300; }
 .style-textarea:-ms-input-placeholder { color: #979797; }
 
 .style-textarea::placeholder { color: #979797; }
+
+.style-textarea:disabled { color: #000; -webkit-text-fill-color: #000; opacity: 1; }
 
 .dashboard .title { margin: 31px 0 40px; }
 

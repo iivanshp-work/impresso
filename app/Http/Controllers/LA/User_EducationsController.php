@@ -23,7 +23,7 @@ class User_EducationsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title';
-	public $listing_cols = ['id', 'title', 'speciality', 'status', 'user_id', 'url', 'file'];
+	public $listing_cols = ['id', 'title', 'speciality', 'status', 'user_id', 'url', 'files_uploaded'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

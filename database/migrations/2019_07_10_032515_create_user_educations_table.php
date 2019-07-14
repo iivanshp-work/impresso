@@ -23,7 +23,7 @@ class CreateUserEducationsTable extends Migration
             ["status", "Status", "Dropdown", false, "1", 0, 0, true, "@validation_statuses"],
             ["user_id", "User", "Dropdown", false, "", 0, 0, true, "@users"],
             ["url", "URL", "TextField", false, "", 0, 256, false],
-            ["file", "File", "File", false, "", 0, 0, false],
+            ["files_uploaded", "Files", "Files", false, "", 0, 0, false],
         ]);
 		
 		/*

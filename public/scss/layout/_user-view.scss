@@ -1,6 +1,6 @@
 .user {
 	width: 100%;
-	background: url(../img/bg-login.png) no-repeat top center;
+	background: url(../img/background-image.png) no-repeat top center;
 	background-size: 375px;
 	min-height: 100vh;
 	padding-top: 1px;
@@ -26,11 +26,7 @@
 			right: 0;
 			bottom: 0;
 			left: 0;
-			background: linear-gradient(
-				180deg,
-				rgba(255, 255, 255, 0.8) 0%,
-				rgba(255, 255, 255, 0) 462.85%
-			);
+			background: linear-gradient(180deg, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0) 462.85%);
 			display: none;
 			align-items: center;
 			justify-content: center;
@@ -190,8 +186,10 @@
 	&::placeholder {
 		color: $gray;
 	}
-	&[disabled] {
+	&:disabled {
 		color: $text-color;
+		-webkit-text-fill-color: $text-color;
+		opacity: 1;
 	}
 }
 
@@ -205,5 +203,10 @@
 	resize: none;
 	&::placeholder {
 		color: $gray;
+	}
+	&:disabled {
+		color: $text-color;
+		-webkit-text-fill-color: $text-color;
+		opacity: 1;
 	}
 }

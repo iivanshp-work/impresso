@@ -23,7 +23,7 @@ class User_certificationsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title';
-	public $listing_cols = ['id', 'title', 'url', 'file', 'status', 'user_id'];
+	public $listing_cols = ['id', 'title', 'url', 'status', 'user_id', 'files_uploaded'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

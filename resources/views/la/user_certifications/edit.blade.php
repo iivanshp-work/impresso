@@ -35,9 +35,9 @@
 					{{--
 					@la_input($module, 'title')
 					@la_input($module, 'url')
-					@la_input($module, 'file')
 					@la_input($module, 'status')
 					@la_input($module, 'user_id')
+					@la_input($module, 'files_uploaded')
 					--}}
                     <br>
 					<div class="form-group">

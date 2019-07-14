@@ -109,9 +109,9 @@
 					<div class="panel-body">
 						@la_display($module, 'title')
 						@la_display($module, 'url')
-						@la_display($module, 'file')
 						@la_display($module, 'status')
 						@la_display($module, 'user_id')
+						@la_display($module, 'files_uploaded')
 					</div>
 				</div>
 			</div>

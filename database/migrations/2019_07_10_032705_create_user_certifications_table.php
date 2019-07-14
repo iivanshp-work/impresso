@@ -20,9 +20,9 @@ class CreateUserCertificationsTable extends Migration
         Module::generate("User_certifications", 'user_certifications', 'title', 'fa-certificate', [
             ["title", "Title", "TextField", false, "", 0, 256, true],
             ["url", "URL", "TextField", false, "", 0, 256, false],
-            ["file", "File", "File", false, "", 0, 0, false],
             ["status", "Status", "Dropdown", false, "", 0, 0, true, "@validation_statuses"],
             ["user_id", "User", "Dropdown", false, "", 0, 0, true, "@users"],
+            ["files_uploaded", "Files", "Files", false, "", 0, 0, false],
         ]);
 		
 		/*

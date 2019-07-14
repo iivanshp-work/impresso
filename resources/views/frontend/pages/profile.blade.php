@@ -10,7 +10,9 @@
         <header class="header">
             <h4 class="header-title">Profile</h4>
             <span class="header__icon-right">
-                <a href="#"><img src="{{asset('img/icons/settings.svg')}}" alt="" /></a>
+                @if($mode == "me")
+                    <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" /></a>
+                @endif
                 <img src="{{asset('img/icons/bell.svg')}}" alt="" />
             </span>
         </header>
@@ -21,7 +23,7 @@
                         @if($userData->photo)
                             <img src="{{url('/files/' . $userData->photo . '?s=200')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
                         @else
-                            <img src="{{asset('img/icons/user-icon.svg')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
+                            <img src="{{asset('img/icons/icon-user.png')}}" alt="@if($userData->name){{$userData->name}}@else{{$userData->email}}@endif"/>
                         @endif
                         @if($mode == "me")
                             <a href="{{url('profile/edit')}}" download class="edit-photo">edit photo</a>
@@ -75,49 +77,49 @@
                         @if ($mode == 'me')
                             <li>
                                 <input class="style-input-text" type="text" value="@if($userData->company_title){{$userData->company_title}}@else{{''}}@endif"
-                                       placeholder="Add company" disabled>
+                                       placeholder="Add company" disabled="disabled">
                             </li>
                             <li>
                                 <input class="style-input-text" type="text" value="@if($userData->job_title){{$userData->job_title}}@else{{''}}@endif"
-                                       placeholder="Add job title / status" disabled>
+                                       placeholder="Add job title / status" disabled="disabled">
                             </li>
                             <li>
                                 <input class="style-input-text" type="text" value="@if($userData->university_title){{$userData->university_title}}@else{{''}}@endif"
-                                       placeholder="Add university" disabled>
+                                       placeholder="Add university" disabled="disabled">
                             </li>
                             <li>
                                 <input class="style-input-text" type="text" value="@if($userData->certificate_title){{$userData->certificate_title}}@else{{''}}@endif"
-                                       placeholder="Add certificate" disabled>
+                                       placeholder="Add certificate" disabled="disabled">
                             </li>
                         @else
                             @if (!$userData->company_title && !$userData->job_title && !$userData->university_title && !$userData->certificate_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="NO DATA YET."
-                                           placeholder="NO DATA YET." disabled>
+                                           placeholder="NO DATA YET." disabled="disabled">
                                 </li>
                             @endif
                             @if($userData->company_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="{{$userData->company_title}}"
-                                           placeholder="Add company" disabled>
+                                           placeholder="Add company" disabled="disabled">
                                 </li>
                             @endif
                             @if($userData->job_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="{{$userData->job_title}}"
-                                           placeholder="Add job title / status" disabled>
+                                           placeholder="Add job title / status" disabled="disabled">
                                 </li>
                             @endif
                             @if($userData->university_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="{{$userData->university_title}}"
-                                           placeholder="Add university" disabled>
+                                           placeholder="Add university" disabled="disabled">
                                 </li>
                             @endif
                             @if($userData->certificate_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="{{$userData->certificate_title}}"
-                                           placeholder="Add certificate" disabled>
+                                           placeholder="Add certificate" disabled="disabled">
                                 </li>
                             @endif
                         @endif
@@ -128,7 +130,7 @@
                     <div class="cards user__card">
                         <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
                         <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
-                        <textarea class="style-textarea border-violet" rows="4" cols="50" disabled
+                        <textarea class="style-textarea border-violet" rows="4" cols="50" disabled="disabled"
                                   placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
                     </div>
                 @else
@@ -136,7 +138,7 @@
                         <div class="cards user__card">
                             <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
-                            <textarea class="style-textarea border-violet" rows="4" cols="50" disabled
+                            <textarea class="style-textarea border-violet" rows="4" cols="50" disabled="disabled"
                                       placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
                         </div>
                     @endif
@@ -166,7 +168,7 @@
                                     @if($skill)
                                         <li>
                                             <input class="style-input-text" type="text" value="{{$skill}}"
-                                                   placeholder="Add skill / interest" disabled>
+                                                   placeholder="Add skill / interest" disabled="disabled">
                                         </li>
                                         @php
                                             $topSkillIteration++;
@@ -178,7 +180,7 @@
                                 @while($topSkillIteration < 3)
                                     <li>
                                         <input class="style-input-text" type="text" value=""
-                                               placeholder="Add skill / interest" disabled>
+                                               placeholder="Add skill / interest" disabled="disabled">
                                     </li>
                                     @php
                                         $topSkillIteration++;
@@ -207,7 +209,7 @@
                                     @if($skill)
                                         <li>
                                             <input class="style-input-text" type="text" value="{{$skill}}"
-                                                   placeholder="Add skill / interest" disabled>
+                                                   placeholder="Add skill / interest" disabled="disabled">
                                         </li>
                                     @endif
                                 @endforeach
@@ -239,7 +241,7 @@
                                     @if($skill)
                                         <li>
                                             <input class="style-input-text" type="text" value="{{$skill}}"
-                                                   placeholder="Add skill / interest" disabled>
+                                                   placeholder="Add skill / interest" disabled="disabled">
                                         </li>
                                         @php
                                             $softSkillIteration++;
@@ -251,7 +253,7 @@
                                 @while($softSkillIteration < 3)
                                     <li>
                                         <input class="style-input-text" type="text" value=""
-                                               placeholder="Add soft skill" disabled>
+                                               placeholder="Add soft skill" disabled="disabled">
                                     </li>
                                     @php
                                         $softSkillIteration++;
@@ -280,7 +282,7 @@
                                     @if($skill)
                                         <li>
                                             <input class="style-input-text" type="text" value="{{$skill}}"
-                                                   placeholder="Add soft skill" disabled>
+                                                   placeholder="Add soft skill" disabled="disabled">
                                         </li>
                                     @endif
                                 @endforeach
@@ -301,9 +303,9 @@
                                         </span>
                                         <div class="user__card_text">
                                             <input class="style-input-text style-input-text_15" type="text"
-                                                   value="{{$education->title}}" placeholder="School Name" disabled>
+                                                   value="{{$education->title}}" placeholder="School Name" disabled="disabled">
                                             <input class="style-input-text style-input-text_12" type="text"
-                                                   value="{{$education->speciality}}" placeholder="Speciality / Domain" disabled>
+                                                   value="{{$education->speciality}}" placeholder="Speciality / Domain" disabled="disabled">
                                         </div>
                                         @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                             <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
@@ -317,9 +319,9 @@
                                     </span>
                                     <div class="user__card_text">
                                         <input class="style-input-text style-input-text_15" type="text"
-                                               value="" placeholder="Add School Name" disabled>
+                                               value="" placeholder="Add School Name" disabled="disabled">
                                         <input class="style-input-text style-input-text_12" type="text"
-                                               value="" placeholder="Add Speciality / Domain" disabled>
+                                               value="" placeholder="Add Speciality / Domain" disabled="disabled">
                                     </div>
                                 </div>
                             @endif
@@ -336,7 +338,7 @@
                                 </span>
                                     <div class="user__card_text">
                                         <input class="style-input-text style-input-text_15" type="text"
-                                               value="{{$certificate->title}}" placeholder="Certificate Name" disabled>
+                                               value="{{$certificate->title}}" placeholder="Certificate Name" disabled="disabled">
                                     </div>
                                 </div>
                             @endforeach
@@ -347,7 +349,7 @@
                                 </span>
                                 <div class="user__card_text">
                                     <input class="style-input-text style-input-text_15" type="text"
-                                           value="" placeholder="Add Certificate Name" disabled>
+                                           value="" placeholder="Add Certificate Name" disabled="disabled">
                                 </div>
                             </div>
                         @endif
@@ -363,9 +365,9 @@
                                     </span>
                                     <div class="user__card_text">
                                         <input class="style-input-text style-input-text_15" type="text"
-                                               value="{{$education->title}}" placeholder="School Name" disabled>
+                                               value="{{$education->title}}" placeholder="School Name" disabled="disabled">
                                         <input class="style-input-text style-input-text_12" type="text"
-                                               value="{{$education->speciality}}" placeholder="Speciality / Domain" disabled>
+                                               value="{{$education->speciality}}" placeholder="Speciality / Domain" disabled="disabled">
                                     </div>
                                     @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                         <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
@@ -384,7 +386,7 @@
                                     </span>
                                     <div class="user__card_text">
                                         <input class="style-input-text style-input-text_15" type="text"
-                                               value="{{$certificate->title}}" placeholder="Certificate Name" disabled>
+                                               value="{{$certificate->title}}" placeholder="Certificate Name" disabled="disabled">
                                     </div>
                                     @if($certificate->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                         <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>

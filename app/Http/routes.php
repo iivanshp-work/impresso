@@ -31,6 +31,10 @@ Route::get('profile/edit', 'ProfileSettingsController@profileEditPage')->name('p
 Route::post('profile/edit', 'ProfileSettingsController@profileEdit')->name('profile_edit_post');
 Route::get('profile/{id}', 'ProfileSettingsController@profilePage')->name('profile_other');
 
+/* settings */
+Route::get('settings', 'ProfileSettingsController@settingsPage')->name('settings');
+Route::get('settings/edit', 'ProfileSettingsController@settingsEditPage')->name('settings_edit');
+Route::post('settings/edit', 'ProfileSettingsController@settingsEdit')->name('settings_edit_post');
 
 /* feeds */
 Route::get('feeds', 'FeedsController@feedsPage')->name('feeds');

@@ -31,12 +31,17 @@ class User extends Model
      */
     public function scopeWithDistance($query, $location) {
         $table = $this->getTable();
-        $haversine = "(6371 * acos(cos(radians({$location->latitude})) 
+
+        if ($location->longitude && $location->latitude) {
+            $haversine = "(6371 * acos(cos(radians({$location->latitude})) 
                      * cos(radians({$table}.latitude)) 
                      * cos(radians({$table}.longitude) 
                      - radians({$location->longitude})) 
                      + sin(radians({$location->latitude})) 
                      * sin(radians({$table}.latitude))))";
+        } else {
+            $haversine = 1000000;
+        }
         return $query
             ->select() //pick the columns you want here.
             ->selectRaw("{$haversine} AS distance");
