@@ -321,12 +321,12 @@ class ProfileSettingsController extends Controller
         } else {
             $id = Auth::id();
             $user = UserModel::find($id);
-            //$user->full_name_birth = $request->has('full_name_birth') ? trim($request->input('full_name_birth')) : '';
+            $user->full_name_birth = $request->has('full_name_birth') ? trim($request->input('full_name_birth')) : '';
             $user->email = $request->has('email') ? trim($request->input('email')) : '';
             $user->phone = $request->has('phone') ? trim($request->input('phone')) : '';
-            //$user->address = $request->has('address') ? trim($request->input('address')) : '';
-            //$user->address2 = $request->has('address2') ? trim($request->input('address2')) : '';
-            //$user->city = $request->has('city') ? trim($request->input('city')) : '';
+            $user->address = $request->has('address') ? trim($request->input('address')) : '';
+            $user->address2 = $request->has('address2') ? trim($request->input('address2')) : '';
+            $user->city = $request->has('city') ? trim($request->input('city')) : '';
             try {
                 if ($user->save()) {
                     $responseData['message'] = 'Personal data successfully saved.';

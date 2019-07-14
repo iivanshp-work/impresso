@@ -20,7 +20,7 @@ class CreateUsersTable extends Migration
         Module::generate("Users", 'users', 'name', 'fa-group', [
             ["name", "Name", "Name", false, "", 5, 250, true],
             ["email", "Email", "Email", true, "", 0, 250, false],
-            ["password", "Password", "Password", false, "", 6, 250, true],
+            ["password", "Password", "Password", false, "", 6, 250, false],
             ["type", "User Type", "Dropdown", false, "", 0, 0, true, "@roles"],
             ["is_verified", "Verified", "Checkbox", false, "0", 0, 0, true],
             ["job_title", "Job Title", "TextField", false, "", 0, 256, false],
@@ -38,6 +38,12 @@ class CreateUsersTable extends Migration
             ["varification_pending", "Pending Verification", "Checkbox", false, "0", 0, 0, false],
             ["longitude", "Location Longitude", "TextField", false, "", 0, 256, false],
             ["latitude", "Location Latitude", "TextField", false, "", 0, 256, false],
+            ["university_title", "University Title", "TextField", false, "", 0, 256, false],
+            ["certificate_title", "Certificate Title", "TextField", false, "", 0, 256, false],
+            ["full_name_birth", "Full Name & Birth", "TextField", false, "", 0, 256, false],
+            ["address", "Address Line 1", "Address", false, "", 0, 256, false],
+            ["address2", "Address line 2", "Address", false, "", 0, 256, false],
+            ["city", "Address city", "TextField", false, "", 0, 256, false],
         ]);
 		
 		/*
