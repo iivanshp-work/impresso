@@ -7843,5 +7843,13 @@ a.uploaded_file2 i.fa.fa-times {
   font-size: 11px;
   cursor: pointer;
 }
+/*custom start*/
+.profile2 .nav-tabs.profile li:nth-child(3){
+  display: none;
+}
+.profile2 > .bg-primary{
+  display: none;
+}
+/*custom end*/
 
 /*# sourceMappingURL=AdminLTE.css.map */

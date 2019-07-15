@@ -895,14 +895,11 @@ $document.ready(function(){
             }
         });
     });
-    $document.on('click', '[data-edit-settings-form] .edit-info', function(e){
-        //$(this).closest('[data-edit-settings-form]').find("input, textarea").attr("disabled", "disabled");
-        //$(this).parent().find("input, textarea").removeAttr("disabled");
-        //$(this).parent().find("input, textarea").first().focus();
-
-    });
-
-
+    /*$document.on('click', '[data-edit-settings-form] .edit-info', function(e){
+        $(this).closest('[data-edit-settings-form]').find("input, textarea").attr("disabled", "disabled");
+        $(this).parent().find("input, textarea").removeAttr("disabled");
+        $(this).parent().find("input, textarea").first().focus();
+    });*/
     //edit settings end
 
 });

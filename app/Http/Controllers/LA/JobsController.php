@@ -23,7 +23,7 @@ class JobsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'job_title';
-	public $listing_cols = ['id', 'job_title', 'description', 'location_title', 'longitude', 'latitude', 'company_title', 'short_description', 'status'];
+	public $listing_cols = ['id', 'job_title', 'company_title', 'location_title', 'status'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns
@@ -42,15 +42,67 @@ class JobsController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		$module = Module::get('Jobs');
+		$paginateLimit = 20;
 		
 		if(Module::hasAccess($module->id)) {
+            $query = DB::table('jobs')->select($this->listing_cols)->whereNull('deleted_at');
+            $params = [];
+            $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
+            $params['status'] = $request->has('status') ? intval($request->input('status')) : null;
+
+            if ($params['keyword']) {
+                $query = $query->where("job_title", 'like', "%" . $params['keyword'] . "%")->orWhere("location_title", 'like', "%" . $params['keyword'] . "%")->orWhere("company_title", 'like', "%" . $params['keyword'] . "%")->orWhere("short_description", 'like', "%" . $params['keyword'] . "%")->orWhere("description", 'like', "%" . $params['keyword'] . "%");
+            }
+            if ($params['status'] !== null) {
+                $query = $query->where("status", "=", $params['status']);
+            }
+            $values = $query->orderBy("id", 'desc')->paginate($paginateLimit);
+            if($values){
+                $fields_popup = ModuleFields::getModuleFields('Jobs');
+                for($i=0; $i < count($values); $i++) {
+                    for ($j=0; $j < count($this->listing_cols); $j++) {
+                        $col = $this->listing_cols[$j];
+                        if ($col == 'status') {
+                            $values[$i]->$col = $values[$i]->$col ? "Active" : "Inactive";
+                            continue;
+                        }
+                        if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
+                            $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+
+                        }
+                        if($col == $this->view_col) {
+                            $values[$i]->$col = '<a href="'.url(config('laraadmin.adminRoute') . '/jobs/'.$values[$i]->id).'">'.$values[$i]->$col.'</a>';
+                        }
+                    }
+
+                    if($this->show_action) {
+                        $output = '';
+                        if(Module::hasAccess("Jobs", "edit")) {
+                            $output .= '<a href="'.url(config('laraadmin.adminRoute') . '/jobs/'.$values[$i]->id.'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                        }
+
+                        if(Module::hasAccess("Jobs", "delete")) {
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.jobs.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
+                            $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
+                            $output .= Form::close();
+                        }
+                        $values[$i]->actions = (string)$output;
+                    }
+                }
+            }
+            if($values->count() == 0){
+                $values = 0;
+            }
+
 			return View('la.jobs.index', [
 				'show_actions' => $this->show_action,
 				'listing_cols' => $this->listing_cols,
-				'module' => $module
+				'view_col' => $this->view_col,
+				'module' => $module,
+                'values' => $values
 			]);
 		} else {
             return redirect(config('laraadmin.adminRoute')."/");

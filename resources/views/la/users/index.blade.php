@@ -1,14 +1,14 @@
 @extends("la.layouts.app")
 
-@section("contentheader_title", "Users")
-@section("contentheader_description", "Users listing")
-@section("section", "Users")
+@section("contentheader_title", ($mode == "admins" ? "Administrators" : "Users"))
+@section("contentheader_description", ($mode == "admins" ? "Administrators listing" : "Users listing"))
+@section("section", ($mode == "admins" ? "Administrators" : "Users"))
 @section("sub_section", "Listing")
-@section("htmlheader_title", "Users Listing")
+@section("htmlheader_title", $mode == "admins" ? "Administrators listing" : "Users listing"))
 
 @section("headerElems")
 @la_access("Users", "create")
-	<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#AddModal">Add User</button>
+	<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#AddModal">Add @if($mode == "admins"){{'Administrator'}}@else{{'User'}}@endif</button>
 @endla_access
 @endsection
 
@@ -51,7 +51,7 @@
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Add User</h4>
+				<h4 class="modal-title" id="myModalLabel">Add @if($mode == "admins"){{'Administrator'}}@else{{'User'}}@endif</h4>
 			</div>
 			{!! Form::open(['action' => 'LA\UsersController@store', 'id' => 'user-add-form']) !!}
 			<div class="modal-body">

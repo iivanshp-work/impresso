@@ -42,15 +42,30 @@ class UsersController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		$module = Module::get('Users');
-		
+        $mode = $request->path() == "admin/administrators" ? "admins" : "users";
+        $paginateLimit = 20;
+        $query = DB::table('jobs')->select($this->listing_cols)->whereNull('deleted_at');
+        $params = [];
+        $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
+        $params['status'] = $request->has('status') ? intval($request->input('status')) : null;
+
+        if ($params['keyword']) {
+            $query = $query->where("job_title", 'like', "%" . $params['keyword'] . "%")->orWhere("location_title", 'like', "%" . $params['keyword'] . "%")->orWhere("company_title", 'like', "%" . $params['keyword'] . "%")->orWhere("short_description", 'like', "%" . $params['keyword'] . "%")->orWhere("description", 'like', "%" . $params['keyword'] . "%");
+        }
+        if ($params['status'] !== null) {
+            $query = $query->where("status", "=", $params['status']);
+        }
+        $values = $query->orderBy("id", 'desc')->paginate($paginateLimit);
+
 		if(Module::hasAccess($module->id)) {
 			return View('la.users.index', [
 				'show_actions' => $this->show_action,
 				'listing_cols' => $this->listing_cols,
-				'module' => $module
+				'module' => $module,
+                'mode' => $mode
 			]);
 		} else {
             return redirect(config('laraadmin.adminRoute')."/");
