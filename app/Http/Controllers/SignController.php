@@ -126,7 +126,7 @@ class SignController extends Controller
                     'provider_id' => uniqid(),
                     'provider' => 'site',
                     'is_verified' => 0,
-                    'type' => 3, // default user
+                    'type' => getenv('USERS_TYPE_USER'), // default user
                 ]);
                 if (isset($user->id)) {
                     $userdata = array(

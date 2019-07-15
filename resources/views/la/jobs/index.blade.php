@@ -75,7 +75,7 @@
 					</tr>
 				@endforeach
 			@else
-				<tr class="odd"><td valign="top" colspan="9" class="dataTables_empty text-center">@lang("admin.table_zero_records")</td></tr>
+				<tr class="odd"><td valign="top" colspan="9" class="dataTables_empty text-center">No records found.</td></tr>
 			@endif
 		</tbody>
 		</table>
@@ -168,7 +168,7 @@ $(function () {
 	});
 	$('#job-add-form [name="location_title"]').change().trigger('change');
 	$("#job-add-form").validate({
-		
+
 	});
 });
 </script>

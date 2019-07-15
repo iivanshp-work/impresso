@@ -13,11 +13,11 @@ use Auth;
 class User extends Model
 {
     use SoftDeletes;
-	
+
 	protected $table = 'users';
-	
+
 	protected $hidden = [
-        
+
     ];
 
 	protected $guarded = [];
@@ -70,7 +70,7 @@ class User extends Model
      * @return mixed
      */
     public function scopeUsers($query) {
-        return $query->where('type', '=', 3); // 3 - Users, 1 - Admins
+        return $query->where('type', '=', getenv('USERS_TYPE_USER')); // 3 - Users, 1 - Admins
     }
 
     /**

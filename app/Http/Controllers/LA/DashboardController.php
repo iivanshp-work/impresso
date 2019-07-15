@@ -34,8 +34,8 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        $usersCount = DB::table("users")->where("type", '=', '3')->whereNull('deleted_at')->count();
-        $usersAdminCount = DB::table("users")->where("type", '=', '1')->whereNull('deleted_at')->count();
+        $usersCount = DB::table("users")->where("type", '=', getenv('USERS_TYPE_USER'))->whereNull('deleted_at')->count();
+        $usersAdminCount = DB::table("users")->where("type", '=', getenv('USERS_TYPE_ADMIN'))->whereNull('deleted_at')->count();
         $jobsCount = DB::table("jobs")->whereNull('deleted_at')->count();
         return view('la.dashboard',[
             'usersCount' => $usersCount,

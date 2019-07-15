@@ -26,11 +26,39 @@
 
 <div class="box box-success">
 	<!--<div class="box-header"></div>-->
+    <div class="box-header" style="margin-bottom: 10px;">
+        <div class="box-tools" >
+            <form method="GET" action="" accept-charset="UTF-8" id="users-search-form">
+            @php
+                $keyword = app('request')->input('keyword');
+                $status = app('request')->has('status') ? intval(app('request')->input('status')) : null;
+            @endphp
+            @if ($mode != "admins")
+            <div class="input-group dropdown-field-search">
+                <label>Status:</label>
+                <select name="status" class="form-control input-sm">
+                    <option value="">All</option>
+                    <option value="1" @if($status == 1) selected @endif>Verified</option>
+                    <option value="2" @if($status === 2) selected @endif>Pending Varification</option>
+                    <option value="3" @if($status === 3) selected @endif>Not Verified</option>
+                </select>
+            </div>
+            @endif
+            <div class="input-group input-group-sm field-search">
+                <input type="text" name="keyword" class="form-control pull-right" value="{{$keyword}}" placeholder="Keyword">
+                <div class="input-group-btn">
+                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                </div>
+            </div>
+
+            {!! Form::close() !!}
+        </div>
+    </div>
 	<div class="box-body">
 		<table id="example1" class="table table-bordered">
 		<thead>
 		<tr class="success">
-			@foreach( $listing_cols as $col )
+			@foreach( $fields as $col )
 			<th>{{ $module->fields[$col]['label'] or ucfirst($col) }}</th>
 			@endforeach
 			@if($show_actions)
@@ -39,9 +67,44 @@
 		</tr>
 		</thead>
 		<tbody>
-			
+            @if($values)
+                @foreach($values as $value)
+                    <tr>
+                        @foreach( $fields as $col )
+                            <td>
+                                @if ($col == $view_col)
+                                    {!!$value->$col!!}
+                                @elseif($col == 'status')
+                                    @if ($value->is_verified)
+                                        Verified
+                                    @elseif($value->varification_pending && !$value->is_verified)
+                                        Pending Varification
+                                    @else
+                                        Not Verified
+                                    @endif
+
+                                @else
+                                    {{$value->$col}}
+                                @endif
+                            </td>
+                        @endforeach
+                        <td>{!!$value->actions!!}</td>
+                    </tr>
+                @endforeach
+            @else
+                <tr class="odd"><td valign="top" colspan="9" class="dataTables_empty text-center">No records found.</td></tr>
+            @endif
 		</tbody>
 		</table>
+        @if($values)
+            <ul class="pagination pagination-sm no-margin pull-right">
+                @if($keyword || $status)
+                    {{ $values->appends(['keyword' => $keyword, 'status' => $status])->links() }}
+                @else
+                    {{ $values->links() }}
+                @endif
+            </ul>
+        @endif
 	</div>
 </div>
 
@@ -56,32 +119,11 @@
 			{!! Form::open(['action' => 'LA\UsersController@store', 'id' => 'user-add-form']) !!}
 			<div class="modal-body">
 				<div class="box-body">
-                    @la_form($module)
-					
-					{{--
-					@la_input($module, 'name')
-					@la_input($module, 'email')
-					@la_input($module, 'password')
-					@la_input($module, 'type')
-					@la_input($module, 'is_verified')
-					@la_input($module, 'job_title')
-					@la_input($module, 'company_title')
-					@la_input($module, 'photo')
-					@la_input($module, 'photo_id')
-					@la_input($module, 'photo_selfie')
-					@la_input($module, 'location_title')
-					@la_input($module, 'top_skills')
-					@la_input($module, 'soft_skills')
-					@la_input($module, 'impress')
-					@la_input($module, 'phone')
-					@la_input($module, 'provider')
-					@la_input($module, 'provider_id')
-					@la_input($module, 'varification_pending')
-					@la_input($module, 'longitude')
-					@la_input($module, 'latitude')
-					@la_input($module, 'university_title')
-					@la_input($module, 'certificate_title')
-					--}}
+                    {{--@la_form($module)--}}
+                    @la_input($module, 'name')
+                    @la_input($module, 'email')
+                    @la_input($module, 'password')
+                    <input type="hidden" name="type" value="{{$mode == "admins" ? getenv('USERS_TYPE_ADMIN') : getenv('USERS_TYPE_USER')}}">
 				</div>
 			</div>
 			<div class="modal-footer">
@@ -98,27 +140,32 @@
 
 @push('styles')
 <link rel="stylesheet" type="text/css" href="{{ asset('la-assets/plugins/datatables/datatables.min.css') }}"/>
+<style>
+    #users-search-form {
+        display: flex;
+        flex-direction: row;
+    }
+    #users-search-form .dropdown-field-search{
+        width: 150px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+    }
+    #users-search-form .dropdown-field-search select{
+        margin: 0 15px;
+    }
+    #users-search-form .field-search{
+        width: 150px;
+    }
+</style>
 @endpush
 
 @push('scripts')
 <script src="{{ asset('la-assets/plugins/datatables/datatables.min.js') }}"></script>
 <script>
 $(function () {
-	$("#example1").DataTable({
-		processing: true,
-        serverSide: true,
-        ajax: "{{ url(config('laraadmin.adminRoute') . '/user_dt_ajax') }}",
-		language: {
-			lengthMenu: "_MENU_",
-			search: "_INPUT_",
-			searchPlaceholder: "Search"
-		},
-		@if($show_actions)
-		columnDefs: [ { orderable: false, targets: [-1] }],
-		@endif
-	});
 	$("#user-add-form").validate({
-		
+
 	});
 });
 </script>
