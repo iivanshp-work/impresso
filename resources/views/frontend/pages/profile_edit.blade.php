@@ -319,7 +319,7 @@
                     <input type="file" name="files_hidden" class="hide" multiple="multiple" data-edit-profile-send-popup-files-hidden="">
                     <a href="#" class="btn btn-border btn-download" data-edit-profile-send-popup-files="">Upload document</a>
                     <span class="text-color-gray default_title">Accepted files: PDF, JPG, PNG, DOC.</span>
-                    <span class="text-color-gray hide selected_files_title" ></span>
+                    <span class="text-color-gray hide selected_files_title" ><span class="files_text"></span><span data-remove-selected-files="" class="remove_selected_files">X</span></span>
                     <button type="button" class="btn btn-violet" data-profile-edit-upload-btn="">
                         Continue
                     </button>
@@ -338,10 +338,10 @@
                     You are about to remove this file.
                 </p>
                 <p class="my-10">Are you sure?</p>
-                <button type="button" class="btn btn-violet">
+                <button type="button" class="btn btn-violet" data-profile-edit-upload-remove-btn="">
                     Continue
                 </button>
-                <button type="button" class="btn btn-border close-modal">
+                <button type="button" class="btn btn-border close-modal" data-profile-edit-upload-remove-btn-cancel="">
                     Cancel
                 </button>
             </div>

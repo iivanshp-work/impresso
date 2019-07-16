@@ -2,20 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="56c440ad-b7ef-4d5c-add7-f95702b4bd27" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LA/User_EducationsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LA/User_EducationsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LA/User_certificationsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LA/User_certificationsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/LA/UsersController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/LA/UsersController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/custom-dev.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/custom-dev.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/la/jobs/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/la/jobs/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/la/user_certifications/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/la/user_certifications/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/la/user_certifications/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/la/user_certifications/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/la/user_certifications/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/la/user_certifications/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/la/user_educations/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/la/user_educations/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/la/user_educations/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/la/user_educations/index.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/la/user_educations/show.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/la/user_educations/show.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/la/users/edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/la/users/edit.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/la/users/index.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/la/users/index.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -31,11 +19,20 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="406">
+              <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="436">
-              <caret line="321" column="74" selection-start-line="321" selection-start-column="54" selection-end-line="321" selection-end-column="74" />
+            <state relative-caret-position="322">
+              <caret line="343" column="73" lean-forward="true" selection-start-line="343" selection-start-column="73" selection-end-line="343" selection-end-column="115" />
             </state>
           </provider>
         </entry>
@@ -43,8 +40,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/custom-dev.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="553">
-              <caret line="771" lean-forward="true" selection-start-line="771" selection-end-line="771" />
+            <state relative-caret-position="629">
+              <caret line="694" column="30" selection-start-line="694" selection-start-column="30" selection-end-line="694" selection-end-column="30" />
             </state>
           </provider>
         </entry>
@@ -149,7 +146,6 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/SignController.php" />
         <option value="$PROJECT_DIR$/app/Models/User.php" />
         <option value="$PROJECT_DIR$/.env.example" />
-        <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/resources/views/la/users/show.blade.php" />
         <option value="$PROJECT_DIR$/vendor/dwij/laraadmin/src/Models/Module.php" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch_3.php" />
@@ -171,6 +167,7 @@
         <option value="$PROJECT_DIR$/resources/views/la/user_certifications/index.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php" />
         <option value="$PROJECT_DIR$/public/js/custom-dev.js" />
+        <option value="$PROJECT_DIR$/.env" />
       </list>
     </option>
   </component>
@@ -277,7 +274,7 @@
       <path value="$PROJECT_DIR$/vendor/firebase/php-jwt" />
     </include_path>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="683" />
     <option name="width" value="683" />
     <option name="height" value="728" />
@@ -440,7 +437,7 @@
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="214459000" />
+    <option name="totallyTimeSpent" value="216284000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="55" y="25" width="1865" height="1055" extended-state="6" />
@@ -879,24 +876,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
+    <entry file="file://$PROJECT_DIR$/public/js/custom-dev.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="253">
-          <caret line="20" selection-start-line="20" selection-end-line="20" />
+        <state relative-caret-position="629">
+          <caret line="694" column="30" selection-start-line="694" selection-start-column="30" selection-end-line="694" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/custom-dev.js">
+    <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="553">
-          <caret line="771" lean-forward="true" selection-start-line="771" selection-end-line="771" />
+        <state relative-caret-position="406">
+          <caret line="29" lean-forward="true" selection-start-line="29" selection-end-line="29" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="436">
-          <caret line="321" column="74" selection-start-line="321" selection-start-column="54" selection-end-line="321" selection-end-column="74" />
+        <state relative-caret-position="322">
+          <caret line="343" column="73" lean-forward="true" selection-start-line="343" selection-start-column="73" selection-end-line="343" selection-end-column="115" />
         </state>
       </provider>
     </entry>

@@ -666,7 +666,7 @@ $document.ready(function(){
         $('#edit_profile_upload_attach_form [name="url"]').val('');
         $('#edit_profile_upload_attach_form [name="files"]').val('');
         $('#edit_profile_upload_attach_form .default_title').show();
-        $('#edit_profile_upload_attach_form .selected_files_title').hide().text('');
+        $('#edit_profile_upload_attach_form .selected_files_title').hide().find('.files_text').text('');
     }
 
     function isUrlValid(value){
@@ -684,6 +684,23 @@ $document.ready(function(){
         btn.trigger('click');
     });
 
+    $('#edit_profile_upload_attach_form [data-remove-selected-files]').on('click change', function(e){
+        e.preventDefault();
+        openProfileEditPopup('upload-remove');
+    });
+
+    $('[data-profile-edit-upload-remove-btn]').on('click change', function(e){
+        e.preventDefault();
+        clearUploadForm();
+        closeProfileEditPopup('upload-remove');
+        openProfileEditPopup('upload');
+    });
+
+    $('[data-profile-edit-upload-remove-btn-cancel]').on('click change', function(e){
+        e.preventDefault();
+        openProfileEditPopup('upload');
+    });
+
     // upload file so server
     $('[data-edit-profile-send-popup-files-hidden]').on('change', function(e){
         let $this = $(this), item = $this.parent(), btn = item.find('[data-edit-profile-send-popup-files]'),
@@ -693,7 +710,7 @@ $document.ready(function(){
         let notAvailable = false;
         let selectedFiles = '';
         $('#edit_profile_upload_attach_form .default_title').show();
-        $('#edit_profile_upload_attach_form .selected_files_title').text('').hide();
+        $('#edit_profile_upload_attach_form .selected_files_title').hide().find('.files_text').text('');
         $('#edit_profile_upload_attach_form [data-files-value]').val('');
         if (files.length) {
             selectedFiles += files.length + ' file' + (files.length > 1 ? 's ' : ' ') + 'selected:';
@@ -747,7 +764,7 @@ $document.ready(function(){
                 }else{
                     if(response.files){
                         $('#edit_profile_upload_attach_form .default_title').hide();
-                        $('#edit_profile_upload_attach_form .selected_files_title').html(selectedFiles).show();
+                        $('#edit_profile_upload_attach_form .selected_files_title').show().find('.files_text').text(selectedFiles);
                         $('#edit_profile_upload_attach_form [data-files-value]').val(response.files);
                     }else{
                         showError('An error occurred. Please try again later.', 'Error', function(){
