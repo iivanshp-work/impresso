@@ -9,20 +9,46 @@
         <section class="content">
           <!-- Small boxes (Stat box) -->
           <div class="row">
-            <div class="col-lg-6 col-xs-6">
+            <div class="col-lg-3 col-xs-3">
+              <!-- small box -->
+              <div class="small-box bg-yellow">
+                <div class="inner">
+                  <h3>@if ($usersPendingCount) {{$usersPendingCount}} @else 0 @endif</h3>
+                  <p>Pending Verification Users</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-group"></i>
+                </div>
+                <a href="{{ url(config('laraadmin.adminRoute') . '/users?status=2') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div><!-- ./col -->
+            <div class="col-lg-3 col-xs-3">
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
-                  <h3>@if ($usersCount) {{$usersCount}} @else 0 @endif / @if ($usersAdminCount) {{$usersAdminCount}} @else 0 @endif</h3>
-                  <p>Users / Administrators</p>
+                  <h3>@if ($usersCount) {{$usersCount}} @else 0 @endif</h3>
+                  <p>Users</p>
                 </div>
                 <div class="icon">
-                  <i class="ion ion-person-add"></i>
+                  <i class="fa fa-group"></i>
                 </div>
                 <a href="{{ url(config('laraadmin.adminRoute') . '/users') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
-            <div class="col-lg-6 col-xs-6">
+            <div class="col-lg-3 col-xs-3">
+              <!-- small box -->
+              <div class="small-box bg-red-active">
+                <div class="inner">
+                  <h3>@if ($usersAdminCount) {{$usersAdminCount}} @else 0 @endif</h3>
+                  <p>Administrators</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-adn"></i>
+                </div>
+                <a href="{{ url(config('laraadmin.adminRoute') . '/administrators') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div><!-- ./col -->
+            <div class="col-lg-3 col-xs-3">
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
@@ -35,34 +61,7 @@
                 <a href="{{ url(config('laraadmin.adminRoute') . '/jobs') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
-            {{--
-            <div class="col-lg-6 col-xs-6">
-              <!-- small box -->
-              <div class="small-box bg-yellow">
-                <div class="inner">
-                  <h3>44</h3>
-                  <p>User Registrations</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-person-add"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-              </div>
-            </div><!-- ./col -->
-            <div class="col-lg-6 col-xs-6">
-              <!-- small box -->
-              <div class="small-box bg-red">
-                <div class="inner">
-                  <h3>65</h3>
-                  <p>Unique Visitors</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="#" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
-              </div>
-            </div><!-- ./col -->
-            --}}
+
           </div><!-- /.row -->
 
 </section><!-- /.content -->
@@ -115,7 +114,7 @@ $.widget.bridge('uibutton', $.ui.button);
 @push('scripts')
 <script>
 (function($) {
-$('body').pgNotification({
+/*$('body').pgNotification({
 style: 'circle',
 title: 'LaraAdmin',
 message: "Welcome to LaraAdmin...",
@@ -123,7 +122,7 @@ position: "top-right",
 timeout: 0,
 type: "success",
 thumbnail: '<img width="40" height="40" style="display: inline-block;" src="{{ Gravatar::fallback(asset('la-assets/img/user2-160x160.jpg'))->get(Auth::user()->email, 'default') }}" data-src="assets/img/profiles/avatar.jpg" data-src-retina="assets/img/profiles/avatar2x.jpg" alt="">'
-}).show();
+}).show();*/
 })(window.jQuery);
 </script>
 @endpush

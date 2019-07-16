@@ -4,7 +4,7 @@
 @section("contentheader_description", ($mode == "admins" ? "Administrators listing" : "Users listing"))
 @section("section", ($mode == "admins" ? "Administrators" : "Users"))
 @section("sub_section", "Listing")
-@section("htmlheader_title", $mode == "admins" ? "Administrators listing" : "Users listing"))
+@section("htmlheader_title", ($mode == "admins" ? "Administrators listing" : "Users listing"))
 
 @section("headerElems")
 @la_access("Users", "create")
@@ -31,9 +31,18 @@
             <form method="GET" action="" accept-charset="UTF-8" id="users-search-form">
             @php
                 $keyword = app('request')->input('keyword');
+                $date_from = app('request')->input('date_from');
+                $date_to = app('request')->input('date_to');
                 $status = app('request')->has('status') ? intval(app('request')->input('status')) : null;
             @endphp
             @if ($mode != "admins")
+                    <div class="input-group date-search">
+                        <label>From:</label>
+                        <input type="text" name="date_from" class="form-control datepicker" autocomplete="off" value="@if($date_from){{Carbon::parse($date_from)->format('Y/m/d')}}@endif" placeholder="From">
+                        <label>To:</label>
+                        <input type="text" name="date_to" class="form-control datepicker" autocomplete="off" value="@if($date_to){{Carbon::parse($date_to)->format('Y/m/d')}}@endif" placeholder="To">
+                    </div>
+
             <div class="input-group dropdown-field-search">
                 <label>Status:</label>
                 <select name="status" class="form-control input-sm">
@@ -45,7 +54,7 @@
             </div>
             @endif
             <div class="input-group input-group-sm field-search">
-                <input type="text" name="keyword" class="form-control pull-right" value="{{$keyword}}" placeholder="Keyword">
+                <input type="text" name="keyword" class="form-control pull-right" autocomplete="off" value="{{$keyword}}" placeholder="Keyword">
                 <div class="input-group-btn">
                     <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
                 </div>
@@ -59,7 +68,7 @@
 		<thead>
 		<tr class="success">
 			@foreach( $fields as $col )
-			<th>{{ $module->fields[$col]['label'] or ucfirst($col) }}</th>
+			<th>@if($col == 'created_at'){{'Sign Up'}}@else{{ $module->fields[$col]['label'] or ucfirst($col) }}@endif</th>
 			@endforeach
 			@if($show_actions)
 			<th>Actions</th>
@@ -74,6 +83,8 @@
                             <td>
                                 @if ($col == $view_col)
                                     {!!$value->$col!!}
+                                @elseif($col == 'created_at')
+                                    {{Carbon::parse($value->$col)->format('Y/m/d H:i')}}
                                 @elseif($col == 'status')
                                     @if ($value->is_verified)
                                         Verified
@@ -99,7 +110,7 @@
         @if($values)
             <ul class="pagination pagination-sm no-margin pull-right">
                 @if($keyword || $status)
-                    {{ $values->appends(['keyword' => $keyword, 'status' => $status])->links() }}
+                    {{ $values->appends(['keyword' => $keyword, 'status' => $status, 'date_from' => $date_from, 'date_to' => $date_to])->links() }}
                 @else
                     {{ $values->links() }}
                 @endif
@@ -139,7 +150,7 @@
 @endsection
 
 @push('styles')
-<link rel="stylesheet" type="text/css" href="{{ asset('la-assets/plugins/datatables/datatables.min.css') }}"/>
+<link rel="stylesheet" href="{{ asset('la-assets/plugins/datepicker/datepicker3.css') }}">
 <style>
     #users-search-form {
         display: flex;
@@ -157,13 +168,28 @@
     #users-search-form .field-search{
         width: 150px;
     }
+    #users-search-form .date-search{
+        display: flex;
+        align-items: baseline;
+    }
+    #users-search-form .date-search input{
+        height: 27px;
+        padding: 3px 8px;
+        font-size: 13px;
+        line-height: 1.5;
+        border-radius: 3px;
+        margin: 0 10px;
+    }
 </style>
 @endpush
 
 @push('scripts')
-<script src="{{ asset('la-assets/plugins/datatables/datatables.min.js') }}"></script>
+<script src="{{ asset('la-assets/plugins/datepicker/bootstrap-datepicker.js') }}"></script>
 <script>
 $(function () {
+    $('.datepicker').datepicker({
+        format: "yyyy/mm/dd"
+    });
 	$("#user-add-form").validate({
 
 	});

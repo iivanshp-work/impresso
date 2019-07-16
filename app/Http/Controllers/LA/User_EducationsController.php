@@ -7,6 +7,7 @@
 namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
+use App\Models\Validation_status;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
@@ -23,7 +24,7 @@ class User_EducationsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title';
-	public $listing_cols = ['id', 'title', 'speciality', 'status', 'user_id', 'url', 'files_uploaded'];
+	public $listing_cols = ['id', 'title', 'speciality', 'status', 'user_id'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns
@@ -42,15 +43,68 @@ class User_EducationsController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		$module = Module::get('User_Educations');
-		
+        $paginateLimit = 20;
+
 		if(Module::hasAccess($module->id)) {
+            $query = DB::table('user_educations')->select($this->listing_cols)->whereNull('deleted_at');
+            $params = [];
+            $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
+            $params['status'] = $request->has('status') ? intval($request->input('status')) : null;
+            $params['user_id'] = $request->has('user_id') ? intval($request->input('user_id')) : null;
+
+            if ($params['keyword']) {
+                $query = $query->where(function ($query) use ($params) {
+                    $query->orWhere("title", "like", "%" . $params['keyword'] . "%");
+                    $query->orWhere("speciality", "like", "%" . $params['keyword'] . "%");
+                });
+            }
+            if ($params['status'] !== null) {
+                $query = $query->where("status", "=", $params['status']);
+            }
+            if ($params['user_id'] !== null) {
+                $query = $query->where("user_id", "=", $params['user_id']);
+            }
+            $values = $query->orderBy("created_at", 'desc')->paginate($paginateLimit);
+            if ($values) {
+                $fields_popup = ModuleFields::getModuleFields('User_Educations');
+                for($i=0; $i < count($values); $i++) {
+                    for ($j=0; $j < count($this->listing_cols); $j++) {
+                        $col = $this->listing_cols[$j];
+
+                        if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
+                            $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                        }
+                        if($col == $this->view_col) {
+                            $values[$i]->$col = '<a href="'.url(config('laraadmin.adminRoute') . '/jobs/'.$values[$i]->id).'">'.$values[$i]->$col.'</a>';
+                        }
+                    }
+
+                    if($this->show_action) {
+                        $output = '';
+                        if(Module::hasAccess("Jobs", "edit")) {
+                            $output .= '<a href="'.url(config('laraadmin.adminRoute') . '/jobs/'.$values[$i]->id.'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                        }
+
+                        if(Module::hasAccess("Jobs", "delete")) {
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.jobs.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
+                            $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
+                            $output .= Form::close();
+                        }
+                        $values[$i]->actions = (string)$output;
+                    }
+                }
+            }
+            $statuses = Validation_status::all()->pluck('title', 'id');
+
 			return View('la.user_educations.index', [
 				'show_actions' => $this->show_action,
 				'listing_cols' => $this->listing_cols,
-				'module' => $module
+				'module' => $module,
+				'$statuses' => $statuses,
+				'values' => $values
 			]);
 		} else {
             return redirect(config('laraadmin.adminRoute')."/");

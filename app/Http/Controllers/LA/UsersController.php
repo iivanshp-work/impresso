@@ -7,6 +7,7 @@
 namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
@@ -47,17 +48,25 @@ class UsersController extends Controller
 		$module = Module::get('Users');
         $mode = $request->path() == "admin/administrators" ? "admins" : "users";
         $paginateLimit = 20;
-
+        $this->listing_cols[] = 'created_at';
         $query = DB::table('users')->select($this->listing_cols)->whereNull('deleted_at')->where('type', '=', ($mode == "admins" ? getenv('USERS_TYPE_ADMIN') : getenv('USERS_TYPE_USER')));
         $params = [];
         $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
         $params['status'] = $request->has('status') ? intval($request->input('status')) : null;
+        $params['date_from'] = $request->has('date_from') ? trim($request->input('date_from')) : null;
+        $params['date_to'] = $request->has('date_to') ? trim($request->input('date_to')) : null;
 
         if ($params['keyword']) {
             $query = $query->where(function ($query) use ($params) {
                 $query->orWhere("name", "like", "%" . $params['keyword'] . "%");
                 $query->orWhere("email", "like", "%" . $params['keyword'] . "%");
             });
+        }
+        if ($params['date_from']) {
+            $query = $query->where("created_at", ">=", Carbon::parse($params['date_from'])->startOfDay());
+        }
+        if ($params['date_to']) {
+            $query = $query->where("created_at", "<=", Carbon::parse($params['date_to'])->endOfDay());
         }
         if ($params['status'] !== null) {
             if($params['status'] == 1) {
@@ -75,6 +84,7 @@ class UsersController extends Controller
             for($i=0; $i < count($values); $i++) {
                 for ($j=0; $j < count($this->listing_cols); $j++) {
                     $col = $this->listing_cols[$j];
+                    if ($col == 'created_at') continue;
                     if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
                         $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
 
@@ -102,11 +112,10 @@ class UsersController extends Controller
         if($values->count() == 0){
             $values = 0;
         }
-        $fields = ['id', 'name', 'email', 'status'];
         if ($mode == "admins") {
             $fields = ['id', 'name', 'email'];
         } else {
-            $fields = ['id', 'name', 'email', 'status'];
+            $fields = ['id', 'name', 'email', 'status', 'created_at'];
         }
 
 		if(Module::hasAccess($module->id)) {
@@ -145,7 +154,7 @@ class UsersController extends Controller
 		if(Module::hasAccess("Users", "create")) {
 
 			$rules = Module::validateRules("Users", $request);
-
+            $mode = $request->has('type') && $request->input('type') == getenv('USERS_TYPE_ADMIN') ? 'admins' : 'users';
 			$validator = Validator::make($request->all(), $rules);
 
 			if ($validator->fails()) {
@@ -154,7 +163,11 @@ class UsersController extends Controller
 
 			$insert_id = Module::insert("Users", $request);
 
-			return redirect()->route(config('laraadmin.adminRoute') . '.users.index');
+            if ($mode == "admins") {
+                return redirect(config('laraadmin.adminRoute')."/administrators");
+            } else {
+                return redirect()->route(config('laraadmin.adminRoute') . '.users.index');
+            }
 
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
@@ -239,10 +252,12 @@ class UsersController extends Controller
 	public function update(Request $request, $id)
 	{
 		if(Module::hasAccess("Users", "edit")) {
-
 		    $user = User::find($id);
             $mode = $user && $user->type == getenv('USERS_TYPE_ADMIN') ? 'admins' : 'users';
 
+            if (!$request->input('password') && isset($request->all()['password'])){
+                $request->request->remove('password');
+            }
 			$rules = Module::validateRules("Users", $request, true);
 
 			$validator = Validator::make($request->all(), $rules);
@@ -251,6 +266,16 @@ class UsersController extends Controller
 				return redirect()->back()->withErrors($validator)->withInput();;
 			}
 
+			$status = intval($request->input('status'));
+			if ($status == 1) {
+			    $request->request->add(['is_verified' => 'is_verified']);
+            } else if ($status == 2) {
+                $request->request->add(['varification_pending' => 'varification_pending']);
+                $request->request->add(['is_verified_hidden' => 'false']);
+            } else if ($status == 3) {
+                $request->request->add(['is_verified_hidden' => 'false']);
+                $request->request->add(['varification_pending_hidden' => 'false']);
+            }
 			$insert_id = Module::updateRow("Users", $request, $id);
 
 			if ($mode == "admins") {
@@ -273,10 +298,16 @@ class UsersController extends Controller
 	public function destroy($id)
 	{
 		if(Module::hasAccess("Users", "delete")) {
-			User::find($id)->delete();
+			$user = User::find($id);
+            $mode = $user && $user->type == getenv('USERS_TYPE_ADMIN') ? 'admins' : 'users';
+            $user->delete();
 
 			// Redirecting to index() method
-			return redirect()->route(config('laraadmin.adminRoute') . '.users.index');
+            if ($mode == "admins") {
+                return redirect(config('laraadmin.adminRoute')."/administrators");
+            } else {
+                return redirect()->route(config('laraadmin.adminRoute') . '.users.index');
+            }
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
