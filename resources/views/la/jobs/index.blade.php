@@ -49,6 +49,12 @@
 				</div>
 			</div>
 
+            @if($keyword || $status)
+                <div class="input-group">
+                    <a href="{{url(config('laraadmin.adminRoute') . "/user_certifications")}}" type="submit" class="btn btn-default btn-sm" style="margin-left: 20px;">Clear</a>
+                </div>
+            @endif
+
 			{!! Form::close() !!}
 		</div>
 	</div>

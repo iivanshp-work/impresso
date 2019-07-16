@@ -78,7 +78,6 @@ class UsersController extends Controller
             }
         }
         $values = $query->orderBy("id", 'desc')->paginate($paginateLimit);
-
         if($values){
             $fields_popup = ModuleFields::getModuleFields('Users');
             for($i=0; $i < count($values); $i++) {
@@ -95,15 +94,25 @@ class UsersController extends Controller
                 }
 
                 if($this->show_action) {
+                    $user = User::find($values[$i]->id);
                     $output = '';
                     if(Module::hasAccess("Users", "edit")) {
-                        $output .= '<a href="'.url(config('laraadmin.adminRoute') . '/users/'.$values[$i]->id.'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                        $output .= '<a href="'.url(config('laraadmin.adminRoute') . '/users/'.$values[$i]->id.'/edit').'" class="btn btn-warning btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
                     }
 
                     if(Module::hasAccess("Users", "delete")) {
                         $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.users.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
-                        $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
+                        $output .= ' <button class="btn btn-danger btn-xs margin-r-5" type="submit"><i class="fa fa-times"></i></button>';
                         $output .= Form::close();
+                    }
+
+
+                    if ($user && $user->educations()->count()) {
+                        $output .= '<a title="Educations" href="'.url(config('laraadmin.adminRoute') . '/user_educations?selected_user_id=' . $values[$i]->id).'" class="btn btn-bitbucket btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-archive"></i></a>';
+                    }
+
+                    if ($user && $user->certifications()->count()) {
+                        $output .= '<a title="Certifications" href="'.url(config('laraadmin.adminRoute') . '/user_certifications?selected_user_id=' . $values[$i]->id).'" class="btn btn-primary btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-certificate"></i></a>';
                     }
                     $values[$i]->actions = (string)$output;
                 }

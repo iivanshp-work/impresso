@@ -49,6 +49,12 @@
                 <div class="col-md-10 col-md-offset-1">
                     {!! Form::model($user, ['route' => [config('laraadmin.adminRoute') . '.users.update', $user->id ], 'method'=>'PUT', 'id' => 'user-edit-form']) !!}
                     {{--@la_form($module)--}}
+                    <div class="form-group">
+                        {!! Form::submit( 'Update', ['class'=>'btn btn-success margin-r-5']) !!}
+                        <button class="btn btn-primary margin-right pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_certifications?selected_user_id=' . $user->id) }}"><i class="fa fa fa-certificate margin-r-5"></i> Certifications</a></button>
+                        <button class="btn btn-bitbucket margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_educations?selected_user_id=' . $user->id) }}"><i class="fa fa fa-archive margin-r-5"></i> Educations</a></button>
+                        <button class="btn btn-default margin-r-5 "><a href="{{ url(config('laraadmin.adminRoute') . '/users') }}">Cancel</a></button>
+                    </div>
                     <div class="row" style="border-bottom: 1px dashed #e2e4e8;">
                         <div class="col-md-6">
                             <h4>General Info:</h4>
@@ -129,139 +135,12 @@
                     --}}
                     <br>
                     <div class="form-group">
-                        {!! Form::submit( 'Update', ['class'=>'btn btn-success']) !!} <button class="btn btn-default pull-right"><a href="{{ url(config('laraadmin.adminRoute') . '/users') }}">Cancel</a></button>
+                        {!! Form::submit( 'Update', ['class'=>'btn btn-success margin-r-5']) !!}
+                        <button class="btn btn-primary margin-right pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_certifications?selected_user_id=' . $user->id) }}"><i class="fa fa fa-certificate margin-r-5"></i> Certifications</a></button>
+                        <button class="btn btn-bitbucket margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_educations?selected_user_id=' . $user->id) }}"><i class="fa fa fa-archive margin-r-5"></i> Educations</a></button>
+                        <button class="btn btn-default margin-r-5 "><a href="{{ url(config('laraadmin.adminRoute') . '/users') }}">Cancel</a></button>
                     </div>
                     {!! Form::close() !!}
-                </div>
-                <div class="col-md-12">
-                    <table id="example1" class="table table-bordered">
-                        <thead>
-                        <tr class="success">
-                            <th>Id</th>
-                            <th>Name</th>
-                            <th>Email</th>
-                            <th>Status</th>
-                            <th>Sign Up</th>
-                            <th>Actions</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        <tr>
-                            <td>
-                                13
-                            </td>
-                            <td>
-                                <a href="http://impresso.me/public/admin/users/13">Ivan Tester</a>
-                            </td>
-                            <td>
-                                iivanshp+test1@gmail.com
-                            </td>
-                            <td>
-                                Verified
-
-                            </td>
-                            <td>
-                                2019/07/04 20:54
-                            </td>
-                            <td><a href="http://impresso.me/public/admin/users/13/edit" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a><form method="POST" action="http://impresso.me/public/admin/users/13" accept-charset="UTF-8" style="display:inline"><input name="_method" type="hidden" value="DELETE"><input name="_token" type="hidden" value="hePdeOG5ghM3jWc4rEKpw16TwfI9cTYX2RAf3jft"> <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button></form></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                12
-                            </td>
-                            <td>
-                                <a href="http://impresso.me/public/admin/users/12">Name </a>
-                            </td>
-                            <td>
-                                iivanshp+test@gmail.com
-                            </td>
-                            <td>
-                                Verified
-
-                            </td>
-                            <td>
-                                2019/07/04 20:52
-                            </td>
-                            <td><a href="http://impresso.me/public/admin/users/12/edit" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a><form method="POST" action="http://impresso.me/public/admin/users/12" accept-charset="UTF-8" style="display:inline"><input name="_method" type="hidden" value="DELETE"><input name="_token" type="hidden" value="hePdeOG5ghM3jWc4rEKpw16TwfI9cTYX2RAf3jft"> <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button></form></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                11
-                            </td>
-                            <td>
-                                <a href="http://impresso.me/public/admin/users/11"></a>
-                            </td>
-                            <td>
-                                iivanshp@gmail.com
-                            </td>
-                            <td>
-                                Not Verified
-
-                            </td>
-                            <td>
-                                2019/07/04 20:52
-                            </td>
-                            <td><a href="http://impresso.me/public/admin/users/11/edit" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a><form method="POST" action="http://impresso.me/public/admin/users/11" accept-charset="UTF-8" style="display:inline"><input name="_method" type="hidden" value="DELETE"><input name="_token" type="hidden" value="hePdeOG5ghM3jWc4rEKpw16TwfI9cTYX2RAf3jft"> <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button></form></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                10
-                            </td>
-                            <td>
-                                <a href="http://impresso.me/public/admin/users/10">Ivan Developer</a>
-                            </td>
-                            <td>
-                                admintest10@mail.com
-                            </td>
-                            <td>
-                                Verified
-
-                            </td>
-                            <td>
-                                2019/07/03 20:45
-                            </td>
-                            <td><a href="http://impresso.me/public/admin/users/10/edit" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a><form method="POST" action="http://impresso.me/public/admin/users/10" accept-charset="UTF-8" style="display:inline"><input name="_method" type="hidden" value="DELETE"><input name="_token" type="hidden" value="hePdeOG5ghM3jWc4rEKpw16TwfI9cTYX2RAf3jft"> <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button></form></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                9
-                            </td>
-                            <td>
-                                <a href="http://impresso.me/public/admin/users/9">Ivan</a>
-                            </td>
-                            <td>
-                                admintest7@mail.com
-                            </td>
-                            <td>
-                                Pending Varification
-
-                            </td>
-                            <td>
-                                2019/07/03 20:35
-                            </td>
-                            <td><a href="http://impresso.me/public/admin/users/9/edit" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a><form method="POST" action="http://impresso.me/public/admin/users/9" accept-charset="UTF-8" style="display:inline"><input name="_method" type="hidden" value="DELETE"><input name="_token" type="hidden" value="hePdeOG5ghM3jWc4rEKpw16TwfI9cTYX2RAf3jft"> <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button></form></td>
-                        </tr>
-                        <tr>
-                            <td>
-                                2
-                            </td>
-                            <td>
-                                <a href="http://impresso.me/public/admin/users/2">Test User</a>
-                            </td>
-                            <td>
-                                test_user@mail.com
-                            </td>
-                            <td>
-                                Not Verified
-
-                            </td>
-                            <td>
-                                2019/07/02 21:14
-                            </td>
-                            <td><a href="http://impresso.me/public/admin/users/2/edit" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a><form method="POST" action="http://impresso.me/public/admin/users/2" accept-charset="UTF-8" style="display:inline"><input name="_method" type="hidden" value="DELETE"><input name="_token" type="hidden" value="hePdeOG5ghM3jWc4rEKpw16TwfI9cTYX2RAf3jft"> <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button></form></td>
-                        </tr>
-                        </tbody>
-                    </table>
                 </div>
             </div>
         </div>

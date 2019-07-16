@@ -60,6 +60,12 @@
                 </div>
             </div>
 
+            @if($keyword || $status || $date_from || $date_to)
+                <div class="input-group">
+                    <a href="{{url(config('laraadmin.adminRoute') . "/users")}}" type="submit" class="btn btn-default btn-sm" style="margin-left: 20px;">Clear</a>
+                </div>
+            @endif
+
             {!! Form::close() !!}
         </div>
     </div>
@@ -71,7 +77,7 @@
 			<th>@if($col == 'created_at'){{'Sign Up'}}@else{{ $module->fields[$col]['label'] or ucfirst($col) }}@endif</th>
 			@endforeach
 			@if($show_actions)
-			<th>Actions</th>
+			<th width="200">Actions</th>
 			@endif
 		</tr>
 		</thead>
@@ -109,7 +115,7 @@
 		</table>
         @if($values)
             <ul class="pagination pagination-sm no-margin pull-right">
-                @if($keyword || $status)
+                @if($keyword || $status || $date_from || $date_to)
                     {{ $values->appends(['keyword' => $keyword, 'status' => $status, 'date_from' => $date_from, 'date_to' => $date_to])->links() }}
                 @else
                     {{ $values->links() }}

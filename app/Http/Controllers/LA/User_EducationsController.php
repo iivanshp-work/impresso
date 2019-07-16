@@ -7,6 +7,7 @@
 namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
+use App\Models\User;
 use App\Models\Validation_status;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -22,74 +23,89 @@ use App\Models\User_Education;
 
 class User_EducationsController extends Controller
 {
-	public $show_action = true;
-	public $view_col = 'title';
-	public $listing_cols = ['id', 'title', 'speciality', 'status', 'user_id'];
-	
-	public function __construct() {
-		// Field Access of Listing Columns
-		if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
-			$this->middleware(function ($request, $next) {
-				$this->listing_cols = ModuleFields::listingColumnAccessScan('User_Educations', $this->listing_cols);
-				return $next($request);
-			});
-		} else {
-			$this->listing_cols = ModuleFields::listingColumnAccessScan('User_Educations', $this->listing_cols);
-		}
-	}
-	
-	/**
-	 * Display a listing of the User_Educations.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function index(Request $request)
-	{
-		$module = Module::get('User_Educations');
+    public $show_action = true;
+    public $view_col = 'title';
+    public $listing_cols = ['id', 'title', 'speciality', 'status', 'user_id'];
+
+    public function __construct() {
+        // Field Access of Listing Columns
+        if (\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
+            $this->middleware(function ($request, $next) {
+                $this->listing_cols = ModuleFields::listingColumnAccessScan('User_Educations', $this->listing_cols);
+                return $next($request);
+            });
+        } else {
+            $this->listing_cols = ModuleFields::listingColumnAccessScan('User_Educations', $this->listing_cols);
+        }
+    }
+
+    /**
+     * Display a listing of the User_Educations.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function index(Request $request) {
+        $module = Module::get('User_Educations');
         $paginateLimit = 20;
 
-		if(Module::hasAccess($module->id)) {
+        if (Module::hasAccess($module->id)) {
             $query = DB::table('user_educations')->select($this->listing_cols)->whereNull('deleted_at');
             $params = [];
             $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
             $params['status'] = $request->has('status') ? intval($request->input('status')) : null;
-            $params['user_id'] = $request->has('user_id') ? intval($request->input('user_id')) : null;
+            $params['selected_user_id'] = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;
 
             if ($params['keyword']) {
-                $query = $query->where(function ($query) use ($params) {
+                $users = DB::table('users')->select('id')->whereNull('deleted_at')->where(function ($query) use ($params) {
+                    $query->orWhere("name", "like", "%" . $params['keyword'] . "%");
+                    $query->orWhere("email", "like", "%" . $params['keyword'] . "%");
+                })->where('type', '=', getenv('USERS_TYPE_USER'))->get();
+                $userIDS = [];
+                if ($users) {
+                    foreach($users as $user) {
+                        $userIDS[] = $user->id;
+                    }
+                    $userIDS = array_unique($userIDS);
+                }
+                $query = $query->where(function ($query) use ($params, $userIDS) {
                     $query->orWhere("title", "like", "%" . $params['keyword'] . "%");
                     $query->orWhere("speciality", "like", "%" . $params['keyword'] . "%");
+                    if (!empty($userIDS)) {
+                        $query->orWhereIn("user_id", $userIDS);
+                    }
                 });
             }
             if ($params['status'] !== null) {
                 $query = $query->where("status", "=", $params['status']);
             }
-            if ($params['user_id'] !== null) {
-                $query = $query->where("user_id", "=", $params['user_id']);
+            $selectedUser = null;
+            if ($params['selected_user_id'] !== null) {
+                $selectedUser = User::find($params['selected_user_id']);
+                $query = $query->where("user_id", "=", $params['selected_user_id']);
             }
             $values = $query->orderBy("created_at", 'desc')->paginate($paginateLimit);
             if ($values) {
                 $fields_popup = ModuleFields::getModuleFields('User_Educations');
-                for($i=0; $i < count($values); $i++) {
-                    for ($j=0; $j < count($this->listing_cols); $j++) {
+                for ($i = 0; $i < count($values); $i++) {
+                    for ($j = 0; $j < count($this->listing_cols); $j++) {
                         $col = $this->listing_cols[$j];
 
-                        if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
+                        if ($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
                             $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
                         }
-                        if($col == $this->view_col) {
-                            $values[$i]->$col = '<a href="'.url(config('laraadmin.adminRoute') . '/jobs/'.$values[$i]->id).'">'.$values[$i]->$col.'</a>';
+                        if ($col == $this->view_col) {
+                            $values[$i]->$col = '<a href="' . url(config('laraadmin.adminRoute') . '/user_educations/' . $values[$i]->id) . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '') . '">' . $values[$i]->$col . '</a>';
                         }
                     }
 
-                    if($this->show_action) {
+                    if ($this->show_action) {
                         $output = '';
-                        if(Module::hasAccess("Jobs", "edit")) {
-                            $output .= '<a href="'.url(config('laraadmin.adminRoute') . '/jobs/'.$values[$i]->id.'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                        if (Module::hasAccess("User_Educations", "edit")) {
+                            $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/user_educations/' . $values[$i]->id . '/edit' . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '')) . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
                         }
 
-                        if(Module::hasAccess("Jobs", "delete")) {
-                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.jobs.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
+                        if (Module::hasAccess("User_Educations", "delete")) {
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_educations.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline']);
                             $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                             $output .= Form::close();
                         }
@@ -97,207 +113,225 @@ class User_EducationsController extends Controller
                     }
                 }
             }
+            if ($values->count() == 0) {
+                $values = 0;
+            }
             $statuses = Validation_status::all()->pluck('title', 'id');
 
-			return View('la.user_educations.index', [
-				'show_actions' => $this->show_action,
-				'listing_cols' => $this->listing_cols,
-				'module' => $module,
-				'$statuses' => $statuses,
-				'values' => $values
-			]);
-		} else {
-            return redirect(config('laraadmin.adminRoute')."/");
+            return View('la.user_educations.index', [
+                'show_actions' => $this->show_action,
+                'listing_cols' => $this->listing_cols,
+                'module' => $module,
+                'statuses' => $statuses,
+                'values' => $values,
+                'statuses' => $statuses,
+                'view_col' => $this->view_col,
+                'selectedUser' => $selectedUser
+            ]);
+        } else {
+            return redirect(config('laraadmin.adminRoute') . "/");
         }
-	}
+    }
 
-	/**
-	 * Show the form for creating a new user_education.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function create()
-	{
-		//
-	}
+    /**
+     * Show the form for creating a new user_education.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function create() {
+        //
+    }
 
-	/**
-	 * Store a newly created user_education in database.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @return \Illuminate\Http\Response
-	 */
-	public function store(Request $request)
-	{
-		if(Module::hasAccess("User_Educations", "create")) {
-		
-			$rules = Module::validateRules("User_Educations", $request);
-			
-			$validator = Validator::make($request->all(), $rules);
-			
-			if ($validator->fails()) {
-				return redirect()->back()->withErrors($validator)->withInput();
-			}
-			
-			$insert_id = Module::insert("User_Educations", $request);
-			
-			return redirect()->route(config('laraadmin.adminRoute') . '.user_educations.index');
-			
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
-		}
-	}
+    /**
+     * Store a newly created user_education in database.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request) {
+        if (Module::hasAccess("User_Educations", "create")) {
 
-	/**
-	 * Display the specified user_education.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function show($id)
-	{
-		if(Module::hasAccess("User_Educations", "view")) {
-			
-			$user_education = User_Education::find($id);
-			if(isset($user_education->id)) {
-				$module = Module::get('User_Educations');
-				$module->row = $user_education;
-				
-				return view('la.user_educations.show', [
-					'module' => $module,
-					'view_col' => $this->view_col,
-					'no_header' => true,
-					'no_padding' => "no-padding"
-				])->with('user_education', $user_education);
-			} else {
-				return view('errors.404', [
-					'record_id' => $id,
-					'record_name' => ucfirst("user_education"),
-				]);
-			}
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
-		}
-	}
+            $rules = Module::validateRules("User_Educations", $request);
 
-	/**
-	 * Show the form for editing the specified user_education.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function edit($id)
-	{
-		if(Module::hasAccess("User_Educations", "edit")) {			
-			$user_education = User_Education::find($id);
-			if(isset($user_education->id)) {	
-				$module = Module::get('User_Educations');
-				
-				$module->row = $user_education;
-				
-				return view('la.user_educations.edit', [
-					'module' => $module,
-					'view_col' => $this->view_col,
-				])->with('user_education', $user_education);
-			} else {
-				return view('errors.404', [
-					'record_id' => $id,
-					'record_name' => ucfirst("user_education"),
-				]);
-			}
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
-		}
-	}
+            $validator = Validator::make($request->all(), $rules);
 
-	/**
-	 * Update the specified user_education in storage.
-	 *
-	 * @param  \Illuminate\Http\Request  $request
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function update(Request $request, $id)
-	{
-		if(Module::hasAccess("User_Educations", "edit")) {
-			
-			$rules = Module::validateRules("User_Educations", $request, true);
-			
-			$validator = Validator::make($request->all(), $rules);
-			
-			if ($validator->fails()) {
-				return redirect()->back()->withErrors($validator)->withInput();;
-			}
-			
-			$insert_id = Module::updateRow("User_Educations", $request, $id);
-			
-			return redirect()->route(config('laraadmin.adminRoute') . '.user_educations.index');
-			
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
-		}
-	}
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
 
-	/**
-	 * Remove the specified user_education from storage.
-	 *
-	 * @param  int  $id
-	 * @return \Illuminate\Http\Response
-	 */
-	public function destroy($id)
-	{
-		if(Module::hasAccess("User_Educations", "delete")) {
-			User_Education::find($id)->delete();
-			
-			// Redirecting to index() method
-			return redirect()->route(config('laraadmin.adminRoute') . '.user_educations.index');
-		} else {
-			return redirect(config('laraadmin.adminRoute')."/");
-		}
-	}
-	
-	/**
-	 * Datatable Ajax fetch
-	 *
-	 * @return
-	 */
-	public function dtajax()
-	{
-		$values = DB::table('user_educations')->select($this->listing_cols)->whereNull('deleted_at');
-		$out = Datatables::of($values)->make();
-		$data = $out->getData();
+            $insert_id = Module::insert("User_Educations", $request);
 
-		$fields_popup = ModuleFields::getModuleFields('User_Educations');
-		
-		for($i=0; $i < count($data->data); $i++) {
-			for ($j=0; $j < count($this->listing_cols); $j++) { 
-				$col = $this->listing_cols[$j];
-				if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
-					$data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
-				}
-				if($col == $this->view_col) {
-					$data->data[$i][$j] = '<a href="'.url(config('laraadmin.adminRoute') . '/user_educations/'.$data->data[$i][0]).'">'.$data->data[$i][$j].'</a>';
-				}
-				// else if($col == "author") {
-				//    $data->data[$i][$j];
-				// }
-			}
-			
-			if($this->show_action) {
-				$output = '';
-				if(Module::hasAccess("User_Educations", "edit")) {
-					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/user_educations/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
-				}
-				
-				if(Module::hasAccess("User_Educations", "delete")) {
-					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_educations.destroy', $data->data[$i][0]], 'method' => 'delete', 'style'=>'display:inline']);
-					$output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
-					$output .= Form::close();
-				}
-				$data->data[$i][] = (string)$output;
-			}
-		}
-		$out->setData($data);
-		return $out;
-	}
+            return redirect()->route(config('laraadmin.adminRoute') . '.user_educations.index');
+
+        } else {
+            return redirect(config('laraadmin.adminRoute') . "/");
+        }
+    }
+
+    /**
+     * Display the specified user_education.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id) {
+        if (Module::hasAccess("User_Educations", "view")) {
+
+            $user_education = User_Education::find($id);
+            if (isset($user_education->id)) {
+                $module = Module::get('User_Educations');
+                $module->row = $user_education;
+                if ($user_education->user_id) {
+                    $user_education->user = User::find($user_education->user_id);
+                }
+
+                return view('la.user_educations.show', [
+                    'module' => $module,
+                    'view_col' => $this->view_col,
+                    'no_header' => true,
+                    'no_padding' => "no-padding",
+                    'user_education' => $user_education
+
+                ])->with('user_education', $user_education);
+            } else {
+                return view('errors.404', [
+                    'record_id' => $id,
+                    'record_name' => ucfirst("user_education"),
+                ]);
+            }
+        } else {
+            return redirect(config('laraadmin.adminRoute') . "/");
+        }
+    }
+
+    /**
+     * Show the form for editing the specified user_education.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id) {
+        if (Module::hasAccess("User_Educations", "edit")) {
+            $user_education = User_Education::find($id);
+            if (isset($user_education->id)) {
+                $module = Module::get('User_Educations');
+
+                $module->row = $user_education;
+
+                if ($user_education->user_id) {
+                    $user_education->user = User::find($user_education->user_id);
+                }
+                return view('la.user_educations.edit', [
+                    'module' => $module,
+                    'view_col' => $this->view_col,
+                    'user_education' => $user_education
+                ])->with('user_education', $user_education);
+            } else {
+                return view('errors.404', [
+                    'record_id' => $id,
+                    'record_name' => ucfirst("user_education"),
+                ]);
+            }
+        } else {
+            return redirect(config('laraadmin.adminRoute') . "/");
+        }
+    }
+
+    /**
+     * Update the specified user_education in storage.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id) {
+        if (Module::hasAccess("User_Educations", "edit")) {
+
+            $rules = Module::validateRules("User_Educations", $request, true);
+
+            $validator = Validator::make($request->all(), $rules);
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();;
+            }
+
+
+            if ($validator->fails()) {
+                return redirect()->back()->withErrors($validator)->withInput();
+            }
+            $insert_id = Module::updateRow("User_Educations", $request, $id);
+
+
+            $selected_user_id = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;
+            if ($selected_user_id) {
+                return redirect(config('laraadmin.adminRoute') . "/user_educations?selected_user_id=" . $selected_user_id);
+            } else {
+                return redirect()->route(config('laraadmin.adminRoute') . '.user_educations.index');
+            }
+
+        } else {
+            return redirect(config('laraadmin.adminRoute') . "/");
+        }
+    }
+
+    /**
+     * Remove the specified user_education from storage.
+     *
+     * @param int $id
+     * @return \Illuminate\Http\Response
+     */
+    public function destroy($id) {
+        if (Module::hasAccess("User_Educations", "delete")) {
+            User_Education::find($id)->delete();
+
+            // Redirecting to index() method
+            return redirect()->route(config('laraadmin.adminRoute') . '.user_educations.index');
+        } else {
+            return redirect(config('laraadmin.adminRoute') . "/");
+        }
+    }
+
+    /**
+     * Datatable Ajax fetch
+     *
+     * @return
+     */
+    public function dtajax() {
+        $values = DB::table('user_educations')->select($this->listing_cols)->whereNull('deleted_at');
+        $out = Datatables::of($values)->make();
+        $data = $out->getData();
+
+        $fields_popup = ModuleFields::getModuleFields('User_Educations');
+
+        for ($i = 0; $i < count($data->data); $i++) {
+            for ($j = 0; $j < count($this->listing_cols); $j++) {
+                $col = $this->listing_cols[$j];
+                if ($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
+                    $data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
+                }
+                if ($col == $this->view_col) {
+                    $data->data[$i][$j] = '<a href="' . url(config('laraadmin.adminRoute') . '/user_educations/' . $data->data[$i][0]) . '">' . $data->data[$i][$j] . '</a>';
+                }
+                // else if($col == "author") {
+                //    $data->data[$i][$j];
+                // }
+            }
+
+            if ($this->show_action) {
+                $output = '';
+                if (Module::hasAccess("User_Educations", "edit")) {
+                    $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/user_educations/' . $data->data[$i][0] . '/edit') . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                }
+
+                if (Module::hasAccess("User_Educations", "delete")) {
+                    $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_educations.destroy', $data->data[$i][0]], 'method' => 'delete', 'style' => 'display:inline']);
+                    $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
+                    $output .= Form::close();
+                }
+                $data->data[$i][] = (string)$output;
+            }
+        }
+        $out->setData($data);
+        return $out;
+    }
 }

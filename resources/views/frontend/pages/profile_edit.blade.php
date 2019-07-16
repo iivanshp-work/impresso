@@ -301,7 +301,7 @@
 @push('popups')
 
     <button btn-upload-popup="" class="hide btn btn-violet open-pop-up" data-target="#upload">Upload</button>
-    <button btn-upload2-popup="" class="hide btn btn-violet open-pop-up" data-target="#uploadFile2">Upload file 2</button>
+    <button btn-upload-remove-popup="" class="hide btn btn-violet open-pop-up" data-target="#uploadFile2">Upload file 2</button>
     <button btn-validate-popup="" class="hide btn btn-violet open-pop-up" data-target="#validate">Validate</button>
     <button btn-validate-success-popup="" class="hide btn btn-violet open-pop-up" data-target="#validateSuccess">Validate success</button>
     <button btn-validate-not_xims-popup="" class="hide btn btn-violet open-pop-up" data-target="#notEnoughMinerals">Not enough minerals</button>
@@ -331,7 +331,7 @@
         </div>
     </div>
 
-    <div class="modal-window" id="uploadFile2" data-upload2-popup="">
+    <div class="modal-window" id="uploadFile2" data-upload-remove-popup="">
         <div class="modal-window__content">
             <div class="modal-window__body text-center">
                 <p>

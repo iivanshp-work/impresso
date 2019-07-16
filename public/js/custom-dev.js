@@ -747,7 +747,7 @@ $document.ready(function(){
                 }else{
                     if(response.files){
                         $('#edit_profile_upload_attach_form .default_title').hide();
-                        $('#edit_profile_upload_attach_form .selected_files_title').text(selectedFiles).show();
+                        $('#edit_profile_upload_attach_form .selected_files_title').html(selectedFiles).show();
                         $('#edit_profile_upload_attach_form [data-files-value]').val(response.files);
                     }else{
                         showError('An error occurred. Please try again later.', 'Error', function(){
