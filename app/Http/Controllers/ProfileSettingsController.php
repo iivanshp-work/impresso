@@ -7,6 +7,7 @@ use App\Models\User_Education;
 use App\User;
 use App\Models\User as UserModel;
 use App\Models\Mails;
+use Dwij\Laraadmin\Models\LAConfigs;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -146,10 +147,11 @@ class ProfileSettingsController extends Controller
             }
 
             //check users balance and minus it
-            if ($user->credits_count < getenv('VERIFIED_DOCUMENT_CREDITS_AMOUNT')) {
+            if ($user->credits_count < LAConfigs::getByKey('validation_value')) {
                 $responseData['no_xims'] = true;
                 return response()->json($responseData);
             } else {
+                //TODO ????
                 //update users xims
                 //save in transcations
             }
@@ -340,5 +342,31 @@ class ProfileSettingsController extends Controller
             }
         }
         return response()->json($responseData);
+    }
+
+    /**
+     * save Geo Data
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function saveGeo(Request $request) {
+        $saved = false;
+        $lat = $request->has('lat') ? $request->input('lat') : '';
+        $lon = $request->has('lon') ? $request->input('lon') : '';
+        $address = '';
+        if($lat && $lon) {
+            $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
+            $output = @json_decode($geocode);
+            if ($output && isset($output->results[0]->geometry->location->address)) {
+                $address = $output->results[0]->geometry->location->address; //TODO?? debug response
+            }
+            $user = Auth::user();
+            $user->location_title = $address . "(" . $lat . ", " . $lon . ")";
+            $user->latitude = $lat;
+            $user->longitude = $lon;
+            $user->save();
+            $saved = true;
+        }
+        return response()->json(['saved' => $saved]);
     }
 }

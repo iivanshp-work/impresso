@@ -16,7 +16,6 @@ customValidateError,
 customValidateConfirm{
     z-index: 200 !important;
 }
-
 .settings_edit_submit {
     position: relative;
 }
@@ -33,4 +32,19 @@ customValidateConfirm{
     -o-transform: translateX(-50%);
     display: flex;
     z-index: 100;
+}
+#edit_profile_upload_attach_form .selected_files_title {
+    position: relative;
+}
+#edit_profile_upload_attach_form [data-remove-selected-files] {
+    position: absolute;
+    top: 0px;
+    right: -5px;
+    z-index: 5;
+    transform: rotate(180deg);
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    cursor: pointer;
 }

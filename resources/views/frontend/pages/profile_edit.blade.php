@@ -319,7 +319,7 @@
                     <input type="file" name="files_hidden" class="hide" multiple="multiple" data-edit-profile-send-popup-files-hidden="">
                     <a href="#" class="btn btn-border btn-download" data-edit-profile-send-popup-files="">Upload document</a>
                     <span class="text-color-gray default_title">Accepted files: PDF, JPG, PNG, DOC.</span>
-                    <span class="text-color-gray hide selected_files_title" ><span class="files_text"></span><span data-remove-selected-files="" class="remove_selected_files">X</span></span>
+                    <span class="text-color-gray hide selected_files_title" ><span class="files_text"></span><span data-remove-selected-files="" class="remove_selected_files"><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span></span>
                     <button type="button" class="btn btn-violet" data-profile-edit-upload-btn="">
                         Continue
                     </button>
@@ -352,7 +352,7 @@
         <div class="modal-window__content">
             <div class="modal-window__body text-center">
                 <p>
-                    A Certificate validation will cost you 30 XIMs.
+                    A Certificate validation will cost you {{LAConfigs::getByKey('validation_value')}} XIMs.
                 </p>
                 <p>Do you want to proceed?</p>
                 <button type="button" class="btn btn-violet" data-profile-edit-validate-btn="">
@@ -386,8 +386,8 @@
                 <p>
                     Looks like you don’t have enough XIMs.
                 </p>
-                <p>A Certificate validation costs 30 XIMs.</p>
-                <a href="{{url('/settings')}}" type="button" class="btn btn-violet">
+                <p>A Certificate validation costs {{LAConfigs::getByKey('validation_value')}} XIMs.</p>
+                <a href="{{url('/settings/credits')}}" type="button" class="btn btn-violet">
                     Buy XIMs
                 </a>
                 <button type="button" class="btn btn-border close-modal">

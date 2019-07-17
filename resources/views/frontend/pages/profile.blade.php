@@ -410,7 +410,7 @@
         <div class="modal-window show" id="pendingPopup" style="display: block;">
             <div class="modal-window__content">
                 <div class="modal-window__body text-center">
-                    <img src="{{asset('img/icons/like.png')}}" alt="like" class="modal-window__img-top">
+                    <img src="{{asset('img/icons/smile.svg')}}" alt="like" class="modal-window__img-top">
                     <h3 class="title mb-34">Your validation is in progress.</h3>
                     <p>Once your profile is approved, you will have access to all our features. It’s a perfect opportunity to meditate, water your plants or share IMPRESSO with your friends!</p>
                     <button type="button" class="btn btn-violet close-modal">

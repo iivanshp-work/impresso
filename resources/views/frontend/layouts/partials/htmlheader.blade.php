@@ -14,6 +14,7 @@
     <link href="{{ asset('css/custom-dev.css?v=' . getenv('ASSETS_VERSION')) }}" rel="stylesheet" type="text/css">
     <script>
         var base_url = '{{url('/')}}';
+        var google_api_key = '{{getenv('GOOGLE_API_KEY')}}';
     </script>
     @stack('styles')
 </head>

@@ -51,7 +51,6 @@ function showConfirm(message, title, callback, callbackBtnText){
             $('.customValidateConfirm .close-modal').trigger('click');
         }
     })
-
 }
 
 function redirect(location){
@@ -67,6 +66,26 @@ function loadingEnd(){
     $('#loading-full').hide();
 }
 
+function createCookie(name, value, days){
+    if(days){
+        var date = new Date();
+        date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+        var expires = "; expires=" + date.toGMTString();
+    }else var expires = "";
+    document.cookie = name + "=" + value + expires + "; path=/";
+}
+
+function readCookie(name){
+    var nameEQ = name + "=";
+    var ca = document.cookie.split(';');
+    for(var i = 0; i < ca.length; i++){
+        var c = ca[i];
+        while(c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if(c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+    }
+    return null;
+}
+
 /**
  * Add CSRF token to any AJAX request header
  */
@@ -78,6 +97,74 @@ $.ajaxSetup({
 
 //start function
 $document.ready(function(){
+    // allow location start
+    if(!readCookie('geolat') && !readCookie('geolon')){
+        tryGeolocation();
+    }
+    function apiGeolocationSuccess(position){
+        createCookie("geolat", position.coords.latitude, 1);
+        createCookie("geolon", position.coords.longitude, 1);
+        saveGeoData(position.coords.latitude, position.coords.longitude);
+    };
+    function tryAPIGeolocation(){
+        /*AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU*/
+        /*AIzaSyBzXAh3EwaKI_fhNIqmd2TYJVWxiwwkLQo*/
+        jQuery.post("https://www.googleapis.com/geolocation/v1/geolocate?key=" + google_api_key, function(success){
+            apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
+        }).fail(function(err){
+            showError("API Geolocation error!");
+        });
+    };
+    function saveGeoData(latitude, longitude) {
+        loadingStart();
+        let targetLink = base_url + '/save-geo-data';
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            data: {lat:latitude, lon: longitude},
+            dataType: 'json',
+            success: function(response){
+            },
+            error: function(){
+            },
+            complete: function(){
+                loadingEnd();
+            }
+        });
+    }
+    function browserGeolocationSuccess(position){
+        createCookie("geolat", position.coords.latitude, 1);
+        createCookie("geolon", position.coords.longitude, 1);
+        saveGeoData(position.coords.latitude, position.coords.longitude);
+    };
+
+    function browserGeolocationFail(error){
+        switch(error.code){
+            case error.TIMEOUT:
+                tryAPIGeolocation();
+                break;
+            case error.PERMISSION_DENIED:
+                if(error.message.indexOf("Only secure origins are allowed") == 0){
+                    tryAPIGeolocation();
+                }
+                break;
+            case error.POSITION_UNAVAILABLE:
+                console.log("Browser geolocation error !\n\nPosition unavailable.");
+                tryAPIGeolocation();
+                break;
+        }
+    };
+
+    function tryGeolocation(){
+        if(navigator.geolocation){
+            navigator.geolocation.getCurrentPosition(
+                browserGeolocationSuccess,
+                browserGeolocationFail,
+                {maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
+        }
+    };
+    // allow location end
+
     //submit signup form
     $document.on('submit', '#signup_form', function(e){
         e.preventDefault();
@@ -705,32 +792,32 @@ $document.ready(function(){
     $('[data-edit-profile-send-popup-files-hidden]').on('change', function(e){
         let $this = $(this), item = $this.parent(), btn = item.find('[data-edit-profile-send-popup-files]'),
             formData = new FormData(), targetLink = base_url + '/profile/edit';
-        let availableExtensions = ["jpg" , "jpeg", "png", "pdf", "doc", "docx"];
+        let availableExtensions = ["jpg", "jpeg", "png", "pdf", "doc", "docx"];
         let files = $this.get(0).files;
         let notAvailable = false;
         let selectedFiles = '';
         $('#edit_profile_upload_attach_form .default_title').show();
         $('#edit_profile_upload_attach_form .selected_files_title').hide().find('.files_text').text('');
         $('#edit_profile_upload_attach_form [data-files-value]').val('');
-        if (files.length) {
+        if(files.length){
             selectedFiles += files.length + ' file' + (files.length > 1 ? 's ' : ' ') + 'selected:';
             $.each(files, function(index, file){
                 let ext = file.name.split(".");
-                ext = ext[ext.length-1].toLowerCase();
-                if ($.inArray(ext, availableExtensions) == -1){
+                ext = ext[ext.length - 1].toLowerCase();
+                if($.inArray(ext, availableExtensions) == -1){
                     notAvailable = true;
                 }
-                if (index == 0) {
+                if(index == 0){
                     selectedFiles += '“' + file.name + '...”';
                 }
             });
-            if (notAvailable) {
+            if(notAvailable){
                 showError('Selected file has not allowed extension.', 'Error!', function(){
                     openProfileEditPopup('upload');
                 });
                 return;
             }
-        } else {
+        }else{
             showError('No files selected.', 'Error!', function(){
                 openProfileEditPopup('upload');
             });
@@ -878,6 +965,7 @@ $document.ready(function(){
             $(selector + ' .close-modal').trigger('click');
         }
     }
+
     //edit profile end
 
     //edit settings start
@@ -887,7 +975,7 @@ $document.ready(function(){
         let form = $(this);
         let disabled = form.find(':input:disabled').removeAttr('disabled');
         let data = form.serialize();
-        disabled.attr('disabled','disabled');
+        disabled.attr('disabled', 'disabled');
         //if (form.data("busy")) return;
         form.data("busy", true);
         loadingStart();

@@ -50,6 +50,7 @@
 				<label>Site Description</label>
 				<input type="text" class="form-control" placeholder="Description in 140 Characters" maxlength="140" name="site_description" value="{{$configs->site_description}}">
 			</div>
+			{{--
 			<!-- checkbox -->
 			<div class="form-group">
 				<div class="checkbox">
@@ -83,6 +84,7 @@
 					</label>
 				</div>
 			</div>
+			--}}
 			<!-- select -->
 			<div class="form-group">
 				<label>Skin Color</label>
@@ -105,6 +107,16 @@
 			<div class="form-group">
 				<label>Default Email Address</label>
 				<input type="text" class="form-control" placeholder="To send emails to others via SMTP" maxlength="100" name="default_email" value="{{$configs->default_email}}">
+			</div>
+
+			<div class="form-group">
+				<label>Validation value(in XIMS)</label>
+				<input type="text" class="form-control" placeholder="Validation price value(XIMS)" maxlength="100" name="validation_value" value="{{$configs->validation_value}}">
+			</div>
+
+			<div class="form-group">
+				<label>Validation value price(in $)</label>
+				<input type="text" class="form-control" placeholder="Validation value price(in $)" maxlength="100" name="validation_value_price" value="{{$configs->validation_value_price}}">
 			</div>
 		</div><!-- /.box-body -->
 		<div class="box-footer">
