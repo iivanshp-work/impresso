@@ -904,7 +904,6 @@ $document.ready(function(){
     $('[data-profile-edit-validate-btn]').on('click change', function(e){
         e.preventDefault();
         let btn = $(this), targetLink = base_url + '/profile/edit';
-        console.log(requestValidationData);
         //send request to server
         //if (btn.data("busy")) return;
         btn.data("busy", true);
@@ -1000,11 +999,37 @@ $document.ready(function(){
             }
         });
     });
-    /*$document.on('click', '[data-edit-settings-form] .edit-info', function(e){
-        $(this).closest('[data-edit-settings-form]').find("input, textarea").attr("disabled", "disabled");
-        $(this).parent().find("input, textarea").removeAttr("disabled");
-        $(this).parent().find("input, textarea").first().focus();
-    });*/
     //edit settings end
+
+    //credits settings start
+    $document.on('click change', '[data-settings-buy-credits]', function(e){
+        e.preventDefault();
+        let btn = $(this), targetLink = base_url + '/settings/credits';
+        let data = {};
+        //if (btn.data("busy")) return;
+        btn.data("busy", true);
+        loadingStart();
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            dataType: 'json',
+            data: data,
+            success: function(response){
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                }else{
+                    showSuccess(response.message);
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                btn.data("busy", false);
+            }
+        });
+    });
+    //credits settings end
 
 });

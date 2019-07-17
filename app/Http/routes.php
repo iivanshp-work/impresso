@@ -37,6 +37,8 @@ Route::post('save-geo-data', 'ProfileSettingsController@saveGeo')->name('save_ge
 Route::get('settings', 'ProfileSettingsController@settingsPage')->name('settings');
 Route::get('settings/edit', 'ProfileSettingsController@settingsEditPage')->name('settings_edit');
 Route::post('settings/edit', 'ProfileSettingsController@settingsEdit')->name('settings_edit_post');
+Route::get('settings/credits', 'ProfileSettingsController@settingsCreditsPage')->name('settings_credits');
+Route::post('settings/credits', 'ProfileSettingsController@settingsCredits')->name('settings_credits_post');
 
 /* feeds */
 Route::get('feeds', 'FeedsController@feedsPage')->name('feeds');

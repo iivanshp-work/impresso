@@ -347,7 +347,7 @@ class ProfileSettingsController extends Controller
     /**
      * save Geo Data
      * @param Request $request
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @return \Illuminate\Http\JsonResponse
      */
     public function saveGeo(Request $request) {
         $saved = false;
@@ -369,4 +369,54 @@ class ProfileSettingsController extends Controller
         }
         return response()->json(['saved' => $saved]);
     }
+
+    /**
+     * Settings Edit Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function settingsCreditsPage(Request $request) {
+        $user = Auth::user();
+        return view('frontend.pages.settings_credits', [
+            'userData' => $user
+        ]);
+    }
+
+    /**
+     * settings Credits
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function settingsCredits(Request $request) {
+        $responseData = [
+            'has_error' => false,
+            'message' => ''
+        ];
+
+        $id = Auth::id();
+        $user = UserModel::find($id);
+        test($user);
+
+        $userPurchase = new User_Purchase;
+        $newRecord = true;
+        $userPurchase->user_id = $id;
+        $userPurchase->purchase_amount = 0;
+        $userPurchase->purchase_amount = 0;
+        $userPurchase->status = 0;
+        try {
+            if ($userPurchase->save()) {
+                $responseData['message'] = 'Personal data successfully saved.';
+            } else {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= 'An error occurred while saving data.' . '<br>';
+            }
+        } catch (\Exception $e) {
+            $responseData['has_error'] = true;
+            $responseData['message'] .= $e->getMessage() . '<br>';
+        }
+        return response()->json($responseData);
+    }
+
+
+
 }
