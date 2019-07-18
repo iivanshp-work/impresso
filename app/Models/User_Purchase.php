@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class User_Purchase extends Model
 {
     use SoftDeletes;
-	
+
 	protected $table = 'user_purchases';
-	
+
 	protected $hidden = [
-        
+
     ];
 
 	protected $guarded = [];
@@ -31,5 +31,12 @@ class User_Purchase extends Model
     public function scopeNotDeleted($query)
     {
         return $query->whereNull('deleted_at');
+    }
+
+    public function getStatuses() {
+        return [
+            0 => 'New',
+            1 => 'Processed'
+        ];
     }
 }
