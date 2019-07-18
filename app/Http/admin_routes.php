@@ -73,4 +73,12 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== User_certifications ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/user_certifications', 'LA\User_certificationsController');
 	Route::get(config('laraadmin.adminRoute') . '/user_certification_dt_ajax', 'LA\User_certificationsController@dtajax');
+
+	/* ================== User_Purchases ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/user_purchases', 'LA\User_PurchasesController');
+	Route::get(config('laraadmin.adminRoute') . '/user_purchase_dt_ajax', 'LA\User_PurchasesController@dtajax');
+
+	/* ================== User_Transactions ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/user_transactions', 'LA\User_TransactionsController');
+	Route::get(config('laraadmin.adminRoute') . '/user_transaction_dt_ajax', 'LA\User_TransactionsController@dtajax');
 });

@@ -105,16 +105,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      */
     public function getCreditsCountAttribute()
     {
-        return $this->calculateCreditsCount($this->id);
-    }
-
-    /**
-     * Calculate Credit Count
-     * @param $id
-     * @return mixed
-     */
-    public function calculateCreditsCount($id) {
-        return $id; // TODO????????
+        return round($this->attributes['credits_count'],2);
     }
 
     /**
@@ -164,6 +155,24 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function certifications_verified()
     {
         return $this->hasMany('App\Models\User_certification')->notDeleted()->verified();
+    }
+
+
+
+    /**
+     * @return mixed
+     */
+    public function purchases()
+    {
+        return $this->hasMany('App\Models\User_Purchase')->notDeleted()->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function transactions()
+    {
+        return $this->hasMany('App\Models\User_Transaction')->notDeleted()->orderBy('created_at', 'desc');
     }
 
 }

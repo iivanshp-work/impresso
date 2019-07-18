@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User_certification;
 use App\Models\User_Education;
+use App\Models\User_Purchase;
 use App\User;
 use App\Models\User as UserModel;
 use App\Models\Mails;
@@ -147,7 +148,11 @@ class ProfileSettingsController extends Controller
             }
 
             //check users balance and minus it
-            if ($user->credits_count < LAConfigs::getByKey('validation_value')) {
+            $neededCredits = LAConfigs::getByKey('validation_value');
+            if (!$neededCredits) {
+                $neededCredits = 30;
+            }
+            if ($user->credits_count < $neededCredits) {
                 $responseData['no_xims'] = true;
                 return response()->json($responseData);
             } else {
@@ -393,19 +398,20 @@ class ProfileSettingsController extends Controller
             'message' => ''
         ];
 
+        //check users balance and minus it
+        $purchaseAmount = LAConfigs::getByKey('validation_value_price');
+        if (!$purchaseAmount) {
+            $purchaseAmount = 3;
+        }
         $id = Auth::id();
-        $user = UserModel::find($id);
-        test($user);
-
         $userPurchase = new User_Purchase;
-        $newRecord = true;
         $userPurchase->user_id = $id;
-        $userPurchase->purchase_amount = 0;
-        $userPurchase->purchase_amount = 0;
+        $userPurchase->purchase_amount = $purchaseAmount;
+        $userPurchase->payment_id = uniqid();// will be stripe ID //TODO????
         $userPurchase->status = 0;
         try {
             if ($userPurchase->save()) {
-                $responseData['message'] = 'Personal data successfully saved.';
+                $responseData['message'] = 'Successfully purchase. We are now processing the information. Your XIMs will be available shortly.';
             } else {
                 $responseData['has_error'] = true;
                 $responseData['message'] .= 'An error occurred while saving data.' . '<br>';

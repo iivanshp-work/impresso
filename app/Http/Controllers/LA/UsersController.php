@@ -114,6 +114,14 @@ class UsersController extends Controller
                     if ($user && $user->certifications()->count()) {
                         $output .= '<a title="Certifications" href="'.url(config('laraadmin.adminRoute') . '/user_certifications?selected_user_id=' . $values[$i]->id).'" class="btn btn-primary btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-certificate"></i></a>';
                     }
+
+                    if ($user && $user->purchases()->count()) {
+                        $output .= '<a title="Purchases" href="'.url(config('laraadmin.adminRoute') . '/user_purchases?selected_user_id=' . $values[$i]->id).'" class="btn btn-pinterest btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-cc-stripe"></i></a>';
+                    }
+
+                    if ($user && $user->transactions()->count()) {
+                        $output .= '<a title="Transactions" href="'.url(config('laraadmin.adminRoute') . '/user_transactions?selected_user_id=' . $values[$i]->id).'" class="btn btn-success btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-money"></i></a>';
+                    }
                     $values[$i]->actions = (string)$output;
                 }
             }

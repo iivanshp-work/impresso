@@ -404,7 +404,7 @@
 
 @push('popups')
     @if (app('request')->has('show_pending_popup'))
-        <button class="btn btn-violet open-pop-up" id="showPendingPopup" data-target="#pendingPopup">
+        <button class="btn btn-violet hide open-pop-up" id="showPendingPopup" data-target="#pendingPopup">
             Pending popup
         </button>
         <div class="modal-window show" id="pendingPopup" style="display: block;">
@@ -421,7 +421,7 @@
         </div>
     @endif
     @if (app('request')->has('show_profile_setup_profile'))
-        <button class="btn btn-violet open-pop-up" id="showFeedsLetStartImpressing" data-target="#letStartImpressing">
+        <button class="btn btn-violet hide open-pop-up" id="showFeedsLetStartImpressing" data-target="#letStartImpressing">
             Let's start Impressing
         </button>
         <div class="modal-window" id="letStartImpressing">
