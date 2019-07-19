@@ -9,10 +9,11 @@
 @section("headerElems")
 @if($selectedUser)
 	<a href="{{ url(config('laraadmin.adminRoute') . '/users/' . $selectedUser->id . '/edit') }}" class="btn btn-success btn-sm pull-right">Edit User</a>
+
+    @la_access("User_Transactions", "create")
+    <a href="{{url(config('laraadmin.adminRoute') . '/user_transactions/add/new?selected_user_id=' . $selectedUser->id)}}" class="btn btn-success btn-sm pull-right margin-r-5">Add User Transaction</a>
+    @endla_access
 @endif
-@la_access("User_Transactions", "create")
-	<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#AddModal">Add User Transaction</button>
-@endla_access
 @endsection
 
 @section("main-content")
@@ -81,6 +82,7 @@
 				{!! Form::open(['action' => 'LA\User_TransactionsController@index', 'method' => 'get',  'id' => 'user_transaction-search-form']) !!}
 				@php
 					$type = app('request')->has('type') ? trim(app('request')->input('type')) : null;
+					$keyword = app('request')->input('keyword');
                     $date_from = app('request')->input('date_from');
                     $date_to = app('request')->input('date_to');
 				@endphp
@@ -102,12 +104,13 @@
 						@endif
 					</select>
 				</div>
-				<div class="input-group input-group-sm field-search" style="width: 30px;">
+				<div class="input-group input-group-sm field-search">
+                    <input type="text" name="keyword" class="form-control pull-right" value="{{$keyword}}" placeholder="Keyword">
 					<div class="input-group-btn">
 						<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
 					</div>
 				</div>
-				@if($type || $date_from || $date_to)
+				@if($keyword || $type || $date_from || $date_to)
 					<div class="input-group">
 						<a href="{{url(config('laraadmin.adminRoute') . "/user_transactions?selected_user_id=" . $selected_user_id)}}" type="submit" class="btn btn-default btn-sm" style="margin-left: 20px;">Clear</a>
 					</div>
@@ -145,7 +148,7 @@
 							@if ($col == $view_col)
 								{!!$value->$col!!}
 							@elseif($col == 'notes')
-								{{ str_limit($value->$col, 30) }}
+								{{ str_limit($value->$col, 45) }}
 							@else
 								{{$value->$col}}
 							@endif
@@ -163,8 +166,8 @@
 		@if($values)
 			<ul class="pagination pagination-sm no-margin pull-right">
 				@if($selectedUser)
-					@if($type || $date_from || $date_to)
-						{{ $values->appends(['selected_user_id' => $selected_user_id, 'type' => $type, 'date_from' => $date_from, 'date_to' => $date_to])->links() }}
+					@if($keyword || $type || $date_from || $date_to)
+						{{ $values->appends(['selected_user_id' => $selected_user_id, 'keyword' => $keyword, 'type' => $type, 'date_from' => $date_from, 'date_to' => $date_to])->links() }}
 					@else
 						{{ $values->appends(['selected_user_id' => $selected_user_id])->links() }}
 					@endif
@@ -190,7 +193,7 @@
 			<div class="modal-body">
 				<div class="box-body">
                     @la_form($module)
-					
+
 					{{--
 					@la_input($module, 'user_id')
 					@la_input($module, 'amount')
@@ -257,7 +260,7 @@ $(function () {
 		format: "yyyy/mm/dd"
 	});
 	$("#user_transaction-add-form").validate({
-		
+
 	});
 });
 </script>

@@ -52,6 +52,7 @@ class User_PurchasesController extends Controller
 		if(Module::hasAccess($module->id)) {
 		    $selectFields = $this->listing_cols;
             $selectFields[] = 'created_at';
+            $selectFields[] = 'transaction_id';
             $query = DB::table('user_purchases')->select($selectFields)->whereNull('deleted_at');
             $params = [];
             $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
@@ -128,6 +129,8 @@ class User_PurchasesController extends Controller
                         if (Module::hasAccess("User_Transactions", "edit") && $values[$i]->status_id == 0) {
                             $output .= '<a title="Create Editing Transaction" href="' . url(config('laraadmin.adminRoute') . '/user_transactions/add/' . $values[$i]->id . '' . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '')) . '" class="btn btn-warning btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i>&nbsp;<i class="fa fa-money"></i>&nbsp;Editing</a>';
                             $output .= '<a title="Create Automatic Transaction" href="' . url(config('laraadmin.adminRoute') . '/user_transactions/add/' . $values[$i]->id . '/automatic' . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '')) . '" class="btn btn-success btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-adn"></i>&nbsp;<i class="fa fa-money"></i>&nbsp;Auto</a>';
+                        } else if ($values[$i]->status_id == 1 && $values[$i]->transaction_id) {
+                            $output .= '<a title="View Transaction Reference" href="' . url(config('laraadmin.adminRoute') . '/user_transactions/' . $values[$i]->transaction_id . '' . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '')) . '" class="btn btn-success btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-eye"></i>&nbsp;<i class="fa fa-money"></i>&nbsp;View</a>';
                         }
                         if (Module::hasAccess("User_Purchases", "delete")) {
                             $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_purchases.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline']);

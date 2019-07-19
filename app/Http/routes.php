@@ -60,9 +60,10 @@ if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
 
 Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], function () {
     /* ================== Custom User_Transactions ================== */
+
+    Route::get(config('laraadmin.adminRoute') . '/user_transactions/add/new', 'LA\User_TransactionsController@add_transaction_page');
     Route::get(config('laraadmin.adminRoute') . '/user_transactions/add/{purchase_id}', 'LA\User_TransactionsController@add_transaction_page');
-    Route::get(config('laraadmin.adminRoute') . '/user_transactions/add', 'LA\User_TransactionsController@add_transaction_page');
     Route::get(config('laraadmin.adminRoute') . '/user_transactions/add/{purchase_id}/{mode}', 'LA\User_TransactionsController@add_transaction_save')->where('mode', 'automatic|manual');;
     Route::post(config('laraadmin.adminRoute') . '/user_transactions/add/{purchase_id}/{mode}', 'LA\User_TransactionsController@add_transaction_save')->where('mode', 'automatic|manual');;
-    Route::post(config('laraadmin.adminRoute') . '/user_transactions/add', 'LA\User_TransactionsController@add_transaction_save');
+    Route::post(config('laraadmin.adminRoute') . '/user_transactions/add/new', 'LA\User_TransactionsController@add_transaction_save');
 });

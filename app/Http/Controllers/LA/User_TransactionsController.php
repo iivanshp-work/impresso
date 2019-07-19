@@ -11,10 +11,12 @@ use App\Models\User_certification;
 use App\Models\User_Education;
 use App\Models\User_Purchase;
 use App\User;
+use Dwij\Laraadmin\Models\LAConfigs;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use DB;
+use Carbon;
 use Validator;
 use Datatables;
 use Collective\Html\FormFacade as Form;
@@ -28,7 +30,7 @@ class User_TransactionsController extends Controller
 	public $show_action = true;
 	public $view_col = 'amount';
 	public $listing_cols = ['id', 'user_id', 'amount', 'notes', 'type', 'by_user_id', 'purchase_id', 'share_id', 'education_id', 'certificate_id'];
-	
+
 	public function __construct() {
 		// Field Access of Listing Columns
 		if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
@@ -40,7 +42,7 @@ class User_TransactionsController extends Controller
 			$this->listing_cols = ModuleFields::listingColumnAccessScan('User_Transactions', $this->listing_cols);
 		}
 	}
-	
+
 	/**
 	 * Display a listing of the User_Transactions.
 	 *
@@ -57,7 +59,7 @@ class User_TransactionsController extends Controller
             $query = DB::table('user_transactions')->select($selectFields)->whereNull('deleted_at');
             $params = [];
             $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
-            $params['type'] = $request->has('type') ? intval($request->input('type')) : null;
+            $params['type'] = $request->has('type') ? trim($request->input('type')) : null;
             $params['selected_user_id'] = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;
             $params['date_from'] = $request->has('date_from') ? trim($request->input('date_from')) : null;
             $params['date_to'] = $request->has('date_to') ? trim($request->input('date_to')) : null;
@@ -89,7 +91,7 @@ class User_TransactionsController extends Controller
                 $query = $query->where("created_at", "<=", Carbon::parse($params['date_to'])->endOfDay());
             }
             if ($params['type'] !== null) {
-                $query = $query->where("type", "=", $params['status']);
+                $query = $query->where("type", "=", $params['type']);
             }
             $selectedUser = null;
             if ($params['selected_user_id'] !== null) {
@@ -100,7 +102,6 @@ class User_TransactionsController extends Controller
             $types = (new User_Transaction)->getTypes();
 
             $values = $query->orderBy("created_at", 'desc')->paginate($paginateLimit);
-
             if ($values) {
                 $fields_popup = ModuleFields::getModuleFields('User_Transactions');
                 for ($i = 0; $i < count($values); $i++) {
@@ -179,19 +180,19 @@ class User_TransactionsController extends Controller
 	public function store(Request $request)
 	{
 		if(Module::hasAccess("User_Transactions", "create")) {
-		
+
 			$rules = Module::validateRules("User_Transactions", $request);
-			
+
 			$validator = Validator::make($request->all(), $rules);
-			
+
 			if ($validator->fails()) {
 				return redirect()->back()->withErrors($validator)->withInput();
 			}
-			
+
 			$insert_id = Module::insert("User_Transactions", $request);
-			
+
 			return redirect()->route(config('laraadmin.adminRoute') . '.user_transactions.index');
-			
+
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
@@ -206,7 +207,7 @@ class User_TransactionsController extends Controller
 	public function show($id)
 	{
 		if(Module::hasAccess("User_Transactions", "view")) {
-			
+
 			$user_transaction = User_Transaction::find($id);
 			if(isset($user_transaction->id)) {
 				$module = Module::get('User_Transactions');
@@ -226,7 +227,7 @@ class User_TransactionsController extends Controller
 
                 $user_transaction->type = isset($types[$user_transaction->type]) ? $types[$user_transaction->type] : '';
 				$module->row = $user_transaction;
-				
+
 				return view('la.user_transactions.show', [
 					'module' => $module,
 					'view_col' => $this->view_col,
@@ -253,13 +254,13 @@ class User_TransactionsController extends Controller
 	public function edit($id)
 	{
         return redirect()->route(config('laraadmin.adminRoute') . '.user_transactions.index');
-		if(Module::hasAccess("User_Transactions", "edit")) {			
+		if(Module::hasAccess("User_Transactions", "edit")) {
 			$user_transaction = User_Transaction::find($id);
-			if(isset($user_transaction->id)) {	
+			if(isset($user_transaction->id)) {
 				$module = Module::get('User_Transactions');
-				
+
 				$module->row = $user_transaction;
-				
+
 				return view('la.user_transactions.edit', [
 					'module' => $module,
 					'view_col' => $this->view_col,
@@ -286,19 +287,19 @@ class User_TransactionsController extends Controller
 	{
         return redirect()->route(config('laraadmin.adminRoute') . '.user_transactions.index');
 		if(Module::hasAccess("User_Transactions", "edit")) {
-			
+
 			$rules = Module::validateRules("User_Transactions", $request, true);
-			
+
 			$validator = Validator::make($request->all(), $rules);
-			
+
 			if ($validator->fails()) {
 				return redirect()->back()->withErrors($validator)->withInput();;
 			}
-			
+
 			$insert_id = Module::updateRow("User_Transactions", $request, $id);
-			
+
 			return redirect()->route(config('laraadmin.adminRoute') . '.user_transactions.index');
-			
+
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
@@ -316,25 +317,22 @@ class User_TransactionsController extends Controller
         $authUser = Auth::user();
         $types = (new User_Transaction)->getTypes();
         $selected_user_id = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;
-
-        /////purchase record
-        // fields
-        // user - readonly - auto
-        // amount
-        // type - disabled
-        // notes - pre populated
-        // date - auto
-        // by user - auto
-        // purchase id - auto from request
-
-        ////add record
-        /// type - other - disabled
+        $selectedUser = null;
+        if ($userPurchase) {
+            $selectedUser = User::find($userPurchase->user_id);
+        }else if ($selected_user_id) {
+            $selectedUser = User::find($selected_user_id);
+        }
+        if (!$selectedUser) {
+            return redirect()->route(config('laraadmin.adminRoute') . '.user_transactions.index');
+        }
 
         return view('la.user_transactions.add_page', [
-            'user_purchase' => $userPurchase,
+            'userPurchase' => $userPurchase,
             'authUser' => $authUser,
-            'types' => $authUser,
-            'id' => $id
+            'types' => $types,
+            'purchase_id' => $id,
+            'selectedUser' => $selectedUser
         ]);
     }
 
@@ -344,8 +342,149 @@ class User_TransactionsController extends Controller
      */
     public function add_transaction_save(Request $request, $id = 0, $mode = '')
     {
-        $user_purchase = User_Purchase::find($id);
-        test($mode);
+        /*NEW FIELDS ADDED*/ //TODO ?? local
+        //user_purchases: transaction_id
+        //user_transactions: old_credits_amount,new_credits_amount
+
+        ////Purchase record
+        // fields
+        // user - readonly - auto
+        // amount
+        // type - disabled
+        // notes - pre populated
+        // date - auto
+        // by user - auto
+        // purchase id - auto from request
+
+        ////Share and Other record
+        // user - readonly - auto
+        // amount
+        // type
+        // notes
+        // date - auto
+        // by user - auto
+
+        $selected_user_id = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;
+        $selectedUser = null;
+
+        $userPurchase = User_Purchase::find($id);
+        if ($userPurchase) {
+            $selectedUser = User::find($userPurchase->user_id);
+        }else if ($selected_user_id) {
+            $selectedUser = User::find($selected_user_id);
+        }
+        if (!$selectedUser) {
+            return redirect()->back()->withErrors(['user_empty' => ['User not selected.']])->withInput();;
+        }
+        if (!$id) {
+            $mode = "manual";
+        }
+        if ($mode == "automatic" && $id) {
+            $user_purchase = User_Purchase::find($id);
+            if (!$user_purchase) {
+                return redirect()->back()->withErrors(['user_purchase' => ['Invalid Purchase record.']])->withInput();
+            }
+            //save transaction item
+            $amount = LAConfigs::getByKey('validation_value');
+            $User_Transaction = new User_Transaction;
+            $User_Transaction->user_id = $selectedUser->id;
+            $User_Transaction->amount = $amount;
+            $User_Transaction->type = 'purchase';
+            $User_Transaction->notes = 'Automatic Accrual of credits for user purchase #' . $user_purchase->id;
+            $User_Transaction->by_user_id = Auth::id();
+            $User_Transaction->purchase_id = $id;
+            $User_Transaction->old_credits_amount = $selectedUser->credits_count;
+            $User_Transaction->new_credits_amount = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+
+            try{
+                $User_Transaction->save();
+            } catch (\Exception $e) {
+                return redirect()->back()->withErrors(['save_error' => ['Saving Error.']])->withInput();
+            }
+            //update purchase item
+            $user_purchase->status = 1;
+            $user_purchase->transaction_id = $User_Transaction->id;
+            $user_purchase->save();
+            //ajust user credits amount
+            $selectedUser->credits_count = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+            $selectedUser->save();
+            return redirect()->back();
+        } elseif($mode == "manual") {
+            if ($id) {
+                //validations
+                $user_purchase = User_Purchase::find($id);
+                if (!$user_purchase) {
+                    return redirect()->back()->withErrors(['user_purchase' => ['Invalid Purchase record.']])->withInput();
+                }
+                $rules = array(
+                    'type' => 'required',
+                    'amount' => 'required|numeric',
+                );
+                $validator = Validator::make($request->all(), $rules);
+                if ($validator->fails()) {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+                //save transaction item
+                $amount = $request->has("amount") ? $request->input("amount") : 0;
+                $User_Transaction = new User_Transaction;
+                $User_Transaction->user_id = $selectedUser->id;
+                $User_Transaction->amount = $amount;
+                $User_Transaction->type = $request->has("type") ? $request->input("type") : '';
+                $User_Transaction->notes = $request->has("notes") ? $request->input("notes") : '';
+                $User_Transaction->by_user_id = Auth::id();
+                $User_Transaction->purchase_id = $id;
+                $User_Transaction->old_credits_amount = $selectedUser->credits_count;
+                $User_Transaction->new_credits_amount = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+
+                try{
+                    $User_Transaction->save();
+                } catch (\Exception $e) {
+                    return redirect()->back()->withErrors(['save_error' => ['Saving Error.']])->withInput();
+                }
+                //update purchase item
+                $user_purchase->status = 1;
+                $user_purchase->transaction_id = $User_Transaction->id;
+                $user_purchase->save();
+                //ajust user credits amount
+                $selectedUser->credits_count = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+                $selectedUser->save();
+                return redirect()->back();
+            } else {
+                //validations
+                $rules = array(
+                    'type' => 'required',
+                    'amount' => 'required|numeric',
+                );
+                $validator = Validator::make($request->all(), $rules);
+                if ($validator->fails()) {
+                    return redirect()->back()->withErrors($validator)->withInput();
+                }
+                //save transaction item
+                $amount = $request->has("amount") ? $request->input("amount") : 0;
+                $User_Transaction = new User_Transaction;
+                $User_Transaction->user_id = $selectedUser->id;
+                $User_Transaction->amount = $amount;
+                $User_Transaction->type = $request->has("type") ? $request->input("type") : '';
+                $User_Transaction->notes = $request->has("notes") ? $request->input("notes") : '';
+                $User_Transaction->by_user_id = Auth::id();
+                $User_Transaction->old_credits_amount = $selectedUser->credits_count;
+                $User_Transaction->new_credits_amount = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+
+                try{
+                    $User_Transaction->save();
+                } catch (\Exception $e) {
+                    return redirect()->back()->withErrors(['save_error' => ['Saving Error.']])->withInput();
+                }
+                //ajust user credits amount
+                $selectedUser->credits_count = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+                $selectedUser->save();
+            }
+        }
+        if ($selectedUser) {
+            return redirect(config('laraadmin.adminRoute') . "/user_transactions?selected_user_id=" . $selectedUser->id);
+        } else {
+            return redirect()->route(config('laraadmin.adminRoute') . '.user_transactions.index');
+        }
     }
 
 	/**
@@ -358,14 +497,14 @@ class User_TransactionsController extends Controller
 	{
 		if(Module::hasAccess("User_Transactions", "delete")) {
 			User_Transaction::find($id)->delete();
-			
+
 			// Redirecting to index() method
 			return redirect()->route(config('laraadmin.adminRoute') . '.user_transactions.index');
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
 	}
-	
+
 	/**
 	 * Datatable Ajax fetch
 	 *
@@ -378,9 +517,9 @@ class User_TransactionsController extends Controller
 		$data = $out->getData();
 
 		$fields_popup = ModuleFields::getModuleFields('User_Transactions');
-		
+
 		for($i=0; $i < count($data->data); $i++) {
-			for ($j=0; $j < count($this->listing_cols); $j++) { 
+			for ($j=0; $j < count($this->listing_cols); $j++) {
 				$col = $this->listing_cols[$j];
 				if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
 					$data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
@@ -392,13 +531,13 @@ class User_TransactionsController extends Controller
 				//    $data->data[$i][$j];
 				// }
 			}
-			
+
 			if($this->show_action) {
 				$output = '';
 				if(Module::hasAccess("User_Transactions", "edit")) {
 					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/user_transactions/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
 				}
-				
+
 				if(Module::hasAccess("User_Transactions", "delete")) {
 					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_transactions.destroy', $data->data[$i][0]], 'method' => 'delete', 'style'=>'display:inline']);
 					$output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';

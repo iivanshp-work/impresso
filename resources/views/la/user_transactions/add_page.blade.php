@@ -1,14 +1,14 @@
 @extends("la.layouts.app")
 
 @section("contentheader_title")
-    <a href="{{ url(config('laraadmin.adminRoute') . '/user_transactions') }}">User Transaction</a> :
+    <a href="{{ url(config('laraadmin.adminRoute') . '/user_transactions') }}">{{"Adding User Transactions : "}}</a>
 @endsection
-@section("contentheader_description", $user_transaction->$view_col)
+@section("contentheader_description", ($selectedUser ? $selectedUser->name : ''))
 @section("section", "User Transactions")
 @section("section_url", url(config('laraadmin.adminRoute') . '/user_transactions'))
-@section("sub_section", "Edit")
+@section("sub_section", "Add")
 
-@section("htmlheader_title", "User Transactions Edit : ".$user_transaction->$view_col)
+@section("htmlheader_title", "Adding User Transactions : ". ($selectedUser ? $selectedUser->name : ''))
 
 @section("main-content")
 
@@ -29,21 +29,53 @@
         <div class="box-body">
             <div class="row">
                 <div class="col-md-8 col-md-offset-2">
-                    {!! Form::model($user_transaction, ['route' => [config('laraadmin.adminRoute') . '.user_transactions.update', $user_transaction->id ], 'method'=>'PUT', 'id' => 'user_transaction-edit-form']) !!}
-                    @la_form($module)
+                    @php
+                        $url = app('request')->url();
+                        if($purchase_id) {
+                            $url .= '/manual';
+                        } else if(!$purchase_id && $selectedUser) {
+                            $url .= '?selected_user_id=' . $selectedUser->id;
+                        }
+                    @endphp
+                    <form method="POST" action="{{$url}}" accept-charset="UTF-8" id="user_transaction-edit-form" novalidate="novalidate">
+                        <input name="_token" type="hidden" value="{{csrf_token()}}">
+                        @if ($selectedUser)
+                            <div class="form-group">
+                                <label for="status">User :</label>
+                                <input type="text" class="form-control" value="{{$selectedUser->id}} - {{$selectedUser->name}}" readonly="">
+                            </div>
+                        @endif
+                        @if($purchase_id)
+                            <input type="hidden" name="purchase_id" value="{{$purchase_id}}">
+                        @endif
 
-                    {{--
-                    @la_input($module, 'user_id')
-                    @la_input($module, 'amount')
-                    @la_input($module, 'notes')
-                    @la_input($module, 'type')
-                    @la_input($module, 'by_user_id')
-                    --}}
-                    <br>
-                    <div class="form-group">
-                        {!! Form::submit( 'Update', ['class'=>'btn btn-success']) !!} <button class="btn btn-default pull-right"><a href="{{ url(config('laraadmin.adminRoute') . '/user_transactions') }}">Cancel</a></button>
-                    </div>
-                    {!! Form::close() !!}
+                        <div class="form-group">
+                            <label for="type">Type* :</label>
+                            @if($userPurchase) <input type="hidden" name="type" value="{{'purchase'}}"> @endif
+                            <select class="form-control valid" required="1" name="type" @if($userPurchase) disabled @endif>
+                                <option value=""> Type </option>
+                                @foreach($types as $key => $type)
+                                    <option value="{{$key}}" @if(!$userPurchase && ($key == "purchase" || $key == "validation_education" || $key == "validation_certificate")) disabled @endif @if($userPurchase && $key == "purchase") selected @endif>{{$type}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="amount">Amount(XIMs)* :</label>
+                            <small>the negative value will be subtracting the user balance</small>
+                            <input class="form-control valid" placeholder="Amount" name="amount" type="number" value="@if($userPurchase){{LAConfigs::getByKey('validation_value')}}@endif" aria-invalid="false">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="notes">Notes :</label>
+                            <textarea class="form-control valid" placeholder="Notes" cols="30" rows="3" name="notes" aria-invalid="false">@if($userPurchase){{'Accrual of credits for user purchase #' . $userPurchase->id}}@endif</textarea>
+                        </div>
+
+                        <br>
+                        <div class="form-group">
+                            {!! Form::submit( 'Save', ['class'=>'btn btn-success']) !!} <button class="btn btn-default pull-right"><a href="{{ url(config('laraadmin.adminRoute') . '/user_transactions') }}">Cancel</a></button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
