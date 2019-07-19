@@ -33,6 +33,10 @@ class User_Purchase extends Model
         return $query->whereNull('deleted_at');
     }
 
+    /**
+     * Get Purchases statuses
+     * @return array
+     */
     public function getStatuses() {
         return [
             0 => 'New',

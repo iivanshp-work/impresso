@@ -63,6 +63,10 @@
                             @la_input($module, 'name')
                             @la_input($module, 'email')
                             @la_input($module, 'password')
+                            <div class="form-group">
+                                <label for="status">Credits Count :</label>
+                                <input type="text" class="form-control" value="{{$user->credits_count}}" readonly="">
+                            </div>
                             <input type="hidden" name="type" value="{{$mode == "admins" ? getenv('USERS_TYPE_ADMIN') : getenv('USERS_TYPE_USER')}}">
                         </div>
                         <div class="col-md-6" style="border-left: 1px dashed #e2e4e8;">

@@ -33,17 +33,21 @@
 							@la_display($module, 'name')
 							@la_display($module, 'email')
 							@la_display($module, 'password')
+							<div class="form-group">
+								<label for="is_verified" class="col-md-2">Credits Count :</label>
+								<div class="col-md-10 fvalue">{{$user->credits_count}}</div>
+							</div>
 						</div>
 						<div class="panel-default panel-heading">
 							<h4>Validation Info</h4>
 						</div>
 						<div class="panel-body">
 							<div class="form-group">
-								<label for="is_verified" class="col-md-2">Status:</label>
+								<label for="is_verified" class="col-md-2">Status :</label>
 								<div class="col-md-10 fvalue">
 									@if ($user->is_verified)
 										<div class='label label-success'>Verified</div>
-									@elseif($user->varification_pending && !$value->is_verified)
+									@elseif($user->varification_pending && !$user->is_verified)
 										<div class='label label-warning'>Pending Varification</div>
 									@else
 										<div class='label label-danger'>Not Verified</div>

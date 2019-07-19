@@ -104,12 +104,19 @@ class User_PurchasesController extends Controller
                     for ($j = 0; $j < count($this->listing_cols); $j++) {
                         $col = $this->listing_cols[$j];
                         if ($col == 'status') {
-                            $values[$i]->$col = $statuses[$values[$i]->$col];
+                            $values[$i]->status_id = $values[$i]->status;
+                            $values[$i]->$col = isset($statuses[$values[$i]->$col]) ? $statuses[$values[$i]->$col] : '';
                             continue;
+                        } else if ($col == "purchase_amount") {
+                            $values[$i]->$col = '$' . $values[$i]->$col;
                         }
 
                         if ($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
-                            $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                            if($col == 'user_id') {
+                                $values[$i]->$col = $values[$i]->$col . ' - ' .ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                            } else {
+                                $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                            }
                         }
                         if ($col == $this->view_col) {
                             $values[$i]->$col = '<a href="' . url(config('laraadmin.adminRoute') . '/user_purchases/' . $values[$i]->id) . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '') . '">' . $values[$i]->$col . '</a>';
@@ -118,13 +125,13 @@ class User_PurchasesController extends Controller
 
                     if ($this->show_action) {
                         $output = '';
-                        if (Module::hasAccess("User_Purchases", "edit")) {
-                            $output .= '<a href="' . url(config('laraadmin.adminRoute') . '/user_purchases/' . $values[$i]->id . '/edit' . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '')) . '" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                        if (Module::hasAccess("User_Transactions", "edit") && $values[$i]->status_id == 0) {
+                            $output .= '<a title="Create Editing Transaction" href="' . url(config('laraadmin.adminRoute') . '/user_transactions/add/' . $values[$i]->id . '' . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '')) . '" class="btn btn-warning btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i>&nbsp;<i class="fa fa-money"></i>&nbsp;Editing</a>';
+                            $output .= '<a title="Create Automatic Transaction" href="' . url(config('laraadmin.adminRoute') . '/user_transactions/add/' . $values[$i]->id . '/automatic' . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '')) . '" class="btn btn-success btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-adn"></i>&nbsp;<i class="fa fa-money"></i>&nbsp;Auto</a>';
                         }
-
                         if (Module::hasAccess("User_Purchases", "delete")) {
                             $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_purchases.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline']);
-                            $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
+                            $output .= ' <button title="Delete" class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                             $output .= Form::close();
                         }
                         $values[$i]->actions = (string)$output;
@@ -167,7 +174,8 @@ class User_PurchasesController extends Controller
 	 */
 	public function store(Request $request)
 	{
-		if(Module::hasAccess("User_Purchases", "create")) {
+        return redirect()->route(config('laraadmin.adminRoute') . '.user_purchases.index');
+		/*if(Module::hasAccess("User_Purchases", "create")) {
 
 			$rules = Module::validateRules("User_Purchases", $request);
 
@@ -183,7 +191,7 @@ class User_PurchasesController extends Controller
 
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
-		}
+		}*/
 	}
 
 	/**
@@ -198,6 +206,9 @@ class User_PurchasesController extends Controller
 
 			$user_purchase = User_Purchase::find($id);
 			if(isset($user_purchase->id)) {
+                $statuses = (new User_Purchase)->getStatuses();
+                $user_purchase->purchase_amount = '$' . $user_purchase->purchase_amount;
+                $user_purchase->status = $statuses[$user_purchase->status];
 				$module = Module::get('User_Purchases');
 				$module->row = $user_purchase;
 
@@ -226,7 +237,8 @@ class User_PurchasesController extends Controller
 	 */
 	public function edit($id)
 	{
-		if(Module::hasAccess("User_Purchases", "edit")) {
+        return redirect()->route(config('laraadmin.adminRoute') . '.user_purchases.index');
+		/*if(Module::hasAccess("User_Purchases", "edit")) {
 			$user_purchase = User_Purchase::find($id);
 			if(isset($user_purchase->id)) {
 				$module = Module::get('User_Purchases');
@@ -245,7 +257,7 @@ class User_PurchasesController extends Controller
 			}
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
-		}
+		}*/
 	}
 
 	/**

@@ -32,4 +32,18 @@ class User_Transaction extends Model
     {
         return $query->whereNull('deleted_at');
     }
+
+    /**
+     * Get Transactions types
+     * @return array
+     */
+    public function getTypes() {
+        return [
+            'purchase' => 'Purchase',
+            'share' => 'Share',
+            'validation_education' => 'Education Validation',
+            'validation_certificate' => 'Certificate Validation',
+            'other' => 'Other',
+        ];
+    }
 }

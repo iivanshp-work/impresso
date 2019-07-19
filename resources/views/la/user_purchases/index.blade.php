@@ -76,6 +76,46 @@
         @php
             $selected_user_id = app('request')->input('selected_user_id');
         @endphp
+        <div class="box-header" style="margin-bottom: 10px;">
+            <div class="box-tools" >
+                {!! Form::open(['action' => 'LA\User_PurchasesController@index', 'method' => 'get',  'id' => 'user_purchase-search-form']) !!}
+                @php
+                    $status = app('request')->has('status') ? intval(app('request')->input('status')) : null;
+                    $date_from = app('request')->input('date_from');
+                    $date_to = app('request')->input('date_to');
+                @endphp
+                <input type="hidden" name="selected_user_id" value="{{$selected_user_id}}">
+                <div class="input-group date-search">
+                    <label>From:</label>
+                    <input type="text" name="date_from" class="form-control datepicker" autocomplete="off" value="@if($date_from){{Carbon::parse($date_from)->format('Y/m/d')}}@endif" placeholder="From">
+                    <label>To:</label>
+                    <input type="text" name="date_to" class="form-control datepicker" autocomplete="off" value="@if($date_to){{Carbon::parse($date_to)->format('Y/m/d')}}@endif" placeholder="To">
+                </div>
+                <div class="input-group dropdown-field-search">
+                    <label>Status:</label>
+                    <select name="status" class="form-control input-sm">
+                        <option value="">All</option>
+                        @if($statuses)
+                            @foreach($statuses as $key => $statusItem)
+                                <option value="{{$key}}" @if($status === $key) selected="selected" @endif>{{$statusItem}}</option>
+                            @endforeach
+                        @endif
+                    </select>
+                </div>
+                <div class="input-group input-group-sm field-search" style="width: 30px;">
+                    <div class="input-group-btn">
+                        <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    </div>
+                </div>
+                @if($status || $date_from || $date_to)
+                    <div class="input-group">
+                        <a href="{{url(config('laraadmin.adminRoute') . "/user_purchases?selected_user_id=" . $selected_user_id)}}" type="submit" class="btn btn-default btn-sm" style="margin-left: 20px;">Clear</a>
+                    </div>
+                @endif
+
+                {!! Form::close() !!}
+            </div>
+        </div>
     @endif
 	<div class="box-body">
 		<table id="example1" class="table table-bordered">
@@ -89,7 +129,7 @@
                 @endforeach
                 @if($show_actions)
                 <th>Date</th>
-                <th>Actions</th>
+                <th width="200">Actions</th>
 			@endif
 		</tr>
 		</thead>
@@ -115,9 +155,13 @@
         @if($values)
             <ul class="pagination pagination-sm no-margin pull-right">
                 @if($selectedUser)
-                    {{ $values->appends(['selected_user_id' => $selected_user_id])->links() }}
+                    @if($status || $date_from || $date_to)
+                        {{ $values->appends(['selected_user_id' => $selected_user_id, 'status' => $status, 'date_from' => $date_from, 'date_to' => $date_to])->links() }}
+                    @else
+                        {{ $values->appends(['selected_user_id' => $selected_user_id])->links() }}
+                    @endif
                 @elseif($keyword || $status || $date_from || $date_to)
-                    {{ $values->appends(['keyword' => $keyword, 'status' => $status])->links() }}
+                    {{ $values->appends(['keyword' => $keyword, 'status' => $status, 'date_from' => $date_from, 'date_to' => $date_to])->links() }}
                 @else
                     {{ $values->links() }}
                 @endif

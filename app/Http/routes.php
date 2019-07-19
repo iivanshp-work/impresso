@@ -48,3 +48,21 @@ Route::post('feeds', 'FeedsController@feeds')->name('feeds_post');
 /* ================== Homepage + Admin Routes ================== */
 
 require __DIR__.'/admin_routes.php';
+
+/* ================== Custom Admin Routes ================== */
+
+$as = "";
+if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
+    $as = config('laraadmin.adminRoute').'.';
+    // Routes for Laravel 5.3
+    Route::get('/logout', 'Auth\LoginController@logout');
+}
+
+Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], function () {
+    /* ================== Custom User_Transactions ================== */
+    Route::get(config('laraadmin.adminRoute') . '/user_transactions/add/{purchase_id}', 'LA\User_TransactionsController@add_transaction_page');
+    Route::get(config('laraadmin.adminRoute') . '/user_transactions/add', 'LA\User_TransactionsController@add_transaction_page');
+    Route::get(config('laraadmin.adminRoute') . '/user_transactions/add/{purchase_id}/{mode}', 'LA\User_TransactionsController@add_transaction_save')->where('mode', 'automatic|manual');;
+    Route::post(config('laraadmin.adminRoute') . '/user_transactions/add/{purchase_id}/{mode}', 'LA\User_TransactionsController@add_transaction_save')->where('mode', 'automatic|manual');;
+    Route::post(config('laraadmin.adminRoute') . '/user_transactions/add', 'LA\User_TransactionsController@add_transaction_save');
+});
