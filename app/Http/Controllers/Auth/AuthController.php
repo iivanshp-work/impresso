@@ -102,7 +102,7 @@ class AuthController extends Controller
      */
     protected function create(array $data)
     {
-        // TODO: This is Not Standard. Need to find alternative
+        // This is Not Standard. Need to find alternative
         Eloquent::unguard();
         
         $employee = Employee::create([

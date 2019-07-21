@@ -33,6 +33,15 @@ class User_Transaction extends Model
         return $query->whereNull('deleted_at');
     }
 
+    public function getAmountAttribute()
+    {
+        if ((int)$this->attributes['amount'] == $this->attributes['amount']) {
+            return round($this->attributes['amount'],2);
+        } else {
+            return number_format($this->attributes['amount'],2, ',', '.');
+        }
+    }
+
     /**
      * Get Transactions types
      * @return array
@@ -40,6 +49,7 @@ class User_Transaction extends Model
     public function getTypes() {
         return [
             'purchase' => 'Purchase',
+            'user_validation' => 'User Validation Tokens',
             'share' => 'Share',
             'validation_education' => 'Education Validation',
             'validation_certificate' => 'Certificate Validation',

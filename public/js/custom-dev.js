@@ -349,10 +349,28 @@ $document.ready(function(){
         }, 100);
     });
     //submit form on change search field
-    $document.on('input', '[data-feeds-search-keyword]', function(e){
-        e.preventDefault();
-        $('[data-feeds-search-page]').val(1);
-        $(this).closest('[data-feeds-search-form]').submit();
+    function throttle(f, delay){
+        var timer = null;
+        return function(){
+            var context = this, args = arguments;
+            clearTimeout(timer);
+            timer = window.setTimeout(function(){
+                    f.apply(context, args);
+                },
+                delay || 500);
+        };
+    }
+    $document.on('input', '[data-feeds-search-keyword]', throttle(function(){
+            $('[data-feeds-search-page]').val(1);
+            $(this).closest('[data-feeds-search-form]').submit();
+        }, 1000)
+    );
+    $document.on('keypress', '[data-feeds-search-keyword]', function(e) {
+        if(e.which == 13) {
+            e.preventDefault();
+            $('[data-feeds-search-page]').val(1);
+            $(this).closest('[data-feeds-search-form]').submit();
+        }
     });
     //submit feed form
     $document.on('submit', '[data-feeds-search-form]', function(e){
@@ -366,7 +384,7 @@ $document.ready(function(){
         let data = frm.serialize();
         let type = frm.find('[data-feeds-search-type]').val();
         let wrapper = $('.' + type + '-wrapper');
-        //if (frm.data("busy")) return;
+        if (frm.data("busy")) return;
         frm.data("busy", true);
         loadingStart();
 
@@ -446,6 +464,7 @@ $document.ready(function(){
                     dataType: 'json',
                     success: function(response){
                         if(response.html){
+                            container.find('[data-page="' + response.page + '"]').remove();
                             container.append(response.html);
                             element = container.find("[data-load-more-jobs]").last();
                             let page = response.page || frm.find('[data-feeds-search-page]').val();
@@ -498,6 +517,7 @@ $document.ready(function(){
                     dataType: 'json',
                     success: function(response){
                         if(response.html){
+                            container.find('[data-page="' + response.page + '"]').remove();
                             container.append(response.html);
                             element = container.find("[data-load-more-professionals]").last();
                             let page = response.page || frm.find('[data-feeds-search-page]').val();
@@ -950,7 +970,6 @@ $document.ready(function(){
 
     //function to open needed edit profile popup
     function openProfileEditPopup(id){
-        console.log('[openProfileEditPopup-' + id);
         let selector = '[btn-' + id + '-popup]';
         if($(selector).length){
             $(selector).click().trigger('click');

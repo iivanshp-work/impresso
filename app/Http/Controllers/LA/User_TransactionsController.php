@@ -342,10 +342,6 @@ class User_TransactionsController extends Controller
      */
     public function add_transaction_save(Request $request, $id = 0, $mode = '')
     {
-        /*NEW FIELDS ADDED*/ //TODO ?? local
-        //user_purchases: transaction_id
-        //user_transactions: old_credits_amount,new_credits_amount
-
         ////Purchase record
         // fields
         // user - readonly - auto
@@ -394,8 +390,7 @@ class User_TransactionsController extends Controller
             $User_Transaction->by_user_id = Auth::id();
             $User_Transaction->purchase_id = $id;
             $User_Transaction->old_credits_amount = $selectedUser->credits_count;
-            $User_Transaction->new_credits_amount = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
-
+            $User_Transaction->new_credits_amount = $selectedUser->credits_count + $amount;
             try{
                 $User_Transaction->save();
             } catch (\Exception $e) {
@@ -405,8 +400,8 @@ class User_TransactionsController extends Controller
             $user_purchase->status = 1;
             $user_purchase->transaction_id = $User_Transaction->id;
             $user_purchase->save();
-            //ajust user credits amount
-            $selectedUser->credits_count = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+            //adjust user credits amount
+            $selectedUser->credits_count = $selectedUser->credits_count + $amount;
             $selectedUser->save();
             return redirect()->back();
         } elseif($mode == "manual") {
@@ -434,7 +429,7 @@ class User_TransactionsController extends Controller
                 $User_Transaction->by_user_id = Auth::id();
                 $User_Transaction->purchase_id = $id;
                 $User_Transaction->old_credits_amount = $selectedUser->credits_count;
-                $User_Transaction->new_credits_amount = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+                $User_Transaction->new_credits_amount = $selectedUser->credits_count + $amount;
 
                 try{
                     $User_Transaction->save();
@@ -445,8 +440,8 @@ class User_TransactionsController extends Controller
                 $user_purchase->status = 1;
                 $user_purchase->transaction_id = $User_Transaction->id;
                 $user_purchase->save();
-                //ajust user credits amount
-                $selectedUser->credits_count = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+                //adjust user credits amount
+                $selectedUser->credits_count = $selectedUser->credits_count + $amount;
                 $selectedUser->save();
                 return redirect()->back();
             } else {
@@ -468,15 +463,15 @@ class User_TransactionsController extends Controller
                 $User_Transaction->notes = $request->has("notes") ? $request->input("notes") : '';
                 $User_Transaction->by_user_id = Auth::id();
                 $User_Transaction->old_credits_amount = $selectedUser->credits_count;
-                $User_Transaction->new_credits_amount = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+                $User_Transaction->new_credits_amount = $selectedUser->credits_count + $amount;
 
                 try{
                     $User_Transaction->save();
                 } catch (\Exception $e) {
                     return redirect()->back()->withErrors(['save_error' => ['Saving Error.']])->withInput();
                 }
-                //ajust user credits amount
-                $selectedUser->credits_count = $amount >= 0 ? ($selectedUser->credits_count + $amount) : ($selectedUser->credits_count - $amount);
+                //adjust user credits amount
+                $selectedUser->credits_count = $selectedUser->credits_count + $amount;
                 $selectedUser->save();
             }
         }

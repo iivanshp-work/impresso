@@ -55,7 +55,7 @@
                             <select class="form-control valid" required="1" name="type" @if($userPurchase) disabled @endif>
                                 <option value=""> Type </option>
                                 @foreach($types as $key => $type)
-                                    <option value="{{$key}}" @if(!$userPurchase && ($key == "purchase" || $key == "validation_education" || $key == "validation_certificate")) disabled @endif @if($userPurchase && $key == "purchase") selected @endif>{{$type}}</option>
+                                    <option value="{{$key}}" @if(!$userPurchase && (in_array($key, ["purchase", "validation_education", "validation_certificate", "user_validation"]))) disabled @endif @if($userPurchase && $key == "purchase") selected @endif>{{$type}}</option>
                                 @endforeach
                             </select>
                         </div>

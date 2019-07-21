@@ -148,7 +148,7 @@
 							@if ($col == $view_col)
 								{!!$value->$col!!}
 							@elseif($col == 'notes')
-								{{ str_limit($value->$col, 45) }}
+								{{ str_limit($value->$col, 48) }}
 							@else
 								{{$value->$col}}
 							@endif

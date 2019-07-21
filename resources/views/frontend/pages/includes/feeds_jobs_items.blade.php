@@ -6,7 +6,7 @@
     @endphp
     @foreach($jobs as $key => $job)
         @if($key == $adPosition)
-            <div class="cards cards-jobs bg-violet-gradient">
+            <div data-page="{{$page}}" class="cards cards-jobs bg-violet-gradient">
                 <p>Your CV makes money.<br />
                     What about you?</p>
                 <span class="icon icon_top">Ad</span>
@@ -14,10 +14,10 @@
             </div>
             <!--<div>ADD google adwords // TODO???????</div>-->
         @endif
-        <div class="cards cards-jobs" @if(isset($lastItem['id']) && $job->id == $lastItem['id']) data-load-more-jobs="1" @endif>
+        <div data-page="{{$page}}" class="cards cards-jobs" @if(isset($lastItem['id']) && $job->id == $lastItem['id']) data-load-more-jobs="1" @endif>
             <div class="cards-jobs__avatar">
                 @php
-                    $imageColor = rand(1, 13);
+                    $imageColor = ($job->id % 13) + 1;
                 @endphp
                 <img src="{{asset('img/avatars/color-' . $imageColor . '.png')}}" alt="{{$job->job_title}}">
             </div>

@@ -78,7 +78,11 @@ class User extends Model
      */
     public function getCreditsCountAttribute()
     {
-        return round($this->attributes['credits_count'],2);
+        if ((int)$this->attributes['credits_count'] == $this->attributes['credits_count']) {
+            return round($this->attributes['credits_count'],2);
+        } else {
+            return number_format($this->attributes['credits_count'],2, ',', '.');
+        }
     }
 
     /**
@@ -95,7 +99,7 @@ class User extends Model
      * @return mixed
      */
     public function calculateMeetupCount($id) {
-        return $id; // TODO????????
+        return 0; // TODO????????
     }
 
     /**

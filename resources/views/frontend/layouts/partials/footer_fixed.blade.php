@@ -10,7 +10,7 @@
             <a href="{{url('/profile')}}">
                 <img src="{{ asset('img/icons/user.svg') }}" alt="profile">
             </a>
-            <a href="#">
+            <a href="{{url('/transaction-history')}}">
                 @php
                     use App\User;
                     $user = Auth::user();

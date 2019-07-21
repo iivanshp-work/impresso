@@ -32,6 +32,7 @@
             </div>
             <p>Get your XIMs now to save money & enjoy our upcoming super cool features!</p>
             <p>Remember you can always share the app for more XIMs!</p>
+            <a href="{{url('/settings/credits/checkout')}}" class="btn btn-violet" style="margin-bottom: 30px;">Buy XIMs</a>
         </main>
         @include('frontend.layouts.partials.footer_fixed')
     </div>
@@ -43,5 +44,6 @@
 
 @push('styles')
 @endpush
+
 @push('scripts')
 @endpush

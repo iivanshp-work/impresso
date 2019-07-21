@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User_certification;
 use App\Models\User_Education;
 use App\Models\User_Purchase;
+use App\Models\User_Transaction;
 use App\User;
 use App\Models\User as UserModel;
 use App\Models\Mails;
@@ -109,7 +110,6 @@ class ProfileSettingsController extends Controller
                 $responseData['message'] = 'An error occurred while submitted files. Please try again.';
             }
             return response()->json($responseData);
-            test($request->all());
         } else if ($action == 'request_validation') {
             $responseData['id'] = 0;
             $responseData['no_xims'] = false;
@@ -155,12 +155,7 @@ class ProfileSettingsController extends Controller
             if ($user->credits_count < $neededCredits) {
                 $responseData['no_xims'] = true;
                 return response()->json($responseData);
-            } else {
-                //TODO ????
-                //update users xims
-                //save in transcations
             }
-
             //save data
             if ($params['type'] == 'education') {
                 $data = User_Education::find($params['id']);
@@ -193,6 +188,30 @@ class ProfileSettingsController extends Controller
                     $data->user_id = $user->id;
                 }
                 $data->save();
+            }
+            if($data->id) {
+                //save in transcations
+                $amount = 0 - $neededCredits;
+                $User_Transaction = new User_Transaction;
+                $User_Transaction->user_id = $user->id;
+                $User_Transaction->amount = $amount;
+                if ($params['type'] == 'validation_education') {
+                    $User_Transaction->type = 'validation_education';
+                    $User_Transaction->notes = 'Education Validation "' . $data->title . '" - #' . $data->id;
+                    $User_Transaction->education_id = $data->id;
+                } else {
+                    $User_Transaction->type = 'validation_certificate';
+                    $User_Transaction->notes = 'Certificate Validation "' . $data->title . '" - #' . $data->id;
+                    $User_Transaction->education_id = $data->id;
+                }
+                $User_Transaction->by_user_id = $user->id;
+                $User_Transaction->old_credits_amount = $user->credits_count;
+                $User_Transaction->new_credits_amount = $user->credits_count + $amount;
+                $User_Transaction->save();
+
+                //adjust user credits amount
+                $user->credits_count = $user->credits_count + $amount;
+                $user->save();
             }
             $responseData['id'] = $data->id;
             return response()->json($responseData);
@@ -376,7 +395,7 @@ class ProfileSettingsController extends Controller
     }
 
     /**
-     * Settings Edit Page
+     * Settings Credits Page
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
@@ -388,15 +407,28 @@ class ProfileSettingsController extends Controller
     }
 
     /**
-     * settings Credits
+     * Settings Credits Checkout Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function settingsCreditsCheckoutPage(Request $request) {
+        $user = Auth::user();
+        return view('frontend.pages.settings_credits_checkout', [
+            'userData' => $user
+        ]);
+    }
+
+    /**
+     * settings Credits Checkout
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function settingsCredits(Request $request) {
+    public function settingsCreditsCheckout(Request $request) {
         $responseData = [
             'has_error' => false,
             'message' => ''
         ];
+        test($_REQUEST);
 
         //check users balance and minus it
         $purchaseAmount = LAConfigs::getByKey('validation_value_price');
@@ -423,6 +455,67 @@ class ProfileSettingsController extends Controller
         return response()->json($responseData);
     }
 
-
-
+    /**
+     * Transaction History Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function transactionHistoryPage(Request $request) {
+        $user = Auth::user();
+        $userTransactions = $user->transactions()->get();
+        if ($userTransactions->count()) {
+            $byUsersIDS = [];
+            $educationIDS = [];
+            $certificationIDS = [];
+            foreach($userTransactions as $transaction) {
+                $byUsersIDS[] = $transaction->by_user_id;
+                if ($transaction->education_id) {
+                    $educationIDS[] = $transaction->education_id;
+                }
+                if ($transaction->certificate_id) {
+                    $certificationIDS[] = $transaction->certificate_id;
+                }
+            }
+            if (!empty($byUsersIDS)) {
+                $byUsers = User::notDeleted()->whereIn('id', $byUsersIDS)->get();
+                if ($byUsers->count()) {
+                    $byUsers = $byUsers->keyBy('id');
+                    foreach($userTransactions as $key => $transaction) {
+                        if (isset($byUsers[$transaction->user_id])) {
+                            $userTransactions[$key]->user = $byUsers[$transaction->user_id];
+                        }
+                    }
+                }
+            }
+            if (!empty($certificationIDS)) {
+                $certifications = User_certification::notDeleted()->whereIn('id', $certificationIDS)->get();
+                if ($certifications->count()) {
+                    $certifications = $certifications->keyBy('id');
+                    foreach($userTransactions as $key => $transaction) {
+                        if ($transaction->certificate_id && isset($certifications[$transaction->certificate_id])) {
+                            $userTransactions[$key]->certificate = $certifications[$transaction->certificate_id];
+                        }
+                    }
+                }
+            }
+            if (!empty($educationIDS)) {
+                $educations = User_Education::notDeleted()->whereIn('id', $educationIDS)->get();
+                if ($educations->count()) {
+                    $educations = $educations->keyBy('id');
+                    foreach($userTransactions as $key => $transaction) {
+                        if ($transaction->education_id && isset($educations[$transaction->education_id])) {
+                            $userTransactions[$key]->education = $educations[$transaction->education_id];
+                        }
+                    }
+                }
+            }
+        } else {
+            $userTransactions = null;
+        }
+        return view('frontend.pages.transaction_history', [
+            'user' => $user,
+            'userData' => $user,
+            'userTransactions' => $userTransactions
+        ]);
+    }
 }

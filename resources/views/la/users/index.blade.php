@@ -74,7 +74,7 @@
 		<thead>
 		<tr class="success">
 			@foreach( $fields as $col )
-			<th>@if($col == 'created_at'){{'Sign Up'}}@else{{ $module->fields[$col]['label'] or ucfirst($col) }}@endif</th>
+			<th>@if($col == 'credits_count'){{'Credits'}}@elseif($col == 'created_at'){{'Sign Up'}}@else{{ $module->fields[$col]['label'] or ucfirst($col) }}@endif</th>
 			@endforeach
 			@if($show_actions)
 			<th width="200">Actions</th>

@@ -580,7 +580,7 @@ class UploadsController extends Controller
         $keyword = $request->has('keyword') ? trim($request->input('keyword')) : '';
         $limit = 10;
         $offset = ($page - 1) * $limit;
-        // TODO???????
+
         if (Module::hasAccess("Uploads", "view")) {
             $uploads = array();
 

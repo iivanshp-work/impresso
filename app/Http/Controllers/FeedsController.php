@@ -44,7 +44,8 @@ class FeedsController extends Controller
 
         return view('frontend.pages.feeds', [
             'jobs' => $jobs,
-            'professionals' => $professionals
+            'professionals' => $professionals,
+            'page' => 1
         ]);
     }
 
@@ -86,6 +87,7 @@ class FeedsController extends Controller
                 if ($jobs->count() == 0) $jobs = null;
                 $html = view('frontend.pages.includes.feeds_jobs_items', [
                     'jobs' => $jobs,
+                    'page' => $page
                 ])->render();
                 $responseData['html'] = $html;
                 $responseData['has_more'] = $html ? true : false;
@@ -116,6 +118,7 @@ class FeedsController extends Controller
                 if ($professionals->count() == 0) $professionals = null;
                 $html = view('frontend.pages.includes.feeds_professionals_items', [
                     'professionals' => $professionals,
+                    'page' => $page
                 ])->render();
                 $responseData['html'] = $html;
                 $responseData['has_more'] = $html ? true : false;

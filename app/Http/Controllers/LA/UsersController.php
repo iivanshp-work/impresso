@@ -7,7 +7,9 @@
 namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
+use App\Models\User_Transaction;
 use Carbon\Carbon;
+use Dwij\Laraadmin\Models\LAConfigs;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
@@ -49,6 +51,7 @@ class UsersController extends Controller
         $mode = $request->path() == "admin/administrators" ? "admins" : "users";
         $paginateLimit = 20;
         $this->listing_cols[] = 'created_at';
+        $this->listing_cols[] = 'credits_count';
         $query = DB::table('users')->select($this->listing_cols)->whereNull('deleted_at')->where('type', '=', ($mode == "admins" ? getenv('USERS_TYPE_ADMIN') : getenv('USERS_TYPE_USER')));
         $params = [];
         $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
@@ -132,7 +135,7 @@ class UsersController extends Controller
         if ($mode == "admins") {
             $fields = ['id', 'name', 'email'];
         } else {
-            $fields = ['id', 'name', 'email', 'status', 'created_at'];
+            $fields = ['id', 'name', 'email', 'status', 'credits_count', 'created_at'];
         }
 
 		if(Module::hasAccess($module->id)) {
@@ -293,8 +296,35 @@ class UsersController extends Controller
                 $request->request->add(['is_verified_hidden' => 'false']);
                 $request->request->add(['varification_pending_hidden' => 'false']);
             }
+            $addCredits = false;
+			if (!$user->added_init_credits && !$user->is_verified && $status == 1){
+			    $addCredits = true;
+            }
+			if ($addCredits) {
+                $request->request->add(['added_init_credits' => 1]);
+            }
 			$insert_id = Module::updateRow("Users", $request, $id);
+            if ($addCredits) {
+                $neededCredits = LAConfigs::getByKey('validation_value');
+                if (!$neededCredits) {
+                    $neededCredits = 30;
+                }
+                $amount = $neededCredits;
+                $User_Transaction = new User_Transaction;
+                $User_Transaction->user_id = $user->id;
+                $User_Transaction->amount = $amount;
+                $User_Transaction->type = 'user_validation';
+                $User_Transaction->notes = 'Tokens which every user receives to start with.';
+                $User_Transaction->by_user_id = $user->id;
+                $User_Transaction->old_credits_amount = $user->credits_count;
+                $User_Transaction->new_credits_amount = $user->credits_count + $amount;
+                $User_Transaction->save();
 
+                //adjust user credits amount
+                $user = User::find($id);
+                $user->credits_count = $user->credits_count + $amount;
+                $user->save();
+            }
 			if ($mode == "admins") {
                 return redirect(config('laraadmin.adminRoute')."/administrators");
             } else {

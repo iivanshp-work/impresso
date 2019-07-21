@@ -32,13 +32,15 @@ Route::get('profile/edit', 'ProfileSettingsController@profileEditPage')->name('p
 Route::post('profile/edit', 'ProfileSettingsController@profileEdit')->name('profile_edit_post');
 Route::get('profile/{id}', 'ProfileSettingsController@profilePage')->name('profile_other');
 Route::post('save-geo-data', 'ProfileSettingsController@saveGeo')->name('save_geo_post');
+Route::get('transaction-history', 'ProfileSettingsController@transactionHistoryPage')->name('transaction_history');
 
 /* settings */
 Route::get('settings', 'ProfileSettingsController@settingsPage')->name('settings');
 Route::get('settings/edit', 'ProfileSettingsController@settingsEditPage')->name('settings_edit');
 Route::post('settings/edit', 'ProfileSettingsController@settingsEdit')->name('settings_edit_post');
 Route::get('settings/credits', 'ProfileSettingsController@settingsCreditsPage')->name('settings_credits');
-Route::post('settings/credits', 'ProfileSettingsController@settingsCredits')->name('settings_credits_post');
+Route::get('settings/credits/checkout', 'ProfileSettingsController@settingsCreditsCheckoutPage')->name('settings_credits_checkout');
+Route::post('settings/credits/checkout', 'ProfileSettingsController@settingsCreditsCheckout')->name('settings_credits_checkout_post');
 
 /* feeds */
 Route::get('feeds', 'FeedsController@feedsPage')->name('feeds');
@@ -50,17 +52,14 @@ Route::post('feeds', 'FeedsController@feeds')->name('feeds_post');
 require __DIR__.'/admin_routes.php';
 
 /* ================== Custom Admin Routes ================== */
-
 $as = "";
 if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
     $as = config('laraadmin.adminRoute').'.';
     // Routes for Laravel 5.3
     Route::get('/logout', 'Auth\LoginController@logout');
 }
-
 Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], function () {
     /* ================== Custom User_Transactions ================== */
-
     Route::get(config('laraadmin.adminRoute') . '/user_transactions/add/new', 'LA\User_TransactionsController@add_transaction_page');
     Route::get(config('laraadmin.adminRoute') . '/user_transactions/add/{purchase_id}', 'LA\User_TransactionsController@add_transaction_page');
     Route::get(config('laraadmin.adminRoute') . '/user_transactions/add/{purchase_id}/{mode}', 'LA\User_TransactionsController@add_transaction_save')->where('mode', 'automatic|manual');;

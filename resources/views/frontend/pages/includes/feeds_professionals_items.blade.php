@@ -4,7 +4,7 @@
         $lastItem = end($items);
     @endphp
     @foreach($professionals as $professional)
-        <div class="cards cards-professionals" @if(isset($lastItem['id']) && $professional->id == $lastItem['id']) data-load-more-professionals="1" @endif>
+        <div data-page="{{$page}}" class="cards cards-professionals" @if(isset($lastItem['id']) && $professional->id == $lastItem['id']) data-load-more-professionals="1" @endif>
             <div class="cards-professionals__header">
                 <div class="cards-professionals__avatar @if($professional->is_verified) checked @endif">
                     <a href="{{url('/profile/' . $professional->id)}}" class="avatar">
@@ -12,7 +12,7 @@
                             <img src="{{url('/files/' . $professional->photo)}}" alt="@if($professional->name){{$professional->name}}@else{{$professional->email}}@endif">
                         @else
                             @php
-                                $imageColor = rand(1, 6);
+                                $imageColor = ($professional->id % 6) + 1;
                             @endphp
                             <img src="{{asset('img/avatars/color-' . $imageColor . '.png')}}" alt="@if($professional->name){{$professional->name}}@else{{$professional->email}}@endif">
                         @endif
@@ -65,7 +65,7 @@
                     </li>
                 @endif
             </ul>
-            <a href="{{url('/profile/' . $professional->id . '#meetup')}}" class="btn btn-border disabled">Meetup</a>
+            <a href="https://www.impresso.tech/" class="btn btn-border disabled">Meetup</a>
         </div>
     @endforeach
 @endif
