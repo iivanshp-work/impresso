@@ -28,7 +28,7 @@
                 @endphp
                 <span>1 validation</span>
                 <span class="btn btn-white">{{$validation_value}} XIM</span>
-                <button data-settings-buy-credits="" class="btn btn-pink">${{$validation_value_price}}</button>
+                <a href="{{url('/settings/credits/checkout')}}" class="btn btn-pink">${{$validation_value_price}}</a>
             </div>
             <p>Get your XIMs now to save money & enjoy our upcoming super cool features!</p>
             <p>Remember you can always share the app for more XIMs!</p>

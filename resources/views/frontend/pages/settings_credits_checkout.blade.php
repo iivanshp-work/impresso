@@ -12,29 +12,45 @@
                 <img src="{{url('img/icons/arrow-back.svg')}}" alt="arrow-back">
             </a>
         </header>
-        <main class="checkout">
-            <form id="edit_settings_form" action="{{url('/settings/credits/checkout')}}" method="post" data-edit-settings-form="">
-                <ul class="personal-details__list">
+        <main class="checkout-page">
+            <form id="checkout_settings_form" action="{{url('/settings/credits/checkout')}}" method="post" data-edit-settings-form="">
+                <ul class="settings__list settings__checkout__list">
+                    @php
+                        $validation_value = LAConfigs::getByKey('validation_value');
+                        if (!$validation_value) $validation_value = 30;
+                        $validation_value_price = LAConfigs::getByKey('validation_value_price');
+                        if (!$validation_value_price) $validation_value_price = 3;
+                    @endphp
                     <li>
-                        <span>CREDIT CART</span>
-                        <input type="text" class="style-input-text" value="{{$userData->full_name_birth}}" autocomplete="off" name="card_no" placeholder="CREDIT CART" >
-                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                        <div class="xims_total_wrapper">
+                            <div class="xims_amount">
+                                <span>Amount of XIMs:</span>
+                                <input type="text" class="style-input-text" readonly="" value="{{$validation_value}}" autocomplete="off" name="amount" placeholder="Amount" >
+                            </div>
+                            <div class="xims_total">
+                                <span>Total:</span>
+                                <input type="text" class="style-input-text" readonly="" value="$ {{$validation_value_price}}" autocomplete="off" name="price" placeholder="Price" >
+                            </div>
+                        </div>
                     </li>
                     <li>
-                        <span>EXPIRATION</span>
-                        <input type="text" class="style-input-text" value="{{$userData->phone}}" autocomplete="off" name="exp" placeholder="EXPIRATION" >
-                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                        <span>Credit Card Number:</span>
+                        <input type="text" class="style-input-text" data-required-fields="" value="" autocomplete="off" name="card_no" placeholder="CREDIT CART" >
+                    </li>
+                    <li class="expiry_date">
+                        <span>Expiry Date:</span>
+                        <input type="text" class="style-input-text" data-required-fields="" value="" autocomplete="off" name="exp_month" placeholder="YY" >
+                        -
+                        <input type="text" class="style-input-text exp_year" data-required-fields="" value="" autocomplete="off" name="exp_year" placeholder="YY" >
                     </li>
                     <li>
-                        <span>CVV</span>
-                        <input type="text" class="style-input-text" value="{{$userData->phone}}" autocomplete="off" name="cvv" placeholder="CVV" >
-                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                        <span>CVV:</span>
+                        <input type="text" class="style-input-text" data-required-fields="" value="" autocomplete="off" name="cvv" placeholder="CVV" >
                     </li>
                 </ul>
                 <div class="settings_edit_submit">
-                    <button data-settings-buy-credits="" type="submit" id="save" class="btn btn-violet btn-save">Buy XIMS</button>
+                    <button data-settings-buy-credits="" type="submit" id="buy" class="btn btn-violet btn-buy">Buy XIMS</button>
                 </div>
-
             </form>
         </main>
         @include('frontend.layouts.partials.footer_fixed')
@@ -48,4 +64,5 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('/js/components/jquery.mask.js') }}"></script>
 @endpush

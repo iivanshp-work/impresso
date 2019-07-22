@@ -9,6 +9,7 @@ use App\Models\User_Transaction;
 use App\User;
 use App\Models\User as UserModel;
 use App\Models\Mails;
+use Carbon\Carbon;
 use Dwij\Laraadmin\Models\LAConfigs;
 use Exception;
 use Illuminate\Http\Request;
@@ -17,6 +18,8 @@ use Auth;
 use Validator;
 use Redirect;
 use Hash;
+use Stripe;
+use DB;
 
 use App\Http\Controllers\LA\UploadsController as UploadsController;
 
@@ -440,7 +443,15 @@ class ProfileSettingsController extends Controller
             'exp_year' => 'required|string',
             'cvv' => 'required|string'
         );
-        $validator = Validator::make($request->all(), $rules);
+
+        $messages = array(
+            'card_no.required' => 'Credit Card Number field is required.',
+            'exp_month.required' => 'Expiry Month field is required.',
+            'exp_year.required' => 'Expiry Year field is required.',
+            'cvv.required' => 'CVV field is required.',
+        );
+
+        $validator = Validator::make($request->all(), $rules, $messages);
         if ($validator->fails()) {
             $responseData['has_error'] = true;
             $messages = $validator->errors();
@@ -463,25 +474,20 @@ class ProfileSettingsController extends Controller
                     $responseData['message'] .= 'Can not create Stripe token.<br>';
                 }
                 if (!$responseData['has_error']) {
-                    $charge = $stripe->charges()->create([
+                    $chargeParams = [
                         'source' => $token['id'],
                         'currency' => 'USD',
                         'amount' => $purchaseAmount,
-                        'description' => 'Charge - $' . $purchaseAmount . ' for ' . Auth::user()->email,
-                        'customer' => Auth::user()->email
-                    ]);
+                        'description' => 'Charge - $' . $purchaseAmount . ' from ' . Auth::user()->email . ' (USER ID: ' . Auth::id() . ')',
+                    ];
+                    $charge = $stripe->charges()->create($chargeParams);
                     DB::table('stripe_charges')->insert([
-                       'data' => json_encode([
+                        'created_at' => Carbon::now(),
+                        'data' => json_encode([
                            'token' => $token,
-                           'charge_params' => [
-                               'source' => $token['id'],
-                               'currency' => 'USD',
-                               'amount' => $purchaseAmount,
-                               'description' => 'Charge - $' . $purchaseAmount . ' for ' . Auth::user()->email,
-                               'customer' => Auth::user()->email
-                           ],
+                           'charge_params' => $chargeParams,
                            'charge' => $charge,
-                       ]),
+                        ])
                     ]);
                     if($charge['status'] == 'succeeded') {
                         /**Write Here Your Database insert logic.*/
@@ -489,7 +495,7 @@ class ProfileSettingsController extends Controller
                         $userPurchase = new User_Purchase;
                         $userPurchase->user_id = $id;
                         $userPurchase->purchase_amount = $purchaseAmount;
-                        $userPurchase->payment_id = $charge['id'];// will be stripe ID //TODO????
+                        $userPurchase->payment_id = $charge['id'];
                         $userPurchase->status = 0;
                         try {
                             if ($userPurchase->save()) {

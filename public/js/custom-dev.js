@@ -169,7 +169,7 @@ $document.ready(function(){
     $document.on('submit', '#signup_form', function(e){
         e.preventDefault();
         let form = $(this);
-        //if (form.data("busy")) return;
+        if (form.data("busy")) return;
         form.data("busy", true);
         loadingStart();
         $.ajax({
@@ -198,7 +198,7 @@ $document.ready(function(){
     $document.on('submit', '#signin_form', function(e){
         e.preventDefault();
         let form = $(this);
-        //if (form.data("busy")) return;
+        if (form.data("busy")) return;
         form.data("busy", true);
         loadingStart();
         $.ajax({
@@ -250,7 +250,7 @@ $document.ready(function(){
         let $this = $(this), item = $this.parent(), btn = item.find('[data-validation-send-file]'),
             id = $this.data('image-id'), formData = new FormData(), targetLink = base_url + '/validation';
 
-        //if ($this.data("busy")) return;
+        if ($this.data("busy")) return;
         $this.data("busy", true);
         loadingStart();
 
@@ -306,7 +306,7 @@ $document.ready(function(){
         let data = {
             action: 'check_validation'
         };
-        //if ($this.data("busy")) return;
+        if ($this.data("busy")) return;
         $this.data("busy", true);
         loadingStart();
 
@@ -558,7 +558,7 @@ $document.ready(function(){
     $document.on('submit', '[data-edit-profile-form]', function(e){
         e.preventDefault();
         let form = $(this);
-        //if (form.data("busy")) return;
+        if (form.data("busy")) return;
         form.data("busy", true);
         loadingStart();
         $.ajax({
@@ -614,7 +614,7 @@ $document.ready(function(){
         let $this = $(this), item = $this.parent(), btn = item.find('[data-validation-send-file]'),
             id = $this.data('image-id'), formData = new FormData(), targetLink = base_url + '/profile/edit';
 
-        //if ($this.data("busy")) return;
+        if ($this.data("busy")) return;
         $this.data("busy", true);
         loadingStart();
 
@@ -843,7 +843,7 @@ $document.ready(function(){
             });
             return;
         }
-        //if ($this.data("busy")) return;
+        if ($this.data("busy")) return;
         $this.data("busy", true);
         loadingStart();
 
@@ -925,7 +925,7 @@ $document.ready(function(){
         e.preventDefault();
         let btn = $(this), targetLink = base_url + '/profile/edit';
         //send request to server
-        //if (btn.data("busy")) return;
+        if (btn.data("busy")) return;
         btn.data("busy", true);
         loadingStart();
         $.ajax({
@@ -994,7 +994,7 @@ $document.ready(function(){
         let disabled = form.find(':input:disabled').removeAttr('disabled');
         let data = form.serialize();
         disabled.attr('disabled', 'disabled');
-        //if (form.data("busy")) return;
+        if (form.data("busy")) return;
         form.data("busy", true);
         loadingStart();
         $.ajax({
@@ -1025,7 +1025,7 @@ $document.ready(function(){
         e.preventDefault();
         let btn = $(this), targetLink = base_url + '/settings/credits/checkout';
         let data = btn.closest('form').serialize();
-        //if (btn.data("busy")) return;
+        if (btn.data("busy")) return;
         btn.data("busy", true);
         loadingStart();
         $.ajax({
@@ -1038,6 +1038,7 @@ $document.ready(function(){
                     showError(response.message ? response.message : 'An error occurred. Please try again later.');
                 }else{
                     showSuccess(response.message);
+                    btn.closest('form').find('[data-required-fields]').val('');
                 }
             },
             error: function(){
@@ -1049,6 +1050,13 @@ $document.ready(function(){
             }
         });
     });
+
+    if ($('.checkout-page').length) {
+        $('#checkout_settings_form [name="card_no"]').mask("0000 0000 0000 0000", {placeholder: "____ ____ ____ ____", clearIfNotMatch: true});
+        $('#checkout_settings_form [name="cvv"]').mask("0000", {placeholder: "___"});
+        $('#checkout_settings_form [name="exp_month"]').mask("00", {placeholder: "MM", clearIfNotMatch: true});
+        $('#checkout_settings_form [name="exp_year"]').mask("00", {placeholder: "YY", clearIfNotMatch: true});
+    }
     //credits settings end
 
 });

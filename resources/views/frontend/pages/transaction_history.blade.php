@@ -61,7 +61,7 @@
                                     @endif--}}
                                     <small>{{Carbon::parse($userTransaction->created_at)->format('H:i')}}</small>
                                 </div>
-                                <p>@if($userTransaction->amount > 0)+@elseif($userTransaction->amount < 0)-@endif {{abs($userTransaction->amount)}} {{getenv('CREDITS_LABEL')}}</p>
+                                <p>@if($userTransaction->amount > 0)+@elseif($userTransaction->amount < 0)-@endif @if($userTransaction->amount >= 0){{$userTransaction->amount}} @else {{str_replace('-', '', (string)$userTransaction->amount)}} @endif {{getenv('CREDITS_LABEL')}}</p>
                             </div>
                         </div>
                         <div class="dashboard__body">
