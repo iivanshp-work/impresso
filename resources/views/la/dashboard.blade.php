@@ -9,6 +9,48 @@
         <section class="content">
           <!-- Small boxes (Stat box) -->
           <div class="row">
+            <div class="col-lg-4 col-xs-4">
+              <!-- small box -->
+              <div class="small-box bg-red-active">
+                <div class="inner">
+                  <h3>@if ($usersAdminCount) {{$usersAdminCount}} @else 0 @endif</h3>
+                  <p>Administrators</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-adn"></i>
+                </div>
+                <a href="{{ url(config('laraadmin.adminRoute') . '/administrators') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div><!-- ./col -->
+
+            <div class="col-lg-4 col-xs-4">
+              <!-- small box -->
+              <div class="small-box bg-aqua">
+                <div class="inner">
+                  <h3>@if ($usersCount) {{$usersCount}} @else 0 @endif</h3>
+                  <p>Users(Profiles)</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-group"></i>
+                </div>
+                <a href="{{ url(config('laraadmin.adminRoute') . '/users') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div><!-- ./col -->
+
+            <div class="col-lg-4 col-xs-4">
+              <!-- small box -->
+              <div class="small-box bg-green">
+                <div class="inner">
+                  <h3>@if ($jobsCount) {{$jobsCount}} @else 0 @endif</h3>
+                  <p>Jobs</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-joomla"></i>
+                </div>
+                <a href="{{ url(config('laraadmin.adminRoute') . '/jobs') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div><!-- ./col -->
+
             <div class="col-lg-3 col-xs-3">
               <!-- small box -->
               <div class="small-box bg-yellow">
@@ -22,43 +64,46 @@
                 <a href="{{ url(config('laraadmin.adminRoute') . '/users?status=2') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
+
             <div class="col-lg-3 col-xs-3">
               <!-- small box -->
-              <div class="small-box bg-aqua">
+              <div class="small-box bg-teal">
                 <div class="inner">
-                  <h3>@if ($usersCount) {{$usersCount}} @else 0 @endif</h3>
-                  <p>Users</p>
+                  <h3>@if ($educationCount) {{$educationCount}} @else 0 @endif</h3>
+                  <p>Pending education requests</p>
                 </div>
                 <div class="icon">
-                  <i class="fa fa-group"></i>
+                  <i class="fa fa-archive"></i>
                 </div>
-                <a href="{{ url(config('laraadmin.adminRoute') . '/users') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="{{ url(config('laraadmin.adminRoute') . '/user_educations?status=2') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
+
             <div class="col-lg-3 col-xs-3">
               <!-- small box -->
-              <div class="small-box bg-red-active">
+              <div class="small-box bg-olive">
                 <div class="inner">
-                  <h3>@if ($usersAdminCount) {{$usersAdminCount}} @else 0 @endif</h3>
-                  <p>Administrators</p>
+                  <h3>@if ($certificationCount) {{$certificationCount}} @else 0 @endif</h3>
+                  <p>Pending certificate requests</p>
                 </div>
                 <div class="icon">
-                  <i class="fa fa-adn"></i>
+                  <i class="fa fa-certificate"></i>
                 </div>
-                <a href="{{ url(config('laraadmin.adminRoute') . '/administrators') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="{{ url(config('laraadmin.adminRoute') . '/user_certifications?status=2') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
+
             <div class="col-lg-3 col-xs-3">
               <!-- small box -->
-              <div class="small-box bg-green">
+              <div class="small-box bg-purple">
                 <div class="inner">
-                  <h3>@if ($jobsCount) {{$jobsCount}} @else 0 @endif</h3>
-                  <p>Jobs</p>
+                  <h3>@if ($purchasesCount) {{$purchasesCount}} @else 0 @endif</h3>
+                  <p>new purchases</p>
                 </div>
                 <div class="icon">
-                  <i class="fa fa-joomla"></i>
+                  <i class="fa fa-cc-stripe"></i>
                 </div>
-                <a href="{{ url(config('laraadmin.adminRoute') . '/jobs') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="{{ url(config('laraadmin.adminRoute') . '/user_purchases?status=0') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
 

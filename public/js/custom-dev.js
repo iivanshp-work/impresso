@@ -1023,8 +1023,8 @@ $document.ready(function(){
     //credits settings start
     $document.on('click change', '[data-settings-buy-credits]', function(e){
         e.preventDefault();
-        let btn = $(this), targetLink = base_url + '/settings/credits';
-        let data = {};
+        let btn = $(this), targetLink = base_url + '/settings/credits/checkout';
+        let data = btn.closest('form').serialize();
         //if (btn.data("busy")) return;
         btn.data("busy", true);
         loadingStart();

@@ -13,21 +13,21 @@
             </a>
         </header>
         <main class="checkout">
-            <form id="edit_settings_form" action="{{url('/settings/edit')}}" method="post" data-edit-settings-form="">
+            <form id="edit_settings_form" action="{{url('/settings/credits/checkout')}}" method="post" data-edit-settings-form="">
                 <ul class="personal-details__list">
                     <li>
                         <span>CREDIT CART</span>
-                        <input type="text" class="style-input-text" value="{{$userData->full_name_birth}}" autocomplete="off" name="full_name_birth" placeholder="CREDIT CART" >
+                        <input type="text" class="style-input-text" value="{{$userData->full_name_birth}}" autocomplete="off" name="card_no" placeholder="CREDIT CART" >
                         <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     </li>
                     <li>
                         <span>EXPIRATION</span>
-                        <input type="text" class="style-input-text" value="{{$userData->phone}}" autocomplete="off" name="phone" placeholder="EXPIRATION" >
+                        <input type="text" class="style-input-text" value="{{$userData->phone}}" autocomplete="off" name="exp" placeholder="EXPIRATION" >
                         <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     </li>
                     <li>
                         <span>CVV</span>
-                        <input type="text" class="style-input-text" value="{{$userData->phone}}" autocomplete="off" name="phone" placeholder="CVV" >
+                        <input type="text" class="style-input-text" value="{{$userData->phone}}" autocomplete="off" name="cvv" placeholder="CVV" >
                         <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     </li>
                 </ul>

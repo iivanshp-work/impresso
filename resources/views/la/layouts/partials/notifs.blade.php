@@ -96,6 +96,55 @@
 					</ul>
 				</li>
 				@endif
+				@php
+					$usersPendingCount = DB::table("users")->where("type", '=', getenv('USERS_TYPE_USER'))->whereNull('deleted_at')->where("varification_pending", "=", 1)->count();
+					$educationCount = DB::table("user_educations")->where("status", '=', 2)->whereNull('deleted_at')->count();
+					$certificationCount = DB::table("user_certifications")->where("status", '=', 2)->whereNull('deleted_at')->count();
+					$purchasesCount = DB::table("user_purchases")->where("status", '=', 0)->whereNull('deleted_at')->count();
+					$totalCount = $usersPendingCount + $educationCount + $certificationCount + $purchasesCount;
+				@endphp
+				<!-- Notifications Menu -->
+				<li class="dropdown notifications-menu">
+					<!-- Menu toggle button -->
+					<a href="#" class="dropdown-toggle" data-toggle="dropdown">
+						<i class="fa fa-bell-o"></i>
+						@if($totalCount)
+						<span class="label label-warning">{{$totalCount}}</span>
+						@endif
+					</a>
+					@if($totalCount)
+						<ul class="dropdown-menu">
+							<li class="header">You have {{$totalCount}} notifications</li>
+							<li>
+								<!-- Inner Menu: contains the notifications -->
+								<ul class="menu">
+									<li><!-- start notification -->
+										@if($usersPendingCount)
+											<a href="{{url(config('laraadmin.adminRoute') . '/users?status=2')}}">
+												<i class="fa fa-users text-aqua"></i> {{$usersPendingCount}} pending users
+											</a>
+										@endif
+										@if($educationCount)
+											<a href="{{url(config('laraadmin.adminRoute') . '/user_educations?status=2')}}">
+												<i class="fa fa-archive text-aqua"></i> {{$educationCount}} education request validation
+											</a>
+											@endif
+										@if($certificationCount)
+											<a href="{{url(config('laraadmin.adminRoute') . '/user_certifications?status=2')}}">
+												<i class="fa fa-certificate text-aqua"></i> {{$certificationCount}} certificate request validation
+											</a>
+										@endif
+										@if($purchasesCount)
+											<a href="{{url(config('laraadmin.adminRoute') . '/user_purchases?status=0')}}">
+												<i class="fa fa-cc-stripe text-aqua"></i> {{$purchasesCount}} users purchases
+											</a>
+										@endif
+									</li><!-- end notification -->
+								</ul>
+							</li>
+						</ul>
+					@endif
+				</li>
 				@if (Auth::guest())
 					<li><a href="{{ url('/login') }}">Login</a></li>
 					<li><a href="{{ url('/register') }}">Register</a></li>

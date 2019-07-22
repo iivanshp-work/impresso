@@ -428,29 +428,95 @@ class ProfileSettingsController extends Controller
             'has_error' => false,
             'message' => ''
         ];
-        test($_REQUEST);
 
-        //check users balance and minus it
         $purchaseAmount = LAConfigs::getByKey('validation_value_price');
         if (!$purchaseAmount) {
             $purchaseAmount = 3;
         }
-        $id = Auth::id();
-        $userPurchase = new User_Purchase;
-        $userPurchase->user_id = $id;
-        $userPurchase->purchase_amount = $purchaseAmount;
-        $userPurchase->payment_id = uniqid();// will be stripe ID //TODO????
-        $userPurchase->status = 0;
-        try {
-            if ($userPurchase->save()) {
-                $responseData['message'] = 'Successfully purchase. We are now processing the information. Your XIMs will be available shortly.';
-            } else {
-                $responseData['has_error'] = true;
-                $responseData['message'] .= 'An error occurred while saving data.' . '<br>';
-            }
-        } catch (\Exception $e) {
+
+        $rules = array(
+            'card_no' => 'required|string',
+            'exp_month' => 'required|string',
+            'exp_year' => 'required|string',
+            'cvv' => 'required|string'
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
             $responseData['has_error'] = true;
-            $responseData['message'] .= $e->getMessage() . '<br>';
+            $messages = $validator->errors();
+            foreach ($messages->all() as $message) {
+                $responseData['message'] .= $message . '<br>';
+            }
+        } else {
+            try {
+                $stripe = Stripe::make(getenv('STRIPE_SECRET'));
+                $token = $stripe->tokens()->create([
+                    'card' => [
+                        'number' => $request->has('card_no') ? $request->input('card_no') : '',
+                        'exp_month' => $request->has('exp_month') ? $request->input('exp_month') : '',
+                        'exp_year' => $request->has('exp_year') ? $request->input('exp_year') : '',
+                        'cvc' => $request->has('cvc') ? $request->input('cvc') : ''
+                    ],
+                ]);
+                if (!isset($token['id'])) {
+                    $responseData['has_error'] = true;
+                    $responseData['message'] .= 'Can not create Stripe token.<br>';
+                }
+                if (!$responseData['has_error']) {
+                    $charge = $stripe->charges()->create([
+                        'source' => $token['id'],
+                        'currency' => 'USD',
+                        'amount' => $purchaseAmount,
+                        'description' => 'Charge - $' . $purchaseAmount . ' for ' . Auth::user()->email,
+                        'customer' => Auth::user()->email
+                    ]);
+                    DB::table('stripe_charges')->insert([
+                       'data' => json_encode([
+                           'token' => $token,
+                           'charge_params' => [
+                               'source' => $token['id'],
+                               'currency' => 'USD',
+                               'amount' => $purchaseAmount,
+                               'description' => 'Charge - $' . $purchaseAmount . ' for ' . Auth::user()->email,
+                               'customer' => Auth::user()->email
+                           ],
+                           'charge' => $charge,
+                       ]),
+                    ]);
+                    if($charge['status'] == 'succeeded') {
+                        /**Write Here Your Database insert logic.*/
+                        $id = Auth::id();
+                        $userPurchase = new User_Purchase;
+                        $userPurchase->user_id = $id;
+                        $userPurchase->purchase_amount = $purchaseAmount;
+                        $userPurchase->payment_id = $charge['id'];// will be stripe ID //TODO????
+                        $userPurchase->status = 0;
+                        try {
+                            if ($userPurchase->save()) {
+                                $responseData['message'] = 'Successfully purchase. We are now processing the information. Your XIMs will be available shortly.';
+                            } else {
+                                $responseData['has_error'] = true;
+                                $responseData['message'] .= 'An error occurred while saving data.' . '<br>';
+                            }
+                        } catch (\Exception $e) {
+                            $responseData['has_error'] = true;
+                            $responseData['message'] .= $e->getMessage() . '<br>';
+                        }
+                    } else {
+                        $responseData['has_error'] = true;
+                        $responseData['message'] .= 'Can not create Stripe charge.<br>';
+                    }
+                }
+            } catch (Exception $e) {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= $e->getMessage() . '<br>';
+            } catch(\Cartalyst\Stripe\Exception\CardErrorException $e) {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= $e->getMessage() . '<br>';
+            } catch(\Cartalyst\Stripe\Exception\MissingParameterException $e) {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= $e->getMessage() . '<br>';
+            }
         }
         return response()->json($responseData);
     }
