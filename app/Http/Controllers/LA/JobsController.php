@@ -7,6 +7,7 @@
 namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
+use App\Models\Users_Notification;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
@@ -18,6 +19,7 @@ use Dwij\Laraadmin\Models\Module;
 use Dwij\Laraadmin\Models\ModuleFields;
 
 use App\Models\Job;
+use App\Models\User;
 
 class JobsController extends Controller
 {
@@ -144,6 +146,23 @@ class JobsController extends Controller
 			}
 
 			$insert_id = Module::insert("Jobs", $request);
+            $job = Job::find($insert_id);
+			$longitude = $request->has('longitude') && $request->input('longitude') ? $request->input('longitude') : '';
+            $latitude = $request->has('latitude') && $request->input('latitude') ? $request->input('latitude') : '';
+            $status = $request->has('status') && $request->input('status') ? 1 : 0;
+            if ($longitude && $latitude && $status) {
+                $users = User::notDeleted()
+                    ->users()
+                    ->notMe()
+                    ->isWithinMaxDistance($job, 100)
+                    ->get();
+                if ($users->count()) {
+                    foreach($users as $user) {
+                        //save notification
+                        Users_Notification::saveNotification('new_job', 'New jobs in your area!', $user->id, $job->id);
+                    }
+                }
+            }
 
 			return redirect()->route(config('laraadmin.adminRoute') . '.jobs.index');
 
@@ -223,6 +242,7 @@ class JobsController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
+        $job = Job::find($id);
 		if(Module::hasAccess("Jobs", "edit")) {
 
 			$rules = Module::validateRules("Jobs", $request, true);
@@ -234,6 +254,38 @@ class JobsController extends Controller
 			}
 
 			$insert_id = Module::updateRow("Jobs", $request, $id);
+
+            $longitude = $request->has('longitude') && $request->input('longitude') ? $request->input('longitude') : '';
+            $latitude = $request->has('latitude') && $request->input('latitude') ? $request->input('latitude') : '';
+            $status = $request->has('status') && $request->input('status') ? 1 : 0;
+            //TODO: not clear if this logic needed ???
+            if ($longitude && $latitude && $status) {
+                $users = User::notDeleted()
+                    ->users()
+                    ->notMe()
+                    ->isWithinMaxDistance($job, 100)
+                    ->get();
+                if ($users->count()) {
+                    $usersIDS = $users->keyBy('id');
+                    $usersIDS = $usersIDS->keys()->toArray();
+                    $existingNotifications = Users_Notification::notDeleted()
+                        ->whereIn('user_id', $usersIDS)
+                        ->where('type', '=', 'new_job')
+                        ->where('reference_id', '=', $id)
+                        ->get();
+                    $existingNotificationsUserIDS = [];
+                    if ($existingNotifications->count()) {
+                        $existingNotificationsUserIDS = $existingNotifications->keyBy('user_id');
+                        $existingNotificationsUserIDS = $existingNotificationsUserIDS->keys()->toArray();
+                    }
+                    foreach($users as $user) {
+                        if (!in_array($user->id, $existingNotificationsUserIDS)) {
+                            //save notification
+                            Users_Notification::saveNotification('new_job', 'New jobs in your area!', $user->id, $job->id);
+                        }
+                    }
+                }
+            }
 
 			return redirect()->route(config('laraadmin.adminRoute') . '.jobs.index');
 

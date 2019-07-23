@@ -11,9 +11,16 @@
             <a href="{{url()->previous()}}" class="header__icon-left">
                 <img src="{{url('img/icons/arrow-back.svg')}}" alt="arrow-back">
             </a>
-            <span class="header__icon-right">
-                <img src="img/icons/bell.svg" alt="" />
-            </span>
+            <a href="{{url('/notifications')}}" class="header__icon-right">
+                <img src="{{asset('img/icons/bell.svg')}}" alt="" />
+                @php
+                    $user = Auth::user();
+                    $hasNewNotifications = $user->has_new_notifications;
+                @endphp
+                @if($hasNewNotifications)
+                    <img src="{{asset('img/icons/exclamation-mark.svg')}}" alt="" class="bell-exclamation">
+                @endif
+            </a>
         </header>
         <main class="dashboard">
             <h1 class="title text-center">{{$user->credits_count}} {{getenv('CREDITS_LABEL')}}</h1>
@@ -90,7 +97,7 @@
                     </div>
                 @endforeach
             @else
-                There are no records yet.
+                <h1 class="title text-center">There are no records yet.</h1>
             @endif
 
         </main>

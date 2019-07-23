@@ -13,7 +13,16 @@
                 @if($mode == "me")
                     <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" /></a>
                 @endif
-                <img src="{{asset('img/icons/bell.svg')}}" alt="" />
+                <a href="{{url('/notifications')}}" class="header__icon-right">
+                    <img src="{{asset('img/icons/bell.svg')}}" alt="" />
+                    @php
+                        $user = Auth::user();
+                        $hasNewNotifications = $user->has_new_notifications;
+                    @endphp
+                    @if($hasNewNotifications)
+                        <img src="{{asset('img/icons/exclamation-mark.svg')}}" alt="" class="bell-exclamation">
+                    @endif
+                </a>
             </span>
         </header>
         <main>

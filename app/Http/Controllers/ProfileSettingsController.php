@@ -386,7 +386,9 @@ class ProfileSettingsController extends Controller
         $address = '';
         if($lat && $lon) {
             $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
+
             $output = @json_decode($geocode);
+            test($output);
             if ($output && isset($output->results[0]->geometry->location->address)) {
                 $address = $output->results[0]->geometry->location->address; //TODO?? debug response
             }

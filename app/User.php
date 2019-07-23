@@ -6,6 +6,7 @@
 
 namespace App;
 
+use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
 use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
@@ -23,7 +24,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     use EntrustUserTrait;
 
     protected $table = 'users';
-	
+
 	/**
      * The attributes that are mass assignable.
      *
@@ -32,7 +33,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	protected $fillable = [
 		'name', 'email', 'password', "role", "provider", "provider_id", "type"
 	];
-	
+
 	/**
      * The attributes that should be hidden for arrays.
      *
@@ -41,7 +42,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 	protected $hidden = [
 		'password', 'remember_token',
     ];
-    
+
     // protected $dates = ['deleted_at'];
 
     /**
@@ -99,6 +100,27 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function scopeUsers($query) {
         return $query->where('type', '=', 3); // 3 - Users, 1 - Admins
     }
+
+    /**
+     * @param $query
+     * @param $location
+     * @param int $radius
+     * @return mixed
+     */
+    public function scopeIsWithinMaxDistance($query, $location, $radius = 25) {
+        $table = $this->getTable();
+        $haversine = "(6371 * acos(cos(radians({$location->latitude})) 
+                     * cos(radians({$table}.latitude)) 
+                     * cos(radians({$table}.longitude) 
+                     - radians({$location->longitude})) 
+                     + sin(radians({$location->latitude})) 
+                     * sin(radians({$table}.latitude))))";
+        return $query
+            ->select() //pick the columns you want here.
+            ->selectRaw("{$haversine} AS distance")
+            ->whereRaw("{$haversine} < ?", [$radius]);
+    }
+
 
     /**
      * @return mixed
@@ -186,6 +208,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function notifications()
     {
         return $this->hasMany('App\Models\Users_Notification')->notDeleted()->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getHasNewNotificationsAttribute()
+    {
+        if ($this->notif_view_date) {
+            $notifications = $this->notifications()->where('created_at', '>', Carbon::parse($this->notif_view_date))->get();
+        } else {
+            $notifications = $this->notifications()->get();
+        }
+        return $notifications->count() ? 1 : 0;
     }
 
 }

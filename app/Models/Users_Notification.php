@@ -13,11 +13,11 @@ use Auth;
 class Users_Notification extends Model
 {
     use SoftDeletes;
-	
+
 	protected $table = 'users_notifications';
-	
+
 	protected $hidden = [
-        
+
     ];
 
 	protected $guarded = [];
@@ -56,8 +56,8 @@ class Users_Notification extends Model
     //wants to meetup - meetup_wants
     //accepted your invite - meetup_accepted
     //XIM purchase complete - xim_purchase_complete
-    //New jobs in your area - new job
-    //App rating
+    //New jobs in your area - new_job
+    //App rating - app_rating
     //
     //Admins Added Notifications
 

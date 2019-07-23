@@ -34,6 +34,9 @@ class NotificationsController extends Controller
      */
     public function notificationsPage(Request $request) {
         $user = Auth::user();
+        $user->notif_view_date = Carbon::now();
+        $user->save();
+
         $notifications = [];
         $generalNotifications = Notification::notDeleted()->active()->orderBy('created_at', 'desc')->get();
         if ($generalNotifications) {
@@ -45,11 +48,17 @@ class NotificationsController extends Controller
             $userNotifications = $userNotifications->toArray();
             $notifications = array_merge($notifications, $userNotifications);
         }
-        $notifications = collect($notifications);
-        $notifications = $notifications->sortByDesc('created_at');
-        test($notifications);
-        //Carbon::now()->diffForHumans(['options' => Carbon::ONE_DAY_WORDS])
-        test($generalNotifications);
+
+        if (!empty($notifications)) {
+            $notifications = collect($notifications);
+            $notifications = $notifications->sortByDesc('created_at');
+            $notifications = $notifications->map(function ($item, $key) {
+                return (object)$item;
+            });
+        } else {
+            $notifications = null;
+        }
+
         return view('frontend.pages.notifications', [
             'user' => $user,
             'notifications' => $notifications

@@ -8,10 +8,16 @@
     <div class="main feed">
         <header class="header">
             <h4>Feed</h4>
-            <span class="header__icon-right">
-                <img src="img/icons/bell.svg" alt="">
-                <img src="img/icons/exclamation-mark.svg" alt="" class="bell-exclamation">
-            </span>
+            <a href="{{url('/notifications')}}" class="header__icon-right">
+                <img src="{{asset('img/icons/bell.svg')}}" alt="">
+                @php
+                    $user = Auth::user();
+                    $hasNewNotifications = $user->has_new_notifications;
+                @endphp
+                @if($hasNewNotifications)
+                    <img src="{{asset('img/icons/exclamation-mark.svg')}}" alt="" class="bell-exclamation">
+                @endif
+            </a>
         </header>
         <main>
             <div class="tabs-block">

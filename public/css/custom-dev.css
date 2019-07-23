@@ -48,6 +48,22 @@ customValidateConfirm{
     -o-transform: rotate(180deg);
     cursor: pointer;
 }
+.notifications__card {
+    position: relative;
+}
+.notifications__card .full-link{
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+.header__icon-right .header__icon-right {
+    display: flex;
+    position: relative;
+    right: initial;
+    bottom: initial;
+}
 
 /*settings checkout start*/
 .checkout-page .settings__checkout__list{
