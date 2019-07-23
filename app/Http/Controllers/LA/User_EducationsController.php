@@ -8,6 +8,7 @@ namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Users_Notification;
 use App\Models\Validation_status;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -245,6 +246,7 @@ class User_EducationsController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id) {
+        $user_education = User_Education::find($id);
         if (Module::hasAccess("User_Educations", "edit")) {
 
             $rules = Module::validateRules("User_Educations", $request, true);
@@ -255,11 +257,19 @@ class User_EducationsController extends Controller
                 return redirect()->back()->withErrors($validator)->withInput();;
             }
 
-
             if ($validator->fails()) {
                 return redirect()->back()->withErrors($validator)->withInput();
             }
             $insert_id = Module::updateRow("User_Educations", $request, $id);
+
+            if ($user_education && $request->has('status') && $request->input('status') == 3) {
+                //save notification
+                Users_Notification::saveNotification('education_validation_success', 'Certificate Validation: failure', $user_education->user_id, $user_education->id);
+            }
+            if ($user_education && $request->has('status') && $request->input('status') == 4) {
+                //save notification
+                Users_Notification::saveNotification('education_validation_failure', 'Certificate Validation: success', $user_education->user_id, $user_education->id);
+            }
 
 
             $selected_user_id = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;

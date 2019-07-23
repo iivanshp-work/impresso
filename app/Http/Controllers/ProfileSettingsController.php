@@ -6,6 +6,7 @@ use App\Models\User_certification;
 use App\Models\User_Education;
 use App\Models\User_Purchase;
 use App\Models\User_Transaction;
+use App\Models\Users_Notification;
 use App\User;
 use App\Models\User as UserModel;
 use App\Models\Mails;
@@ -157,6 +158,8 @@ class ProfileSettingsController extends Controller
             }
             if ($user->credits_count < $neededCredits) {
                 $responseData['no_xims'] = true;
+                //save notification
+                Users_Notification::saveNotification('no_xims', 'You’re out of XIMs');
                 return response()->json($responseData);
             }
             //save data

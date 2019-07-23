@@ -42,6 +42,8 @@ Route::get('settings/credits', 'ProfileSettingsController@settingsCreditsPage')-
 Route::get('settings/credits/checkout', 'ProfileSettingsController@settingsCreditsCheckoutPage')->name('settings_credits_checkout');
 Route::post('settings/credits/checkout', 'ProfileSettingsController@settingsCreditsCheckout')->name('settings_credits_checkout_post');
 
+Route::get('notifications', 'NotificationsController@notificationsPage')->name('notifications');
+
 /* feeds */
 Route::get('feeds', 'FeedsController@feedsPage')->name('feeds');
 Route::post('feeds', 'FeedsController@feeds')->name('feeds_post');

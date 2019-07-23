@@ -180,4 +180,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany('App\Models\User_Transaction')->notDeleted()->orderBy('created_at', 'desc');
     }
 
+    /**
+     * @return mixed
+     */
+    public function notifications()
+    {
+        return $this->hasMany('App\Models\Users_Notification')->notDeleted()->orderBy('created_at', 'desc');
+    }
+
 }

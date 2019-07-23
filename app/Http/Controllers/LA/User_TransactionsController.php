@@ -10,6 +10,7 @@ use App\Http\Controllers\Controller;
 use App\Models\User_certification;
 use App\Models\User_Education;
 use App\Models\User_Purchase;
+use App\Models\Users_Notification;
 use App\User;
 use Dwij\Laraadmin\Models\LAConfigs;
 use Illuminate\Http\Request;
@@ -400,6 +401,8 @@ class User_TransactionsController extends Controller
             $user_purchase->status = 1;
             $user_purchase->transaction_id = $User_Transaction->id;
             $user_purchase->save();
+            //save notification
+            Users_Notification::saveNotification('xim_purchase_complete', 'XIM purchase complete', $selectedUser->id, $user_purchase->id);
             //adjust user credits amount
             $selectedUser->credits_count = $selectedUser->credits_count + $amount;
             $selectedUser->save();

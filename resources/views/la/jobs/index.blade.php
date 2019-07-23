@@ -135,7 +135,6 @@
 @endsection
 
 @push('styles')
-<link rel="stylesheet" type="text/css" href="{{ asset('la-assets/plugins/datatables/datatables.min.css') }}"/>
 <style>
 	[data-open-gmaps]{
 		display: none;

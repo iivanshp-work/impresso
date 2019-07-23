@@ -944,10 +944,12 @@ $document.ready(function(){
                     }else if(response.id){
                         openProfileEditPopup('validate-success');
                         requestValidationData = {};
-                        requestItem.find('[data-request-validation-item]').hide();
-                        requestItem.find('.user__validated').removeClass('hide');
-                        requestItem.find('[data-id-field]').val(response.id);
-                        requestItem.find('input[type="text"]').attr('disabled', 'disabled');
+                        if (requestItem) {
+                            requestItem.find('[data-request-validation-item]').hide();
+                            requestItem.find('.user__validated').removeClass('hide');
+                            requestItem.find('[data-id-field]').val(response.id);
+                            requestItem.find('input[type="text"]').attr('disabled', 'disabled');
+                        }
                     }
 
                 }

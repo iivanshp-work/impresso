@@ -81,4 +81,12 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== User_Transactions ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/user_transactions', 'LA\User_TransactionsController');
 	Route::get(config('laraadmin.adminRoute') . '/user_transaction_dt_ajax', 'LA\User_TransactionsController@dtajax');
+
+	/* ================== Notifications ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/notifications', 'LA\NotificationsController');
+	Route::get(config('laraadmin.adminRoute') . '/notification_dt_ajax', 'LA\NotificationsController@dtajax');
+
+	/* ================== Users_Notifications ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/users_notifications', 'LA\Users_NotificationsController');
+	Route::get(config('laraadmin.adminRoute') . '/users_notification_dt_ajax', 'LA\Users_NotificationsController@dtajax');
 });

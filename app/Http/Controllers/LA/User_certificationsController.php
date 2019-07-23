@@ -9,6 +9,7 @@ namespace App\Http\Controllers\LA;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 use App\Models\Validation_status;
+use App\Models\Users_Notification;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
@@ -251,18 +252,25 @@ class User_certificationsController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
+        $user_certification = User_certification::find($id);
 		if(Module::hasAccess("User_certifications", "edit")) {
 
 			$rules = Module::validateRules("User_certifications", $request, true);
 
 			$validator = Validator::make($request->all(), $rules);
-
 			if ($validator->fails()) {
 				return redirect()->back()->withErrors($validator)->withInput();;
 			}
+            $insert_id = Module::updateRow("User_certifications", $request, $id);
 
-			$insert_id = Module::updateRow("User_certifications", $request, $id);
-
+			if ($user_certification && $request->has('status') && $request->input('status') == 3) {
+                //save notification
+                Users_Notification::saveNotification('certificate_validation_success', 'Certificate Validation: success', $user_certification->user_id, $user_certification->id);
+            }
+			if ($user_certification && $request->has('status') && $request->input('status') == 4) {
+                //save notification
+                Users_Notification::saveNotification('certificate_validation_failure', 'Certificate Validation: failure', $user_certification->user_id, $user_certification->id);
+            }
             $selected_user_id = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;
             if ($selected_user_id) {
                 return redirect(config('laraadmin.adminRoute') . "/user_certifications?selected_user_id=" . $selected_user_id);
