@@ -52,7 +52,7 @@ class User_TransactionsController extends Controller
 	public function index(Request $request)
 	{
 		$module = Module::get('User_Transactions');
-        $paginateLimit = 20;
+        $paginateLimit = getenv('PAGINATION_LIMIT');
 
 		if(Module::hasAccess($module->id)) {
             $selectFields = $this->listing_cols;

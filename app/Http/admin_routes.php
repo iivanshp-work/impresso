@@ -93,4 +93,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Locations ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/locations', 'LA\LocationsController');
 	Route::get(config('laraadmin.adminRoute') . '/location_dt_ajax', 'LA\LocationsController@dtajax');
+
+	/* ================== Jobs_ADs ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/jobs_ads', 'LA\Jobs_ADsController');
+	Route::get(config('laraadmin.adminRoute') . '/jobs_ad_dt_ajax', 'LA\Jobs_ADsController@dtajax');
 });

@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use App\Models\Job;
+use App\Models\Jobs_AD;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -41,10 +42,12 @@ class FeedsController extends Controller
         if ($jobs->count() == 0) $jobs = null;
         $professionals = User::withDistance($userData)->notDeleted()->users()->notMe()->where('is_verified', '1')->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($professionals->count() == 0) $professionals = null;
+        $jobAd = Jobs_AD::notDeleted()->active()->orderBy('id', 'desc')->limit(1)->first();
 
         return view('frontend.pages.feeds', [
             'jobs' => $jobs,
             'professionals' => $professionals,
+            'jobAd' => $jobAd,
             'page' => 1
         ]);
     }
@@ -85,9 +88,12 @@ class FeedsController extends Controller
                     ->limit($this->paginationLimit)
                     ->get();
                 if ($jobs->count() == 0) $jobs = null;
+                $jobAd = Jobs_AD::notDeleted()->active()->orderBy('id', 'desc')->limit(1)->offset(($page-1))->first();
+
                 $html = view('frontend.pages.includes.feeds_jobs_items', [
                     'jobs' => $jobs,
-                    'page' => $page
+                    'page' => $page,
+                    'jobAd' => $jobAd
                 ])->render();
                 $responseData['html'] = $html;
                 $responseData['has_more'] = $html ? true : false;

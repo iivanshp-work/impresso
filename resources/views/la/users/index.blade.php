@@ -89,6 +89,16 @@
                             <td>
                                 @if ($col == $view_col)
                                     {!!$value->$col!!}
+                                @elseif($col == 'credits_count')
+                                    @php
+                                        $creditsCount = $value->$col;
+                                        if ((int)$creditsCount == $creditsCount) {
+                                            $creditsCount = round($creditsCount,2);
+                                        } else {
+                                            $creditsCount = number_format($creditsCount,2, ',', '.');
+                                        }
+                                    @endphp
+                                    {{$creditsCount}}
                                 @elseif($col == 'created_at')
                                     {{Carbon::parse($value->$col)->format('Y/m/d H:i')}}
                                 @elseif($col == 'status')

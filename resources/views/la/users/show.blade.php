@@ -37,6 +37,10 @@
 								<label for="is_verified" class="col-md-2">Credits Count :</label>
 								<div class="col-md-10 fvalue">{{$user->credits_count}}</div>
 							</div>
+							<div class="form-group">
+								<label for="is_verified" class="col-md-2">Share Count :</label>
+								<div class="col-md-10 fvalue">{{$user->share_count}}</div>
+							</div>
 						</div>
 						<div class="panel-default panel-heading">
 							<h4>Validation Info</h4>

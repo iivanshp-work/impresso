@@ -17,40 +17,38 @@ use Collective\Html\FormFacade as Form;
 use Dwij\Laraadmin\Models\Module;
 use Dwij\Laraadmin\Models\ModuleFields;
 
-use App\Models\Notification;
+use App\Models\Jobs_AD;
 
-class NotificationsController extends Controller
+class Jobs_ADsController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title';
-	public $listing_cols = ['id', 'title', 'notification_text', 'status'];
+	public $listing_cols = ['id', 'title', 'text', 'status'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns
 		if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
 			$this->middleware(function ($request, $next) {
-				$this->listing_cols = ModuleFields::listingColumnAccessScan('Notifications', $this->listing_cols);
+				$this->listing_cols = ModuleFields::listingColumnAccessScan('Jobs_ADs', $this->listing_cols);
 				return $next($request);
 			});
 		} else {
-			$this->listing_cols = ModuleFields::listingColumnAccessScan('Notifications', $this->listing_cols);
+			$this->listing_cols = ModuleFields::listingColumnAccessScan('Jobs_ADs', $this->listing_cols);
 		}
 	}
 	
 	/**
-	 * Display a listing of the Notifications.
+	 * Display a listing of the Jobs_ADs.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request)
 	{
-		$module = Module::get('Notifications');
+		$module = Module::get('Jobs_ADs');
         $paginateLimit = getenv('PAGINATION_LIMIT');
 
 		if(Module::hasAccess($module->id)) {
-		    $fields = $this->listing_cols;
-		    $fields[] = 'created_at';
-            $query = DB::table('notifications')->select($fields)->whereNull('deleted_at');
+            $query = DB::table('jobs_ads')->select($this->listing_cols)->whereNull('deleted_at');
             $params = [];
             $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
             $params['status'] = $request->has('status') ? intval($request->input('status')) : null;
@@ -58,16 +56,15 @@ class NotificationsController extends Controller
             if ($params['keyword']) {
                 $query = $query->where(function ($query) use ($params) {
                     $query->orWhere("title", "like", "%" . $params['keyword'] . "%");
-                    $query->orWhere("notification_text", "like", "%" . $params['keyword'] . "%");
+                    $query->orWhere("text", "like", "%" . $params['keyword'] . "%");
                 });
             }
             if ($params['status'] !== null) {
                 $query = $query->where("status", "=", $params['status']);
             }
             $values = $query->orderBy("id", 'desc')->paginate($paginateLimit);
-
             if($values){
-                $fields_popup = ModuleFields::getModuleFields('Notifications');
+                $fields_popup = ModuleFields::getModuleFields('Jobs_ADs');
                 for($i=0; $i < count($values); $i++) {
                     for ($j=0; $j < count($this->listing_cols); $j++) {
                         $col = $this->listing_cols[$j];
@@ -80,18 +77,18 @@ class NotificationsController extends Controller
 
                         }
                         if($col == $this->view_col) {
-                            $values[$i]->$col = '<a href="'.url(config('laraadmin.adminRoute') . '/notifications/'.$values[$i]->id).'">'.$values[$i]->$col.'</a>';
+                            $values[$i]->$col = '<a href="'.url(config('laraadmin.adminRoute') . '/jobs_ads/'.$values[$i]->id).'">'.$values[$i]->$col.'</a>';
                         }
                     }
 
                     if($this->show_action) {
                         $output = '';
-                        if(Module::hasAccess("Notifications", "edit")) {
-                            $output .= '<a href="'.url(config('laraadmin.adminRoute') . '/notifications/'.$values[$i]->id.'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                        if(Module::hasAccess("Jobs_ADs", "edit")) {
+                            $output .= '<a href="'.url(config('laraadmin.adminRoute') . '/jobs_ads/'.$values[$i]->id.'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
                         }
 
-                        if(Module::hasAccess("Notifications", "delete")) {
-                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.notifications.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
+                        if(Module::hasAccess("Jobs_ADs", "delete")) {
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.jobs_ads.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
                             $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                             $output .= Form::close();
                         }
@@ -102,11 +99,12 @@ class NotificationsController extends Controller
             if($values->count() == 0){
                 $values = 0;
             }
-			return View('la.notifications.index', [
+
+			return View('la.jobs_ads.index', [
 				'show_actions' => $this->show_action,
 				'listing_cols' => $this->listing_cols,
-				'module' => $module,
                 'view_col' => $this->view_col,
+				'module' => $module,
                 'values' => $values
 			]);
 		} else {
@@ -115,7 +113,7 @@ class NotificationsController extends Controller
 	}
 
 	/**
-	 * Show the form for creating a new notification.
+	 * Show the form for creating a new jobs_ad.
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
@@ -125,16 +123,16 @@ class NotificationsController extends Controller
 	}
 
 	/**
-	 * Store a newly created notification in database.
+	 * Store a newly created jobs_ad in database.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request)
 	{
-		if(Module::hasAccess("Notifications", "create")) {
+		if(Module::hasAccess("Jobs_ADs", "create")) {
 		
-			$rules = Module::validateRules("Notifications", $request);
+			$rules = Module::validateRules("Jobs_ADs", $request);
 			
 			$validator = Validator::make($request->all(), $rules);
 			
@@ -142,9 +140,9 @@ class NotificationsController extends Controller
 				return redirect()->back()->withErrors($validator)->withInput();
 			}
 			
-			$insert_id = Module::insert("Notifications", $request);
+			$insert_id = Module::insert("Jobs_ADs", $request);
 			
-			return redirect()->route(config('laraadmin.adminRoute') . '.notifications.index');
+			return redirect()->route(config('laraadmin.adminRoute') . '.jobs_ads.index');
 			
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
@@ -152,30 +150,30 @@ class NotificationsController extends Controller
 	}
 
 	/**
-	 * Display the specified notification.
+	 * Display the specified jobs_ad.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show($id)
 	{
-		if(Module::hasAccess("Notifications", "view")) {
+		if(Module::hasAccess("Jobs_ADs", "view")) {
 			
-			$notification = Notification::find($id);
-			if(isset($notification->id)) {
-				$module = Module::get('Notifications');
-				$module->row = $notification;
+			$jobs_ad = Jobs_AD::find($id);
+			if(isset($jobs_ad->id)) {
+				$module = Module::get('Jobs_ADs');
+				$module->row = $jobs_ad;
 				
-				return view('la.notifications.show', [
+				return view('la.jobs_ads.show', [
 					'module' => $module,
 					'view_col' => $this->view_col,
 					'no_header' => true,
 					'no_padding' => "no-padding"
-				])->with('notification', $notification);
+				])->with('jobs_ad', $jobs_ad);
 			} else {
 				return view('errors.404', [
 					'record_id' => $id,
-					'record_name' => ucfirst("notification"),
+					'record_name' => ucfirst("jobs_ad"),
 				]);
 			}
 		} else {
@@ -184,28 +182,28 @@ class NotificationsController extends Controller
 	}
 
 	/**
-	 * Show the form for editing the specified notification.
+	 * Show the form for editing the specified jobs_ad.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit($id)
 	{
-		if(Module::hasAccess("Notifications", "edit")) {			
-			$notification = Notification::find($id);
-			if(isset($notification->id)) {	
-				$module = Module::get('Notifications');
+		if(Module::hasAccess("Jobs_ADs", "edit")) {			
+			$jobs_ad = Jobs_AD::find($id);
+			if(isset($jobs_ad->id)) {	
+				$module = Module::get('Jobs_ADs');
 				
-				$module->row = $notification;
+				$module->row = $jobs_ad;
 				
-				return view('la.notifications.edit', [
+				return view('la.jobs_ads.edit', [
 					'module' => $module,
 					'view_col' => $this->view_col,
-				])->with('notification', $notification);
+				])->with('jobs_ad', $jobs_ad);
 			} else {
 				return view('errors.404', [
 					'record_id' => $id,
-					'record_name' => ucfirst("notification"),
+					'record_name' => ucfirst("jobs_ad"),
 				]);
 			}
 		} else {
@@ -214,7 +212,7 @@ class NotificationsController extends Controller
 	}
 
 	/**
-	 * Update the specified notification in storage.
+	 * Update the specified jobs_ad in storage.
 	 *
 	 * @param  \Illuminate\Http\Request  $request
 	 * @param  int  $id
@@ -222,9 +220,9 @@ class NotificationsController extends Controller
 	 */
 	public function update(Request $request, $id)
 	{
-		if(Module::hasAccess("Notifications", "edit")) {
+		if(Module::hasAccess("Jobs_ADs", "edit")) {
 			
-			$rules = Module::validateRules("Notifications", $request, true);
+			$rules = Module::validateRules("Jobs_ADs", $request, true);
 			
 			$validator = Validator::make($request->all(), $rules);
 			
@@ -232,9 +230,9 @@ class NotificationsController extends Controller
 				return redirect()->back()->withErrors($validator)->withInput();;
 			}
 			
-			$insert_id = Module::updateRow("Notifications", $request, $id);
+			$insert_id = Module::updateRow("Jobs_ADs", $request, $id);
 			
-			return redirect()->route(config('laraadmin.adminRoute') . '.notifications.index');
+			return redirect()->route(config('laraadmin.adminRoute') . '.jobs_ads.index');
 			
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
@@ -242,18 +240,18 @@ class NotificationsController extends Controller
 	}
 
 	/**
-	 * Remove the specified notification from storage.
+	 * Remove the specified jobs_ad from storage.
 	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
 	public function destroy($id)
 	{
-		if(Module::hasAccess("Notifications", "delete")) {
-			Notification::find($id)->delete();
+		if(Module::hasAccess("Jobs_ADs", "delete")) {
+			Jobs_AD::find($id)->delete();
 			
 			// Redirecting to index() method
-			return redirect()->route(config('laraadmin.adminRoute') . '.notifications.index');
+			return redirect()->route(config('laraadmin.adminRoute') . '.jobs_ads.index');
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
@@ -266,11 +264,11 @@ class NotificationsController extends Controller
 	 */
 	public function dtajax()
 	{
-		$values = DB::table('notifications')->select($this->listing_cols)->whereNull('deleted_at');
+		$values = DB::table('jobs_ads')->select($this->listing_cols)->whereNull('deleted_at');
 		$out = Datatables::of($values)->make();
 		$data = $out->getData();
 
-		$fields_popup = ModuleFields::getModuleFields('Notifications');
+		$fields_popup = ModuleFields::getModuleFields('Jobs_ADs');
 		
 		for($i=0; $i < count($data->data); $i++) {
 			for ($j=0; $j < count($this->listing_cols); $j++) { 
@@ -279,7 +277,7 @@ class NotificationsController extends Controller
 					$data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
 				}
 				if($col == $this->view_col) {
-					$data->data[$i][$j] = '<a href="'.url(config('laraadmin.adminRoute') . '/notifications/'.$data->data[$i][0]).'">'.$data->data[$i][$j].'</a>';
+					$data->data[$i][$j] = '<a href="'.url(config('laraadmin.adminRoute') . '/jobs_ads/'.$data->data[$i][0]).'">'.$data->data[$i][$j].'</a>';
 				}
 				// else if($col == "author") {
 				//    $data->data[$i][$j];
@@ -288,12 +286,12 @@ class NotificationsController extends Controller
 			
 			if($this->show_action) {
 				$output = '';
-				if(Module::hasAccess("Notifications", "edit")) {
-					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/notifications/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+				if(Module::hasAccess("Jobs_ADs", "edit")) {
+					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/jobs_ads/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
 				}
 				
-				if(Module::hasAccess("Notifications", "delete")) {
-					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.notifications.destroy', $data->data[$i][0]], 'method' => 'delete', 'style'=>'display:inline']);
+				if(Module::hasAccess("Jobs_ADs", "delete")) {
+					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.jobs_ads.destroy', $data->data[$i][0]], 'method' => 'delete', 'style'=>'display:inline']);
 					$output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
 					$output .= Form::close();
 				}

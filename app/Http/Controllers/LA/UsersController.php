@@ -49,7 +49,7 @@ class UsersController extends Controller
 	{
 		$module = Module::get('Users');
         $mode = $request->path() == "admin/administrators" ? "admins" : "users";
-        $paginateLimit = 20;
+        $paginateLimit = getenv('PAGINATION_LIMIT');
         $this->listing_cols[] = 'created_at';
         $this->listing_cols[] = 'credits_count';
         $query = DB::table('users')->select($this->listing_cols)->whereNull('deleted_at')->where('type', '=', ($mode == "admins" ? getenv('USERS_TYPE_ADMIN') : getenv('USERS_TYPE_USER')));

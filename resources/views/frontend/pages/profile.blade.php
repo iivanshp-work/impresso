@@ -318,6 +318,10 @@
                                         </div>
                                         @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                             <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                        @elseif($education->status == getenv('VERIFIED_STATUSES_REQUEST_VERIFICATION'))
+                                            <span class="user__validated">Pending</span>
+                                        @elseif($education->status == getenv('VERIFIED_STATUSES_FAILED'))
+                                            <span class="user__validated">Failed</span>
                                         @endif
                                     </div>
                                 @endforeach
@@ -349,6 +353,13 @@
                                         <input class="style-input-text style-input-text_15" type="text"
                                                value="{{$certificate->title}}" placeholder="Certificate Name" disabled="disabled">
                                     </div>
+                                    @if($certificate->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                        <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                    @elseif($certificate->status == getenv('VERIFIED_STATUSES_REQUEST_VERIFICATION'))
+                                        <span class="user__validated">Pending</span>
+                                    @elseif($certificate->status == getenv('VERIFIED_STATUSES_FAILED'))
+                                        <span class="user__validated">Failed</span>
+                                    @endif
                                 </div>
                             @endforeach
                         @else

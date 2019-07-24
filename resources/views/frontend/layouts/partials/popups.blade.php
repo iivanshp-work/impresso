@@ -43,7 +43,7 @@
 @php
     $user = Auth::user();
 @endphp
-@if ($user && !(!$user->location_title || (!$user->longitude && !$user->latitude)))
+@if ($user && (!$user->location_title || (!$user->longitude && !$user->latitude)))
     <div class="modal-window" id="allowLocationAccess">
         <div class="modal-window__content">
             <div class="modal-window__body location text-center">

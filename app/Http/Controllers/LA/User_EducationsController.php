@@ -47,7 +47,7 @@ class User_EducationsController extends Controller
      */
     public function index(Request $request) {
         $module = Module::get('User_Educations');
-        $paginateLimit = 20;
+        $paginateLimit = getenv('PAGINATION_LIMIT');
 
         if (Module::hasAccess($module->id)) {
             $query = DB::table('user_educations')->select($this->listing_cols)->whereNull('deleted_at');

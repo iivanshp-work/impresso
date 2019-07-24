@@ -389,23 +389,11 @@ class ProfileSettingsController extends Controller
             // add check for user previous location distance
             $user = Auth::user();
             if ($user && $user->location_title && $user->latitude && $user->longitude) {
-                test([$lat, $lon], 0);
-                $lat = 49.841977;
-                $lon = 24.031722;
                 $distance = (6371 * acos(cos(deg2rad($user->latitude)) * cos(deg2rad($lat)) * cos(deg2rad($lon) - deg2rad($user->longitude)) + sin(deg2rad($user->latitude)) * sin(deg2rad($lat))));
-                test($distance);
-
-                /*
-                 * (6371 * acos(cos(radians({$location->latitude}))
-                     * cos(radians({$table}.latitude))
-                     * cos(radians({$table}.longitude)
-                     - radians({$location->longitude}))
-                     + sin(radians({$location->latitude}))
-                     * sin(radians({$table}.latitude))))
-                 */
-                return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
+                if ($distance <= 5) {
+                    return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
+                }
             }
-
             $locationExists = Location::where('latitude', $lat)->where('longitude', $lon)->first();
             if ($locationExists) {
                 $address = $locationExists->city . ', ' . $locationExists->country;
@@ -443,7 +431,7 @@ class ProfileSettingsController extends Controller
                     $location->longitude = $lon;
                     $location->city = $city;
                     $location->country = $country;
-                    $location->country_code = $countryCode;//TODO??? added new country_code field
+                    $location->country_code = $countryCode;
                     $location->locaiton_data = json_encode($output->results[0]);
                     $location->save();
                     $address = $address = $location->city . ', ' . $location->country;
