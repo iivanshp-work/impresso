@@ -98,9 +98,6 @@ $.ajaxSetup({
 //start function
 $document.ready(function(){
     // allow location start
-    if(!readCookie('geolat') && !readCookie('geolon')){
-        tryGeolocation();
-    }
     function apiGeolocationSuccess(position){
         createCookie("geolat", position.coords.latitude, 1);
         createCookie("geolon", position.coords.longitude, 1);
@@ -124,6 +121,9 @@ $document.ready(function(){
             data: {lat:latitude, lon: longitude},
             dataType: 'json',
             success: function(response){
+                if($('#allowLocationAccess').length){
+                    $('#allowLocationAccess .close-modal').trigger('click');
+                }
             },
             error: function(){
             },
@@ -163,6 +163,15 @@ $document.ready(function(){
                 {maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
         }
     };
+    if($('.allowLocationAccess').length){
+        $('.allowLocationAccess').trigger('click');
+        $('[data-allow-location]').on('click change', function(e){
+            e.preventDefault();
+            tryGeolocation();
+        });
+    } else if(!readCookie('geolat') && !readCookie('geolon')){
+        tryGeolocation();
+    }
     // allow location end
 
     //submit signup form

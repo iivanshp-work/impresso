@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Location;
 use App\Models\User_certification;
 use App\Models\User_Education;
 use App\Models\User_Purchase;
@@ -381,16 +382,40 @@ class ProfileSettingsController extends Controller
      */
     public function saveGeo(Request $request) {
         $saved = false;
-        $lat = $request->has('lat') ? $request->input('lat') : '';
-        $lon = $request->has('lon') ? $request->input('lon') : '';
+        $lat = $request->has('lat') ? round($request->input('lat'), 3) : '';
+        $lon = $request->has('lon') ? round($request->input('lon'), 3) : '';
+        //test([$lat, $lon]);
         $address = '';
         if($lat && $lon) {
-            $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
-
-            $output = @json_decode($geocode);
-            test($output);
-            if ($output && isset($output->results[0]->geometry->location->address)) {
-                $address = $output->results[0]->geometry->location->address; //TODO?? debug response
+            $locationExists = Location::where('latitude', $lat)->where('longitude', $lon)->first();
+            if ($locationExists) {
+                $address = $locationExists->city . ', ' . $locationExists->country;
+            } else {
+                $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
+                $output = @json_decode($geocode);
+                if ($output && isset($output->results[0]->address_components) && !empty($output->results[0]->address_components)) {
+                    $city = '';
+                    $country = '';
+                    foreach($output->results[0]->address_components as $component) {
+                        if (!$city && in_array('locality', $component->types)) {
+                            $city = $component->short_name;
+                        }
+                        if (!$city && in_array('political', $component->types)) {
+                            $city = $component->short_name;
+                        }
+                        if (!$country && in_array('country', $component->types)) {
+                            $country = $component->short_name;
+                        }
+                    }
+                    $location = new Location;
+                    $location->latitude = $lat;
+                    $location->longitude = $lon;
+                    $location->city = $city;
+                    $location->country = $country;
+                    $location->locaiton_data = json_encode($output->results[0]);
+                    $location->save();
+                    $address = $address = $location->city . ', ' . $location->country;//TODO???
+                }
             }
             $user = Auth::user();
             $user->location_title = $address . "(" . $lat . ", " . $lon . ")";

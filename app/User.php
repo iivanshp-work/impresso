@@ -6,6 +6,7 @@
 
 namespace App;
 
+use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
 use Illuminate\Auth\Passwords\CanResetPassword;
@@ -217,10 +218,12 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     {
         if ($this->notif_view_date) {
             $notifications = $this->notifications()->where('created_at', '>', Carbon::parse($this->notif_view_date))->get();
+            $notificationsGeneral = Notification::notDeleted()->where('created_at', '>', Carbon::parse($this->notif_view_date))->where('status', '=', 1)->get();
         } else {
             $notifications = $this->notifications()->get();
+            $notificationsGeneral = Notification::notDeleted()->where('status', '=', 1)->get();
         }
-        return $notifications->count() ? 1 : 0;
+        return $notifications->count() || $notificationsGeneral->count() ? 1 : 0;
     }
 
 }

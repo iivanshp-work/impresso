@@ -15,7 +15,6 @@
                 <img src="{{asset('img/icons/arrow-back.svg')}}" alt="arrow-back" />
             </a>
         </header>
-
         <main>
             @if($notifications)
                 <div class="notifications">
