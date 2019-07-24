@@ -72,7 +72,7 @@
                 <div class="user__info">
                     <p>
                         <img src="{{asset('img/icons/maps-and-flags.png')}}" alt="" />
-                        @if($userData->location_title){{$userData->location_title}}@else{{'Phone location'}}@endif
+                        <span class="location_title_field">@if($userData->location_title){{$userData->location_title}}@else{{'Phone location'}}@endif</span>
                     </p>
                     <p>
                         <img src="{{asset('img/icons/multiple-users-silhouette.png')}}" alt="" />

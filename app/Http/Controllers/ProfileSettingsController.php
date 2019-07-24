@@ -384,27 +384,58 @@ class ProfileSettingsController extends Controller
         $saved = false;
         $lat = $request->has('lat') ? round($request->input('lat'), 3) : '';
         $lon = $request->has('lon') ? round($request->input('lon'), 3) : '';
-        //test([$lat, $lon]);
         $address = '';
         if($lat && $lon) {
+            // add check for user previous location distance
+            $user = Auth::user();
+            if ($user && $user->location_title && $user->latitude && $user->longitude) {
+                test([$lat, $lon], 0);
+                $lat = 49.841977;
+                $lon = 24.031722;
+                $distance = (6371 * acos(cos(deg2rad($user->latitude)) * cos(deg2rad($lat)) * cos(deg2rad($lon) - deg2rad($user->longitude)) + sin(deg2rad($user->latitude)) * sin(deg2rad($lat))));
+                test($distance);
+
+                /*
+                 * (6371 * acos(cos(radians({$location->latitude}))
+                     * cos(radians({$table}.latitude))
+                     * cos(radians({$table}.longitude)
+                     - radians({$location->longitude}))
+                     + sin(radians({$location->latitude}))
+                     * sin(radians({$table}.latitude))))
+                 */
+                return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
+            }
+
             $locationExists = Location::where('latitude', $lat)->where('longitude', $lon)->first();
             if ($locationExists) {
                 $address = $locationExists->city . ', ' . $locationExists->country;
             } else {
-                $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
-                $output = @json_decode($geocode);
+                try {
+                    $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
+                    $output = @json_decode($geocode);
+                }catch (\Exception $e) {
+                    $output = null;
+                }
                 if ($output && isset($output->results[0]->address_components) && !empty($output->results[0]->address_components)) {
                     $city = '';
                     $country = '';
+                    $countryCode = '';
                     foreach($output->results[0]->address_components as $component) {
                         if (!$city && in_array('locality', $component->types)) {
                             $city = $component->short_name;
                         }
-                        if (!$city && in_array('political', $component->types)) {
-                            $city = $component->short_name;
-                        }
                         if (!$country && in_array('country', $component->types)) {
-                            $country = $component->short_name;
+                            $country = $component->long_name;
+                        }
+                        if (!$countryCode && in_array('country', $component->types)) {
+                            $countryCode = $component->short_name;
+                        }
+                    }
+                    if (!$city) {
+                        foreach($output->results[0]->address_components as $component) {
+                            if (!$city && in_array('political', $component->types)) {
+                                $city = $component->short_name;
+                            }
                         }
                     }
                     $location = new Location;
@@ -412,19 +443,20 @@ class ProfileSettingsController extends Controller
                     $location->longitude = $lon;
                     $location->city = $city;
                     $location->country = $country;
+                    $location->country_code = $countryCode;//TODO??? added new country_code field
                     $location->locaiton_data = json_encode($output->results[0]);
                     $location->save();
-                    $address = $address = $location->city . ', ' . $location->country;//TODO???
+                    $address = $address = $location->city . ', ' . $location->country;
                 }
             }
             $user = Auth::user();
-            $user->location_title = $address . "(" . $lat . ", " . $lon . ")";
+            $user->location_title = $address ? $address : "(" . $lat . ", " . $lon . ")";
             $user->latitude = $lat;
             $user->longitude = $lon;
             $user->save();
             $saved = true;
         }
-        return response()->json(['saved' => $saved]);
+        return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
     }
 
     /**

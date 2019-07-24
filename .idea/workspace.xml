@@ -4,12 +4,10 @@
     <list default="true" id="56c440ad-b7ef-4d5c-add7-f95702b4bd27" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/admin_routes.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/admin_routes.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/User.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/js/custom-dev.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/custom-dev.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/resources/views/frontend/layouts/partials/popups.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/layouts/partials/popups.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/notifications.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/notifications.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -19,6 +17,9 @@
   </component>
   <component name="ComposerSettings" doNotAsk="true" synchronizationState="SYNCHRONIZE">
     <pharConfigPath>$PROJECT_DIR$/composer.json</pharConfigPath>
+    <execution>
+      <executable />
+    </execution>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
@@ -34,17 +35,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/custom-dev.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="152">
-              <caret line="123" column="42" selection-start-line="123" selection-start-column="23" selection-end-line="123" selection-end-column="42" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.blade.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="10360">
-              <caret line="518" lean-forward="true" selection-start-line="518" selection-end-line="518" />
+            <state relative-caret-position="440">
+              <caret line="1021" column="5" selection-start-line="1021" selection-start-column="5" selection-end-line="1021" selection-end-column="5" />
             </state>
           </provider>
         </entry>
@@ -52,8 +44,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/frontend/layouts/partials/popups.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="502">
-              <caret line="65" column="70" selection-start-line="65" selection-start-column="51" selection-end-line="65" selection-end-column="70" />
+            <state relative-caret-position="398">
+              <caret line="45" column="15" selection-start-line="45" selection-start-column="15" selection-end-line="45" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -61,17 +53,29 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/.env">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="324">
-              <caret line="57" lean-forward="true" selection-end-line="63" />
+            <state relative-caret-position="780">
+              <caret line="61" column="29" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/.env.example">
+        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="524">
-              <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
+            <state relative-caret-position="153">
+              <caret line="391" column="38" lean-forward="true" selection-start-line="390" selection-start-column="88" selection-end-line="391" selection-end-column="38" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/app/User.php">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="503">
+              <caret line="112" column="22" selection-start-line="112" selection-start-column="22" selection-end-line="117" selection-end-column="56" />
+              <folding>
+                <element signature="e#95#123#0#PHP" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -79,20 +83,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="218">
-              <caret line="13" column="68" selection-start-line="13" selection-start-column="63" selection-end-line="13" selection-end-column="68" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="440">
-              <caret line="414" column="79" selection-start-line="414" selection-start-column="79" selection-end-line="414" selection-end-column="79" />
-              <folding>
-                <element signature="e#40#64#0#PHP" expanded="true" />
-              </folding>
+            <state relative-caret-position="379">
+              <caret line="24" column="15" selection-start-line="24" selection-start-column="15" selection-end-line="24" selection-end-column="15" />
             </state>
           </provider>
         </entry>
@@ -101,11 +93,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>show_profile_setup_profile</find>
-      <find>carbon</find>
-      <find>data-request-validation-item</find>
-      <find>use App\Models\Users_Notification;</find>
-      <find>requestItem</find>
       <find>Users_Notification</find>
       <find>no_x</find>
       <find>humanDiffOptions</find>
@@ -117,12 +104,10 @@
       <find>saveGeoData</find>
       <find>Carbon</find>
       <find>asset</find>
-      <find>geo</find>
       <find>img/icons/bell.svg</find>
       <find>ithDistance</find>
       <find>notMe</find>
       <find>notificat</find>
-      <find>TODO</find>
       <find>Users_Notification::saveNotification</find>
       <find>tryGeolocation</find>
       <find>assets</find>
@@ -131,6 +116,13 @@
       <find>Location</find>
       <find>console.log(</find>
       <find>allowLocationAccess</find>
+      <find>locations</find>
+      <find>user__info</find>
+      <find>data-remove-selected-files</find>
+      <find>data-profile-edit-upload-remove-btn-cancel</find>
+      <find>TODO</find>
+      <find>geo</find>
+      <find>//edit profile start</find>
     </findStrings>
     <replaceStrings>
       <replace>'</replace>
@@ -157,15 +149,15 @@
       <dir>D:\PROGRAMS\OpenServer\domains\impresso.me\resources\views\frontend</dir>
       <dir>D:\PROGRAMS\OpenServer\domains\impresso.me\resources\views</dir>
       <dir>D:\PROGRAMS\OpenServer\domains\impresso.me\app\Http\Controllers</dir>
-      <dir>$PROJECT_DIR$/app</dir>
       <dir>$PROJECT_DIR$/public</dir>
-      <dir>$PROJECT_DIR$/resources</dir>
-      <dir>$PROJECT_DIR$/resources/views/frontend/pages</dir>
       <dir>D:\PROGRAMS\OpenServer\domains\impresso.me\resources\views\la</dir>
-      <dir>$PROJECT_DIR$/resources/views/frontend</dir>
       <dir>$PROJECT_DIR$/app/Http</dir>
       <dir>$PROJECT_DIR$/app/Http/Controllers</dir>
       <dir>D:\PROGRAMS\OpenServer\domains\impresso.me\resources\views\frontend\pages</dir>
+      <dir>$PROJECT_DIR$/resources/views/frontend</dir>
+      <dir>$PROJECT_DIR$/resources/views/frontend/pages</dir>
+      <dir>$PROJECT_DIR$/resources</dir>
+      <dir>$PROJECT_DIR$/app</dir>
     </dirStrings>
   </component>
   <component name="Git.Settings">
@@ -212,19 +204,19 @@
         <option value="$PROJECT_DIR$/app/Http/Controllers/NotificationsController.php" />
         <option value="$PROJECT_DIR$/resources/views/frontend/pages/feeds.blade.php" />
         <option value="$PROJECT_DIR$/public/css/custom-dev.css" />
-        <option value="$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/frontend/pages/transaction_history.blade.php" />
-        <option value="$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/LA/JobsController.php" />
         <option value="$PROJECT_DIR$/resources/views/frontend/pages/notifications.blade.php" />
         <option value="$PROJECT_DIR$/app/User.php" />
         <option value="$PROJECT_DIR$/app/Models/User.php" />
-        <option value="$PROJECT_DIR$/resources/views/frontend/layouts/partials/popups.blade.php" />
         <option value="$APPLICATION_CONFIG_DIR$/scratches/scratch.blade.php" />
-        <option value="$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php" />
-        <option value="$PROJECT_DIR$/public/js/custom-dev.js" />
-        <option value="$PROJECT_DIR$/.env" />
         <option value="$PROJECT_DIR$/.env.example" />
+        <option value="$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="$PROJECT_DIR$/public/js/custom-dev.js" />
+        <option value="$PROJECT_DIR$/resources/views/frontend/layouts/partials/popups.blade.php" />
+        <option value="$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php" />
       </list>
     </option>
   </component>
@@ -310,9 +302,6 @@
       <path value="$PROJECT_DIR$/vendor/psr/http-message" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/psr7" />
       <path value="$PROJECT_DIR$/vendor/guzzlehttp/guzzle" />
-      <path value="$PROJECT_DIR$/vendor/cartalyst/collections" />
-      <path value="$PROJECT_DIR$/vendor/cartalyst/stripe" />
-      <path value="$PROJECT_DIR$/vendor/cartalyst/stripe-laravel" />
       <path value="$PROJECT_DIR$/vendor/psr/cache" />
       <path value="$PROJECT_DIR$/vendor/rize/uri-template" />
       <path value="$PROJECT_DIR$/vendor/rollbar/rollbar" />
@@ -332,6 +321,9 @@
       <path value="$PROJECT_DIR$/vendor/google/cloud-translate" />
       <path value="$PROJECT_DIR$/vendor/facebook/graph-sdk" />
       <path value="$PROJECT_DIR$/vendor/firebase/php-jwt" />
+      <path value="$PROJECT_DIR$/vendor/cartalyst/collections" />
+      <path value="$PROJECT_DIR$/vendor/cartalyst/stripe" />
+      <path value="$PROJECT_DIR$/vendor/cartalyst/stripe-laravel" />
     </include_path>
   </component>
   <component name="ProjectFrameBounds" extendedState="6">
@@ -345,101 +337,64 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
             <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="public_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="public_html" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="public_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="public_html" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="public_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="public_html" type="462c0819:PsiDirectoryNode" />
               <item name="app" type="462c0819:PsiDirectoryNode" />
               <item name="Http" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="public_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="public_html" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="public_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="public_html" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="public_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="public_html" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="frontend" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="layouts" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
-              <item name="resources" type="462c0819:PsiDirectoryNode" />
-              <item name="views" type="462c0819:PsiDirectoryNode" />
-              <item name="frontend" type="462c0819:PsiDirectoryNode" />
-              <item name="layouts" type="462c0819:PsiDirectoryNode" />
-              <item name="partials" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="public_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="public_html" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="frontend" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="public_html" type="b2602c69:ProjectViewProjectNode" />
+              <item name="public_html" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
               <item name="views" type="462c0819:PsiDirectoryNode" />
               <item name="frontend" type="462c0819:PsiDirectoryNode" />
               <item name="pages" type="462c0819:PsiDirectoryNode" />
               <item name="includes" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-            </path>
-            <path>
-              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
-              <item name="Scratches and Consoles" type="1a2a3e82:ScratchProjectViewPane$MyProjectNode" />
-              <item name="Scratches" type="d62648e6:ScratchProjectViewPane$MyRootNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -529,17 +484,18 @@
       <workItem from="1563852073311" duration="9639000" />
       <workItem from="1563873881726" duration="15778000" />
       <workItem from="1563940265541" duration="8584000" />
+      <workItem from="1563960520411" duration="10179000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="331052000" />
+    <option name="totallyTimeSpent" value="341231000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
+    <frame x="53" y="25" width="1867" height="1055" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19818456" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19769357" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info id="Gulp" order="3" side_tool="true" />
@@ -568,27 +524,6 @@
     <option name="version" value="1" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/app/Models/User_Transaction.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="449">
-          <caret line="40" column="58" selection-start-line="40" selection-start-column="58" selection-end-line="40" selection-end-column="58" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/includes/feeds_jobs_items.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="37" selection-start-line="8" selection-start-column="37" selection-end-line="8" selection-end-column="37" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/settings.blade.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="746">
-          <caret line="51" column="17" lean-forward="true" selection-start-line="30" selection-start-column="12" selection-end-line="51" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/scss/base/_reset.scss">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-1479" />
@@ -826,16 +761,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="225" column="81" lean-forward="true" selection-start-line="218" selection-start-column="8" selection-end-line="225" selection-end-column="81" />
-          <folding>
-            <element signature="e#95#123#0#PHP" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Models/Users_Notification.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-81">
@@ -849,17 +774,25 @@
     <entry file="file://$PROJECT_DIR$/artisan">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php">
+    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.blade.php" />
+    <entry file="file://$PROJECT_DIR$/.env.example">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="218">
-          <caret line="13" column="68" selection-start-line="13" selection-start-column="63" selection-end-line="13" selection-end-column="68" />
+        <state relative-caret-position="627">
+          <caret line="53" selection-start-line="53" selection-end-line="61" selection-end-column="30" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$APPLICATION_CONFIG_DIR$/scratches/scratch.blade.php">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/LA/LocationsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="10360">
-          <caret line="518" lean-forward="true" selection-start-line="518" selection-end-line="518" />
+        <state relative-caret-position="119">
+          <caret line="21" column="15" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/la_impresso (8).sql">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="1214" column="40" selection-start-line="1214" selection-start-column="31" selection-end-line="1214" selection-end-column="40" />
         </state>
       </provider>
     </entry>
@@ -870,41 +803,55 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php">
+    <entry file="file://$PROJECT_DIR$/.env">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="440">
-          <caret line="414" column="79" selection-start-line="414" selection-start-column="79" selection-end-line="414" selection-end-column="79" />
-          <folding>
-            <element signature="e#40#64#0#PHP" expanded="true" />
-          </folding>
+        <state relative-caret-position="780">
+          <caret line="61" column="29" selection-start-line="61" selection-start-column="29" selection-end-line="61" selection-end-column="29" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/custom-dev.js">
+    <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="152">
-          <caret line="123" column="42" selection-start-line="123" selection-start-column="23" selection-end-line="123" selection-end-column="42" />
+        <state relative-caret-position="379">
+          <caret line="24" column="15" selection-start-line="24" selection-start-column="15" selection-end-line="24" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/includes/feeds_professionals_items.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-92">
+          <caret line="20" column="53" selection-start-line="20" selection-start-column="53" selection-end-line="20" selection-end-column="53" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="503">
+          <caret line="112" column="22" selection-start-line="112" selection-start-column="22" selection-end-line="117" selection-end-column="56" />
+          <folding>
+            <element signature="e#95#123#0#PHP" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/frontend/layouts/partials/popups.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="502">
-          <caret line="65" column="70" selection-start-line="65" selection-start-column="51" selection-end-line="65" selection-end-column="70" />
+        <state relative-caret-position="398">
+          <caret line="45" column="15" selection-start-line="45" selection-start-column="15" selection-end-line="45" selection-end-column="15" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
+    <entry file="file://$PROJECT_DIR$/public/js/custom-dev.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="324">
-          <caret line="57" lean-forward="true" selection-end-line="63" />
+        <state relative-caret-position="440">
+          <caret line="1021" column="5" selection-start-line="1021" selection-start-column="5" selection-end-line="1021" selection-end-column="5" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env.example">
+    <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="524">
-          <caret line="63" lean-forward="true" selection-start-line="63" selection-end-line="63" />
+        <state relative-caret-position="153">
+          <caret line="391" column="38" lean-forward="true" selection-start-line="390" selection-start-column="88" selection-end-line="391" selection-end-column="38" />
         </state>
       </provider>
     </entry>

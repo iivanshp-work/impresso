@@ -53,19 +53,23 @@ function showConfirm(message, title, callback, callbackBtnText){
     })
 }
 
+//redirect
 function redirect(location){
     location = location || base_url;
     window.location = location;
 }
 
+//loadingStart
 function loadingStart(){
     $('#loading-full').show();
 }
 
+//loadingEnd
 function loadingEnd(){
     $('#loading-full').hide();
 }
 
+//createCookie
 function createCookie(name, value, days){
     if(days){
         var date = new Date();
@@ -75,6 +79,7 @@ function createCookie(name, value, days){
     document.cookie = name + "=" + value + expires + "; path=/";
 }
 
+//readCookie
 function readCookie(name){
     var nameEQ = name + "=";
     var ca = document.cookie.split(';');
@@ -86,9 +91,7 @@ function readCookie(name){
     return null;
 }
 
-/**
- * Add CSRF token to any AJAX request header
- */
+//Add CSRF token to any AJAX request header
 $.ajaxSetup({
     headers: {
         'X-Csrf-Token': $('meta[name="csrf-token"]').attr('content')
@@ -103,16 +106,18 @@ $document.ready(function(){
         createCookie("geolon", position.coords.longitude, 1);
         saveGeoData(position.coords.latitude, position.coords.longitude);
     };
+
+    //get geo location based on user geolocale
     function tryAPIGeolocation(){
-        /*AIzaSyDCa1LUe1vOczX1hO_iGYgyo8p_jYuGOPU*/
-        /*AIzaSyBzXAh3EwaKI_fhNIqmd2TYJVWxiwwkLQo*/
         jQuery.post("https://www.googleapis.com/geolocation/v1/geolocate?key=" + google_api_key, function(success){
             apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
         }).fail(function(err){
             showError("API Geolocation error!");
         });
     };
-    function saveGeoData(latitude, longitude) {
+
+    //save location in db
+    function saveGeoData(latitude, longitude){
         loadingStart();
         let targetLink = base_url + '/save-geo-data';
         $.ajax({
@@ -124,20 +129,28 @@ $document.ready(function(){
                 if($('#allowLocationAccess').length){
                     $('#allowLocationAccess .close-modal').trigger('click');
                 }
+                if($('.user__info .location_title_field').length){
+                    $('.user__info .location_title_field').text(response.user_address);
+                }
+
             },
             error: function(){
+                showError("API Geolocation error!");
             },
             complete: function(){
                 loadingEnd();
             }
         });
     }
+
+    //browserGeolocationSuccess
     function browserGeolocationSuccess(position){
         createCookie("geolat", position.coords.latitude, 1);
         createCookie("geolon", position.coords.longitude, 1);
         saveGeoData(position.coords.latitude, position.coords.longitude);
     };
 
+    //browserGeolocationSuccess
     function browserGeolocationFail(error){
         switch(error.code){
             case error.TIMEOUT:
@@ -155,6 +168,7 @@ $document.ready(function(){
         }
     };
 
+    //tryGeolocation based on navigator
     function tryGeolocation(){
         if(navigator.geolocation){
             navigator.geolocation.getCurrentPosition(
@@ -163,6 +177,8 @@ $document.ready(function(){
                 {maximumAge: 50000, timeout: 20000, enableHighAccuracy: true});
         }
     };
+
+    //show allow location popup when user not had location info
     if($('.allowLocationAccess').length){
         $('.allowLocationAccess').trigger('click');
         $('[data-allow-location]').on('click change', function(e){
@@ -170,6 +186,7 @@ $document.ready(function(){
             tryGeolocation();
         });
     } else if(!readCookie('geolat') && !readCookie('geolon')){
+        //update location every day
         tryGeolocation();
     }
     // allow location end
@@ -357,7 +374,8 @@ $document.ready(function(){
             $('[data-feeds-search-form]').submit();
         }, 100);
     });
-    //submit form on change search field
+
+    //submit form on change search field, avoid many requests on keypress
     function throttle(f, delay){
         var timer = null;
         return function(){
@@ -369,11 +387,14 @@ $document.ready(function(){
                 delay || 500);
         };
     }
+    //submit search form on change search keyword
     $document.on('input', '[data-feeds-search-keyword]', throttle(function(){
             $('[data-feeds-search-page]').val(1);
             $(this).closest('[data-feeds-search-form]').submit();
         }, 1000)
     );
+
+    //submit search form on press enter
     $document.on('keypress', '[data-feeds-search-keyword]', function(e) {
         if(e.which == 13) {
             e.preventDefault();
@@ -381,6 +402,7 @@ $document.ready(function(){
             $(this).closest('[data-feeds-search-form]').submit();
         }
     });
+
     //submit feed form
     $document.on('submit', '[data-feeds-search-form]', function(e){
         e.preventDefault();
@@ -396,9 +418,7 @@ $document.ready(function(){
         if (frm.data("busy")) return;
         frm.data("busy", true);
         loadingStart();
-
         frm.prop('disabled', true);
-
         $.ajax({
             url: targetLink,
             type: 'post',
@@ -592,6 +612,7 @@ $document.ready(function(){
         });
     });
 
+    //change fields in two ways start
     $document.on('change', '[name="company_title_top"]', function(e){
         let val = $(this).val();
         $(this).closest("form").find('[name="company_title"]').val(val);
@@ -608,7 +629,7 @@ $document.ready(function(){
         let val = $(this).val();
         $(this).closest("form").find('[name="job_title_top"]').val(val);
     });
-
+    //change fields in two ways end
 
     // upload button click
     $document.on('change click', '[data-edit-profile-send-photo]', function(e){
@@ -785,6 +806,7 @@ $document.ready(function(){
         $('#edit_profile_upload_attach_form .selected_files_title').hide().find('.files_text').text('');
     }
 
+    //isUrlValid
     function isUrlValid(value){
         var res = value.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
         if(res == null)
@@ -793,6 +815,7 @@ $document.ready(function(){
             return true;
     }
 
+    //open browse window
     $('[data-edit-profile-send-popup-files]').on('click change', function(e){
         e.preventDefault();
         let $this = $(this), itemForm = $this.closest('#edit_profile_upload_attach_form'),
@@ -800,11 +823,13 @@ $document.ready(function(){
         btn.trigger('click');
     });
 
+    //open remove upload file popup
     $('#edit_profile_upload_attach_form [data-remove-selected-files]').on('click change', function(e){
         e.preventDefault();
         openProfileEditPopup('upload-remove');
     });
 
+    //removed previous files
     $('[data-profile-edit-upload-remove-btn]').on('click change', function(e){
         e.preventDefault();
         clearUploadForm();
@@ -812,6 +837,7 @@ $document.ready(function(){
         openProfileEditPopup('upload');
     });
 
+    //close remove upload popup
     $('[data-profile-edit-upload-remove-btn-cancel]').on('click change', function(e){
         e.preventDefault();
         openProfileEditPopup('upload');
@@ -994,11 +1020,9 @@ $document.ready(function(){
             $(selector + ' .close-modal').trigger('click');
         }
     }
-
     //edit profile end
 
     //edit settings start
-    //edit profile start
     $document.on('submit', '[data-edit-settings-form]', function(e){
         e.preventDefault();
         let form = $(this);
@@ -1062,6 +1086,7 @@ $document.ready(function(){
         });
     });
 
+    //mask for checkout fields
     if ($('.checkout-page').length) {
         $('#checkout_settings_form [name="card_no"]').mask("0000 0000 0000 0000", {placeholder: "____ ____ ____ ____", clearIfNotMatch: true});
         $('#checkout_settings_form [name="cvv"]').mask("0000", {placeholder: "___"});
