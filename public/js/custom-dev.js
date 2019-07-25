@@ -178,16 +178,18 @@ $document.ready(function(){
         }
     };
 
-    //show allow location popup when user not had location info
-    if($('.allowLocationAccess').length){
-        $('.allowLocationAccess').trigger('click');
-        $('[data-allow-location]').on('click change', function(e){
-            e.preventDefault();
+    //show allow location popup when user loggedin and not had location info
+    if (user_id) {
+        if ($('.allowLocationAccess').length) {
+            $('.allowLocationAccess').trigger('click');
+            $('[data-allow-location]').on('click change', function (e) {
+                e.preventDefault();
+                tryGeolocation();
+            });
+        } else if (!readCookie('geolat') && !readCookie('geolon')) {
+            //update location every day
             tryGeolocation();
-        });
-    } else if(!readCookie('geolat') && !readCookie('geolon')){
-        //update location every day
-        tryGeolocation();
+        }
     }
     // allow location end
 
@@ -1094,5 +1096,55 @@ $document.ready(function(){
         $('#checkout_settings_form [name="exp_year"]').mask("00", {placeholder: "YY", clearIfNotMatch: true});
     }
     //credits settings end
+
+    //share btn start
+    $document.on('click change', '[data-share-open-btn]', function(e){
+        e.preventDefault();
+        $('.sharePopup').click().trigger('click');
+    });
+    $('[data-share-btn]').on('click change', function(e){
+        e.preventDefault();
+        console.log('clicked share button');
+        share();
+    });
+
+    function share() {
+        if (navigator.share) {
+            navigator.share({
+                title: 'Impresso',
+                url: 'https://codepen.io/ayoisaiah/pen/YbNazJ'
+            }).then(() => {
+                saveShare()
+            }).catch(() => {
+                showError('Error while share');
+            });
+        } else {
+            openCustomSharePopup();
+        }
+    }
+
+    function openCustomSharePopup() {
+        console.log("openCustomSharePopup");
+    }
+
+    function saveShare() {
+        loadingStart();
+        let targetLink = base_url + '/save-share';
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            data: {},
+            dataType: 'json',
+            success: function(response){
+            },
+            error: function(){
+                showError("API Geolocation error!");
+            },
+            complete: function(){
+                loadingEnd();
+            }
+        });
+    }
+    //share btn end
 
 });

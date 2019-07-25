@@ -15,6 +15,7 @@
     <script>
         var base_url = '{{url('/')}}';
         var google_api_key = '{{getenv('GOOGLE_API_KEY')}}';
+        var user_id = '{{Auth::id()}}';
     </script>
     @stack('styles')
 </head>

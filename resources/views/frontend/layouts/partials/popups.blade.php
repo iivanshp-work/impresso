@@ -40,6 +40,27 @@
 </div>
 <button class="btn btn-violet open-pop-up hide customValidateConfirm" data-target="#customValidateConfirm">Custom Validate Confirm</button>
 
+<button class="btn btn-violet open-pop-up hide sharePopup" data-target="#share">Share</button>
+
+<div class="modal-window" id="share">
+    <div class="modal-window__content">
+        <div class="modal-window__body text-center">
+            <img src="{{asset('img/icons/icon.svg')}}" alt="" class="modal-window__img-top" />
+            <h3>Sharing is caring and you’re awesome for doing it!</h3>
+            <p>
+                This is why we reward you every time you share IMPRESSO with someone.
+            </p>
+            <button type="button" data-share-btn="" class="btn btn-violet">
+                Share IMPRESSO
+            </button>
+            <button type="button" class="btn btn-border close-modal">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+
+
 @php
     $user = Auth::user();
 @endphp

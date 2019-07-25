@@ -22,16 +22,21 @@ class UserRedirects
         $needRedirect = false;
         $requestUrl = $request->getPathInfo();
         if ($user) {
-            if (!$user->varification_pending && !$user->is_verified && $requestUrl != getenv('VALIDATION_PAGE')) {
-                $path = '/validation';
+            if ($user->type != getenv('USERS_TYPE_USER') && $requestUrl != '/logout') {
                 $needRedirect = true;
-            } else if ($user->varification_pending && !$user->is_verified && $requestUrl == getenv('BASE_LOGEDIN_PAGE')) {
-                $path = '/profile?show_pending_popup=1';
-                $needRedirect = true;
-            }
-            if ($request->has('show_profile_setup_profile') && $requestUrl == getenv('BASE_LOGEDIN_PAGE')) {
-                $path = '/profile?show_profile_setup_profile=1';
-                $needRedirect = true;
+                $path = '/logout';
+            } else {
+                if (!$user->varification_pending && !$user->is_verified && $requestUrl != getenv('VALIDATION_PAGE')) {
+                    $path = '/validation';
+                    $needRedirect = true;
+                } else if ($user->varification_pending && !$user->is_verified && $requestUrl == getenv('BASE_LOGEDIN_PAGE')) {
+                    $path = '/profile?show_pending_popup=1';
+                    $needRedirect = true;
+                }
+                if ($request->has('show_profile_setup_profile') && $requestUrl == getenv('BASE_LOGEDIN_PAGE')) {
+                    $path = '/profile?show_profile_setup_profile=1';
+                    $needRedirect = true;
+                }
             }
         }
         if ($needRedirect) {
