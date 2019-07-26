@@ -26,6 +26,7 @@ class UserRedirects
                 $needRedirect = true;
                 $path = '/logout';
             } else {
+                Auth::loginUsingId($user->id, true);
                 if (!$user->varification_pending && !$user->is_verified && $requestUrl != getenv('VALIDATION_PAGE')) {
                     $path = '/validation';
                     $needRedirect = true;

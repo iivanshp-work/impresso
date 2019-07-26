@@ -72,19 +72,21 @@ function loadingEnd(){
 //createCookie
 function createCookie(name, value, days){
     if(days){
-        var date = new Date();
+        let date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        var expires = "; expires=" + date.toGMTString();
-    }else var expires = "";
+        let expires = "; expires=" + date.toGMTString();
+    }else{
+        let expires = "";
+    }
     document.cookie = name + "=" + value + expires + "; path=/";
 }
 
 //readCookie
 function readCookie(name){
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i = 0; i < ca.length; i++){
-        var c = ca[i];
+    let nameEQ = name + "=";
+    let ca = document.cookie.split(';');
+    for(let i = 0; i < ca.length; i++){
+        let c = ca[i];
         while(c.charAt(0) == ' ') c = c.substring(1, c.length);
         if(c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
     }
@@ -379,9 +381,9 @@ $document.ready(function(){
 
     //submit form on change search field, avoid many requests on keypress
     function throttle(f, delay){
-        var timer = null;
+        let timer = null;
         return function(){
-            var context = this, args = arguments;
+            let context = this, args = arguments;
             clearTimeout(timer);
             timer = window.setTimeout(function(){
                     f.apply(context, args);
@@ -810,7 +812,7 @@ $document.ready(function(){
 
     //isUrlValid
     function isUrlValid(value){
-        var res = value.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
+        let res = value.match(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/g);
         if(res == null)
             return false;
         else
@@ -1104,7 +1106,6 @@ $document.ready(function(){
     });
     $('[data-share-btn]').on('click change', function(e){
         e.preventDefault();
-        console.log('clicked share button');
         share();
     });
 
@@ -1114,7 +1115,7 @@ $document.ready(function(){
                 title: 'Impresso',
                 url: 'https://codepen.io/ayoisaiah/pen/YbNazJ'
             }).then(() => {
-                saveShare()
+                saveShare();
             }).catch(() => {
                 showError('Error while share');
             });
@@ -1124,7 +1125,29 @@ $document.ready(function(){
     }
 
     function openCustomSharePopup() {
-        console.log("openCustomSharePopup");
+        $('[data-copy-share-link]').text("Copy Link");
+        $('.customSharePopup').click().trigger('click');
+    }
+
+    $('[data-open-share-link]').on('click change', function(e){
+        saveShare();
+    });
+
+    $('[data-copy-share-link]').on('click change', function(e){
+        e.preventDefault();
+        let text = $(this).parent().find('[data-share-link]').text();
+        $(this).text("Copied");
+        console.log(text);
+        copyToClipboard(text);
+        saveShare();
+    });
+
+    function copyToClipboard(text) {
+        let $temp = $("<textarea>");
+        $("body").append($temp);
+        $temp.val(text).select();
+        document.execCommand("copy");
+        $temp.remove();
     }
 
     function saveShare() {
@@ -1136,9 +1159,10 @@ $document.ready(function(){
             data: {},
             dataType: 'json',
             success: function(response){
+                $('.shareSuccessPopup').click().trigger('click');
             },
             error: function(){
-                showError("API Geolocation error!");
+                showError("Share error!");
             },
             complete: function(){
                 loadingEnd();

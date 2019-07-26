@@ -31,8 +31,9 @@ Route::get('profile', 'ProfileSettingsController@profilePage')->name('profile');
 Route::get('profile/edit', 'ProfileSettingsController@profileEditPage')->name('profile_edit');
 Route::post('profile/edit', 'ProfileSettingsController@profileEdit')->name('profile_edit_post');
 Route::get('profile/{id}', 'ProfileSettingsController@profilePage')->name('profile_other');
-Route::post('save-geo-data', 'ProfileSettingsController@saveGeo')->name('save_geo_post');
 Route::get('transaction-history', 'ProfileSettingsController@transactionHistoryPage')->name('transaction_history');
+Route::post('save-geo-data', 'ProfileSettingsController@saveGeo')->name('save_geo_post');
+Route::post('save-share', 'ProfileSettingsController@saveShare')->name('save_share_post');
 
 /* settings */
 Route::get('settings', 'ProfileSettingsController@settingsPage')->name('settings');

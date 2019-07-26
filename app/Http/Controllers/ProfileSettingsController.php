@@ -376,78 +376,6 @@ class ProfileSettingsController extends Controller
     }
 
     /**
-     * save Geo Data
-     * @param Request $request
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function saveGeo(Request $request) {
-        $saved = false;
-        $lat = $request->has('lat') ? round($request->input('lat'), 3) : '';
-        $lon = $request->has('lon') ? round($request->input('lon'), 3) : '';
-        $address = '';
-        if($lat && $lon) {
-            // add check for user previous location distance
-            $user = Auth::user();
-            if ($user && $user->location_title && $user->latitude && $user->longitude) {
-                $distance = (6371 * acos(cos(deg2rad($user->latitude)) * cos(deg2rad($lat)) * cos(deg2rad($lon) - deg2rad($user->longitude)) + sin(deg2rad($user->latitude)) * sin(deg2rad($lat))));
-                if ($distance <= 5) {
-                    return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
-                }
-            }
-            $locationExists = Location::where('latitude', $lat)->where('longitude', $lon)->first();
-            if ($locationExists) {
-                $address = $locationExists->city . ', ' . $locationExists->country;
-            } else {
-                try {
-                    $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
-                    $output = @json_decode($geocode);
-                }catch (\Exception $e) {
-                    $output = null;
-                }
-                if ($output && isset($output->results[0]->address_components) && !empty($output->results[0]->address_components)) {
-                    $city = '';
-                    $country = '';
-                    $countryCode = '';
-                    foreach($output->results[0]->address_components as $component) {
-                        if (!$city && in_array('locality', $component->types)) {
-                            $city = $component->short_name;
-                        }
-                        if (!$country && in_array('country', $component->types)) {
-                            $country = $component->long_name;
-                        }
-                        if (!$countryCode && in_array('country', $component->types)) {
-                            $countryCode = $component->short_name;
-                        }
-                    }
-                    if (!$city) {
-                        foreach($output->results[0]->address_components as $component) {
-                            if (!$city && in_array('political', $component->types)) {
-                                $city = $component->short_name;
-                            }
-                        }
-                    }
-                    $location = new Location;
-                    $location->latitude = $lat;
-                    $location->longitude = $lon;
-                    $location->city = $city;
-                    $location->country = $country;
-                    $location->country_code = $countryCode;
-                    $location->locaiton_data = json_encode($output->results[0]);
-                    $location->save();
-                    $address = $address = $location->city . ', ' . $location->country;
-                }
-            }
-            $user = Auth::user();
-            $user->location_title = $address ? $address : "(" . $lat . ", " . $lon . ")";
-            $user->latitude = $lat;
-            $user->longitude = $lon;
-            $user->save();
-            $saved = true;
-        }
-        return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
-    }
-
-    /**
      * Settings Credits Page
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
@@ -639,5 +567,90 @@ class ProfileSettingsController extends Controller
             'userData' => $user,
             'userTransactions' => $userTransactions
         ]);
+    }
+
+
+    /**
+     * save Geo Data
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function saveGeo(Request $request) {
+        $saved = false;
+        $lat = $request->has('lat') ? round($request->input('lat'), 3) : '';
+        $lon = $request->has('lon') ? round($request->input('lon'), 3) : '';
+        $address = '';
+        $user = Auth::user();
+        if($lat && $lon) {
+            // add check for user previous location distance
+            if ($user && $user->location_title && $user->latitude && $user->longitude) {
+                $distance = (6371 * acos(cos(deg2rad($user->latitude)) * cos(deg2rad($lat)) * cos(deg2rad($lon) - deg2rad($user->longitude)) + sin(deg2rad($user->latitude)) * sin(deg2rad($lat))));
+                if ($distance <= 5) {
+                    return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
+                }
+            }
+            $locationExists = Location::where('latitude', $lat)->where('longitude', $lon)->first();
+            if ($locationExists) {
+                $address = $locationExists->city . ', ' . $locationExists->country;
+            } else {
+                try {
+                    $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
+                    $output = @json_decode($geocode);
+                }catch (\Exception $e) {
+                    $output = null;
+                }
+                if ($output && isset($output->results[0]->address_components) && !empty($output->results[0]->address_components)) {
+                    $city = '';
+                    $country = '';
+                    $countryCode = '';
+                    foreach($output->results[0]->address_components as $component) {
+                        if (!$city && in_array('locality', $component->types)) {
+                            $city = $component->short_name;
+                        }
+                        if (!$country && in_array('country', $component->types)) {
+                            $country = $component->long_name;
+                        }
+                        if (!$countryCode && in_array('country', $component->types)) {
+                            $countryCode = $component->short_name;
+                        }
+                    }
+                    if (!$city) {
+                        foreach($output->results[0]->address_components as $component) {
+                            if (!$city && in_array('political', $component->types)) {
+                                $city = $component->short_name;
+                            }
+                        }
+                    }
+                    $location = new Location;
+                    $location->latitude = $lat;
+                    $location->longitude = $lon;
+                    $location->city = $city;
+                    $location->country = $country;
+                    $location->country_code = $countryCode;
+                    $location->locaiton_data = json_encode($output->results[0]);
+                    $location->save();
+                    $address = $address = $location->city . ', ' . $location->country;
+                }
+            }
+            $user = Auth::user();
+            $user->location_title = $address ? $address : "(" . $lat . ", " . $lon . ")";
+            $user->latitude = $lat;
+            $user->longitude = $lon;
+            $user->save();
+            $saved = true;
+        }
+        return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
+    }
+
+    /**
+     * save Share Data
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function saveShare(Request $request) {
+        $user = Auth::user();
+        $user->share_count++;
+        $user->save();
+        return response()->json(['saved' => true, 'share_counts' => $user->share_count]);
     }
 }
