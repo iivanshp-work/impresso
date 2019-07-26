@@ -27,10 +27,18 @@ class UserRedirects
                 $path = '/logout';
             } else {
                 Auth::loginUsingId($user->id, true);
-                if (!$user->varification_pending && !$user->is_verified && $requestUrl != getenv('VALIDATION_PAGE')) {
+                $skipPaths = [
+                    '/save-geo-data',
+                    '/save-share',
+                    '/files'
+                ];
+                if (strpos($requestUrl, '/files/') !== false) {
+                    $requestUrl = '/files';
+                }
+                if (!$user->varification_pending && !$user->is_verified && $requestUrl != getenv('VALIDATION_PAGE') && !in_array($requestUrl, $skipPaths)) {
                     $path = '/validation';
                     $needRedirect = true;
-                } else if ($user->varification_pending && !$user->is_verified && $requestUrl == getenv('BASE_LOGEDIN_PAGE')) {
+                } else if ($user->varification_pending && !$user->is_verified && $requestUrl == getenv('BASE_LOGEDIN_PAGE') && !in_array($requestUrl, $skipPaths)) {
                     $path = '/profile?show_pending_popup=1';
                     $needRedirect = true;
                 }
@@ -42,7 +50,7 @@ class UserRedirects
         }
         if ($needRedirect) {
             if ($request->ajax() || $request->wantsJson()) {
-                return response('', 401)->json(['redirect' => url($path)]);
+                return response(['redirect' => url($path)], 401, ['Content-Type: application/json']);
             } else {
                 return redirect($path);
             }

@@ -74,9 +74,9 @@ function createCookie(name, value, days){
     if(days){
         let date = new Date();
         date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
-        let expires = "; expires=" + date.toGMTString();
+        var expires = "; expires=" + date.toGMTString();
     }else{
-        let expires = "";
+        var expires = "";
     }
     document.cookie = name + "=" + value + expires + "; path=/";
 }
@@ -658,6 +658,25 @@ $document.ready(function(){
         formData.append('action', 'upload_photo');
         formData.append('id', id);
         formData.append('file', $this.get(0).files[0]);
+        if($this.get(0).files[0]){
+            let file = $this.get(0).files[0];
+            let ext = file.name.split(".");
+            let availableExtensions = ["jpg", "jpeg", "png"];
+            let notAvailable = false;
+            ext = ext[ext.length - 1].toLowerCase();
+            if($.inArray(ext, availableExtensions) == -1){
+                notAvailable = true;
+            }
+            if(notAvailable){
+                $this.data("busy", false);
+                btn.prop('disabled', false);
+                $this.prop('disabled', false);
+                showError('Selected file has not allowed extension.(Allowed JPG, JPEG, PNG)', 'Error!', function(){
+                    $('[data-edit-profile-send-photo]').trigger('click');
+                });
+                return;
+            }
+        }
 
         $.ajax({
             url: targetLink,
@@ -1156,7 +1175,7 @@ $document.ready(function(){
         $.ajax({
             url: targetLink,
             type: 'post',
-            data: {},
+            data: {'test':1},
             dataType: 'json',
             success: function(response){
                 $('.shareSuccessPopup').click().trigger('click');
