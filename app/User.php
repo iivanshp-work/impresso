@@ -221,7 +221,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $notificationsGeneral = Notification::notDeleted()->where('created_at', '>', Carbon::parse($this->notif_view_date))->where('status', '=', 1)->get();
         } else {
             $notifications = $this->notifications()->get();
-            $notificationsGeneral = Notification::notDeleted()->where('status', '=', 1)->get();
+            $notificationsGeneral = Notification::notDeleted()->where('created_at', '>', Carbon::parse($this->created_at))->where('status', '=', 1)->get();
         }
         return $notifications->count() || $notificationsGeneral->count() ? 1 : 0;
     }

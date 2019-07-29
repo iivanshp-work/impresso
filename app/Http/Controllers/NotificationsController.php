@@ -38,7 +38,7 @@ class NotificationsController extends Controller
         $user->save();
 
         $notifications = [];
-        $generalNotifications = Notification::notDeleted()->active()->orderBy('created_at', 'desc')->get();
+        $generalNotifications = Notification::notDeleted()->active()->where('created_at', '>', Carbon::parse($user->created_at))->orderBy('created_at', 'desc')->get();
         if ($generalNotifications) {
             $generalNotifications = $generalNotifications->toArray();
             $notifications = array_merge($notifications, $generalNotifications);
