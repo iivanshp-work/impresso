@@ -52,12 +52,30 @@ function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
         console.log('Отправка токена на сервер...');
 
-        var url = ''; // адрес скрипта на сервере который сохраняет ID устройства
+        var url = base_url; // адрес скрипта на сервере который сохраняет ID устройства
         $.post(url, {
             token: currentToken
         });
 
-        setTokenSentToServer(currentToken);
+        let targetLink = base_url + '/push-notification-token';
+        loadingStart();
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            dataType: 'json',
+            data: {
+                token: currentToken
+            },
+            success: function(response){
+            },
+            error: function(){
+                setTokenSentToServer(currentToken);
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+            }
+        });
     } else {
         console.log('Токен уже отправлен на сервер.');
     }

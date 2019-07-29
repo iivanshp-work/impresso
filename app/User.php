@@ -46,6 +46,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     // protected $dates = ['deleted_at'];
 
+    protected $casts = [
+        'push_notif_tokens' => 'array',
+    ];
+
     /**
      * @return mixed
      */
@@ -224,6 +228,52 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $notificationsGeneral = Notification::notDeleted()->where('created_at', '>', Carbon::parse($this->created_at))->where('status', '=', 1)->get();
         }
         return $notifications->count() || $notificationsGeneral->count() ? 1 : 0;
+    }
+
+    /**
+     * send Push Notifications to user
+     * @param string $message
+     * @return array
+     */
+    public function sendPushNotifications($message = '')
+    {
+        $clientTokenIDs = $this->push_not_tokens;
+        if (!empty($clientTokenIDs) && $message) {
+            $responses = [];
+            $url = getenv('PUSH_NOTIFICATION_URL');
+            $YOUR_API_KEY = getenv('PUSH_NOTIFICATION_API_KEY'); // Server key
+
+            foreach($clientTokenIDs as $clientTokenID) {
+                $YOUR_TOKEN_ID = $clientTokenID; // Client token id
+                $request_body = [
+                    'to' => $YOUR_TOKEN_ID,
+                    'notification' => [
+                        'title' => getenv('PUSH_NOTIFICATION_TITLE'),
+                        'body' => $message,
+                    ],
+                ];
+                $fields = json_encode($request_body);
+
+                $request_headers = [
+                    'Content-Type: application/json',
+                    'Authorization: key=' . $YOUR_API_KEY,
+                ];
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $url);
+                curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+                curl_setopt($ch, CURLOPT_HTTPHEADER, $request_headers);
+                curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+                curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);
+                $response = curl_exec($ch);
+                curl_close($ch);
+                $responses[$clientTokenID] = $response;
+            }
+        } else {
+            $responses = [];
+        }
+        return $responses;
     }
 
 }

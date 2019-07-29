@@ -22,7 +22,10 @@ class UserRedirects
         $needRedirect = false;
         $requestUrl = $request->getPathInfo();
         if ($user) {
-            if ($user->type != getenv('USERS_TYPE_USER') && $requestUrl != '/logout') {
+            if (strpos($requestUrl, '/admin') !== false) {
+                $requestUrl = '/admin';
+            }
+            if ($user->type != getenv('USERS_TYPE_USER') && $requestUrl != '/logout' && $requestUrl != '/admin') {
                 $needRedirect = true;
                 $path = '/logout';
             } else {
@@ -49,6 +52,7 @@ class UserRedirects
             }
         }
         if ($needRedirect) {
+            test($path);
             if ($request->ajax() || $request->wantsJson()) {
                 return response(['redirect' => url($path)], 401, ['Content-Type: application/json']);
             } else {

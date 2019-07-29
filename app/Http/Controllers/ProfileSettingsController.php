@@ -653,4 +653,22 @@ class ProfileSettingsController extends Controller
         $user->save();
         return response()->json(['saved' => true, 'share_counts' => $user->share_count]);
     }
+
+    /**
+     * save user Push Notification Token
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function savePushNotificationToken(Request $request) {
+        $user = Auth::user();
+        $saved = false;
+        if ($request->has('token')) {
+            $user->push_not_tokens[] = $request->input('token');
+            $user->save();
+            $saved = true;
+        }
+        return response()->json(['saved' => $saved]);
+    }
+
+
 }
