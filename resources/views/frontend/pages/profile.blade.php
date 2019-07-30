@@ -28,7 +28,7 @@
         <main>
             <div class="user">
 
-                <button type="button" class="btn btn-pink" style="width: 100%;" id="subscribe">Notifications</button>
+                <!--<button type="button" class="btn btn-pink" style="width: 100%;" id="subscribe">Notifications</button>-->
                 <div class="user__header">
                     <div class="user__avatar">
                         @if($userData->photo)

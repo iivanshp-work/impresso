@@ -265,11 +265,21 @@ class User_certificationsController extends Controller
 
 			if ($user_certification && $request->has('status') && $request->input('status') == 3) {
                 //save notification
-                Users_Notification::saveNotification('certificate_validation_success', 'Certificate Validation: success', $user_certification->user_id, $user_certification->id);
+                $message = 'Certificate Validation: success';
+                Users_Notification::saveNotification('certificate_validation_success', $message, $user_certification->user_id, $user_certification->id);
+                $user = $user_certification->user_id ? User::find($user_certification->user_id) : null;
+                if ($user) {
+                    $user->sendPushNotifications($message);
+                }
             }
 			if ($user_certification && $request->has('status') && $request->input('status') == 4) {
                 //save notification
-                Users_Notification::saveNotification('certificate_validation_failure', 'Certificate Validation: failure', $user_certification->user_id, $user_certification->id);
+                $message = 'Certificate Validation: failure';
+                Users_Notification::saveNotification('certificate_validation_failure', $message, $user_certification->user_id, $user_certification->id);
+                $user = $user_certification->user_id ? User::find($user_certification->user_id) : null;
+                if ($user) {
+                    $user->sendPushNotifications($message);
+                }
             }
             $selected_user_id = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;
             if ($selected_user_id) {

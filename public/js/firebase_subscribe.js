@@ -11,13 +11,13 @@ if ('Notification' in window) {
     // пользователь уже разрешил получение уведомлений
     // подписываем на уведомления если ещё не подписали
     if (Notification.permission === 'granted') {
-        subscribe();
+        //subscribe();
     }
 
     // по клику, запрашиваем у пользователя разрешение на уведомления
     // и подписываем его
     $('#subscribe').on('click', function () {
-        subscribe();
+        //subscribe();
     });
 }
 
@@ -51,13 +51,7 @@ function subscribe() {
 function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
         console.log('Отправка токена на сервер...');
-
-        var url = base_url; // адрес скрипта на сервере который сохраняет ID устройства
-        $.post(url, {
-            token: currentToken
-        });
-
-        let targetLink = base_url + '/push-notification-token';
+        let targetLink = base_url + '/save-push-notification-token';
         loadingStart();
         $.ajax({
             url: targetLink,

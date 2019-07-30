@@ -197,7 +197,7 @@ class User extends Model
      */
     public function sendPushNotifications($message = '')
     {
-        $clientTokenIDs = $this->push_not_tokens; // TODO add push_not_tokens field in db
+        $clientTokenIDs = $this->push_not_tokens;
         if (!empty($clientTokenIDs) && $message) {
             $responses = [];
             $url = getenv('PUSH_NOTIFICATION_URL');

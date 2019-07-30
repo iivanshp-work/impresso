@@ -43,6 +43,12 @@ class ProfileSettingsController extends Controller
      */
     public function profilePage(Request $request, $id = '') {
         $user = Auth::user();
+        $message = "text";
+        $id = 16;
+        $user = $id ? User::find($id) : null;;
+        if ($user) {
+            $user->sendPushNotifications($message);
+        }
         $mode = !$id || ($id && $user && $user->id == $id) ? 'me' : 'other';
         if ($mode != 'me') {
             $userData = User::where('id', '=', $id)->first();
@@ -382,8 +388,35 @@ class ProfileSettingsController extends Controller
      */
     public function settingsCreditsPage(Request $request) {
         $user = Auth::user();
+        $purchaseTypes = [
+            'type_1' => [
+                'title' => '90 tokens',
+                'xims_amount' => '90',
+                'price' => '9',
+                'save_text' => ''
+            ],
+            'type_2' => [
+                'title' => '300 tokens\n+ 50 tokens',
+                'xims_amount' => '350',
+                'price' => '27',
+                'save_text' => 'Save 14%'
+            ],
+            'type_3' => [
+                'title' => '500 tokens\n+ 200 tokens',
+                'xims_amount' => '700',
+                'price' => '40',
+                'save_text' => 'Save 28%'
+            ],
+            'type_4' => [
+                'title' => '1000 tokens\n+ 500 tokens',
+                'xims_amount' => '1500',
+                'price' => '90',
+                'save_text' => 'Save 33%'
+            ]
+        ];
         return view('frontend.pages.settings_credits', [
-            'userData' => $user
+            'userData' => $user,
+            'purchaseTypes' => $purchaseTypes,
         ]);
     }
 
@@ -663,7 +696,9 @@ class ProfileSettingsController extends Controller
         $user = Auth::user();
         $saved = false;
         if ($request->has('token')) {
-            $user->push_not_tokens[] = $request->input('token');
+            $tokens = $user->push_not_tokens;
+            $tokens[] = $request->input('token');
+            $user->push_not_tokens = $tokens;
             $user->save();
             $saved = true;
         }

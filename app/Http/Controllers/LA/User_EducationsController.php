@@ -264,11 +264,21 @@ class User_EducationsController extends Controller
 
             if ($user_education && $request->has('status') && $request->input('status') == 3) {
                 //save notification
-                Users_Notification::saveNotification('education_validation_success', 'Certificate Validation: failure', $user_education->user_id, $user_education->id);
+                $message = 'Certificate Validation: success';
+                Users_Notification::saveNotification('education_validation_success', $message, $user_education->user_id, $user_education->id);
+                $user = $user_education->user_id ? User::find($user_education->user_id) : null;
+                if ($user) {
+                    $user->sendPushNotifications($message);
+                }
             }
             if ($user_education && $request->has('status') && $request->input('status') == 4) {
                 //save notification
-                Users_Notification::saveNotification('education_validation_failure', 'Certificate Validation: success', $user_education->user_id, $user_education->id);
+                $message = 'Certificate Validation: failure';
+                Users_Notification::saveNotification('education_validation_failure', $message, $user_education->user_id, $user_education->id);
+                $user = $user_education->user_id ? User::find($user_education->user_id) : null;
+                if ($user) {
+                    $user->sendPushNotifications($message);
+                }
             }
 
 

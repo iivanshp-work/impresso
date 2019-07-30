@@ -34,7 +34,7 @@ Route::get('profile/{id}', 'ProfileSettingsController@profilePage')->name('profi
 Route::get('transaction-history', 'ProfileSettingsController@transactionHistoryPage')->name('transaction_history');
 Route::post('save-geo-data', 'ProfileSettingsController@saveGeo')->name('save_geo_post');
 Route::post('save-share', 'ProfileSettingsController@saveShare')->name('save_share_post');
-Route::post('push-notification-token', 'ProfileSettingsController@savePushNotificationToken')->name('save_push_notification_token_post');
+Route::post('save-push-notification-token', 'ProfileSettingsController@savePushNotificationToken')->name('save_push_notification_token_post');
 
 /* settings */
 Route::get('settings', 'ProfileSettingsController@settingsPage')->name('settings');

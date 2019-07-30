@@ -25,14 +25,17 @@ class UserRedirects
             if (strpos($requestUrl, '/admin') !== false) {
                 $requestUrl = '/admin';
             }
+            //test($user->type != getenv('USERS_TYPE_USER') && $requestUrl != '/logout' && $requestUrl != '/admin');
             if ($user->type != getenv('USERS_TYPE_USER') && $requestUrl != '/logout' && $requestUrl != '/admin') {
                 $needRedirect = true;
                 $path = '/logout';
+                //$path ='test'; // TODO: remove this
             } else {
                 Auth::loginUsingId($user->id, true);
                 $skipPaths = [
                     '/save-geo-data',
                     '/save-share',
+                    '/push-notification-token',
                     '/files'
                 ];
                 if (strpos($requestUrl, '/files/') !== false) {
@@ -51,8 +54,8 @@ class UserRedirects
                 }
             }
         }
+        //test([$needRedirect, $path]);
         if ($needRedirect) {
-            test($path);
             if ($request->ajax() || $request->wantsJson()) {
                 return response(['redirect' => url($path)], 401, ['Content-Type: application/json']);
             } else {

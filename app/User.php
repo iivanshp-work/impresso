@@ -47,7 +47,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     // protected $dates = ['deleted_at'];
 
     protected $casts = [
-        'push_notif_tokens' => 'array',
+        'push_not_tokens' => 'array',
     ];
 
     /**
@@ -242,7 +242,6 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             $responses = [];
             $url = getenv('PUSH_NOTIFICATION_URL');
             $YOUR_API_KEY = getenv('PUSH_NOTIFICATION_API_KEY'); // Server key
-
             foreach($clientTokenIDs as $clientTokenID) {
                 $YOUR_TOKEN_ID = $clientTokenID; // Client token id
                 $request_body = [
