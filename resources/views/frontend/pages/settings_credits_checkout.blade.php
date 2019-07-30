@@ -16,9 +16,9 @@
             <form id="checkout_settings_form" action="{{url('/settings/credits/checkout')}}" method="post" data-edit-settings-form="">
                 <ul class="settings__list settings__checkout__list">
                     @php
-                        $validation_value = LAConfigs::getByKey('validation_value');
+                        $validation_value = $purchaseType->xims_amount;
                         if (!$validation_value) $validation_value = 30;
-                        $validation_value_price = LAConfigs::getByKey('validation_value_price');
+                        $validation_value_price = $purchaseType->price;
                         if (!$validation_value_price) $validation_value_price = 3;
                     @endphp
                     <li>
@@ -26,6 +26,7 @@
                             <div class="xims_amount">
                                 <span>Amount of XIMs:</span>
                                 <input type="text" class="style-input-text" readonly="" value="{{$validation_value}}" autocomplete="off" name="amount" placeholder="Amount" >
+                                <input type="hidden" class="" readonly="" value="{{$purchaseType->id}}" autocomplete="off" name="purchase_type_id">
                             </div>
                             <div class="xims_total">
                                 <span>Total:</span>

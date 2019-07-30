@@ -382,7 +382,7 @@ class User_TransactionsController extends Controller
                 return redirect()->back()->withErrors(['user_purchase' => ['Invalid Purchase record.']])->withInput();
             }
             //save transaction item
-            $amount = LAConfigs::getByKey('validation_value');
+            $amount = $user_purchase->credits_amount;
             $User_Transaction = new User_Transaction;
             $User_Transaction->user_id = $selectedUser->id;
             $User_Transaction->amount = $amount;
@@ -446,7 +446,11 @@ class User_TransactionsController extends Controller
                 //adjust user credits amount
                 $selectedUser->credits_count = $selectedUser->credits_count + $amount;
                 $selectedUser->save();
-                return redirect()->back();
+                if ($selectedUser) {
+                    return redirect(config('laraadmin.adminRoute') . "/user_purchases?selected_user_id=" . $selectedUser->id);
+                } else {
+                    return redirect()->route(config('laraadmin.adminRoute') . '.user_purchases.index');
+                }
             } else {
                 //validations
                 $rules = array(

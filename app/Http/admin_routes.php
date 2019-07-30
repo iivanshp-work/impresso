@@ -97,4 +97,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Jobs_ADs ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/jobs_ads', 'LA\Jobs_ADsController');
 	Route::get(config('laraadmin.adminRoute') . '/jobs_ad_dt_ajax', 'LA\Jobs_ADsController@dtajax');
+
+	/* ================== Buy_Credits ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/buy_credits', 'LA\Buy_CreditsController');
+	Route::get(config('laraadmin.adminRoute') . '/buy_credit_dt_ajax', 'LA\Buy_CreditsController@dtajax');
 });

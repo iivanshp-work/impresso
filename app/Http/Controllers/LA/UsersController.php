@@ -75,7 +75,7 @@ class UsersController extends Controller
             if($params['status'] == 1) {
                 $query = $query->where("is_verified", "=", 1);
             } else if($params['status'] == 2) {
-                $query = $query->where("varification_pending", "=", 1);
+                $query = $query->where("is_verified", "=", 0)->where("varification_pending", "=", 1);
             } else if($params['status'] == 3) {
                 $query = $query->where("is_verified", "=", 0)->where("varification_pending", "=", 0);
             }

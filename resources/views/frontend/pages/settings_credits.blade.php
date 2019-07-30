@@ -13,84 +13,23 @@
             </a>
         </header>
         <main class="buy-xim text-center">
-            <div class="buy-xim__group-icon">
-                <img src="{{url('img/icons/icon-checked.svg')}}" alt="">
-                <img src="{{url('img/icons/coffee-cup.svg')}}" alt="">
-            </div>
-            <p class="mb-7">1 validation = a cup of coffee</p>
             <p>Validate once & never have to do it again. </p>
-            <div class="buy-xims-block">
-                <div class="buy-xim__block">
-                    @php
-                        $validation_value = LAConfigs::getByKey('validation_value');
-                        if (!$validation_value) $validation_value = 30;
-                        $validation_value_price = LAConfigs::getByKey('validation_value_price');
-                        if (!$validation_value_price) $validation_value_price = 3;
-                    @endphp
-                    <span>1 validation</span>
-                    <span class="btn btn-white">{{$validation_value}} XIM</span>
-                    <a href="{{url('/settings/credits/checkout')}}" class="btn btn-pink">${{$validation_value_price}}</a>
+            @if($purchaseTypes)
+                <div class="buy-xims-block">
+                    @foreach($purchaseTypes as $purchaseType)
+                        <div class="buy-xim__block">
+                            <span>{!! nl2br($purchaseType->title) !!}</span>
+                            <span class="btn btn-white">{{$purchaseType->xims_amount}} XIM</span>
+                            <a href="{{url('/settings/credits/checkout')}}" class="btn btn-pink @if(!$purchaseType->save_text) btn-initial @endif">${{$purchaseType->price}}<span class="save">@if($purchaseType->save_text){{$purchaseType->save_text}}@else&nbsp;@endif</span></a>
+                            <a href="{{url('/settings/credits/checkout?type=' . $purchaseType->id)}}" class="full-link"></a>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="buy-xim__block">
-                    @php
-                        $validation_value = LAConfigs::getByKey('validation_value');
-                        if (!$validation_value) $validation_value = 30;
-                        $validation_value_price = LAConfigs::getByKey('validation_value_price');
-                        if (!$validation_value_price) $validation_value_price = 3;
-                    @endphp
-                    <span>1 validation</span>
-                    <span class="btn btn-white">{{$validation_value}} XIM</span>
-                    <a href="{{url('/settings/credits/checkout')}}" class="btn btn-pink">${{$validation_value_price}}</a>
-                </div>
-                <div class="buy-xim__block">
-                    @php
-                        $validation_value = LAConfigs::getByKey('validation_value');
-                        if (!$validation_value) $validation_value = 30;
-                        $validation_value_price = LAConfigs::getByKey('validation_value_price');
-                        if (!$validation_value_price) $validation_value_price = 3;
-                    @endphp
-                    <span>1 validation</span>
-                    <span class="btn btn-white">{{$validation_value}} XIM</span>
-                    <a href="{{url('/settings/credits/checkout')}}" class="btn btn-pink">${{$validation_value_price}}</a>
-                </div>
-                <div class="buy-xim__block">
-                    @php
-                        $validation_value = LAConfigs::getByKey('validation_value');
-                        if (!$validation_value) $validation_value = 30;
-                        $validation_value_price = LAConfigs::getByKey('validation_value_price');
-                        if (!$validation_value_price) $validation_value_price = 3;
-                    @endphp
-                    <span>1 validation</span>
-                    <span class="btn btn-white">{{$validation_value}} XIM</span>
-                    <a href="{{url('/settings/credits/checkout')}}" class="btn btn-pink">${{$validation_value_price}}</a>
-                </div>
-            </div>
-            <p>Get your XIMs now to save money & enjoy our upcoming super cool features!</p>
+            @else
+                Not able to buy credits now.
+            @endif
             <p>Remember you can always share the app for more XIMs!</p>
-            <a href="{{url('/settings/credits/checkout')}}" class="btn btn-violet" style="margin-bottom: 30px;">Buy XIMs</a>
         </main>
-        {{--<main class="buy-xim text-center">
-            <div class="buy-xim__group-icon">
-                <img src="{{url('img/icons/icon-checked.svg')}}" alt="">
-                <img src="{{url('img/icons/coffee-cup.svg')}}" alt="">
-            </div>
-            <p class="mb-7">1 validation = a cup of coffee</p>
-            <p>Validate once & never have to do it again. </p>
-            <div class="buy-xim__block">
-                @php
-                    $validation_value = LAConfigs::getByKey('validation_value');
-                    if (!$validation_value) $validation_value = 30;
-                    $validation_value_price = LAConfigs::getByKey('validation_value_price');
-                    if (!$validation_value_price) $validation_value_price = 3;
-                @endphp
-                <span>1 validation</span>
-                <span class="btn btn-white">{{$validation_value}} XIM</span>
-                <a href="{{url('/settings/credits/checkout')}}" class="btn btn-pink">${{$validation_value_price}}</a>
-            </div>
-            <p>Get your XIMs now to save money & enjoy our upcoming super cool features!</p>
-            <p>Remember you can always share the app for more XIMs!</p>
-            <a href="{{url('/settings/credits/checkout')}}" class="btn btn-violet" style="margin-bottom: 30px;">Buy XIMs</a>
-        </main>--}}
         @include('frontend.layouts.partials.footer_fixed')
     </div>
 @endsection

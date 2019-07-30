@@ -42,7 +42,7 @@
                         @if ($selectedUser)
                             <div class="form-group">
                                 <label for="status">User :</label>
-                                <input type="text" class="form-control" value="{{$selectedUser->id}} - {{$selectedUser->name}}" readonly="">
+                                <input type="text" class="form-control" value="{{$selectedUser->id}} - {{$selectedUser->name ? $selectedUser->name : $selectedUser->email}}" readonly="">
                             </div>
                         @endif
                         @if($purchase_id)
@@ -63,7 +63,7 @@
                         <div class="form-group">
                             <label for="amount">Amount(XIMs)* :</label>
                             <small>the negative value will be subtracting the user balance</small>
-                            <input class="form-control valid" placeholder="Amount" name="amount" type="number" value="@if($userPurchase){{LAConfigs::getByKey('validation_value')}}@endif" aria-invalid="false">
+                            <input class="form-control valid" placeholder="Amount" name="amount" type="number" value="@if($userPurchase){{$userPurchase->credits_amount}}@endif" aria-invalid="false">
                         </div>
 
                         <div class="form-group">

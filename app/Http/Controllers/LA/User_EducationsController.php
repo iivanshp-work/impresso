@@ -26,7 +26,7 @@ class User_EducationsController extends Controller
 {
     public $show_action = true;
     public $view_col = 'title';
-    public $listing_cols = ['id', 'title', 'speciality', 'status', 'user_id'];
+    public $listing_cols = ['id', 'user_id', 'title', 'speciality', 'status'];
 
     public function __construct() {
         // Field Access of Listing Columns
@@ -92,7 +92,11 @@ class User_EducationsController extends Controller
                         $col = $this->listing_cols[$j];
 
                         if ($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
-                            $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                            if ($col == 'user_id') {
+                                $values[$i]->$col = $values[$i]->$col . ' - ' . ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                            } else {
+                                $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                            }
                         }
                         if ($col == $this->view_col) {
                             $values[$i]->$col = '<a href="' . url(config('laraadmin.adminRoute') . '/user_educations/' . $values[$i]->id) . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '') . '">' . $values[$i]->$col . '</a>';

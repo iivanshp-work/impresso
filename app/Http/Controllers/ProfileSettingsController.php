@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Buy_Credit;
 use App\Models\Location;
 use App\Models\User_certification;
 use App\Models\User_Education;
@@ -388,32 +389,7 @@ class ProfileSettingsController extends Controller
      */
     public function settingsCreditsPage(Request $request) {
         $user = Auth::user();
-        $purchaseTypes = [
-            'type_1' => [
-                'title' => '90 tokens',
-                'xims_amount' => '90',
-                'price' => '9',
-                'save_text' => ''
-            ],
-            'type_2' => [
-                'title' => '300 tokens\n+ 50 tokens',
-                'xims_amount' => '350',
-                'price' => '27',
-                'save_text' => 'Save 14%'
-            ],
-            'type_3' => [
-                'title' => '500 tokens\n+ 200 tokens',
-                'xims_amount' => '700',
-                'price' => '40',
-                'save_text' => 'Save 28%'
-            ],
-            'type_4' => [
-                'title' => '1000 tokens\n+ 500 tokens',
-                'xims_amount' => '1500',
-                'price' => '90',
-                'save_text' => 'Save 33%'
-            ]
-        ];
+        $purchaseTypes = Buy_Credit::all();
         return view('frontend.pages.settings_credits', [
             'userData' => $user,
             'purchaseTypes' => $purchaseTypes,
@@ -427,8 +403,17 @@ class ProfileSettingsController extends Controller
      */
     public function settingsCreditsCheckoutPage(Request $request) {
         $user = Auth::user();
+        $purchaseTypeID = $request->has('type') ? $request->input('type') : 0;
+        $purchaseType = Buy_Credit::find($purchaseTypeID);
+        if (!$purchaseType) {
+            $purchaseType = Buy_Credit::first();
+        }
+        if (!$purchaseType) {
+            return redirect('/settings/credits');
+        }
         return view('frontend.pages.settings_credits_checkout', [
-            'userData' => $user
+            'userData' => $user,
+            'purchaseType' => $purchaseType
         ]);
     }
 
@@ -443,12 +428,8 @@ class ProfileSettingsController extends Controller
             'message' => ''
         ];
 
-        $purchaseAmount = LAConfigs::getByKey('validation_value_price');
-        if (!$purchaseAmount) {
-            $purchaseAmount = 3;
-        }
-
         $rules = array(
+            'purchase_type_id' => 'required|string',
             'card_no' => 'required|string',
             'exp_month' => 'required|string',
             'exp_year' => 'required|string',
@@ -456,6 +437,7 @@ class ProfileSettingsController extends Controller
         );
 
         $messages = array(
+            'purchase_type_id.required' => 'Purchase Type is required.',
             'card_no.required' => 'Credit Card Number field is required.',
             'exp_month.required' => 'Expiry Month field is required.',
             'exp_year.required' => 'Expiry Year field is required.',
@@ -470,6 +452,9 @@ class ProfileSettingsController extends Controller
                 $responseData['message'] .= $message . '<br>';
             }
         } else {
+            $purchaseType = Buy_Credit::find($request->input('purchase_type_id'));
+            $purchaseAmount = $purchaseType ? $purchaseType->price : 0;
+            $creditsAmount = $purchaseType ? $purchaseType->xims_amount : 0;
             try {
                 $stripe = Stripe::make(getenv('STRIPE_SECRET'));
                 $token = $stripe->tokens()->create([
@@ -506,6 +491,7 @@ class ProfileSettingsController extends Controller
                         $userPurchase = new User_Purchase;
                         $userPurchase->user_id = $id;
                         $userPurchase->purchase_amount = $purchaseAmount;
+                        $userPurchase->credits_amount = $creditsAmount;
                         $userPurchase->payment_id = $charge['id'];
                         $userPurchase->status = 0;
                         try {
