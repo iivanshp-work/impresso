@@ -17,6 +17,7 @@ class SocialController extends Controller
      */
     public function __construct(Request $request) {
         $this->middleware('guest');
+        $this->middleware('redirects');
     }
 
     /**

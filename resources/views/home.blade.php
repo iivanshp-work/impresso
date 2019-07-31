@@ -1,7 +1,7 @@
 @extends("frontend.layouts.app")
 
 @section("htmlheader_title")
-    Home
+    Homepage
 @endsection
 
 @section("main-content")

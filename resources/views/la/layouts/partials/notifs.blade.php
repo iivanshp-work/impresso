@@ -173,20 +173,16 @@
 							<!-- Menu Body -->
 							@role("SUPER_ADMIN")
 							<li class="user-body">
-								<div class="col-xs-6 text-center mb10">
-									<a href="{{ url(config('laraadmin.adminRoute') . '/lacodeeditor') }}"><i class="fa fa-code"></i> <span>Editor</span></a>
-								</div>
-								<div class="col-xs-6 text-center mb10">
-									<a href="{{ url(config('laraadmin.adminRoute') . '/modules') }}"><i class="fa fa-cubes"></i> <span>Modules</span></a>
-								</div>
+                                @if(getenv('APP_ENV') == 'local')
+                                    <div class="col-xs-6 text-center mb10">
+                                        <a href="{{ url(config('laraadmin.adminRoute') . '/modules') }}"><i class="fa fa-cubes"></i> <span>Modules</span></a>
+                                    </div>
+                                @endif
 								<div class="col-xs-6 text-center mb10">
 									<a href="{{ url(config('laraadmin.adminRoute') . '/la_menus') }}"><i class="fa fa-bars"></i> <span>Menus</span></a>
 								</div>
 								<div class="col-xs-6 text-center mb10">
 									<a href="{{ url(config('laraadmin.adminRoute') . '/la_configs') }}"><i class="fa fa-cogs"></i> <span>Configure</span></a>
-								</div>
-								<div class="col-xs-6 text-center">
-									<a href="{{ url(config('laraadmin.adminRoute') . '/backups') }}"><i class="fa fa-hdd-o"></i> <span>Backups</span></a>
 								</div>
 							</li>
 							@endrole
@@ -206,7 +202,7 @@
 				<!-- Control Sidebar Toggle Button -->
 				<li>
 					<a href="#" data-toggle="control-sidebar"><i class="fa fa-comments-o"></i> <span class="label label-warning">10</span></a>
-					
+
 				</li>
 				@endif
 			</ul>

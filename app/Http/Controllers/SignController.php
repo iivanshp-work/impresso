@@ -23,6 +23,7 @@ class SignController extends Controller
     public function __construct(Request $request) {
         $this->middleware('guest', ['except' => ['validation', 'validationPage']]);
         $this->middleware('auth', ['only' => ['validation', 'validationPage']]);
+        $this->middleware('redirects');
     }
 
     /**
