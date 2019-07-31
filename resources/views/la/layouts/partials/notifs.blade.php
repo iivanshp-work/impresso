@@ -97,7 +97,7 @@
 				</li>
 				@endif
 				@php
-					$usersPendingCount = DB::table("users")->where("type", '=', getenv('USERS_TYPE_USER'))->whereNull('deleted_at')->where("varification_pending", "=", 1)->count();
+					$usersPendingCount = DB::table("users")->where("type", '=', getenv('USERS_TYPE_USER'))->whereNull('deleted_at')->where("is_verified", "=", 0)->where("varification_pending", "=", 1)->count();
 					$educationCount = DB::table("user_educations")->where("status", '=', 2)->whereNull('deleted_at')->count();
 					$certificationCount = DB::table("user_certifications")->where("status", '=', 2)->whereNull('deleted_at')->count();
 					$purchasesCount = DB::table("user_purchases")->where("status", '=', 0)->whereNull('deleted_at')->count();

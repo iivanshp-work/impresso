@@ -34,6 +34,7 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	Route::resource(config('laraadmin.adminRoute') . '/users', 'LA\UsersController');
     Route::get(config('laraadmin.adminRoute') . '/administrators', 'LA\UsersController@index');
 	Route::get(config('laraadmin.adminRoute') . '/user_dt_ajax', 'LA\UsersController@dtajax');
+    Route::post(config('laraadmin.adminRoute') . '/check_unique_val_custom/{field_id}', 'LA\UsersController@check_unique_value');
 
 	/* ================== Uploads ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/uploads', 'LA\UploadsController');
@@ -89,6 +90,7 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Users_Notifications ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/users_notifications', 'LA\Users_NotificationsController');
 	Route::get(config('laraadmin.adminRoute') . '/users_notification_dt_ajax', 'LA\Users_NotificationsController@dtajax');
+
 
 	/* ================== Locations ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/locations', 'LA\LocationsController');
