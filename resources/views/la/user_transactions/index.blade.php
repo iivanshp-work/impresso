@@ -145,7 +145,7 @@
 							@continue
 						@endif
 						<td>
-							@if ($col == $view_col)
+							@if ($col == $view_col || $col == 'user_id')
 								{!!$value->$col!!}
 							@elseif($col == 'notes')
 								{{ str_limit($value->$col, 48) }}

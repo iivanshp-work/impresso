@@ -141,7 +141,7 @@
                         @if($selectedUser && $col == 'user_id')
                             @continue
                         @endif
-                        <td>@if ($col == $view_col){!!$value->$col!!}@else{{$value->$col}}@endif</td>
+                        <td>@if ($col == $view_col || $col == 'user_id'){!!$value->$col!!}@else{{$value->$col}}@endif</td>
                     @endforeach
                     <td>{{Carbon::parse($value->created_at)->format('Y/m/d H:i')}}</td>
                     <td>{!!$value->actions!!}</td>

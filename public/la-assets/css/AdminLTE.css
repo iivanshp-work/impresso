@@ -7850,6 +7850,14 @@ a.uploaded_file2 i.fa.fa-times {
 .profile2 > .bg-primary{
   display: none;
 }
+.black_link {
+    color: #333333;
+    text-decoration: underline;
+}
+.black_link:hover {
+    color: #48B0F7;
+    text-decoration: underline;
+}
 /*custom end*/
 
 /*# sourceMappingURL=AdminLTE.css.map */

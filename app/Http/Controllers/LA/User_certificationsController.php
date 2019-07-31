@@ -93,7 +93,8 @@ class User_certificationsController extends Controller
 
                         if ($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
                             if ($col == 'user_id') {
-                                $values[$i]->$col = $values[$i]->$col . ' - ' . ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                                $userValue = $values[$i]->$col . ' - ' . ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                                $values[$i]->$col = '<a class="black_link" href="' . url(config('laraadmin.adminRoute') . '/users/' . $values[$i]->$col . '/edit') . '">' . $userValue . '</a>';
                             } else {
                                 $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
                             }
