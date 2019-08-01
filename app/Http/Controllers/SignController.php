@@ -137,10 +137,10 @@ class SignController extends Controller
                     if (Auth::attempt($userdata, 1)) {
                         $user = User::where('email', '=', $request->input('email'))->first();
                         Auth::login($user, 1);
-                        /*
+
                         $mail = new Mails;
                         $mail->signup_email($user, $request->input('password'));
-                        */
+
                         $responseData['redirect'] = url(getenv('VALIDATION_PAGE'));
                     } else {
                         $responseData['has_error'] = true;

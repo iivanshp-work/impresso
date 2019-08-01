@@ -356,4 +356,30 @@ class JobsController extends Controller
 		$out->setData($data);
 		return $out;
 	}
+
+    public function getGeo(Request $request) {
+        $saved = false;
+        $address = $request->has('address') ? trim($request->input('address')) : '';
+        $lat = $lon = null;
+        if($address) {
+            try {
+                $details_url = 'https://maps.googleapis.com/maps/api/geocode/json?language=en&address=' . str_replace (" ", "+", $address) . '&key=' . getenv('GOOGLE_API_KEY');
+
+                $ch = curl_init();
+                curl_setopt($ch, CURLOPT_URL, $details_url);
+                curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+                $geocode = curl_exec($ch);
+                curl_close($ch);
+                //$geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&address=' . $address . '&key=' . getenv('GOOGLE_API_KEY'));
+                $output = @json_decode($geocode);
+            }catch (\Exception $e) {
+                $output = $e->getMessage();
+            }
+            if ($output && isset($output->results[0]->geometry->location) && !empty($output->results[0]->geometry->location)) {
+                $lat = $output->results[0]->geometry->location->lat;
+                $lon = $output->results[0]->geometry->location->lng;
+            }
+        }
+        return response()->json(['lat' => $lat, 'lon' => $lon]);
+    }
 }

@@ -3,55 +3,51 @@ firebase.initializeApp({
     messagingSenderId: '1004791964834'
 });
 
-// браузер поддерживает уведомления
-// вообще, эту проверку должна делать библиотека Firebase, но она этого не делает
+// check if browser support notifications
 if ('Notification' in window) {
     var messaging = firebase.messaging();
 
-    // пользователь уже разрешил получение уведомлений
-    // подписываем на уведомления если ещё не подписали
-    //TODO: add check for empty tokens
+    // granted permission auto subscribe
+
     if (Notification.permission === 'granted') {
-        //subscribe();
+        subscribe();
     }
 
-    // по клику, запрашиваем у пользователя разрешение на уведомления
-    // и подписываем его
-    $('#subscribe').on('click', function () {
+    //TODO: add check for empty tokens
+    if (!window.localStorage.getItem('sentFirebaseMessagingToken')) {
         subscribe();
-    });
+    }
 }
 
 function subscribe() {
-    // запрашиваем разрешение на получение уведомлений
+    // request permission to receive notifications
     messaging.requestPermission()
         .then(function () {
-            // получаем ID устройства
+            // getting device id
             messaging.getToken()
                 .then(function (currentToken) {
                     console.log(currentToken);
-
                     if (currentToken) {
                         sendTokenToServer(currentToken);
                     } else {
-                        console.log('Не удалось получить токен.');
+                        console.log('can not getting token.');
                         setTokenSentToServer(false);
                     }
                 })
                 .catch(function (err) {
-                    console.log('При получении токена произошла ошибка.', err);
+                    console.log('error while getting token.', err);
                     setTokenSentToServer(false);
                 });
         })
         .catch(function (err) {
-            console.log('Не удалось получить разрешение на показ уведомлений.', err);
+            console.log('Failed to get permission to show notifications.', err);
         });
 }
 
-// отправка ID на сервер
+// send token id to server
 function sendTokenToServer(currentToken) {
     if (!isTokenSentToServer(currentToken)) {
-        console.log('Отправка токена на сервер...');
+        console.log('Sending a token to the server...');
         let targetLink = base_url + '/save-push-notification-token';
         loadingStart();
         $.ajax({
@@ -72,12 +68,11 @@ function sendTokenToServer(currentToken) {
             }
         });
     } else {
-        console.log('Токен уже отправлен на сервер.');
+        console.log('Token already sent to server.');
     }
 }
 
-// используем localStorage для отметки того,
-// что пользователь уже подписался на уведомления
+// save token to localstorage to check if user send it to server
 function isTokenSentToServer(currentToken) {
     return window.localStorage.getItem('sentFirebaseMessagingToken') == currentToken;
 }
@@ -95,7 +90,7 @@ if ('Notification' in window) {
     messaging.onMessage(function(payload) {
         console.log('Message received. ', payload);
 
-        // регистрируем пустой ServiceWorker каждый раз
+        // register empty ServiceWorker every time
         /*messaging.onMessage(function(payload) {
             console.log('Message received. ', payload);
             new Notification(payload.notification.title, payload.notification);
@@ -103,12 +98,12 @@ if ('Notification' in window) {
 
         navigator.serviceWorker.register('/firebase-messaging-sw.js');
 
-        // запрашиваем права на показ уведомлений если еще не получили их
+        // request permission to receive notifications
         Notification.requestPermission(function(result) {
             if (result === 'granted') {
                 navigator.serviceWorker.ready.then(function(registration) {
-                    // теперь мы можем показать уведомление
-                    payload.notification.data = payload.notification; // параметры уведомления
+                    // Show Notification
+                    payload.notification.data = payload.notification; // params
                     return registration.showNotification(payload.notification.title, payload.notification);
                 }).catch(function(error) {
                     console.log('ServiceWorker registration failed', error);
@@ -117,6 +112,4 @@ if ('Notification' in window) {
         });
 
     });
-
-    // ...
 }

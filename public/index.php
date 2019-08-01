@@ -6,7 +6,7 @@
  * @package  Laravel
  * @author   Taylor Otwell <taylorotwell@gmail.com>
  */
-
+ini_set("display_errors", 1);
 /*
 |--------------------------------------------------------------------------
 | Register The Auto Loader

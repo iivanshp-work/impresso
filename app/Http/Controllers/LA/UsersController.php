@@ -7,7 +7,11 @@
 namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
+use App\Models\User_certification;
+use App\Models\User_Education;
+use App\Models\User_Purchase;
 use App\Models\User_Transaction;
+use App\Models\Users_Notification;
 use Carbon\Carbon;
 use Dwij\Laraadmin\Models\LAConfigs;
 use Illuminate\Http\Request;
@@ -348,7 +352,13 @@ class UsersController extends Controller
 			$user = User::find($id);
             $mode = $user && $user->type == getenv('USERS_TYPE_ADMIN') ? 'admins' : 'users';
             $user->delete();
-
+            if ($mode == 'users') {
+                User_Education::where('user_id', $id)->delete();
+                User_certification::where('user_id', $id)->delete();
+                User_Purchase::where('user_id', $id)->delete();
+                User_Transaction::where('user_id', $id)->delete();
+                Users_Notification::where('user_id', $id)->delete();
+            }
 			// Redirecting to index() method
             if ($mode == "admins") {
                 return redirect(config('laraadmin.adminRoute')."/administrators");

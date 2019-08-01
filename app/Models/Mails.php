@@ -13,23 +13,27 @@ use Mail;
 
 class Mails extends Model
 {
-  protected $from_email = '';
-  protected $from_name = '';
-  protected $locale = '';
-  
-  public function __construct(){
-    $this->from_email = env('MAIL_FROM_EMAIL');
-    $this->from_name = env('MAIL_FROM_NAME');
-  }
+    protected $from_email = '';
+    protected $from_name = '';
+    protected $locale = '';
 
-  public function signup_email($user, $password = ''){
-    if(!$user) return;
-    $template = "emails.signup_email";
-    $send = Mail::send($template, ['user' => $user, 'password' => $password], function ($m) use ($user) {
-        $m->from($this->from_email, $this->from_name);
-        $m->to($user->email, $user->email)->subject('Impresso Sign Up');
-    });
-    return;
-  }
+    public function __construct() {
+        $this->from_email = env('MAIL_FROM_EMAIL');
+        $this->from_name = env('MAIL_FROM_NAME');
+    }
+
+    public function signup_email($user, $password = '') {
+        if (!$user) return;
+        $template = "emails.signup_email";
+        try {
+            $send = Mail::send($template, ['user' => $user, 'password' => $password], function ($m) use ($user) {
+                $m->from($this->from_email, $this->from_name);
+                $m->to($user->email, $user->email)->subject('Impresso Sign Up');
+            });
+        } catch (\Exception $e) {
+            $send = $e->getMessage();
+        }
+        return $send;
+    }
 
 }

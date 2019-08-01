@@ -60,8 +60,10 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 
 
 	/* ================== Jobs ================== */
-	Route::resource(config('laraadmin.adminRoute') . '/jobs', 'LA\JobsController');
+    Route::get(config('laraadmin.adminRoute') . '/jobs_get_geo', 'LA\JobsController@getGeo');
+    Route::resource(config('laraadmin.adminRoute') . '/jobs', 'LA\JobsController');
 	Route::get(config('laraadmin.adminRoute') . '/job_dt_ajax', 'LA\JobsController@dtajax');
+
 
 	/* ================== Validation_statuses ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/validation_statuses', 'LA\Validation_statusesController');
