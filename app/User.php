@@ -26,22 +26,22 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     protected $table = 'users';
 
-	/**
+    /**
      * The attributes that are mass assignable.
      *
      * @var array
      */
-	protected $fillable = [
-		'name', 'email', 'password', "role", "provider", "provider_id", "type"
-	];
+    protected $fillable = [
+        'name', 'email', 'password', "role", "provider", "provider_id", "type"
+    ];
 
-	/**
+    /**
      * The attributes that should be hidden for arrays.
      *
      * @var array
      */
-	protected $hidden = [
-		'password', 'remember_token',
+    protected $hidden = [
+        'password', 'remember_token',
     ];
 
     // protected $dates = ['deleted_at'];
@@ -238,6 +238,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function sendPushNotifications($message = '')
     {
         $clientTokenIDs = $this->push_not_tokens;
+
         if (!empty($clientTokenIDs) && $message) {
             $responses = [];
             $url = getenv('PUSH_NOTIFICATION_URL');
@@ -249,10 +250,10 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                     'notification' => [
                         'title' => getenv('PUSH_NOTIFICATION_TITLE'),
                         'body' => $message,
+                        'icon' => asset('img/Logo.png?width=192&height=192')
                     ],
                 ];
                 $fields = json_encode($request_body);
-
                 $request_headers = [
                     'Content-Type: application/json',
                     'Authorization: key=' . $YOUR_API_KEY,

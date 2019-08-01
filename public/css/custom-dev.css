@@ -8,8 +8,12 @@
     font-weight: 500 !important;
     font-size: 17px !important;
     line-height: 22px !important;
+    height: 22px !important;
     margin-bottom: 2px !important;
     text-align: center;
+    padding: 0;
+    -webkit-appearance: none;
+    border-radius: 0;
 }
 #customValidateSuccess,
 customValidateError,
@@ -132,6 +136,9 @@ customValidateConfirm{
     width: 30px;
     display: inline;
     text-align: center;
+    padding: 0;
+    -webkit-appearance: none;
+    border-radius: 0;
 }
 .checkout-page .settings__checkout__list .expiry_date .style-input-text.exp_year {
     width: 25px;

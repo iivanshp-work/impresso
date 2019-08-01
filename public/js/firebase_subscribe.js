@@ -10,6 +10,7 @@ if ('Notification' in window) {
 
     // пользователь уже разрешил получение уведомлений
     // подписываем на уведомления если ещё не подписали
+    //TODO: add check for empty tokens
     if (Notification.permission === 'granted') {
         //subscribe();
     }
@@ -17,7 +18,7 @@ if ('Notification' in window) {
     // по клику, запрашиваем у пользователя разрешение на уведомления
     // и подписываем его
     $('#subscribe').on('click', function () {
-        //subscribe();
+        subscribe();
     });
 }
 
@@ -33,17 +34,17 @@ function subscribe() {
                     if (currentToken) {
                         sendTokenToServer(currentToken);
                     } else {
-                        console.warn('Не удалось получить токен.');
+                        console.log('Не удалось получить токен.');
                         setTokenSentToServer(false);
                     }
                 })
                 .catch(function (err) {
-                    console.warn('При получении токена произошла ошибка.', err);
+                    console.log('При получении токена произошла ошибка.', err);
                     setTokenSentToServer(false);
                 });
         })
         .catch(function (err) {
-            console.warn('Не удалось получить разрешение на показ уведомлений.', err);
+            console.log('Не удалось получить разрешение на показ уведомлений.', err);
         });
 }
 
@@ -86,4 +87,36 @@ function setTokenSentToServer(currentToken) {
         'sentFirebaseMessagingToken',
         currentToken ? currentToken : ''
     );
+}
+
+if ('Notification' in window) {
+    var messaging = firebase.messaging();
+
+    messaging.onMessage(function(payload) {
+        console.log('Message received. ', payload);
+
+        // регистрируем пустой ServiceWorker каждый раз
+        /*messaging.onMessage(function(payload) {
+            console.log('Message received. ', payload);
+            new Notification(payload.notification.title, payload.notification);
+        });*/
+
+        navigator.serviceWorker.register('/firebase-messaging-sw.js');
+
+        // запрашиваем права на показ уведомлений если еще не получили их
+        Notification.requestPermission(function(result) {
+            if (result === 'granted') {
+                navigator.serviceWorker.ready.then(function(registration) {
+                    // теперь мы можем показать уведомление
+                    payload.notification.data = payload.notification; // параметры уведомления
+                    return registration.showNotification(payload.notification.title, payload.notification);
+                }).catch(function(error) {
+                    console.log('ServiceWorker registration failed', error);
+                });
+            }
+        });
+
+    });
+
+    // ...
 }

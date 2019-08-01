@@ -44,12 +44,6 @@ class ProfileSettingsController extends Controller
      */
     public function profilePage(Request $request, $id = '') {
         $user = Auth::user();
-        $message = "text";
-        $id = 16;
-        $user = $id ? User::find($id) : null;;
-        if ($user) {
-            $user->sendPushNotifications($message);
-        }
         $mode = !$id || ($id && $user && $user->id == $id) ? 'me' : 'other';
         if ($mode != 'me') {
             $userData = User::where('id', '=', $id)->first();
@@ -69,6 +63,14 @@ class ProfileSettingsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function profileEditPage(Request $request) {
+        /*$id = 16;
+        $user = $id ? User::find($id) : null;
+        $message = "message - " . date("Y-m-d H:i:s");
+        if ($user) {
+            if ($request->has("test")) {
+                test($user->sendPushNotifications($message));
+            }
+        }*/
         $user = Auth::user();
         return view('frontend.pages.profile_edit', [
             'userData' => $user
@@ -480,9 +482,9 @@ class ProfileSettingsController extends Controller
                     DB::table('stripe_charges')->insert([
                         'created_at' => Carbon::now(),
                         'data' => json_encode([
-                           'token' => $token,
-                           'charge_params' => $chargeParams,
-                           'charge' => $charge,
+                            'token' => $token,
+                            'charge_params' => $chargeParams,
+                            'charge' => $charge,
                         ])
                     ]);
                     if($charge['status'] == 'succeeded') {
@@ -681,9 +683,10 @@ class ProfileSettingsController extends Controller
     public function savePushNotificationToken(Request $request) {
         $user = Auth::user();
         $saved = false;
-        if ($request->has('token')) {
-            $tokens = $user->push_not_tokens;
-            $tokens[] = $request->input('token');
+        $token = $request->has('token') ? $request->input('token') : null;
+        $tokens = $user->push_not_tokens;
+        if ($token && !in_array($token, $tokens)) {
+            $tokens[] = $token;
             $user->push_not_tokens = $tokens;
             $user->save();
             $saved = true;
