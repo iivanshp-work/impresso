@@ -69,10 +69,12 @@
 				</select>
 			</div>
 
+            {{--
 			<div class="form-group">
 				<label>Default Email Address</label>
 				<input type="text" class="form-control" placeholder="To send emails to others via SMTP" maxlength="100" name="default_email" value="{{$configs->default_email}}">
 			</div>
+            --}}
 
 			<div class="form-group">
 				<label>Validation Amount(in XIMS)</label>
@@ -80,9 +82,14 @@
 			</div>
 
 			<div class="form-group">
-				<label>Initial Credits amount(in XIMS)</label>
+				<label>Initial Credits Amount(in XIMS)</label>
 				<input type="text" class="form-control" placeholder="Initial Credits amount(XIMS)" maxlength="100" name="initial_credits_amount" value="{{$configs->initial_credits_amount}}">
 			</div>
+
+            <div class="form-group">
+                <label>New Jobs notification radius(KM)</label>
+                <input type="text" class="form-control" placeholder="New Jobs notification radius" maxlength="100" name="new_jobs_radius" value="{{$configs->new_jobs_radius}}">
+            </div>
 
 
 		</div><!-- /.box-body -->

@@ -370,11 +370,17 @@ class ProfileSettingsController extends Controller
             $user->address2 = $request->has('address2') ? trim($request->input('address2')) : '';
             $user->city = $request->has('city') ? trim($request->input('city')) : '';
             try {
-                if ($user->save()) {
-                    $responseData['message'] = 'Personal data successfully saved.';
-                } else {
+                $checkUser = User::where('email', '=', $user->email)->notMe()->users()->NotDeleted()->first();
+                if ($checkUser) {
                     $responseData['has_error'] = true;
-                    $responseData['message'] .= 'An error occurred while saving data.' . '<br>';
+                    $responseData['message'] .= 'User with entered email already exists.';
+                } else {
+                    if ($user->save()) {
+                        $responseData['message'] = 'Personal data successfully saved.';
+                    } else {
+                        $responseData['has_error'] = true;
+                        $responseData['message'] .= 'An error occurred while saving data.' . '<br>';
+                    }
                 }
             } catch (\Exception $e) {
                 $responseData['has_error'] = true;

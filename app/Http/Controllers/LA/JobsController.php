@@ -8,6 +8,7 @@ namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
 use App\Models\Users_Notification;
+use Dwij\Laraadmin\Models\LAConfigs;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
@@ -151,10 +152,14 @@ class JobsController extends Controller
             $latitude = $request->has('latitude') && $request->input('latitude') ? $request->input('latitude') : '';
             $status = $request->has('status') && $request->input('status') ? 1 : 0;
             if ($longitude && $latitude && $status) {
+                $radius = LAConfigs::getByKey('new_jobs_radius');
+                if (!$radius) {
+                    $radius = 100;
+                }
                 $users = User::notDeleted()
                     ->users()
                     ->notMe()
-                    ->isWithinMaxDistance((object)['longitude' => $longitude, 'latitude' => $latitude], 100)
+                    ->isWithinMaxDistance((object)['longitude' => $longitude, 'latitude' => $latitude], $radius)
                     ->get();
                 if ($users->count()) {
                     foreach($users as $user) {
@@ -260,10 +265,14 @@ class JobsController extends Controller
             $status = $request->has('status') && $request->input('status') ? 1 : 0;
             //TODO: not clear if this logic needed ???
             if ($longitude && $latitude && $status) {
+                $radius = LAConfigs::getByKey('new_jobs_radius');
+                if (!$radius) {
+                    $radius = 100;
+                }
                 $users = User::notDeleted()
                     ->users()
                     ->notMe()
-                    ->isWithinMaxDistance((object)['longitude' => $longitude, 'latitude' => $latitude], 100)
+                    ->isWithinMaxDistance((object)['longitude' => $longitude, 'latitude' => $latitude], $radius)
                     ->get();
                 if ($users->count()) {
                     $usersIDS = $users->keyBy('id');

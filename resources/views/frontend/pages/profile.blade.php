@@ -425,7 +425,7 @@
 @endsection
 
 @push('popups')
-    @if (app('request')->has('show_pending_popup'))
+    @if (app('request')->has('show_pending_popup') && !$userData->is_verified)
         <button class="btn btn-violet hide open-pop-up" id="showPendingPopup" data-target="#pendingPopup">
             Pending popup
         </button>

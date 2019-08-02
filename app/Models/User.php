@@ -13,7 +13,7 @@ use Auth;
 
 class User extends Model
 {
-    use SoftDeletes;
+    //use SoftDeletes; //TODO: CHECK CLIENT
 
 	protected $table = 'users';
 

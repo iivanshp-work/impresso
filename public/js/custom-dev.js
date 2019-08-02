@@ -823,7 +823,7 @@ $document.ready(function(){
 
     //cleanup upload form
     function clearUploadForm(){
-        $('#edit_profile_upload_attach_form [name="url"]').val('');
+        $('#edit_profile_upload_attach_form [name="url"]').val('').trigger('change');
         $('#edit_profile_upload_attach_form [name="files"]').val('');
         $('#edit_profile_upload_attach_form .default_title').show();
         $('#edit_profile_upload_attach_form .selected_files_title').hide().find('.files_text').text('');

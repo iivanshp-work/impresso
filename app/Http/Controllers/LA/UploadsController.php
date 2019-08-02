@@ -74,7 +74,11 @@ class UploadsController extends Controller
     public function get_file($hash, $name = '') {
 
         try {
-            $upload = DB::table("uploads")->where("hash", $hash)->orWhere("id", $hash)->first();
+            if (is_numeric($hash)) {
+                $upload = DB::table("uploads")->orWhere("id", $hash)->first();
+            } else {
+                $upload = DB::table("uploads")->where("hash", $hash)->first();
+            }
         } catch (\PDOException $e) {
 
         }

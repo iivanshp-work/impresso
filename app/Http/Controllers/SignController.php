@@ -75,12 +75,18 @@ class SignController extends Controller
                 'password' => $request->input('password')
             );
             if (Auth::attempt($userdata, 1)) {
-                $user = User::where('email', '=', $request->input('email'))->first();
-                Auth::login($user, 1);
-                $user = Auth::user();
-                $redirectURL = $user && $user->is_verified ? getenv('BASE_LOGEDIN_PAGE') : getenv('VALIDATION_PAGE');
-                $responseData['redirect'] = url($redirectURL);
-                $responseData['user'] = Auth::user();
+                $user = User::where('email', '=', $request->input('email'))->users()->NotDeleted()->first();
+                if ($user) {
+                    Auth::login($user, 1);
+                    $user = Auth::user();
+                    $redirectURL = $user && $user->is_verified ? getenv('BASE_LOGEDIN_PAGE') : getenv('VALIDATION_PAGE');
+                    $responseData['redirect'] = url($redirectURL);
+                    $responseData['user'] = Auth::user();
+                } else {
+                    Auth::logout();
+                    $responseData['has_error'] = true;
+                    $responseData['message'] .= 'Login failed wrong user credentials.';
+                }
             } else {
                 $responseData['has_error'] = true;
                 $responseData['message'] .= 'Login failed wrong user credentials.';
@@ -115,7 +121,7 @@ class SignController extends Controller
                 $responseData['message'] .= $message . '<br>';
             }
         } else {
-            $checkUser = User::where('email', '=', $request->input('email'))->first();
+            $checkUser = User::where('email', '=', $request->input('email'))->users()->NotDeleted()->first();
             if ($checkUser) {
                 $responseData['has_error'] = true;
                 $responseData['message'] .= 'User with entered email already exists.';
