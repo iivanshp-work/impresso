@@ -691,6 +691,7 @@ class ProfileSettingsController extends Controller
         $saved = false;
         $token = $request->has('token') ? $request->input('token') : null;
         $tokens = $user->push_not_tokens;
+        if (!$tokens) $tokens = [];
         if ($token && !in_array($token, $tokens)) {
             $tokens[] = $token;
             $user->push_not_tokens = $tokens;

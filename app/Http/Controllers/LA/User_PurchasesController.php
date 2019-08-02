@@ -75,7 +75,7 @@ class User_PurchasesController extends Controller
                 }
                 $query = $query->where(function ($query) use ($params, $userIDS) {
                     $query->orWhere("payment_id", "like", "%" . $params['keyword'] . "%");
-                    $query->orWhere("amount", "=", $params['keyword']);
+                    $query->orWhere("purchase_amount", "=", $params['keyword']);
                     if (!empty($userIDS)) {
                         $query->orWhereIn("user_id", $userIDS);
                     }

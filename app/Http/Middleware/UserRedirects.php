@@ -34,6 +34,9 @@ class UserRedirects
                 '/check_unique_val',
                 '/admin',
             ];
+            if($user->type != getenv('USERS_TYPE_USER')) {
+                return redirect('/admin');
+            }
             if (strpos($requestUrl, '/files/') !== false) {
                 $requestUrl = '/files';
             }
