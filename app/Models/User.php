@@ -35,6 +35,8 @@ class User extends Model
      * @return mixed
      */
     public function scopeWithDistance($query, $location) {
+        $location->longitude = floatval($location->longitude);
+        $location->latitude = floatval($location->latitude);
         $table = $this->getTable();
 
         if ($location->longitude && $location->latitude) {
@@ -85,6 +87,8 @@ class User extends Model
      * @return mixed
      */
     public function scopeIsWithinMaxDistance($query, $location, $radius = 25) {
+        $location->longitude = floatval($location->longitude);
+        $location->latitude = floatval($location->latitude);
         $table = $this->getTable();
         $haversine = "(6371 * acos(cos(radians({$location->latitude})) 
                      * cos(radians({$table}.latitude)) 
@@ -198,11 +202,11 @@ class User extends Model
     public function sendPushNotifications($message = '')
     {
         $clientTokenIDs = $this->push_not_tokens;
+
         if (!empty($clientTokenIDs) && $message) {
             $responses = [];
             $url = getenv('PUSH_NOTIFICATION_URL');
             $YOUR_API_KEY = getenv('PUSH_NOTIFICATION_API_KEY'); // Server key
-
             foreach($clientTokenIDs as $clientTokenID) {
                 $YOUR_TOKEN_ID = $clientTokenID; // Client token id
                 $request_body = [
@@ -210,10 +214,10 @@ class User extends Model
                     'notification' => [
                         'title' => getenv('PUSH_NOTIFICATION_TITLE'),
                         'body' => $message,
+                        'icon' => asset('img/Logo.png?width=192&height=192')
                     ],
                 ];
                 $fields = json_encode($request_body);
-
                 $request_headers = [
                     'Content-Type: application/json',
                     'Authorization: key=' . $YOUR_API_KEY,

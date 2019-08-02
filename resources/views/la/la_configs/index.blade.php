@@ -79,10 +79,6 @@
 				<input type="text" class="form-control" placeholder="Validation price value(XIMS)" maxlength="100" name="validation_value" value="{{$configs->validation_value}}">
 			</div>
 
-			<div class="form-group">
-				<label>Validation value price(in $)</label>
-				<input type="text" class="form-control" placeholder="Validation value price(in $)" maxlength="100" name="validation_value_price" value="{{$configs->validation_value_price}}">
-			</div>
 		</div><!-- /.box-body -->
 		<div class="box-footer">
 			<button type="submit" class="btn btn-primary">Save</button>

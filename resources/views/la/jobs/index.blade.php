@@ -115,8 +115,12 @@
 					@la_input($module, 'short_description')
 					@la_input($module, 'description')
 					@la_input($module, 'location_title')
-					<div><a data-open-gmaps href="#" target="_blank">Open GMaps to get Longitude & Latitude</a><br></div>
-					<br>
+					<div style="margin-bottom: 10px;">
+						<a data-auto-gmaps href="#" class="btn btn-primary" >Auto get Longitude & Latitude</a>
+						<span data-or-gmaps> OR </span>
+						<a data-open-gmaps href="#" class="btn btn-success" target="_blank">Open GMaps to get Longitude & Latitude</a>
+						<br>
+					</div>
 					@la_input($module, 'longitude')
 					@la_input($module, 'latitude')
 					@la_input($module, 'status')
@@ -137,6 +141,12 @@
 @push('styles')
 <style>
 	[data-open-gmaps]{
+		display: none;
+	}
+	[data-auto-gmaps]{
+		display: none;
+	}
+	[data-or-gmaps]{
 		display: none;
 	}
 	#jobs-search-form {
@@ -162,13 +172,42 @@
 <script src="{{ asset('la-assets/plugins/datatables/datatables.min.js') }}"></script>
 <script>
 $(function () {
+	function getGeo(address) {
+		$.ajax({
+			url: "{{ url(config('laraadmin.adminRoute') . '/jobs_get_geo') }}",
+			type: 'get',
+			data: {address: address},
+			dataType: 'json',
+			success: function(response){
+				if (response.lat && response.lon) {
+					$('#job-add-form [name="longitude"]').attr('value', response.lat).val(response.lon).change().trigger('change');
+					$('#job-add-form [name="latitude"]').attr('value', response.lat).val(response.lat).change().trigger('change');
+				} else {
+					alert('Can not get Longitude && Latitude, please enter it manually.');
+				}
+			},
+			error: function(){
+				alert('Can not get Longitude && Latitude, please enter it manually.');
+			},
+			complete: function(){
+			}
+		});
+	}
+	$(document).on('click change', "[data-auto-gmaps]", function (e) {
+		e.preventDefault();
+		var geoInfo = getGeo($('#job-add-form [name="location_title"]').val());
+	});
 	$('#job-add-form [name="location_title"]').on('change', function(e){
 		let val = $(this).val();
 		if (val) {
 			$("[data-open-gmaps]").show();
 			$("[data-open-gmaps]").attr('href', "https://maps.google.com/maps?q="+ encodeURIComponent( val ));
+			$("[data-auto-gmaps]").show();
+			$("[data-or-gmaps]").show();
 		} else {
 			$("[data-open-gmaps]").hide().attr('href', "https://maps.google.com/maps?q=");
+			$("[data-auto-gmaps]").hide();
+			$("[data-or-gmaps]").hide();
 		}
 	});
 	$('#job-add-form [name="location_title"]').change().trigger('change');

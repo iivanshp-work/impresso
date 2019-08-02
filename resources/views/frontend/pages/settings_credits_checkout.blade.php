@@ -17,9 +17,9 @@
                 <ul class="settings__list settings__checkout__list">
                     @php
                         $validation_value = $purchaseType->xims_amount;
-                        if (!$validation_value) $validation_value = 30;
+                        if (!$validation_value) $validation_value = 90;
                         $validation_value_price = $purchaseType->price;
-                        if (!$validation_value_price) $validation_value_price = 3;
+                        if (!$validation_value_price) $validation_value_price = 9;
                     @endphp
                     <li>
                         <div class="xims_total_wrapper">

@@ -30,6 +30,8 @@ class Job extends Model
      * @return mixed
      */
     public function scopeIsWithinMaxDistance($query, $location, $radius = 25) {
+        $location->longitude = floatval($location->longitude);
+        $location->latitude = floatval($location->latitude);
         $table = $this->getTable();
         $haversine = "(6371 * acos(cos(radians({$location->latitude})) 
                      * cos(radians({$table}.latitude)) 
@@ -49,6 +51,8 @@ class Job extends Model
      * @return mixed
      */
     public function scopeWithDistance($query, $location) {
+        $location->longitude = floatval($location->longitude);
+        $location->latitude = floatval($location->latitude);
         $table = $this->getTable();
         if ($location->longitude && $location->latitude) {
             $haversine = "(6371 * acos(cos(radians({$location->latitude})) 

@@ -154,7 +154,7 @@ class JobsController extends Controller
                 $users = User::notDeleted()
                     ->users()
                     ->notMe()
-                    ->isWithinMaxDistance($job, 100)
+                    ->isWithinMaxDistance((object)['longitude' => $longitude, 'latitude' => $latitude], 100)
                     ->get();
                 if ($users->count()) {
                     foreach($users as $user) {
@@ -263,7 +263,7 @@ class JobsController extends Controller
                 $users = User::notDeleted()
                     ->users()
                     ->notMe()
-                    ->isWithinMaxDistance($job, 100)
+                    ->isWithinMaxDistance((object)['longitude' => $longitude, 'latitude' => $latitude], 100)
                     ->get();
                 if ($users->count()) {
                     $usersIDS = $users->keyBy('id');
