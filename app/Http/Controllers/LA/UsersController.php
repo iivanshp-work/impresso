@@ -309,7 +309,7 @@ class UsersController extends Controller
             }
 			$insert_id = Module::updateRow("Users", $request, $id);
             if ($addCredits) {
-                $neededCredits = LAConfigs::getByKey('validation_value');
+                $neededCredits = LAConfigs::getByKey('initial_credits_amount');
                 if (!$neededCredits) {
                     $neededCredits = 30;
                 }

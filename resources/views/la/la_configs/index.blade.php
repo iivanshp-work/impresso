@@ -75,9 +75,15 @@
 			</div>
 
 			<div class="form-group">
-				<label>Validation value(in XIMS)</label>
-				<input type="text" class="form-control" placeholder="Validation price value(XIMS)" maxlength="100" name="validation_value" value="{{$configs->validation_value}}">
+				<label>Validation Amount(in XIMS)</label>
+				<input type="text" class="form-control" placeholder="Validation amount(XIMS)" maxlength="100" name="validation_value" value="{{$configs->validation_value}}">
 			</div>
+
+			<div class="form-group">
+				<label>Initial Credits amount(in XIMS)</label>
+				<input type="text" class="form-control" placeholder="Initial Credits amount(XIMS)" maxlength="100" name="initial_credits_amount" value="{{$configs->initial_credits_amount}}">
+			</div>
+
 
 		</div><!-- /.box-body -->
 		<div class="box-footer">
