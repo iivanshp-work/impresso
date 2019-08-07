@@ -24,6 +24,13 @@ class Authenticate
                 $path = strpos($request->getRequestUri(), '/admin') === false ? '/sign-in' : '/login';
                 return redirect()->guest($path);
             }
+        } else {
+            $pathAdmin = strpos($request->getRequestUri(), '/admin') !== false;
+            $user = Auth::user();
+            if ($user->type == getenv("USERS_TYPE_USER") && $pathAdmin) {
+                Auth::logout();
+                return redirect()->guest('/login');
+            }
         }
 
         return $next($request);

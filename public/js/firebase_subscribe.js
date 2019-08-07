@@ -14,7 +14,7 @@ if ('Notification' in window) {
     }
 
     //TODO: add check for empty tokens
-    if (!window.localStorage.getItem('sentFirebaseMessagingToken')) {
+    if (user_id && !window.localStorage.getItem('sentFirebaseMessagingToken')) {
         subscribe();
     }
 }
@@ -61,7 +61,7 @@ function sendTokenToServer(currentToken) {
             },
             error: function(){
                 setTokenSentToServer(currentToken);
-                showError('An error occurred. Please try again later.');
+                showError('An error occurred while Send Push Notification Token To Server. Please try again later.');
             },
             complete: function(){
                 loadingEnd();

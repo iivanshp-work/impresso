@@ -159,16 +159,17 @@ $document.ready(function(){
                 tryAPIGeolocation();
                 break;
             case error.PERMISSION_DENIED:
-                if(error.message.indexOf("Only secure origins are allowed") == 0){
-                    tryAPIGeolocation();
-                }
+                tryAPIGeolocation();
                 break;
             case error.POSITION_UNAVAILABLE:
                 console.log("Browser geolocation error !\n\nPosition unavailable.");
                 tryAPIGeolocation();
                 break;
+            default:
+                tryAPIGeolocation();
+                break;
         }
-    };
+    };S
 
     //tryGeolocation based on navigator
     function tryGeolocation(){

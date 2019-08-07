@@ -368,7 +368,7 @@ h1, h2, h3, h4, h5, h6 { font-weight: 300; }
   .validation__icon { margin: 56px auto; }
   .validation__picture { margin: 50px auto 40px; } }
 
-@media only screen and (max-width: 350px) and (max-height: 500px) { .validation__step { height: auto; }
+@media only screen and (max-width: 450px) and (max-height: 675px) { .validation__step { height: auto; }
   .validation__btn, .validation__group-btn { position: relative; bottom: 0; }
   .validation__btn .btn, .validation__group-btn .btn { width: 264px; }
   .validation__btn { margin-top: 20px; }
