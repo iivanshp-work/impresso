@@ -119,6 +119,10 @@ customValidateConfirm{
     text-overflow: ellipsis;
     white-space: nowrap;
 }
+.validation__picture > img.vert_image{
+    width: auto;
+    height: 100%;
+}
 
 /*settings checkout start*/
 .checkout-page .settings__checkout__list{
@@ -217,3 +221,4 @@ customValidateConfirm{
     height: 100%;
 }
 /*settings buy xims end*/
+

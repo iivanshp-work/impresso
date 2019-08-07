@@ -279,6 +279,44 @@ $document.ready(function(){
     $document.on('change', '[data-validation-send-file-hidden]', function(e){
         let $this = $(this), item = $this.parent(), btn = item.find('[data-validation-send-file]'),
             id = $this.data('image-id'), formData = new FormData(), targetLink = base_url + '/validation';
+        let reader = new FileReader(), file = $this.get(0).files[0];
+
+        reader.onloadend = function () {
+            let selector = '[data-validation-' + id + '-src]';
+            var img = new Image();
+            img.onload = function() {
+                if (this.width > this.height) {
+                    $(selector).removeClass("vert_image");
+                    var width = $window.width() > 370 ? 345 : 290;
+                    var height = (width * this.height) / this.width;
+                    $(selector).parent().css('height', height);
+                    $(selector).parent().css('width', width);
+                } else {
+                    $(selector).addClass("vert_image");
+                    var height = $window.width() > 370 ? 194 : 166;
+                    var width = (height * this.width) / this.height;
+                    $(selector).parent().css('height', height);
+                    $(selector).parent().css('width', width);
+                }
+            }
+            let src = reader.result;
+            img.src = src;
+            $(selector).attr('src', src);
+            if(id == 'photo_id'){
+                goToValidationStep('step3');
+            }else{
+                goToValidationStep('step5');
+            }
+        }
+        if (file) {
+            reader.readAsDataURL(file);
+        } else {
+            if(id == 'photo_id'){
+                goToValidationStep('step2');
+            }else{
+                goToValidationStep('step4');
+            }
+        }
 
         if ($this.data("busy")) return;
         $this.data("busy", true);
@@ -289,7 +327,7 @@ $document.ready(function(){
         $this.after('<span class="spinner base-indent-left"></span>');
         formData.append('action', 'upload');
         formData.append('id', id);
-        formData.append('file', $this.get(0).files[0]);
+        formData.append('file', file);
 
         $.ajax({
             url: targetLink,
@@ -308,17 +346,27 @@ $document.ready(function(){
                     if(response.image && response.image.url){
                         selector = '[data-validation-' + id + '-src]';
                         $(selector).attr('src', response.image.url);
-                        if(id == 'photo_id'){
+                        /*if(id == 'photo_id'){
                             goToValidationStep('step3');
                         }else{
                             goToValidationStep('step5');
-                        }
+                        }*/
                     }else{
+                        if(id == 'photo_id'){
+                            goToValidationStep('step2');
+                        }else{
+                            goToValidationStep('step4');
+                        }
                         showError('An error occurred. Please try again later.');
                     }
                 }
             },
             error: function(){
+                if(id == 'photo_id'){
+                    goToValidationStep('step2');
+                }else{
+                    goToValidationStep('step4');
+                }
                 showError('An error occurred. Please try again later.');
             },
             complete: function(){
