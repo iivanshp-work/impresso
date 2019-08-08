@@ -169,7 +169,7 @@ $document.ready(function(){
                 tryAPIGeolocation();
                 break;
         }
-    };S
+    };
 
     //tryGeolocation based on navigator
     function tryGeolocation(){
@@ -299,6 +299,7 @@ $document.ready(function(){
                     $(selector).parent().css('height', height);
                     $(selector).parent().css('width', width);
                 }
+                //alert("img.onload");
             }
             let src = reader.result;
             img.src = src;
@@ -362,12 +363,15 @@ $document.ready(function(){
                     }
                 }
             },
-            error: function(){
+            error: function(request, status, error){
                 if(id == 'photo_id'){
                     goToValidationStep('step2');
                 }else{
                     goToValidationStep('step4');
                 }
+                //alert(request.responseText);
+                /*alert(status);
+                alert(error);*/
                 showError('An error occurred. Please try again later.');
             },
             complete: function(){
@@ -404,7 +408,10 @@ $document.ready(function(){
                     $('#clickThankYou').trigger('click');
                 }
             },
-            error: function(){
+            error: function(request, status, error){
+                //alert(request.responseText);
+                /*alert(status);
+                alert(error);*/
                 showError('An error occurred. Please try again later.');
             },
             complete: function(){

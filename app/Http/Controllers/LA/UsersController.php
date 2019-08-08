@@ -7,6 +7,7 @@
 namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
+use App\Models\Upload;
 use App\Models\User_certification;
 use App\Models\User_Education;
 use App\Models\User_Purchase;
@@ -358,6 +359,7 @@ class UsersController extends Controller
                 User_Purchase::where('user_id', $id)->delete();
                 User_Transaction::where('user_id', $id)->delete();
                 Users_Notification::where('user_id', $id)->delete();
+                Upload::where('user_id', $id)->delete();
             }
 			// Redirecting to index() method
             if ($mode == "admins") {

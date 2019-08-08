@@ -351,7 +351,7 @@ class ProfileSettingsController extends Controller
         $rules = array(
             'full_name_birth' => 'required|string',
             'email' => 'required|email',
-            'phone' => 'regex:/^[0-9\-]{5,15}$/'
+            'phone' => 'regex:/^[\+0-9\-]{5,15}$/'
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
