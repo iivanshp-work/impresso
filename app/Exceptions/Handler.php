@@ -9,6 +9,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Session\TokenMismatchException;
+use Illuminate\Contracts\Encryption\DecryptException;
 
 class Handler extends ExceptionHandler
 {
@@ -46,8 +47,12 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
-        return $e->getCode() . ' - ' . $e->getMessage();
-        if ($e instanceof TokenMismatchException){
+        //return $e->getCode() ;
+        if ($e->getCode() == 0 && $request->path() == getenv('VALIDATION_PAGE')) {
+            //return [];
+        }else if ($e instanceof DecryptException) {
+            //return $e->getCode() . ' - ' . $e->getMessage();
+        } else if ($e instanceof TokenMismatchException){
             // Redirect to a form. Here is an example of how I handle mine
             return redirect($request->fullUrl())->with('csrf_error',"Oops! Seems you couldn't submit form for a long time. Please try again.");
         }

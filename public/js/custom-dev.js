@@ -281,17 +281,27 @@ $document.ready(function(){
         let $this = $(this), item = $this.parent(), btn = item.find('[data-validation-send-file]'),
             id = $this.data('image-id'), formData = new FormData(), targetLink = base_url + '/validation';
         let reader = new FileReader(), file = $this.get(0).files[0];
-
+        let checkBtn = $('[data-validation-check]');
         reader.onloadend = function () {
             let selector = '[data-validation-' + id + '-src]';
             var img = new Image();
+            $(selector).parent().append('<span class="spinner"></span>');
             img.onload = function() {
                 if (this.width > this.height) {
                     $(selector).removeClass("vert_image");
                     var width = $window.width() > 370 ? 345 : 290;
                     var height = (width * this.height) / this.width;
-                    $(selector).parent().css('height', height);
-                    $(selector).parent().css('width', width);
+                    var maxHeight = $window.width() > 370 ? 194 : 166;
+                    if (height > maxHeight) {
+                        $(selector).addClass("vert_image");
+                        var height = $window.width() > 370 ? 194 : 166;
+                        var width = (height * this.width) / this.height;
+                        $(selector).parent().css('height', height);
+                        $(selector).parent().css('width', width);
+                    } else{
+                        $(selector).parent().css('height', height);
+                        $(selector).parent().css('width', width);
+                    }
                 } else {
                     $(selector).addClass("vert_image");
                     var height = $window.width() > 370 ? 194 : 166;
@@ -299,7 +309,6 @@ $document.ready(function(){
                     $(selector).parent().css('height', height);
                     $(selector).parent().css('width', width);
                 }
-                //alert("img.onload");
             }
             let src = reader.result;
             img.src = src;
@@ -326,6 +335,9 @@ $document.ready(function(){
 
         btn.prop('disabled', true);
         $this.prop('disabled', true);
+        checkBtn.prop('disabled', true);
+        checkBtn.prop('disabled', true);
+        checkBtn.addClass('disabled');
         $this.after('<span class="spinner base-indent-left"></span>');
         formData.append('action', 'upload');
         formData.append('id', id);
@@ -341,6 +353,9 @@ $document.ready(function(){
             success: function(response){
                 btn.prop('disabled', false);
                 $this.prop('disabled', false);
+                checkBtn.prop('disabled', false);
+                checkBtn.prop('disabled', false);
+                checkBtn.removeClass('disabled');
                 item.find('.spinner').remove();
                 if(response.has_error){
                     showError(response.message ? response.message : 'An error occurred. Please try again later.');
@@ -362,6 +377,7 @@ $document.ready(function(){
                         showError('An error occurred. Please try again later.');
                     }
                 }
+                $(selector).parent().find('.spinner').remove();
             },
             error: function(request, status, error){
                 if(id == 'photo_id'){
@@ -369,16 +385,19 @@ $document.ready(function(){
                 }else{
                     goToValidationStep('step4');
                 }
-                //alert(request.responseText);
-                /*alert(status);
-                alert(error);*/
-                showError('An error occurred. Please try again later.');
+                alert(request.responseText);
+                showError('An error occurred. Please try again later2.');
             },
             complete: function(){
                 loadingEnd();
                 $this.data("busy", false);
                 btn.prop('disabled', false);
                 $this.prop('disabled', false);
+                checkBtn.prop('disabled', false);
+                checkBtn.prop('disabled', false);
+                checkBtn.removeClass('disabled');
+                selector = '[data-validation-' + id + '-src]';
+                $(selector).parent().find('.spinner').remove();
             }
         });
     });
@@ -390,6 +409,7 @@ $document.ready(function(){
             action: 'check_validation'
         };
         if ($this.data("busy")) return;
+        if ($this.hasClass('disabled')) return;
         $this.data("busy", true);
         loadingStart();
 
@@ -409,10 +429,10 @@ $document.ready(function(){
                 }
             },
             error: function(request, status, error){
-                //alert(request.responseText);
+                alert(request.responseText);
                 /*alert(status);
                 alert(error);*/
-                showError('An error occurred. Please try again later.');
+                showError('An error occurred. Please try again later2.');
             },
             complete: function(){
                 loadingEnd();
