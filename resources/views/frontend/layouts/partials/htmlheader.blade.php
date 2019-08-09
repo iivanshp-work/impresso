@@ -16,6 +16,7 @@
         var base_url = '{{url('/')}}';
         var google_api_key = '{{getenv('GOOGLE_API_KEY')}}';
         var user_id = '{{Auth::id()}}';
+        var share_url = '{{getenv('SHARE_URL')}}';
     </script>
     @stack('styles')
 </head>

@@ -9,7 +9,7 @@
                 <div class="cards-professionals__avatar @if($professional->is_verified) checked @endif">
                     <a href="{{url('/profile/' . $professional->id)}}" class="avatar">
                         @if($professional->photo)
-                            <img src="{{url('/files/' . $professional->photo)}}" alt="@if($professional->name){{$professional->name}}@else{{$professional->email}}@endif">
+                            <img src="{{url('/files/' . $professional->photo . '?s=200')}}" alt="@if($professional->name){{$professional->name}}@else{{$professional->email}}@endif">
                         @else
                             @php
                                 $imageColor = ($professional->id % 6) + 1;

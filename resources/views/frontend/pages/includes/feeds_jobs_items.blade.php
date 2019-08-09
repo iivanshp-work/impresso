@@ -22,12 +22,12 @@
                 <img src="{{asset('img/avatars/color-' . $imageColor . '.png')}}" alt="{{$job->job_title}}">
             </div>
             <div class="cards-jobs__detail">
-                <a href="{{url('/jobs/' . $job->id)}}">{{$job->job_title}}</a>
+                <a href="{{--url('/jobs/' . $job->id)--}}javascript:void(0);">{{$job->job_title}}</a>
                 <div>
                     @if($job->short_description)<span>{{$job->short_description}}</span>@endif
                     @if($job->location_title)<span>{{$job->location_title}}</span>@endif
                 </div>
-                @if($job->company_title)<a href="{{url('/jobs/' . $job->id)}}" class="cards-jobs__company">@ {{$job->company_title}}</a>@endif
+                @if($job->company_title)<a href="{{--url('/jobs/' . $job->id)--}}javascript:void(0);" class="cards-jobs__company">@ {{$job->company_title}}</a>@endif
             </div>
         </div>
     @endforeach

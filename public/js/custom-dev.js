@@ -454,7 +454,7 @@ $document.ready(function(){
             $('[data-feeds-search-form]').submit();
         }, 100);
     });
-
+    $('[data-ftype="professionals"]').click();
     //submit form on change search field, avoid many requests on keypress
     function throttle(f, delay){
         let timer = null;
@@ -1208,7 +1208,7 @@ $document.ready(function(){
         if (navigator.share) {
             navigator.share({
                 title: 'Impresso',
-                url: 'https://codepen.io/ayoisaiah/pen/YbNazJ'
+                url: share_url
             }).then(() => {
                 saveShare();
             }).catch(() => {
