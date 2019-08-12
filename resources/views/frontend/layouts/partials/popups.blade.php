@@ -42,7 +42,7 @@
 
 <button class="btn btn-violet open-pop-up hide sharePopup" data-target="#share">Share</button>
 
-<div class="modal-window" id="share">
+<div class="modal-window sharePopupData" id="share">
     <div class="modal-window__content">
         <div class="modal-window__body text-center">
             <img src="{{asset('img/icons/icon.svg')}}" alt="" class="modal-window__img-top" />

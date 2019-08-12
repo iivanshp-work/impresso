@@ -86,7 +86,7 @@ class ProfileSettingsController extends Controller
         $responseData = [
             'has_error' => false,
             'message' => '',
-            'redirect' => ''
+            'redirect' => url('/profile')
         ];
         $action = $request->has('action') ? trim($request->input('action')) : '';
         if ($action == 'upload_photo') {

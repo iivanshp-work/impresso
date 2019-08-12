@@ -58,10 +58,11 @@ function sendTokenToServer(currentToken) {
                 token: currentToken
             },
             success: function(response){
+                setTokenSentToServer(currentToken);
             },
             error: function(){
-                setTokenSentToServer(currentToken);
-                showError('An error occurred while Send Push Notification Token To Server. Please try again later.');
+                setTokenSentToServer(false);
+                //showError('An error occurred while Send Push Notification Token To Server. Please try again later.');
             },
             complete: function(){
                 loadingEnd();

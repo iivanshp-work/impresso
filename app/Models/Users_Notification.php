@@ -57,6 +57,7 @@ class Users_Notification extends Model
     //accepted your invite - meetup_accepted
     //XIM purchase complete - xim_purchase_complete
     //New jobs in your area - new_job
+    //User verified - user_validation_success
     //App rating - app_rating
     //
     //Admins Added Notifications

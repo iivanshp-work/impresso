@@ -144,7 +144,29 @@ customValidateConfirm{
     color: #fff !important;
     background-color: #7e20c8 !important;
 }
-
+.user .job-title > span{
+    margin: 0 auto;
+}
+.user .btn-save {
+    position: relative;
+    bottom: 0;
+}
+.height-auto {
+    height: auto;
+}
+.user__card_text textarea {
+    box-sizing: border-box;
+    resize: none;
+}
+.cards-jobs__detail {
+    width: calc(100% - 70px);
+}
+.cards-jobs__desc {
+    margin-top: 6px;
+}
+.user__name.not_verified {
+    margin-top: -16px;
+}
 /*settings checkout start*/
 .checkout-page .settings__checkout__list{
     margin-top: 0;

@@ -54,21 +54,19 @@
                 <h4 class="user__name">@if($userData->name){{$userData->name}}@else @if ($mode == 'me'){{'Name'}}@else{{'None'}}@endif @endif</h4>
                 @if ($mode == 'me')
                     <div class="job-title">
-                        <input readonly="" class="style-input-text style-input-text_right" type="text" value="@if($userData->job_title){{$userData->job_title}}@endif" placeholder="Job title ">
-                        <span>at</span>
-                        <input readonly="" class="style-input-text" type="text" value="@if($userData->company_title){{$userData->company_title}}@endif" placeholder="Company">
+                        <span>
+                            @if($userData->job_title){{$userData->job_title}}@endif
+                            @if($userData->job_title && $userData->company_title){{'at'}}@endif
+                            @if($userData->company_title){{$userData->company_title}}@endif
+                        </span>
                     </div>
                 @else
                     <div class="job-title">
-                        @if($userData->job_title)
-                            <input readonly="" class="style-input-text style-input-text_right" type="text" value="{{$userData->job_title}}" placeholder="Job title ">
-                        @endif
-                        @if($userData->job_title && $userData->company_title)
-                            <span>at</span>
-                        @endif
-                        @if($userData->company_title)
-                            <input readonly="" class="style-input-text" type="text" value="{{$userData->company_title}}" placeholder="Company">
-                        @endif
+                        <span>
+                            @if($userData->job_title){{$userData->job_title}}@endif
+                            @if($userData->job_title && $userData->company_title){{'at'}}@endif
+                            @if($userData->company_title){{$userData->company_title}}@endif
+                        </span>
                     </div>
                 @endif
                 <div class="user__info">
@@ -78,7 +76,7 @@
                     </p>
                     <p>
                         <img src="{{asset('img/icons/multiple-users-silhouette.png')}}" alt="" />
-                        @if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif Meetups
+                        <a href="https://www.impresso.tech/">@if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif Meetups</a>
                     </p>
                 </div>
                 <div class="cards user__card">
@@ -313,10 +311,8 @@
                                             <img src="{{asset('img/icons/graduate-cap.svg')}}" alt="" />
                                         </span>
                                         <div class="user__card_text">
-                                            <input class="style-input-text style-input-text_15" type="text"
-                                                   value="{{$education->title}}" placeholder="School Name" disabled="disabled">
-                                            <input class="style-input-text style-input-text_12" type="text"
-                                                   value="{{$education->speciality}}" placeholder="Speciality / Domain" disabled="disabled">
+                                            <div class="style-input-text style-input-text_15 height-auto">{{$education->title}}</div>
+                                            <div class="style-input-text style-input-text_12 height-auto">{{$education->speciality}}</div>
                                         </div>
                                         @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                             <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
@@ -352,8 +348,7 @@
                                     <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
                                 </span>
                                     <div class="user__card_text">
-                                        <input class="style-input-text style-input-text_15" type="text"
-                                               value="{{$certificate->title}}" placeholder="Certificate Name" disabled="disabled">
+                                        <div class="style-input-text style-input-text_15 height-auto">{{$certificate->title}}</div>
                                     </div>
                                     @if($certificate->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                         <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
@@ -386,10 +381,8 @@
                                         <img src="{{asset('img/icons/graduate-cap.svg')}}" alt=""/>
                                     </span>
                                     <div class="user__card_text">
-                                        <input class="style-input-text style-input-text_15" type="text"
-                                               value="{{$education->title}}" placeholder="School Name" disabled="disabled">
-                                        <input class="style-input-text style-input-text_12" type="text"
-                                               value="{{$education->speciality}}" placeholder="Speciality / Domain" disabled="disabled">
+                                        <div class="style-input-text style-input-text_15 height-auto">{{$education->title}}</div>
+                                        <div class="style-input-text style-input-text_12 height-auto">{{$education->speciality}}</div>
                                     </div>
                                     @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                         <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
@@ -407,8 +400,7 @@
                                         <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt=""/>
                                     </span>
                                     <div class="user__card_text">
-                                        <input class="style-input-text style-input-text_15" type="text"
-                                               value="{{$certificate->title}}" placeholder="Certificate Name" disabled="disabled">
+                                        <div class="style-input-text style-input-text_15 height-auto">{{$certificate->title}}</div>
                                     </div>
                                     @if($certificate->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                         <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>

@@ -6,7 +6,18 @@ $(window).on("load", function() {
 	} else {
 		$("body").addClass("web");
 	}
-	$("body").removeClass("loaded");
+
+	if ($('.data-load-wrapper').length) {
+		$('.data-load-wrapper').click(function(e){
+			$("body").removeClass("loaded");
+		});
+		setTimeout(function (){
+			$("body").removeClass("loaded");
+		}, 4000);
+	} else {
+		$("body").removeClass("loaded");
+	}
+
 });
 
 $(document).ready(function() {

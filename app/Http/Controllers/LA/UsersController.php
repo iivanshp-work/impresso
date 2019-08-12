@@ -308,6 +308,11 @@ class UsersController extends Controller
 			if ($addCredits) {
                 $request->request->add(['added_init_credits' => 1]);
             }
+			if (!$user->is_verified && $status == 1) {
+                $message = 'Your profile has been approved.';
+                Users_Notification::saveNotification('user_validation_success', $message, $user->id, $user->id);
+                $user->sendPushNotifications($message);
+            }
 			$insert_id = Module::updateRow("Users", $request, $id);
             if ($addCredits) {
                 $neededCredits = LAConfigs::getByKey('initial_credits_amount');

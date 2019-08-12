@@ -27,7 +27,7 @@
                     </span>
                 @endif
             </div>
-            <h4 class="user__name text-center">@if($userData->name){{$userData->name}}@else{{'None'}}@endif</h4>
+            <h4 class="user__name text-center @if(!$userData->is_verified){{'not_verified'}}@endif">@if($userData->name){{$userData->name}}@else{{'None'}}@endif</h4>
             <ul class="settings__list">
                 <li>
                     <span>Profile:</span>

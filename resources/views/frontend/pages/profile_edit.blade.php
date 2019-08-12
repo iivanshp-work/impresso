@@ -48,9 +48,11 @@
                     </div>
                     <input class="user__name style-input-text" autocomplete="off" type="text" name="name" value="@if($userData->name){{$userData->name}}@endif" placeholder="Add name">
                     <div class="job-title">
-                        <input class="style-input-text style-input-text_right" autocomplete="off" type="text" name="job_title_top" value="@if($userData->job_title){{$userData->job_title}}@endif" placeholder="Add job title ">
-                        <span>at</span>
-                        <input class="style-input-text" autocomplete="off" type="text" name="company_title_top" value="@if($userData->company_title){{$userData->company_title}}@endif" placeholder="Add company">
+                        <span>
+                            @if($userData->job_title){{$userData->job_title}}@endif
+                            @if($userData->job_title && $userData->company_title){{'at'}}@endif
+                            @if($userData->company_title){{$userData->company_title}}@endif
+                        </span>
                     </div>
 
                     <div class="user__info">
@@ -60,7 +62,7 @@
                         </p>
                         <p>
                             <img src="{{asset('img/icons/multiple-users-silhouette.png')}}" alt="" />
-                            @if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif Meetups
+                            <a href="https://www.impresso.tech/">@if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif Meetups</a>
                         </p>
                     </div>
                     <div class="cards user__card">
@@ -195,10 +197,10 @@
                                 </span>
                                 <div class="user__card_text">
                                     <input data-id-field="" type="hidden" name="education[%KEY%][id]" value="" >
-                                    <input data-title-field="" class="style-input-text style-input-text_15" type="text"
-                                           name="education[%KEY%][title]" value="" placeholder="School Name">
-                                    <input data-speciality-field="" class="style-input-text style-input-text_12" type="text"
-                                           name="education[%KEY%][speciality]" value="" placeholder="Speciality / Domain">
+                                    <textarea rows="1" data-title-field="" class="style-input-text style-input-text_15" type="text"
+                                              name="education[%KEY%][title]" placeholder="School Name"></textarea>
+                                    <textarea rows="1" data-speciality-field="" class="style-input-text style-input-text_12" type="text"
+                                              name="education[%KEY%][speciality]" placeholder="Speciality / Domain"></textarea>
                                 </div>
                                 <div class="user__card_group-btn edit-group-btn">
                                     <button type="button" data-remove-item="" data-id="" class="btn btn-border">Remove</button>
@@ -217,10 +219,10 @@
                                         </span>
                                     <div class="user__card_text">
                                         <input data-id-field="" type="hidden" name="education[{{$education->id}}][id]" value="{{$education->id}}">
-                                        <input data-title-field="" class="style-input-text style-input-text_15" type="text" @if($education->status != getenv('VERIFIED_STATUSES_NEW')) disabled="disabled" @endif
-                                               name="education[{{$education->id}}][title]" value="{{$education->title}}" placeholder="School Name">
-                                        <input data-speciality-field="" class="style-input-text style-input-text_12" type="text" @if($education->status != getenv('VERIFIED_STATUSES_NEW')) disabled="disabled" @endif
-                                               name="education[{{$education->id}}][speciality]" value="{{$education->speciality}}" placeholder="Speciality / Domain">
+                                        <textarea rows="1" data-autoresize data-title-field="" class="style-input-text style-input-text_15" type="text" @if($education->status != getenv('VERIFIED_STATUSES_NEW')) disabled="disabled" @endif
+                                        name="education[{{$education->id}}][title]" placeholder="School Name">{{$education->title}}</textarea>
+                                        <textarea rows="1" data-autoresize  data-speciality-field="" class="style-input-text style-input-text_12" type="text" @if($education->status != getenv('VERIFIED_STATUSES_NEW')) disabled="disabled" @endif
+                                        name="education[{{$education->id}}][speciality]" placeholder="Speciality / Domain">{{$education->speciality}}</textarea>
                                     </div>
                                     <div class="user__card_group-btn edit-group-btn">
                                         <button type="button" data-remove-item="" data-id="{{$education->id}}" class="btn btn-border">Remove</button>
@@ -254,8 +256,8 @@
                                 </span>
                                 <div class="user__card_text">
                                     <input data-id-field="" type="hidden" name="certificate[%KEY%][id]" value="" >
-                                    <input data-title-field="" class="style-input-text style-input-text_15" type="text"
-                                           name="certificate[%KEY%][title]" value="" placeholder="Certificate Name">
+                                    <textarea rows="1" data-title-field="" class="style-input-text style-input-text_15" type="text"
+                                              name="certificate[%KEY%][title]" placeholder="Certificate Name"></textarea>
                                 </div>
                                 <div class="user__card_group-btn edit-group-btn">
                                     <button type="button" data-remove-item="" data-id="" class="btn btn-border">Remove</button>
@@ -274,8 +276,8 @@
                                         </span>
                                     <div class="user__card_text">
                                         <input data-id-field="" type="hidden" name="certificate[{{$certificate->id}}][id]" value="{{$certificate->id}}">
-                                        <input data-title-field="" class="style-input-text style-input-text_15" type="text" @if($certificate->status != getenv('VERIFIED_STATUSES_NEW')) disabled="disabled" @endif
-                                               name="certificate[{{$certificate->id}}][title]" value="{{$certificate->title}}" placeholder="Certificate Name" >
+                                        <textarea rows="1" data-autoresize data-title-field="" class="style-input-text style-input-text_15" type="text" @if($certificate->status != getenv('VERIFIED_STATUSES_NEW')) disabled="disabled" @endif
+                                        name="certificate[{{$certificate->id}}][title]" value="{{$certificate->title}}" placeholder="Certificate Name" >{{$certificate->title}}</textarea>
                                     </div>
                                     <div class="user__card_group-btn edit-group-btn">
                                         <button type="button" data-remove-item="" data-id="{{$certificate->id}}" class="btn btn-border">Remove</button>

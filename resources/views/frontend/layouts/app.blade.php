@@ -8,7 +8,14 @@
 {{--@hasSection('news-line')@yield('news-line')@endif--}}
 @yield('main-content')
 @section('footer')
-    @include('frontend.layouts.partials.footer')
+    @php
+        $action = app('request')->route()->getAction();
+        $controller = class_basename($action['controller']);
+        list($controller, $action) = explode('@', $controller);
+    @endphp
+    @if ($controller == 'HomeController' && $action == "index")
+        @include('frontend.layouts.partials.footer')
+    @endif
 @show
 @section('popups')
     @include('frontend.layouts.partials.popups')

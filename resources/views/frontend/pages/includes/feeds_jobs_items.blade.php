@@ -23,7 +23,7 @@
             </div>
             <div class="cards-jobs__detail">
                 <a href="{{--url('/jobs/' . $job->id)--}}javascript:void(0);">{{$job->job_title}}</a>
-                <div>
+                <div class="cards-jobs__desc">
                     @if($job->short_description)<span>{{$job->short_description}}</span>@endif
                     @if($job->location_title)<span>{{$job->location_title}}</span>@endif
                 </div>

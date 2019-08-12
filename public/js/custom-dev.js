@@ -114,7 +114,7 @@ $document.ready(function(){
         jQuery.post("https://www.googleapis.com/geolocation/v1/geolocate?key=" + google_api_key, function(success){
             apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
         }).fail(function(err){
-            showError("API Geolocation error!");
+            showError("API Geolocation error1!");
         });
     };
 
@@ -137,7 +137,7 @@ $document.ready(function(){
 
             },
             error: function(){
-                showError("API Geolocation error!");
+                showError("API Geolocation error2!");
             },
             complete: function(){
                 loadingEnd();
@@ -680,6 +680,9 @@ $document.ready(function(){
                     showError(response.message ? response.message : 'An error occurred. Please try again later.');
                 }else{
                     showSuccess(response.message);
+                    setTimeout(function() {
+                        redirect(response.redirect);
+                    }, 1000);
                 }
             },
             error: function(){
@@ -692,24 +695,34 @@ $document.ready(function(){
         });
     });
 
-    //change fields in two ways start
-    $document.on('change', '[name="company_title_top"]', function(e){
-        let val = $(this).val();
-        $(this).closest("form").find('[name="company_title"]').val(val);
-    })
+    //change fields for job name and company name start
     $document.on('change', '[name="company_title"]', function(e){
         let val = $(this).val();
-        $(this).closest("form").find('[name="company_title_top"]').val(val);
+        let val2 = $(this).closest("form").find('[name="job_title"]').val();
+        if (val && val2){
+            $(this).closest("form").find('.job-title span').text(val + ' at ' + val2);
+        } else {
+            if (val2){
+                $(this).closest("form").find('.job-title span').text(val2);
+            } else {
+                $(this).closest("form").find('.job-title span').text(val);
+            }
+        }
     });
-    $document.on('change', '[name="job_title_top"]', function(e){
-        let val = $(this).val();
-        $(this).closest("form").find('[name="job_title"]').val(val);
-    })
     $document.on('change', '[name="job_title"]', function(e){
         let val = $(this).val();
-        $(this).closest("form").find('[name="job_title_top"]').val(val);
+        let val2 = $(this).closest("form").find('[name="company_title"]').val();
+        if (val && val2){
+            $(this).closest("form").find('.job-title span').text(val + ' at ' + val2);
+        } else {
+            if (val2){
+                $(this).closest("form").find('.job-title span').text(val2);
+            } else {
+                $(this).closest("form").find('.job-title span').text(val);
+            }
+        }
     });
-    //change fields in two ways end
+    //change fields for job name and company name end
 
     // upload button click
     $document.on('change click', '[data-edit-profile-send-photo]', function(e){
@@ -801,8 +814,10 @@ $document.ready(function(){
         e.preventDefault();
         let template = $('[data-education-wrapper] [data-education-template]').html();
         template = $(template.replace(/%KEY%/g, Date.now()));
+        template.find('textarea').attr('data-autoresize', true);
         let wrapper = $('[data-education-wrapper]');
         wrapper.append(template);
+        textareaResize();
     });
 
     //remove education
@@ -853,8 +868,10 @@ $document.ready(function(){
         e.preventDefault();
         let template = $('[data-certificate-wrapper] [data-certificate-template]').html();
         template = $(template.replace(/%KEY%/g, Date.now()));
+        template.find('textarea').attr('data-autoresize', true);
         let wrapper = $('[data-certificate-wrapper]');
         wrapper.append(template);
+        textareaResize();
     });
 
     //remove certificate
@@ -1119,6 +1136,23 @@ $document.ready(function(){
             $(selector + ' .close-modal').trigger('click');
         }
     }
+    function textareaResize(){
+        $.each($('textarea[data-autoresize]'), function(){
+            var offset = this.offsetHeight - this.clientHeight;
+            var resizeTextarea = function(el){
+                if($(el).val()){
+                    $(el).css('height', 'auto').css('height', el.scrollHeight + offset);
+                }else{
+                    $(el).css('height', 21);
+                }
+            };
+            $(this).on('keyup input', function(){
+                resizeTextarea(this);
+            }).removeAttr('data-autoresize');
+            resizeTextarea(this);
+        });
+    }
+    textareaResize();
     //edit profile end
 
     //edit settings start
@@ -1206,13 +1240,14 @@ $document.ready(function(){
 
     function share() {
         if (navigator.share) {
+            $('.sharePopupData .close-modal').trigger('click');
             navigator.share({
                 title: 'Impresso',
                 url: share_url
             }).then(() => {
                 saveShare();
-            }).catch(() => {
-                showError('Error while share');
+            }).catch((error) => {
+                console.log(error);
             });
         } else {
             openCustomSharePopup();
