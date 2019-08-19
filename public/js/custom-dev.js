@@ -679,10 +679,9 @@ $document.ready(function(){
                 if(response.has_error){
                     showError(response.message ? response.message : 'An error occurred. Please try again later.');
                 }else{
-                    showSuccess(response.message);
-                    setTimeout(function() {
+                    showSuccess(response.message, 'Success', function() {
                         redirect(response.redirect);
-                    }, 1000);
+                    });
                 }
             },
             error: function(){

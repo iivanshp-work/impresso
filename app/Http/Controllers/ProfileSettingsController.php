@@ -274,6 +274,13 @@ class ProfileSettingsController extends Controller
                             $data->files_uploaded = '[]';
                             $data->status = getenv('VERIFIED_STATUSES_NEW');
                             $data->save();
+                        } else if ($education['id']) {
+                            $data = User_Education::find($education['id']);
+                            if ($data && $data->status == getenv('VERIFIED_STATUSES_NEW')) {
+                                $data->title = $education['title'];
+                                $data->speciality = $education['speciality'];
+                                $data->save();
+                            }
                         }
                     }
                 }
@@ -292,6 +299,12 @@ class ProfileSettingsController extends Controller
                             $data->files_uploaded = '[]';
                             $data->status = getenv('VERIFIED_STATUSES_NEW');
                             $data->save();
+                        } else if ($certificate['id']) {
+                            $data = User_certification::find($certificate['id']);
+                            if ($data && $data->status == getenv('VERIFIED_STATUSES_NEW')) {
+                                $data->title = $certificate['title'];
+                                $data->save();
+                            }
                         }
                     }
                 }

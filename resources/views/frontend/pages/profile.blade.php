@@ -84,22 +84,36 @@
                     <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     <ul class="list-type-circle">
                         @if ($mode == 'me')
-                            <li>
-                                <input class="style-input-text" type="text" value="@if($userData->company_title){{$userData->company_title}}@else{{''}}@endif"
-                                       placeholder="Add company" disabled="disabled">
-                            </li>
-                            <li>
-                                <input class="style-input-text" type="text" value="@if($userData->job_title){{$userData->job_title}}@else{{''}}@endif"
-                                       placeholder="Add job title / status" disabled="disabled">
-                            </li>
-                            <li>
-                                <input class="style-input-text" type="text" value="@if($userData->university_title){{$userData->university_title}}@else{{''}}@endif"
-                                       placeholder="Add university" disabled="disabled">
-                            </li>
-                            <li>
-                                <input class="style-input-text" type="text" value="@if($userData->certificate_title){{$userData->certificate_title}}@else{{''}}@endif"
-                                       placeholder="Add certificate" disabled="disabled">
-                            </li>
+                            @if (!$userData->company_title && !$userData->job_title && !$userData->university_title && !$userData->certificate_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="NO DATA YET."
+                                           placeholder="NO DATA YET." disabled="disabled">
+                                </li>
+                            @endif
+                            @if($userData->company_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="{{$userData->company_title}}"
+                                           placeholder="Add company" disabled="disabled">
+                                </li>
+                            @endif
+                            @if($userData->job_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="{{$userData->job_title}}"
+                                           placeholder="Add job title / status" disabled="disabled">
+                                </li>
+                            @endif
+                            @if($userData->university_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="{{$userData->university_title}}"
+                                           placeholder="Add university" disabled="disabled">
+                                </li>
+                            @endif
+                            @if($userData->certificate_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="{{$userData->certificate_title}}"
+                                           placeholder="Add certificate" disabled="disabled">
+                                </li>
+                            @endif
                         @else
                             @if (!$userData->company_title && !$userData->job_title && !$userData->university_title && !$userData->certificate_title)
                                 <li>
@@ -136,13 +150,6 @@
                     </ul>
                 </div>
                 @if ($mode == 'me')
-                    <div class="cards user__card">
-                        <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
-                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
-                        <textarea class="style-textarea border-violet" rows="4" cols="50" disabled="disabled"
-                                  placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
-                    </div>
-                @else
                     @if($userData->impress)
                         <div class="cards user__card">
                             <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
@@ -151,58 +158,56 @@
                                       placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
                         </div>
                     @endif
+                @else
+                    @if($userData->impress)
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
+                            <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                            <textarea class="style-textarea border-violet" rows="4" cols="50" disabled="disabled"
+                                  placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
+                        </div>
+                    @endif
 
                 @endif
 
                 @if($mode == 'me')
                     @if($userData->top_skills)
                         @php
-                            $topSkills = explode("\n", $userData->top_skills);
+                            $topSkills = explode("\n", trim($userData->top_skills));
                             array_map('trim', $topSkills);
-                            $topSkillIteration = 0;
+                            if (!empty($topSkills) && count($topSkills) == 1 && isset($topSkills[0]) && ($topSkills[0] == "" || $topSkills[0] == " ")) {
+                                $topSkills = null;
+                            }
                         @endphp
                     @else
                         @php
                             $topSkills = [];
-                            $topSkillIteration = 0;
                         @endphp
                     @endif
-
-                    <div class="cards user__card">
-                        <h5 class="user__card_title">Top Skills / Areas of Interest</h5>
-                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
-                        <ul class="list-type-circle">
-                            @if(!empty($topSkills))
+                    @if(!empty($topSkills))
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">Top Skills / Areas of Interest</h5>
+                            <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                            <ul class="list-type-circle">
                                 @foreach($topSkills as $skill)
                                     @if($skill)
                                         <li>
                                             <input class="style-input-text" type="text" value="{{$skill}}"
                                                    placeholder="Add skill / interest" disabled="disabled">
                                         </li>
-                                        @php
-                                            $topSkillIteration++;
-                                        @endphp
                                     @endif
                                 @endforeach
-                            @endif
-                            @if ($topSkillIteration < 3)
-                                @while($topSkillIteration < 3)
-                                    <li>
-                                        <input class="style-input-text" type="text" value=""
-                                               placeholder="Add skill / interest" disabled="disabled">
-                                    </li>
-                                    @php
-                                        $topSkillIteration++;
-                                    @endphp
-                                @endwhile
-                            @endif
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
+                    @endif
                 @else
                     @if($userData->top_skills)
                         @php
-                            $topSkills = explode("\n", $userData->top_skills);
+                            $topSkills = explode("\n", trim($userData->top_skills));
                             array_map('trim', $topSkills);
+                            if (!empty($topSkills) && count($topSkills) == 1 && isset($topSkills[0]) && ($topSkills[0] == "" || $topSkills[0] == " ")) {
+                                $topSkills = null;
+                            }
                         @endphp
                     @else
                         @php
@@ -230,52 +235,41 @@
                 @if($mode == 'me')
                     @if($userData->soft_skills)
                         @php
-                            $softSkills = explode("\n", $userData->soft_skills);
+                            $softSkills = explode("\n", trim($userData->soft_skills));
                             array_map('trim', $softSkills);
-                            $softSkillIteration = 0;
+                            if (!empty($softSkills) && count($softSkills) == 1 && isset($softSkills[0]) && ($softSkills[0] == "" || $softSkills[0] == " ")) {
+                                $softSkills = null;
+                            }
                         @endphp
                     @else
                         @php
                             $softSkills = [];
-                            $softSkillIteration = 0;
                         @endphp
                     @endif
-
-                    <div class="cards user__card">
-                        <h5 class="user__card_title">Soft Skills</h5>
-                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
-                        <ul class="list-type-circle">
-                            @if(!empty($softSkills))
+                    @if(!empty($softSkills))
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">Soft Skills</h5>
+                            <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                            <ul class="list-type-circle">
                                 @foreach($softSkills as $skill)
                                     @if($skill)
                                         <li>
                                             <input class="style-input-text" type="text" value="{{$skill}}"
-                                                   placeholder="Add skill / interest" disabled="disabled">
+                                                   placeholder="Add soft skill" disabled="disabled">
                                         </li>
-                                        @php
-                                            $softSkillIteration++;
-                                        @endphp
                                     @endif
                                 @endforeach
-                            @endif
-                            @if ($softSkillIteration < 3)
-                                @while($softSkillIteration < 3)
-                                    <li>
-                                        <input class="style-input-text" type="text" value=""
-                                               placeholder="Add soft skill" disabled="disabled">
-                                    </li>
-                                    @php
-                                        $softSkillIteration++;
-                                    @endphp
-                                @endwhile
-                            @endif
-                        </ul>
-                    </div>
+                            </ul>
+                        </div>
+                    @endif
                 @else
                     @if($userData->soft_skills)
                         @php
-                            $softSkills = explode("\n", $userData->soft_skills);
+                            $softSkills = explode("\n", trim($userData->soft_skills));
                             array_map('trim', $softSkills);
+                            if (!empty($softSkills) && count($softSkills) == 1 && isset($softSkills[0]) && ($softSkills[0] == "" || $softSkills[0] == " ")) {
+                                $softSkills = null;
+                            }
                         @endphp
                     @else
                         @php
@@ -301,76 +295,43 @@
                 @endif
 
                 @if($mode == 'me')
-                    <div class="cards user__card">
-                        <h5 class="user__card_title">Education:</h5>
-                        <span class="edit-info" style="display: block;"><a href="{{url('/profile/edit#educations')}}"><img src="{{asset('img/icons/plus.svg')}}" alt="Edit" /></a></span>
-                            @if($userData->educations->count())
-                                @foreach($userData->educations as $education)
-                                    <div class="user__card_info">
-                                        <span class="user__card_icon">
-                                            <img src="{{asset('img/icons/graduate-cap.svg')}}" alt="" />
-                                        </span>
-                                        <div class="user__card_text">
-                                            <div class="style-input-text style-input-text_15 height-auto">{{$education->title}}</div>
-                                            <div class="style-input-text style-input-text_12 height-auto">{{$education->speciality}}</div>
-                                        </div>
-                                        @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
-                                            <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
-                                        @elseif($education->status == getenv('VERIFIED_STATUSES_REQUEST_VERIFICATION'))
-                                            <span class="user__validated">Pending</span>
-                                        @elseif($education->status == getenv('VERIFIED_STATUSES_FAILED'))
-                                            <span class="user__validated">Failed</span>
-                                        @endif
-                                    </div>
-                                @endforeach
-                            @else
+                    @if($userData->educations->count())
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">Education:</h5>
+                            @foreach($userData->educations as $education)
                                 <div class="user__card_info">
                                     <span class="user__card_icon">
-                                        <img src="{{asset('img/icons/graduate-cap.svg')}}" alt="" />
+                                        <img src="{{asset('img/icons/graduate-cap.svg')}}" alt=""/>
                                     </span>
                                     <div class="user__card_text">
-                                        <input class="style-input-text style-input-text_15" type="text"
-                                               value="" placeholder="Add School Name" disabled="disabled">
-                                        <input class="style-input-text style-input-text_12" type="text"
-                                               value="" placeholder="Add Speciality / Domain" disabled="disabled">
+                                        <div class="style-input-text style-input-text_15 height-auto">{{$education->title}}</div>
+                                        <div class="style-input-text style-input-text_12 height-auto">{{$education->speciality}}</div>
                                     </div>
+                                    @if($education->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                        <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                    @endif
                                 </div>
-                            @endif
-                    </div>
-                    <div class="cards user__card">
-                        <h5 class="user__card_title">Skill Certifications:</h5>
-
-                        <span class="edit-info" style="display: block;"><a href="{{url('/profile/edit#certifications')}}"><img src="{{asset('img/icons/plus.svg')}}" alt="Edit" /></a></span>
-                        @if($userData->certifications->count())
+                            @endforeach
+                        </div>
+                    @endif
+                    @if($userData->certifications->count())
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">Skill Certifications:</h5>
                             @foreach($userData->certifications as $certificate)
                                 <div class="user__card_info">
-                                <span class="user__card_icon">
-                                    <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
-                                </span>
+                                    <span class="user__card_icon">
+                                        <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt=""/>
+                                    </span>
                                     <div class="user__card_text">
                                         <div class="style-input-text style-input-text_15 height-auto">{{$certificate->title}}</div>
                                     </div>
                                     @if($certificate->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                         <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
-                                    @elseif($certificate->status == getenv('VERIFIED_STATUSES_REQUEST_VERIFICATION'))
-                                        <span class="user__validated">Pending</span>
-                                    @elseif($certificate->status == getenv('VERIFIED_STATUSES_FAILED'))
-                                        <span class="user__validated">Failed</span>
                                     @endif
                                 </div>
                             @endforeach
-                        @else
-                            <div class="user__card_info">
-                                <span class="user__card_icon">
-                                    <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
-                                </span>
-                                <div class="user__card_text">
-                                    <input class="style-input-text style-input-text_15" type="text"
-                                           value="" placeholder="Add Certificate Name" disabled="disabled">
-                                </div>
-                            </div>
-                        @endif
-                    </div>
+                        </div>
+                    @endif
                 @else
                     @if($userData->educations->count())
                         <div class="cards user__card">

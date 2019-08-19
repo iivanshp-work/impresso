@@ -30,15 +30,20 @@
             <ul class="cards-professionals__desc">
                 @if($professional->top_skills)
                     @php
-                        $topSkills = explode("\n", $professional->top_skills);
+                        $topSkills = explode("\n", trim($professional->top_skills));
                         array_map('trim', $topSkills);
+                        if (!empty($topSkills) && count($topSkills) == 1 && isset($topSkills[0]) && ($topSkills[0] == "" || $topSkills[0] == " ")) {
+                            $topSkills = null;
+                        }
                     @endphp
                     @if(!empty($topSkills))
                         <li>
                             <span>Top Skills / Area of Interest</span>
                             <ul class="list-type-circle">
                                 @foreach($topSkills as $skill)
-                                    <li>{{$skill}}</li>
+                                    @if(trim($skill))
+                                        <li>{{$skill}}</li>
+                                    @endif
                                 @endforeach
                             </ul>
                         </li>
@@ -65,7 +70,7 @@
                     </li>
                 @endif
             </ul>
-            <a href="https://www.impresso.tech/" class="btn btn-border disabled">Meetup</a>
+            <a href="https://www.impressolabs.io/meetups/" class="btn btn-border disabled">Meetup</a>
         </div>
     @endforeach
 @endif
