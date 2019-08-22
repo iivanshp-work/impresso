@@ -9,15 +9,15 @@
         <div class="slider">
             <div class="slider__item slider__item_first">
                 <div class="slider__content">
-                    <h2 class="slider__title title">Real Connections. Real Meetings.</h2>
+                    <h2 class="slider__title title">Business Dating for Professionals.</h2>
                     <p>Go on a genuine business date & learn skills from real professionals.</p>
                 </div>
             </div>
             <div class="slider__item slider__item_second">
                 <div class="slider__content">
                     <h2 class="slider__title title">Authentic & Verified Profiles.</h2>
-                    <p>Browse through verified profiles & CVs.</p>
-                    <p>Find the perfect job for you.</p>
+                    <p>Browse through verified profiles.</p>
+                    <p>Find the right connection for you<br /> to grow your career.</p>
                 </div>
             </div>
             <div class="slider__item slider__item_third">
@@ -33,15 +33,15 @@
             <div class="slider__item slider__item_fourth">
                 <div class="slider__content">
                     <h2 class="slider__title title">
-                        Your Data.<br />
-                        Your Career.
+                        Career Growth<br />
+                        Everyday
                     </h2>
                     <p>
-                        Improve your chances of getting<br />
-                        a job by 40x.
+                        80% of jobs are closed<br />
+                        through networking
                     </p>
                 </div>
-                <a href="{{url('/sign-in')}}" class="btn btn-border slider__btn">Continue</a>
+                <a href="{{url('/sign-in')}}" class="btn btn-violet slider__btn">Continue</a>
             </div>
         </div>
     </main>

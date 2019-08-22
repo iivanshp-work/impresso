@@ -109,7 +109,7 @@ class UsersController extends Controller
                     }
 
                     if(Module::hasAccess("Users", "delete")) {
-                        $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.users.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
+                        $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.users.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline', 'class'=>'custom-confirm']);
                         $output .= ' <button class="btn btn-danger btn-xs margin-r-5" type="submit"><i class="fa fa-times"></i></button>';
                         $output .= Form::close();
                     }

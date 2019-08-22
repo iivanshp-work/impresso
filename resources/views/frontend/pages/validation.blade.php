@@ -35,7 +35,7 @@
                 </header>
                 <p>Step 1 / 2</p>
                 <div class="validation__icon">
-                    <img src="{{ asset('img/icons/icon-form.svg') }}" alt=""/>
+                    <img src="{{ asset('img/icons/validation-1.svg') }}" alt=""/>
                 </div>
                 <p>1. Upload a clear photo of your ID</p>
                 <p class="text-gray">
@@ -81,8 +81,8 @@
                     </span>
                 </header>
                 <p>Step 2 / 2</p>
-                <div class="validation__icon validation__icon_big">
-                    <img src="{{ asset('img/icons/icon-form-2.svg') }}" alt=""/>
+                <div class="validation__icon">
+                    <img src="{{ asset('img/icons/validation-2.svg') }}" alt=""/>
                 </div>
                 <p>2. Take a selfie with the same ID</p>
                 <p class="text-gray">
@@ -153,9 +153,6 @@
                 </p>
                 <p>
                     The validation process is secure and your personal information will not be shared with anyone.
-                </p>
-                <p>
-                    You can skip the validation process, however, you will miss out on important app features.
                 </p>
                 <button type="button" class="btn btn-border close-modal">
                     Got it!

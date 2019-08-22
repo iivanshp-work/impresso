@@ -167,9 +167,20 @@ customValidateConfirm{
 .user__name.not_verified {
     margin-top: -16px;
 }
+.login .form__btn {
+    position: static;
+    left: 0;
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+    -moz-transform: translateX(0);
+    -ms-transform: translateX(0);
+    -o-transform: translateX(0);
+    margin-top: 60px;
+}
 /*settings checkout start*/
 .checkout-page .settings__checkout__list{
     margin-top: 0;
+    margin-bottom: 20px;
 }
 .checkout-page .settings__checkout__list li:last-child {
     border-bottom: 0;
@@ -208,8 +219,8 @@ customValidateConfirm{
     letter-spacing: -0.41px;
 }
 .checkout-page .btn-buy {
-    position: fixed;
-    bottom: 100px;
+    position: relative;
+    bottom: 20px;
     left: 50%;
     transform: translateX(-50%);
     -webkit-transform: translateX(-50%);
