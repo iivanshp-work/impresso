@@ -334,6 +334,7 @@ $document.ready(function(){
             id = $this.data('image-id'), formData = new FormData(), targetLink = base_url + '/validation';
         let reader = new FileReader(), file = $this.get(0).files[0];
         let checkBtn = $('[data-validation-check]');
+        let checkBtn2 = $('[data-validation-step="step4"]');
         reader.onloadend = function () {
             let selector = '[data-validation-' + id + '-src]';
             var img = new Image();
@@ -388,9 +389,9 @@ $document.ready(function(){
         btn.prop('disabled', true);
         $this.prop('disabled', true);
         checkBtn.prop('disabled', true);
-        checkBtn.prop('disabled', true);
         checkBtn.addClass('disabled');
-        $this.after('<span class="spinner base-indent-left"></span>');
+        checkBtn2.prop('disabled', true);
+        checkBtn2.addClass('disabled');
         formData.append('action', 'upload');
         formData.append('id', id);
         formData.append('file', file);
@@ -406,8 +407,9 @@ $document.ready(function(){
                 btn.prop('disabled', false);
                 $this.prop('disabled', false);
                 checkBtn.prop('disabled', false);
-                checkBtn.prop('disabled', false);
                 checkBtn.removeClass('disabled');
+                checkBtn2.prop('disabled', false);
+                checkBtn2.removeClass('disabled');
                 item.find('.spinner').remove();
                 if(response.has_error){
                     showError(response.message ? response.message : 'An error occurred. Please try again later.');
@@ -446,8 +448,9 @@ $document.ready(function(){
                 btn.prop('disabled', false);
                 $this.prop('disabled', false);
                 checkBtn.prop('disabled', false);
-                checkBtn.prop('disabled', false);
                 checkBtn.removeClass('disabled');
+                checkBtn2.prop('disabled', false);
+                checkBtn2.removeClass('disabled');
                 selector = '[data-validation-' + id + '-src]';
                 $(selector).parent().find('.spinner').remove();
             }

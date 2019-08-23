@@ -65,7 +65,7 @@
                 </p>
                 <div class="validation__group-btn">
                     <button type="button" class="btn btn-violet" data-validation-step="step4">
-                        Upload ID photo
+                        Save
                     </button>
                     <input type="file" class="hide" data-validation-send-file-hidden="" data-image-id="photo_id">
                     <button type="button" class="btn btn-border" data-validation-send-file="">
@@ -113,7 +113,7 @@
                 </p>
                 <div class="validation__group-btn">
                     <button type="button" class="btn btn-violet" data-validation-check="">
-                        Upload photo
+                        Save
                     </button>
                     <input type="file" class="hide" data-validation-send-file-hidden="" data-image-id="photo_selfie">
                     <button type="button" class="btn btn-border" data-validation-send-file="">
