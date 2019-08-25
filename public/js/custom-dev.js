@@ -185,7 +185,7 @@ $document.ready(function(){
 
             },
             error: function(){
-                showError("API Geolocation error2!");
+                //showError("API Geolocation error2!");
             },
             complete: function(){
                 loadingEnd();

@@ -260,6 +260,8 @@ class ProfileSettingsController extends Controller
             $user->impress = $request->has('impress') ? trim($request->input('impress')) : '';
             $user->top_skills = $topSkills;
             $user->soft_skills = $softSkills;
+            $existEducations = $user->educations()->get();
+            $idsSaved = [];
             if ($request->has('education')) {
                 $educations = $request->input('education');
                 unset($educations['%KEY%']);
@@ -275,6 +277,7 @@ class ProfileSettingsController extends Controller
                             $data->status = getenv('VERIFIED_STATUSES_NEW');
                             $data->save();
                         } else if ($education['id']) {
+                            $idsSaved[] = $education['id'];
                             $data = User_Education::find($education['id']);
                             if ($data && $data->status == getenv('VERIFIED_STATUSES_NEW')) {
                                 $data->title = $education['title'];
@@ -285,7 +288,13 @@ class ProfileSettingsController extends Controller
                     }
                 }
             }
-
+            foreach ($existEducations as $education) {
+                if (!in_array($education->id, $idsSaved)) {
+                    $education->delete();
+                }
+            }
+            $existCertifications = $user->certifications()->get();
+            $idsSaved = [];
             if ($request->has('certificate')) {
                 $certificates = $request->input('certificate');
                 unset($certificates['%KEY%']);
@@ -300,6 +309,7 @@ class ProfileSettingsController extends Controller
                             $data->status = getenv('VERIFIED_STATUSES_NEW');
                             $data->save();
                         } else if ($certificate['id']) {
+                            $idsSaved[] = $certificate['id'];
                             $data = User_certification::find($certificate['id']);
                             if ($data && $data->status == getenv('VERIFIED_STATUSES_NEW')) {
                                 $data->title = $certificate['title'];
@@ -307,6 +317,11 @@ class ProfileSettingsController extends Controller
                             }
                         }
                     }
+                }
+            }
+            foreach ($existCertifications as $certification) {
+                if (!in_array($certification->id, $idsSaved)) {
+                    $certification->delete();
                 }
             }
 
