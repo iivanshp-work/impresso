@@ -97,7 +97,7 @@
                     </div>
                 @endforeach
             @else
-                <h1 class="title text-center">There are no records yet.</h1>
+                <h1 class="title text-center no-records">There are no records yet.</h1>
             @endif
 
         </main>

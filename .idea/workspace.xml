@@ -3,11 +3,11 @@
   <component name="ChangeListManager">
     <list default="true" id="56c440ad-b7ef-4d5c-add7-f95702b4bd27" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/public/css/custom-dev.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/custom-dev.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/custom-dev.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/custom-dev.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/style.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/notifications.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/notifications.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/settings_edit.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/settings_edit.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/transaction_history.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/transaction_history.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -37,26 +37,17 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="179">
-              <caret line="205" column="74" selection-start-line="205" selection-start-column="58" selection-end-line="205" selection-end-column="74" />
+            <state relative-caret-position="219">
+              <caret line="234" column="55" selection-start-line="234" selection-start-column="55" selection-end-line="234" selection-end-column="55" />
             </state>
           </provider>
         </entry>
       </file>
-      <file pinned="true" current-in-tab="false">
-        <entry file="remoteDeploymentFS://&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/public/css/custom-dev.css">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/settings_edit.blade.php">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="178" column="24" selection-start-line="178" selection-start-column="24" selection-end-line="178" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="true" current-in-tab="true">
-        <entry file="remoteDeploymentFS://&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/.env">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="365">
-              <caret line="73" column="17" lean-forward="true" selection-start-line="73" selection-start-column="17" selection-end-line="73" selection-end-column="17" />
+            <state relative-caret-position="240">
+              <caret line="38" column="79" selection-start-line="38" selection-start-column="50" selection-end-line="38" selection-end-column="79" />
             </state>
           </provider>
         </entry>
@@ -64,35 +55,53 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/css/custom-dev.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="352">
-              <caret line="178" column="24" lean-forward="true" selection-start-line="178" selection-start-column="4" selection-end-line="178" selection-end-column="24" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/app/User.php">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="339">
-              <caret line="183" column="34" selection-start-line="183" selection-start-column="20" selection-end-line="183" selection-end-column="34" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/custom-dev.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-8">
-              <caret line="169" column="24" selection-start-line="169" selection-start-column="13" selection-end-line="169" selection-end-column="24" />
+            <state relative-caret-position="359">
+              <caret line="190" column="4" selection-start-line="190" selection-start-column="4" selection-end-line="190" selection-end-column="4" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="true" current-in-tab="false">
-        <entry file="remoteDeploymentFS://&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/public/js/custom-dev.js">
+        <entry file="remoteDeploymentFS://&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/public/css/custom-dev.css">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="159">
-              <caret line="187" column="18" selection-start-line="187" selection-start-column="18" selection-end-line="187" selection-end-column="18" />
+            <state relative-caret-position="-200">
+              <caret line="191" column="1" selection-start-line="191" selection-start-column="1" selection-end-line="191" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="true" current-in-tab="false">
+        <entry file="remoteDeploymentFS://&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="371">
+              <caret line="74" column="29" selection-start-line="74" selection-start-column="29" selection-end-line="74" selection-end-column="29" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/public/css/style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="124">
+              <caret line="428" selection-start-line="428" selection-end-line="428" selection-end-column="25" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="true" current-in-tab="true">
+        <entry file="remoteDeploymentFS://&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/public/css/style.css">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="291">
+              <caret line="437" lean-forward="true" selection-start-line="437" selection-end-line="437" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/.env">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="427">
+              <caret line="72" column="26" selection-start-line="72" selection-start-column="26" selection-end-line="72" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -118,11 +127,15 @@
       <find>.login .form__btn {</find>
       <find>saveGeoData</find>
       <find>error2</find>
+      <find>max-width: 470</find>
+      <find>font-s</find>
+      <find>btn</find>
     </findStrings>
     <dirStrings>
       <dir>D:\PROGRAMS\OpenServer\domains\impresso.me\app\Http</dir>
       <dir>D:\PROGRAMS\OpenServer\domains\impresso.me\app\Models</dir>
       <dir>D:\PROGRAMS\OpenServer\domains\impresso.me\resources\views\frontend</dir>
+      <dir>D:\PROGRAMS\OpenServer\domains\impresso.me\resources\views\frontend\layouts</dir>
     </dirStrings>
   </component>
   <component name="FrameworkCommandLineHistory">
@@ -137,7 +150,6 @@
     <option name="CHANGED_PATHS">
       <list>
         <option value="$PROJECT_DIR$/resources/views/frontend/pages/validation.blade.php" />
-        <option value="$PROJECT_DIR$/.env" />
         <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/resources/views/frontend/pages/validation.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php" />
         <option value="$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php" />
@@ -145,11 +157,20 @@
         <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/resources/views/frontend/pages/profile.blade.php" />
         <option value="$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php" />
         <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/app/Http/Controllers/ProfileSettingsController.php" />
-        <option value="$PROJECT_DIR$/public/css/custom-dev.css" />
-        <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/public/css/custom-dev.css" />
         <option value="$PROJECT_DIR$/public/js/custom-dev.js" />
         <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/public/js/custom-dev.js" />
+        <option value="$PROJECT_DIR$/resources/views/frontend/pages/transaction_history.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/frontend/pages/notifications.blade.php" />
+        <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/resources/views/frontend/pages/transaction_history.blade.php" />
+        <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/resources/views/frontend/pages/notifications.blade.php" />
+        <option value="$PROJECT_DIR$/resources/views/frontend/pages/settings_edit.blade.php" />
+        <option value="$PROJECT_DIR$/.env" />
+        <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/resources/views/frontend/pages/settings_edit.blade.php" />
+        <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/public/css/custom-dev.css" />
         <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/.env" />
+        <option value="$PROJECT_DIR$/public/css/custom-dev.css" />
+        <option value="$PROJECT_DIR$/public/css/style.css" />
+        <option value="&lt;c27d7398-c739-4244-9dc4-526e13abb9b8&gt;/public/css/style.css" />
       </list>
     </option>
   </component>
@@ -272,7 +293,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -294,13 +314,34 @@
             <path>
               <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
               <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
-              <item name="public" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
+              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
+              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="impresso.me" type="b2602c69:ProjectViewProjectNode" />
+              <item name="impresso.me" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="views" type="462c0819:PsiDirectoryNode" />
+              <item name="frontend" type="462c0819:PsiDirectoryNode" />
+              <item name="pages" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -429,18 +470,20 @@
       <workItem from="1566481747722" duration="6020000" />
       <workItem from="1566530407163" duration="2448000" />
       <workItem from="1566632652353" duration="736000" />
-      <workItem from="1566674872829" duration="3066000" />
+      <workItem from="1566674872829" duration="3112000" />
+      <workItem from="1566713354513" duration="227000" />
+      <workItem from="1566793286990" duration="6384000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="6250000" />
+    <option name="totallyTimeSpent" value="12907000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-8" y="-8" width="1382" height="744" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" sideWeight="0.49839228" visible="true" weight="0.22390318" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" sideWeight="0.49839228" visible="true" weight="0.22995462" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.24962178" />
       <window_info id="npm" order="2" sideWeight="0.5016077" side_tool="true" weight="0.24659607" />
       <window_info id="Favorites" order="3" sideWeight="0.5016077" side_tool="true" weight="0.24659607" />
@@ -462,7 +505,7 @@
       <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
       <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
       <window_info anchor="right" id="Database" order="3" weight="0.32980332" />
-      <window_info active="true" anchor="right" id="Remote Host" order="4" visible="true" weight="0.22617246" />
+      <window_info anchor="right" id="Remote Host" order="4" visible="true" weight="0.23373677" />
     </layout>
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -509,20 +552,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/.env">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="68" column="38" selection-start-line="68" selection-start-column="38" selection-end-line="68" selection-end-column="38" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/css/style.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
-          <caret line="126" column="28" selection-start-line="126" selection-start-column="23" selection-end-line="126" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/includes/feeds_professionals_items.blade.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="350">
@@ -540,13 +569,6 @@
     <entry file="file://$PROJECT_DIR$/public/js/custom.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/User.php">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="339">
-          <caret line="183" column="34" selection-start-line="183" selection-start-column="20" selection-end-line="183" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/app/Http/Controllers/ProfileSettingsController.php">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="139">
@@ -554,24 +576,69 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/custom-dev.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="164">
+          <caret line="187" column="51" selection-start-line="187" selection-start-column="45" selection-end-line="187" selection-end-column="51" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/User.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="478">
+          <caret line="183" column="34" selection-start-line="183" selection-start-column="20" selection-end-line="183" selection-end-column="34" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/transaction_history.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="360">
+          <caret line="99" column="55" lean-forward="true" selection-start-line="99" selection-start-column="45" selection-end-line="99" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/notifications.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="20" column="41" selection-end-line="98" />
+          <folding>
+            <element signature="e#5230#5254#0#HTML" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/profile_edit.blade.php">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="179">
-          <caret line="205" column="74" selection-start-line="205" selection-start-column="58" selection-end-line="205" selection-end-column="74" />
+        <state relative-caret-position="219">
+          <caret line="234" column="55" selection-start-line="234" selection-start-column="55" selection-end-line="234" selection-end-column="55" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/views/frontend/pages/settings_edit.blade.php">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="240">
+          <caret line="38" column="79" selection-start-line="38" selection-start-column="50" selection-end-line="38" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.env">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="427">
+          <caret line="72" column="26" selection-start-line="72" selection-start-column="26" selection-end-line="72" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/css/custom-dev.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="352">
-          <caret line="178" column="24" lean-forward="true" selection-start-line="178" selection-start-column="4" selection-end-line="178" selection-end-column="24" />
+        <state relative-caret-position="359">
+          <caret line="190" column="4" selection-start-line="190" selection-start-column="4" selection-end-line="190" selection-end-column="4" />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/custom-dev.js">
+    <entry file="file://$PROJECT_DIR$/public/css/style.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="169" column="24" selection-start-line="169" selection-start-column="13" selection-end-line="169" selection-end-column="24" />
+        <state relative-caret-position="124">
+          <caret line="428" selection-start-line="428" selection-end-line="428" selection-end-column="25" />
         </state>
       </provider>
     </entry>

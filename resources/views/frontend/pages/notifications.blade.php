@@ -80,7 +80,7 @@
                     @endforeach
                 </div>
             @else
-                <h1 class="title text-center" style="padding: 20px 0;">There are no records yet.</h1>
+                <h1 class="title text-center no-records" style="padding: 20px 0;">There are no records yet.</h1>
             @endif
         </main>
 

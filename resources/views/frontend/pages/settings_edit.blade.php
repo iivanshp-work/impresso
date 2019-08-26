@@ -36,9 +36,9 @@
                     </li>
                     <li>
                         <span>Address</span>
-                        <input type="text" class="style-input-text" value="{{$userData->address}}" autocomplete="off" name="address" placeholder="Address Line" >
-                        <input type="text" class="style-input-text" value="{{$userData->address2}}" autocomplete="off" name="address2" placeholder="Address Line 2" >
-                        <input type="text" class="style-input-text" value="{{$userData->city}}" autocomplete="off" name="city" placeholder="City, Country" >
+                        <input type="text" class="style-input-text address-text" value="{{$userData->address2}}" autocomplete="off" name="address2" placeholder="Address Line 2" >
+                        <input type="text" class="style-input-text address-text" value="{{$userData->city}}" autocomplete="off" name="city" placeholder="City, Country" >
+                        <input type="text" class="style-input-text address-text" value="{{$userData->address}}" autocomplete="off" name="address" placeholder="Address Line" >
                         <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     </li>
                     <li>

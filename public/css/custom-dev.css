@@ -178,6 +178,21 @@ customValidateConfirm{
     margin-top: 60px;
     margin-bottom: 20px;
 }
+.title.no-records {
+    font-size: 18px;
+}
+.personal-details__list > li .style-input-text.address-text{
+    height: 25px;
+    line-height: 24px;
+}
+#customValidateSuccess .custom-message,
+#customValidateError .custom-message,
+#customValidateConfirm .custom-message {
+    margin-bottom: 24px;
+}
+.personal-details__list + .settings_edit_submit{
+    padding: 0 26px;
+}
 /*settings checkout start*/
 .checkout-page .settings__checkout__list{
     margin-top: 0;
