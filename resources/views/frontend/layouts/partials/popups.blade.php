@@ -88,7 +88,7 @@
                     </svg>
                     <span>LinkedIn</span>
                 </a>
-                <a data-open-share-link="" href="mailto:?subject=url"
+                <a data-open-share-link="" href="mailto:?subject={{getenv('SHARE_TEXT')}}&body={{getenv('SHARE_URL')}}"
                    rel="noopener" class="button btn btn-border">
                     <svg>
                         <use href="#email"></use>

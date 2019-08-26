@@ -5,7 +5,7 @@
         height: 100vh;
         display: none;
         &_first {
-            background: url(../../img/bg-login.png) no-repeat top center/contain;
+            background: url(../../img/background-image.png) no-repeat top center/contain;
             display: block;
             padding: 20px 28px;
         }
@@ -80,7 +80,7 @@
             height: 100vh;
             display: none;
             &_first {
-                background: url(../../img/bg-login.png) no-repeat top
+                background: url(../../img/background-image.png) no-repeat top
                     center/contain;
                 display: block;
                 padding: 20px 28px;
@@ -146,7 +146,7 @@
     }
 }
 
-@media only screen and (max-width: 350px) and (max-height: 500px) {
+@media only screen and (max-width: 450px) and (max-height: 675px) {
     .validation {
         &__step {
             height: auto;

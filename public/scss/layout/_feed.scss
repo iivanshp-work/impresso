@@ -136,13 +136,13 @@
 		}
 	}
 	.btn {
-		width: 300px;
+		width: 290px;
 		margin: 11px auto 0;
 		display: flex;
 	}
 }
 
-@media only screen and (max-width: 370px) {
+@media only screen and (max-width: 490px) {
 	.cards-professionals {
 		.btn {
 			width: 100%;
