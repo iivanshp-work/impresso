@@ -51,7 +51,8 @@
                     {{--@la_form($module)--}}
                     <div class="form-group">
                         {!! Form::submit( 'Update', ['class'=>'btn btn-success margin-r-5']) !!}
-                        <button class="btn btn-success margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_transactions?selected_user_id=' . $user->id) }}"><i class="fa fa fa-money margin-r-5"></i> Transactions</a></button>
+                        <button type="button" class="btn btn-github margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/users_notifications?selected_user_id=' . $user->id) }}"><i class="fa fa fa-bell-o margin-r-5"></i> Notifications</a></button>
+                        <button type="button" class="btn btn-success margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_transactions?selected_user_id=' . $user->id) }}"><i class="fa fa fa-money margin-r-5"></i> Transactions</a></button>
                         <button type="button" class="btn btn-pinterest margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_purchases?selected_user_id=' . $user->id) }}"><i class="fa fa fa-cc-stripe margin-r-5"></i> Purchases</a></button>
                         <button type="button" class="btn btn-primary margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_certifications?selected_user_id=' . $user->id) }}"><i class="fa fa fa-certificate margin-r-5"></i> Certifications</a></button>
                         <button type="button" class="btn btn-bitbucket margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_educations?selected_user_id=' . $user->id) }}"><i class="fa fa fa-archive margin-r-5"></i> Educations</a></button>
@@ -146,6 +147,7 @@
                     <br>
                     <div class="form-group">
                         {!! Form::submit( 'Update', ['class'=>'btn btn-success margin-r-5']) !!}
+                        <button type="button" class="btn btn-github margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/users_notifications?selected_user_id=' . $user->id) }}"><i class="fa fa fa-bell-o margin-r-5"></i> Notifications</a></button>
                         <button type="button" class="btn btn-success margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_transactions?selected_user_id=' . $user->id) }}"><i class="fa fa fa-money margin-r-5"></i> Transactions</a></button>
                         <button type="button" class="btn btn-pinterest margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_purchases?selected_user_id=' . $user->id) }}"><i class="fa fa fa-cc-stripe margin-r-5"></i> Purchases</a></button>
                         <button type="button" class="btn btn-primary margin-r-5 pull-right"><a style="color: #fff" href="{{ url(config('laraadmin.adminRoute') . '/user_certifications?selected_user_id=' . $user->id) }}"><i class="fa fa fa-certificate margin-r-5"></i> Certifications</a></button>

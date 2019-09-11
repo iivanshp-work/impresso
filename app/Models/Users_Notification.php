@@ -58,6 +58,7 @@ class Users_Notification extends Model
     //XIM purchase complete - xim_purchase_complete
     //New jobs in your area - new_job
     //User verified - user_validation_success
+    //Admins notifications from users notifications tool - admin_manual
     //App rating - app_rating
     //
     //Admins Added Notifications

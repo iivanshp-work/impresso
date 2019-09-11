@@ -90,7 +90,7 @@
 			<th>@if($col == 'credits_count'){{'Credits'}}@elseif($col == 'created_at'){{'Sign Up'}}@else{{ $module->fields[$col]['label'] or ucfirst($col) }}@endif</th>
 			@endforeach
 			@if($show_actions)
-			<th width="200">Actions</th>
+			<th width="230">Actions</th>
 			@endif
 		</tr>
 		</thead>

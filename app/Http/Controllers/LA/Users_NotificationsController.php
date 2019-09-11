@@ -7,10 +7,12 @@
 namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use DB;
+use Carbon;
 use Validator;
 use Datatables;
 use Collective\Html\FormFacade as Form;
@@ -22,8 +24,9 @@ use App\Models\Users_Notification;
 class Users_NotificationsController extends Controller
 {
 	public $show_action = true;
-	public $view_col = 'user_id';
-	public $listing_cols = ['id', 'user_id', 'type', 'notification_text', 'reference_id'];
+	public $view_col = 'notification_text';
+	public $listing_cols = ['id', 'type', 'notification_text'];
+    public $adminType = 'admin_manual';
 	
 	public function __construct() {
 		// Field Access of Listing Columns
@@ -42,15 +45,78 @@ class Users_NotificationsController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		$module = Module::get('Users_Notifications');
-		
+        $paginateLimit = getenv('PAGINATION_LIMIT');
+
 		if(Module::hasAccess($module->id)) {
-			return View('la.users_notifications.index', [
+            $selectFields = $this->listing_cols;
+            $selectFields[] = 'created_at';
+            $query = DB::table('users_notifications')->select($selectFields)->whereNull('deleted_at')->where('type', $this->adminType);
+            $params = [];
+            $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
+            $params['selected_user_id'] = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;
+            $params['date_from'] = $request->has('date_from') ? trim($request->input('date_from')) : null;
+            $params['date_to'] = $request->has('date_to') ? trim($request->input('date_to')) : null;
+            if (!$params['selected_user_id']) {
+                return redirect(config('laraadmin.adminRoute')."/users");
+            }
+            if ($params['keyword']) {
+                $query = $query->where(function ($query) use ($params) {
+                    $query->orWhere("notification_text", "like", "%" . $params['keyword'] . "%");
+                });
+            }
+            if ($params['date_from']) {
+                $query = $query->where("created_at", ">=", Carbon::parse($params['date_from'])->startOfDay());
+            }
+            if ($params['date_to']) {
+                $query = $query->where("created_at", "<=", Carbon::parse($params['date_to'])->endOfDay());
+            }
+            $selectedUser = null;
+            if ($params['selected_user_id'] !== null) {
+                $selectedUser = User::find($params['selected_user_id']);
+                $query = $query->where("user_id", "=", $params['selected_user_id']);
+            }
+
+            $values = $query->orderBy("created_at", 'desc')->paginate($paginateLimit);
+            if ($values) {
+                $fields_popup = ModuleFields::getModuleFields('Users_Notifications');
+                for ($i = 0; $i < count($values); $i++) {
+                    for ($j = 0; $j < count($this->listing_cols); $j++) {
+                        $col = $this->listing_cols[$j];
+
+                        if ($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
+                            $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                        }
+                        if ($col == $this->view_col) {
+                            $values[$i]->$col = '<a href="' . url(config('laraadmin.adminRoute') . '/users_notifications/' . $values[$i]->id) . ($params['selected_user_id'] ? '?selected_user_id=' . $params['selected_user_id'] : '') . '">' . $values[$i]->$col . '</a>';
+                        }
+                    }
+
+                    if ($this->show_action) {
+                        $output = '';
+                        if (Module::hasAccess("Users_Notifications", "delete")) {
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.users_notifications.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline']);
+                            $output .= ' <button title="Delete" class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
+                            $output .= Form::close();
+                        }
+                        $values[$i]->actions = (string)$output;
+                    }
+                }
+            }
+            if ($values->count() == 0) {
+                $values = 0;
+            }
+            $fields = ['id', 'notification_text'];
+            return View('la.users_notifications.index', [
 				'show_actions' => $this->show_action,
 				'listing_cols' => $this->listing_cols,
-				'module' => $module
+				'module' => $module,
+                'values' => $values,
+                'view_col' => $this->view_col,
+                'selectedUser' => $selectedUser,
+                'fields' => $fields
 			]);
 		} else {
             return redirect(config('laraadmin.adminRoute')."/");
@@ -201,49 +267,29 @@ class Users_NotificationsController extends Controller
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
 	}
-	
-	/**
-	 * Datatable Ajax fetch
-	 *
-	 * @return
-	 */
-	public function dtajax()
-	{
-		$values = DB::table('users_notifications')->select($this->listing_cols)->whereNull('deleted_at');
-		$out = Datatables::of($values)->make();
-		$data = $out->getData();
 
-		$fields_popup = ModuleFields::getModuleFields('Users_Notifications');
-		
-		for($i=0; $i < count($data->data); $i++) {
-			for ($j=0; $j < count($this->listing_cols); $j++) { 
-				$col = $this->listing_cols[$j];
-				if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
-					$data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
-				}
-				if($col == $this->view_col) {
-					$data->data[$i][$j] = '<a href="'.url(config('laraadmin.adminRoute') . '/users_notifications/'.$data->data[$i][0]).'">'.$data->data[$i][$j].'</a>';
-				}
-				// else if($col == "author") {
-				//    $data->data[$i][$j];
-				// }
-			}
-			
-			if($this->show_action) {
-				$output = '';
-				if(Module::hasAccess("Users_Notifications", "edit")) {
-					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/users_notifications/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
-				}
-				
-				if(Module::hasAccess("Users_Notifications", "delete")) {
-					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.users_notifications.destroy', $data->data[$i][0]], 'method' => 'delete', 'style'=>'display:inline']);
-					$output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
-					$output .= Form::close();
-				}
-				$data->data[$i][] = (string)$output;
-			}
-		}
-		$out->setData($data);
-		return $out;
-	}
+
+    /**
+     * Add notification Page
+     * @param Request $request
+     * @param $id
+     */
+    public function add_notification_page(Request $request, $id = 0)
+    {
+        $authUser = Auth::user();
+        $selected_user_id = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;
+        $selectedUser = null;
+        if ($selected_user_id) {
+            $selectedUser = User::find($selected_user_id);
+        }
+        if (!$selectedUser) {
+            return redirect()->route(config('laraadmin.adminRoute') . '.users.index');
+        }
+
+        return view('la.users_notifications.add_page', [
+            'authUser' => $authUser,
+            'purchase_id' => $id,
+            'selectedUser' => $selectedUser
+        ]);
+    }
 }

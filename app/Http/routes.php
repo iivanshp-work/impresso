@@ -69,4 +69,7 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
     Route::get(config('laraadmin.adminRoute') . '/user_transactions/add/{purchase_id}/{mode}', 'LA\User_TransactionsController@add_transaction_save')->where('mode', 'automatic|manual');;
     Route::post(config('laraadmin.adminRoute') . '/user_transactions/add/{purchase_id}/{mode}', 'LA\User_TransactionsController@add_transaction_save')->where('mode', 'automatic|manual');;
     Route::post(config('laraadmin.adminRoute') . '/user_transactions/add/new', 'LA\User_TransactionsController@add_transaction_save');
+
+    Route::get(config('laraadmin.adminRoute') . '/users_notifications/add/new', 'LA\Users_NotificationsController@add_notification_page');
+    Route::post(config('laraadmin.adminRoute') . '/users_notifications/add/new', 'LA\Users_NotificationsController@add_notification_save');
 });

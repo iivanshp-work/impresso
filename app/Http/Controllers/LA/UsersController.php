@@ -123,7 +123,7 @@ class UsersController extends Controller
                         $output .= ' <button class="btn btn-danger btn-xs margin-r-5" type="submit"><i class="fa fa-times"></i></button>';
                         $output .= Form::close();
                     }
-
+                    $output .= '<a title="Notifications" href="'.url(config('laraadmin.adminRoute') . '/users_notifications?selected_user_id=' . $values[$i]->id).'" class="btn btn-github btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-bell-o"></i></a>';
 
                     if ($user && $user->educations()->count()) {
                         $output .= '<a title="Educations" href="'.url(config('laraadmin.adminRoute') . '/user_educations?selected_user_id=' . $values[$i]->id).'" class="btn btn-bitbucket btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-archive"></i></a>';
