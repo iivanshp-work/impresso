@@ -25,6 +25,9 @@ use Collective\Html\FormFacade as Form;
 use Dwij\Laraadmin\Models\Module;
 use Dwij\Laraadmin\Models\ModuleFields;
 
+use PhpOffice\PhpSpreadsheet\IOFactory;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+
 use App\Models\User;
 
 class UsersController extends Controller
@@ -63,6 +66,8 @@ class UsersController extends Controller
         $params['status'] = $request->has('status') ? intval($request->input('status')) : null;
         $params['date_from'] = $request->has('date_from') ? trim($request->input('date_from')) : null;
         $params['date_to'] = $request->has('date_to') ? trim($request->input('date_to')) : null;
+        $params['action'] = $request->has('action') ? trim($request->input('action')) : null;
+        $isExport = $params['action'] == 'export' ? true : false;
 
         if ($params['keyword']) {
             $query = $query->where(function ($query) use ($params) {
@@ -85,7 +90,12 @@ class UsersController extends Controller
                 $query = $query->where("is_verified", "=", 0)->where("varification_pending", "=", 0);
             }
         }
-        $values = $query->orderBy("id", 'desc')->paginate($paginateLimit);
+        if ($isExport) {
+            $this->show_action = false;
+            $values = collect($query->orderBy("id", 'desc')->get());
+        } else {
+            $values = $query->orderBy("id", 'desc')->paginate($paginateLimit);
+        }
         if($values){
             $fields_popup = ModuleFields::getModuleFields('Users');
             for($i=0; $i < count($values); $i++) {
@@ -96,7 +106,7 @@ class UsersController extends Controller
                         $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
 
                     }
-                    if($col == $this->view_col) {
+                    if($col == $this->view_col && !$isExport) {
                         $values[$i]->$col = '<a href="'.url(config('laraadmin.adminRoute') . '/users/'.$values[$i]->id).'">'.$values[$i]->$col.'</a>';
                     }
                 }
@@ -141,6 +151,75 @@ class UsersController extends Controller
             $fields = ['id', 'name', 'email'];
         } else {
             $fields = ['id', 'name', 'email', 'status', 'credits_count', 'created_at'];
+        }
+        if ($isExport) {
+            $reportRecords = $values;
+            if ($mode == "admins") {
+                $fields = [
+                    'id' => 'ID',
+                    'name' => 'Name',
+                    'email' => 'Email',
+                ];
+            } else {
+                $fields = [
+                    'id' => 'ID',
+                    'name' => 'Name',
+                    'email' => 'Email',
+                    'status' => 'Status',
+                    'credits_count' => 'Credits',
+                    'created_at' => 'Sign Up Date'
+                ];
+            }
+            $spreadsheet = new Spreadsheet();
+            $worksheet = $spreadsheet->getActiveSheet();
+
+            $c = 1;
+            $r = 1;
+            $worksheet->setCellValueByColumnAndRow($c, $r, '#');
+            foreach ($fields as $key => $field) {
+                $c++;
+                $worksheet->setCellValueByColumnAndRow($c, $r, $field);
+            }
+
+            if ($reportRecords->count()) {
+                foreach ($reportRecords as $reportRecord) {
+                    $c = 1;
+                    $r++;
+                    $worksheet->setCellValueByColumnAndRow($c, $r, ($r - 1));
+                    foreach ($fields as $field => $title) {
+                        $c++;
+                        if ($field == 'credits_count') {
+                            $worksheet->setCellValueByColumnAndRow($c, $r, sprintf("%.2f", $reportRecord->{$field}));
+                        } else if ($field == 'created_at') {
+                            $worksheet->setCellValueByColumnAndRow($c, $r, Carbon::parse($reportRecord->{$field})->format('Y/m/d H:i'));
+                        } else {
+                            $worksheet->setCellValueByColumnAndRow($c, $r, $reportRecord->{$field});
+                        }
+                    }
+                }
+            }
+
+            $highestColumn = $worksheet->getHighestColumn();
+            for ($column = 'A'; $column != $highestColumn; $column++) {
+                $worksheet->getColumnDimension($column)->setAutoSize(true);
+            }
+
+            $spreadsheet->setActiveSheetIndex(0);
+            $filename = $mode . '-report-' . time();
+            header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+            header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
+            header('x-suggested-filename: ' . $filename . '.xlsx');
+            header('Access-Control-Allow-Origin: *');
+            header('Access-Control-Expose-Headers: Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma, x-suggested-filename');
+            header('Cache-Control: max-age=1');
+            header('Expires: Mon, 05 Feb 1993 05:00:00 GMT'); // Date in the past
+            header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+            header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+            header('Pragma: public'); // HTTP/1.0
+            $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+            $writer->save('php://output');
+            exit;
+            //composer require phpoffice/phpspreadsheet
         }
 
 		if(Module::hasAccess($module->id)) {

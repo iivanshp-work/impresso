@@ -7,6 +7,19 @@
 @section("htmlheader_title", ($mode == "admins" ? "Administrators listing" : "Users listing"))
 
 @section("headerElems")
+    @php
+        /*$keyword = app('request')->input('keyword');
+        $date_from = app('request')->input('date_from');
+        $date_to = app('request')->input('date_to');
+        $status = app('request')->has('status') ? intval(app('request')->input('status')) : null;
+        $link = url(config('laraadmin.adminRoute') . "/users");
+        $link .= '?action=export';
+        if ($keyword) {
+            $link .= '&keyword=export';
+        }
+        test($link);*/
+    @endphp
+    <a href="" class="export_btn btn btn-primary btn-sm mr10">Pull a report</a>
 @la_access("Users", "create")
 	<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#AddModal">Add @if($mode == "admins"){{'Administrator'}}@else{{'User'}}@endif</button>
 @endla_access
@@ -210,6 +223,13 @@ $(function () {
 
 	});
 
+
+    $(document).on('click change', '.export_btn', function(e) {
+        e.preventDefault();
+        var frm = $('#users-search-form');
+        frm.append('<input type="hidden" name="action" value="export">');
+        frm.submit();
+    });
 	$(document).on('click change', 'form.custom-confirm .btn', function(e) {
 	   e.preventDefault();
 	   var frm = $(this).closest('form');

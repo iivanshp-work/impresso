@@ -357,5 +357,8 @@ customValidateConfirm{
         height: 5em;
     }
 }
-
 /*spinner end*/
+
+.sign-up .form__btn a{
+    color: #7e20c8;
+}

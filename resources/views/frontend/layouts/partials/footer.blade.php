@@ -2,8 +2,8 @@
     <div class="load__content">
         <img src="{{ asset('/img/Logo.png') }}" alt="" />
         <p>
-            Monetize your profile.<br />
-            Forget CVs.
+            Face to Face<br />
+            Professional Networking
         </p>
     </div>
 </div>
