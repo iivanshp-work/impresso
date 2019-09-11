@@ -27,7 +27,7 @@ class Users_NotificationsController extends Controller
 	public $view_col = 'notification_text';
 	public $listing_cols = ['id', 'type', 'notification_text'];
     public $adminType = 'admin_manual';
-	
+
 	public function __construct() {
 		// Field Access of Listing Columns
 		if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
@@ -39,7 +39,7 @@ class Users_NotificationsController extends Controller
 			$this->listing_cols = ModuleFields::listingColumnAccessScan('Users_Notifications', $this->listing_cols);
 		}
 	}
-	
+
 	/**
 	 * Display a listing of the Users_Notifications.
 	 *
@@ -142,19 +142,19 @@ class Users_NotificationsController extends Controller
 	public function store(Request $request)
 	{
 		if(Module::hasAccess("Users_Notifications", "create")) {
-		
+
 			$rules = Module::validateRules("Users_Notifications", $request);
-			
+
 			$validator = Validator::make($request->all(), $rules);
-			
+
 			if ($validator->fails()) {
 				return redirect()->back()->withErrors($validator)->withInput();
 			}
-			
+
 			$insert_id = Module::insert("Users_Notifications", $request);
-			
+
 			return redirect()->route(config('laraadmin.adminRoute') . '.users_notifications.index');
-			
+
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
@@ -169,12 +169,12 @@ class Users_NotificationsController extends Controller
 	public function show($id)
 	{
 		if(Module::hasAccess("Users_Notifications", "view")) {
-			
+
 			$users_notification = Users_Notification::find($id);
 			if(isset($users_notification->id)) {
 				$module = Module::get('Users_Notifications');
 				$module->row = $users_notification;
-				
+
 				return view('la.users_notifications.show', [
 					'module' => $module,
 					'view_col' => $this->view_col,
@@ -200,13 +200,13 @@ class Users_NotificationsController extends Controller
 	 */
 	public function edit($id)
 	{
-		if(Module::hasAccess("Users_Notifications", "edit")) {			
+		if(Module::hasAccess("Users_Notifications", "edit")) {
 			$users_notification = Users_Notification::find($id);
-			if(isset($users_notification->id)) {	
+			if(isset($users_notification->id)) {
 				$module = Module::get('Users_Notifications');
-				
+
 				$module->row = $users_notification;
-				
+
 				return view('la.users_notifications.edit', [
 					'module' => $module,
 					'view_col' => $this->view_col,
@@ -232,19 +232,19 @@ class Users_NotificationsController extends Controller
 	public function update(Request $request, $id)
 	{
 		if(Module::hasAccess("Users_Notifications", "edit")) {
-			
+
 			$rules = Module::validateRules("Users_Notifications", $request, true);
-			
+
 			$validator = Validator::make($request->all(), $rules);
-			
+
 			if ($validator->fails()) {
 				return redirect()->back()->withErrors($validator)->withInput();;
 			}
-			
+
 			$insert_id = Module::updateRow("Users_Notifications", $request, $id);
-			
+
 			return redirect()->route(config('laraadmin.adminRoute') . '.users_notifications.index');
-			
+
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
@@ -260,9 +260,8 @@ class Users_NotificationsController extends Controller
 	{
 		if(Module::hasAccess("Users_Notifications", "delete")) {
 			Users_Notification::find($id)->delete();
-			
 			// Redirecting to index() method
-			return redirect()->route(config('laraadmin.adminRoute') . '.users_notifications.index');
+            return redirect(redirect()->getUrlGenerator()->previous());
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
@@ -283,7 +282,7 @@ class Users_NotificationsController extends Controller
             $selectedUser = User::find($selected_user_id);
         }
         if (!$selectedUser) {
-            return redirect()->route(config('laraadmin.adminRoute') . '.users.index');
+            return redirect(redirect()->getUrlGenerator()->previous());
         }
 
         return view('la.users_notifications.add_page', [
@@ -291,5 +290,25 @@ class Users_NotificationsController extends Controller
             'purchase_id' => $id,
             'selectedUser' => $selectedUser
         ]);
+    }
+    /**
+     * @param Request $request
+     * @param $id
+     */
+    public function add_notification_save(Request $request)
+    {
+        $authUser = Auth::user();
+        $selected_user_id = $request->has('selected_user_id') ? intval($request->input('selected_user_id')) : null;
+        $selectedUser = null;
+        if ($selected_user_id) {
+            $selectedUser = User::find($selected_user_id);
+        }
+        if (!$selectedUser) {
+            return redirect(config('laraadmin.adminRoute')."/users_notifications?selected_user_id=" . $selected_user_id);
+        }
+        //save notification
+        $message = $request->has('notification_text') ? trim($request->input('notification_text')) : '';
+        Users_Notification::saveNotification($this->adminType, $message, $selectedUser->id);
+        return redirect(config('laraadmin.adminRoute')."/users_notifications?selected_user_id=" . $selected_user_id);
     }
 }

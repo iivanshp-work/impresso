@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use DB;
+use PhpOffice\PhpSpreadsheet\Style\Alignment;
 use Validator;
 use Datatables;
 use Collective\Html\FormFacade as Form;
@@ -175,14 +176,39 @@ class UsersController extends Controller
 
             $c = 1;
             $r = 1;
-            $worksheet->setCellValueByColumnAndRow($c, $r, '#');
+            $worksheet->setCellValueByColumnAndRow($c, $r, '#')
+                ->getStyleByColumnAndRow($c, $r)
+                ->getFont()
+                ->setName('Arial')
+                ->setSize(12)
+                ->setBold(true);
             foreach ($fields as $key => $field) {
                 $c++;
-                $worksheet->setCellValueByColumnAndRow($c, $r, $field);
+                $worksheet->setCellValueByColumnAndRow($c, $r, $field)
+                    ->getStyleByColumnAndRow($c, $r)
+                    ->getFont()
+                    ->setName('Arial')
+                    ->setSize(12)
+                    ->setBold(true);
+                $worksheet->getStyleByColumnAndRow($c, $r)
+                    ->getAlignment()
+                    ->applyFromArray([
+                        'horizontal' => Alignment::HORIZONTAL_CENTER,
+                        'vertical' => Alignment::VERTICAL_CENTER,
+                        'textRotation' => 0,
+                        'wrapText' => TRUE
+                    ]);
             }
-
             if ($reportRecords->count()) {
                 foreach ($reportRecords as $reportRecord) {
+                    $reportRecord->status = '';
+                    if ($reportRecord->is_verified) {
+                        $reportRecord->status = 'Verified';
+                    } elseif($reportRecord->varification_pending && !$reportRecord->is_verified) {
+                        $reportRecord->status = 'Pending Varification';
+                    } else {
+                        $reportRecord->status = 'Not Verified';
+                    }
                     $c = 1;
                     $r++;
                     $worksheet->setCellValueByColumnAndRow($c, $r, ($r - 1));
@@ -200,10 +226,12 @@ class UsersController extends Controller
             }
 
             $highestColumn = $worksheet->getHighestColumn();
-            for ($column = 'A'; $column != $highestColumn; $column++) {
+            for ($column = 'A'; true; $column++) {
                 $worksheet->getColumnDimension($column)->setAutoSize(true);
+                if ($column == $highestColumn) {
+                    break;
+                }
             }
-
             $spreadsheet->setActiveSheetIndex(0);
             $filename = $mode . '-report-' . time();
             header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');

@@ -35,7 +35,7 @@
                             $url .= '?selected_user_id=' . $selectedUser->id;
                         }
                     @endphp
-                    <form method="POST" action="{{$url}}" accept-charset="UTF-8" id="user_transaction-edit-form" novalidate="novalidate">
+                    <form method="POST" action="{{$url}}" accept-charset="UTF-8" id="user_not-edit-form" novalidate="novalidate">
                         <input name="_token" type="hidden" value="{{csrf_token()}}">
                         @if ($selectedUser)
                             <div class="form-group">
@@ -49,7 +49,7 @@
 
                         <div class="form-group">
                             <label for="notes">Notification Text :</label>
-                            <textarea class="form-control valid" placeholder="Notification Text" cols="30" rows="3" name="notification_text" aria-invalid="false"></textarea>
+                            <textarea class="form-control valid" required aria-required="" placeholder="Notification Text" cols="30" rows="3" name="notification_text" aria-invalid="false"></textarea>
                         </div>
 
                         <br>
@@ -67,7 +67,7 @@
 @push('scripts')
     <script>
         $(function () {
-            $("#user_transaction-edit-form").validate({
+            $("#user_not-edit-form").validate({
 
             });
         });

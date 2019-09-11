@@ -45,6 +45,13 @@
                                 @elseif ($notification->type == 'user_validation_success')
                                     <a class="full-link" href="{{url('/feeds')}}"></a>
                                     <p>{{$notification->notification_text}}</p>
+                                @elseif ($notification->type == 'admin_manual')
+                                    <div class="notifications__header mb-3">
+                                        <a href="javascript:void(0);" class="avatar">
+                                            <img src="{{ asset('/img/Logo.png') }}" alt="" />
+                                        </a>
+                                        <p>{{$notification->notification_text}}</p>
+                                    </div>
                                 @elseif ($notification->type == 'meetup_wants')
                                     {{--<div class="notifications__header mb-3">
                                         <a href="#" class="avatar">

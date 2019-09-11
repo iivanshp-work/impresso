@@ -7,19 +7,9 @@
 @section("htmlheader_title", ($mode == "admins" ? "Administrators listing" : "Users listing"))
 
 @section("headerElems")
-    @php
-        /*$keyword = app('request')->input('keyword');
-        $date_from = app('request')->input('date_from');
-        $date_to = app('request')->input('date_to');
-        $status = app('request')->has('status') ? intval(app('request')->input('status')) : null;
-        $link = url(config('laraadmin.adminRoute') . "/users");
-        $link .= '?action=export';
-        if ($keyword) {
-            $link .= '&keyword=export';
-        }
-        test($link);*/
-    @endphp
+@if($mode == "users")
     <a href="" class="export_btn btn btn-primary btn-sm mr10">Pull a report</a>
+@endif
 @la_access("Users", "create")
 	<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#AddModal">Add @if($mode == "admins"){{'Administrator'}}@else{{'User'}}@endif</button>
 @endla_access
@@ -69,7 +59,7 @@
             <div class="input-group input-group-sm field-search">
                 <input type="text" name="keyword" class="form-control pull-right" autocomplete="off" value="{{$keyword}}" placeholder="Keyword">
                 <div class="input-group-btn">
-                    <button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+                    <button type="submit" class="search-btn btn btn-default"><i class="fa fa-search"></i></button>
                 </div>
             </div>
 
@@ -224,6 +214,14 @@ $(function () {
 	});
 
 
+    $(document).on('click change', '.search-btn', function(e) {
+        e.preventDefault();
+        var frm = $('#users-search-form');
+        frm.find('[name="action"]').remove();
+        setTimeout(function () {
+            frm.submit();
+        }, 200)
+    });
     $(document).on('click change', '.export_btn', function(e) {
         e.preventDefault();
         var frm = $('#users-search-form');
