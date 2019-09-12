@@ -231,6 +231,37 @@ class ProfileSettingsController extends Controller
             }
             $responseData['id'] = $data->id;
             return response()->json($responseData);
+        } else if ($action == 'check_step') {
+            $step = $request->has('step') ? trim($request->input('step')) : '1';
+            $allowedSteps = ['1', '2'];
+            //test($allowedSteps);
+            if (in_array($step, $allowedSteps)) {
+                $rules = array(
+                    '1' => array(
+                        'name' => 'required|string', // make sure the name is an actual string
+                        'company_title' => 'required|string', // company_title can only be alphanumeric
+                        'job_title' => 'required|string', // company_title can only be alphanumeric,
+                        'university_title' => 'required|string', // university_title can only be alphanumeric
+                        'certificate_title' => 'required|string', // certificate_title can only be alphanumeric
+                    ),
+                    '2' => array(
+                        'impress' => 'required|string', // impress can only be alphanumeric
+                        "top_skills"    => "required|array|min:1",
+                        "top_skills.*"  => "required|string|distinct|min:1",
+                        "soft_skills"    => "required|array|min:1",
+                        "soft_skills.*"  => "required|string|distinct|min:1",
+                    ),
+                );
+                $validator = Validator::make($request->all(), $rules[$step]);
+                if ($validator->fails()) {
+                    $responseData['has_error'] = true;
+                    $responseData['message'] .= 'Please fill in all mandatory fields marked by an asterisk symbol ( * ).<br>';
+                }
+            } else {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= 'Steps error occurred. Please try again later.';
+            }
+            return response()->json($responseData);
         }
 
         $rules = array(
@@ -238,14 +269,15 @@ class ProfileSettingsController extends Controller
             'company_title' => 'required|string', // company_title can only be alphanumeric
             'job_title' => 'required|string', // company_title can only be alphanumeric,
             'impress' => 'required|string', // impress can only be alphanumeric
+            "top_skills"    => "required|array|min:1",
+            "top_skills.*"  => "required|string|distinct|min:1",
+            "soft_skills"    => "required|array|min:1",
+            "soft_skills.*"  => "required|string|distinct|min:1",
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             $responseData['has_error'] = true;
-            $messages = $validator->errors();
-            foreach ($messages->all() as $message) {
-                $responseData['message'] .= $message . '<br>';
-            }
+            $responseData['message'] .= 'Please fill in all mandatory fields marked by an asterisk symbol ( * ).<br>';
         } else {
             $topSkills = $request->has('top_skills') ? implode("\n", $request->input('top_skills')) : '';
             $softSkills = $request->has('soft_skills') ? implode("\n", $request->input('soft_skills')) : '';

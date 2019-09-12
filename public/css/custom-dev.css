@@ -362,3 +362,13 @@ customValidateConfirm{
 .sign-up .form__btn a{
     color: #7e20c8;
 }
+.edit-profile .steps {
+    display: none;
+}
+.edit-profile .steps.step-1 {
+    display: block;
+}
+.edit-profile.nobg {
+    background: none;
+    padding-top: 25px;
+}

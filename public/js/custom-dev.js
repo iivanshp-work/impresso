@@ -749,6 +749,53 @@ $document.ready(function(){
         });
     });
 
+    function openEditStep(step) {
+        if ($('.edit-profile .step-' + step).length) {
+            $('.edit-profile .steps').hide();
+            $('.edit-profile .step-' + step).show();
+            if (step != 1) {
+                $('.edit-profile').addClass('nobg');
+            } else {
+                $('.edit-profile').removeClass('nobg');
+            }
+        } else {
+            showError("Steps error occurred. Please try again later.");
+        }
+    }
+
+    $document.on('click change', '[data-edit-profile-step]', function(e){
+        e.preventDefault();
+        let btn = $(this);
+        let step = parseInt(btn.data('edit-profile-step'));
+        let form = btn.closest('form');
+        if (form.data("busy")) return;
+        form.data("busy", true);
+        loadingStart();
+        $.ajax({
+            url: form.attr("action"),
+            type: 'post',
+            dataType: 'json',
+            data: form.serialize() + '&action=check_step&step=' + step,
+            success: function(response){
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                }else{
+                    openEditStep((step+1));
+                    /*showSuccess(response.message, 'Success', function() {
+                        redirect(response.redirect);
+                    });*/
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                form.data("busy", false);
+            }
+        });
+    });
+
     //change fields for job name and company name start
     $document.on('change', '[name="company_title"]', function(e){
         let val = $(this).val();
