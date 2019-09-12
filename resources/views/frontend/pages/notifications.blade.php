@@ -47,9 +47,9 @@
                                     <p>{{$notification->notification_text}}</p>
                                 @elseif ($notification->type == 'admin_manual')
                                     <div class="notifications__header mb-3">
-                                        <a href="javascript:void(0);" class="avatar">
+                                        {{--<a href="javascript:void(0);" class="avatar">
                                             <img src="{{ asset('/img/Logo.png') }}" alt="" />
-                                        </a>
+                                        </a>--}}
                                         <p>{!!nl2br($notification->notification_text)!!}</p>
                                     </div>
                                 @elseif ($notification->type == 'meetup_wants')
