@@ -25,7 +25,6 @@
 					<div class="panel-body">
 						@la_display($module, 'user_id')
 						@la_display($module, 'notification_text')
-						@la_display($module, 'reference_id')
 					</div>
 				</div>
 			</div>

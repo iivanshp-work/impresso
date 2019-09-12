@@ -50,7 +50,7 @@
                                         <a href="javascript:void(0);" class="avatar">
                                             <img src="{{ asset('/img/Logo.png') }}" alt="" />
                                         </a>
-                                        <p>{{$notification->notification_text}}</p>
+                                        <p>{!!nl2br($notification->notification_text)!!}</p>
                                     </div>
                                 @elseif ($notification->type == 'meetup_wants')
                                     {{--<div class="notifications__header mb-3">
