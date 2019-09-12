@@ -105,4 +105,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Buy_Credits ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/buy_credits', 'LA\Buy_CreditsController');
 	Route::get(config('laraadmin.adminRoute') . '/buy_credit_dt_ajax', 'LA\Buy_CreditsController@dtajax');
+
+	/* ================== Countries ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/countries', 'LA\CountriesController');
+	Route::get(config('laraadmin.adminRoute') . '/country_dt_ajax', 'LA\CountriesController@dtajax');
 });
