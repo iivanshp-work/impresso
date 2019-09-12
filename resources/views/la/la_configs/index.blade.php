@@ -86,6 +86,16 @@
 				<input type="text" class="form-control" placeholder="Initial Credits amount(XIMS)" maxlength="100" name="initial_credits_amount" value="{{$configs->initial_credits_amount}}">
 			</div>
 
+			<div class="form-group">
+				<label>Meetup Invite - Credits Amount(in XIMS)</label>
+				<input type="text" class="form-control" placeholder="Meetup Invite - Credits Amount(XIMS)" maxlength="100" name="invite_xims_amount" value="{{$configs->invite_xims_amount}}">
+			</div>
+
+			<div class="form-group">
+				<label>Meetup Accept Invite - Credits Amount(in XIMS)</label>
+				<input type="text" class="form-control" placeholder="Meetup Accept Invite - Credits Amount(XIMS)" maxlength="100" name="accepted_invite_xims_amount" value="{{$configs->accepted_invite_xims_amount}}">
+			</div>
+
             <div class="form-group">
                 <label>New Jobs notification radius(KM)</label>
                 <input type="text" class="form-control" placeholder="New Jobs notification radius" maxlength="100" name="new_jobs_radius" value="{{$configs->new_jobs_radius}}">
