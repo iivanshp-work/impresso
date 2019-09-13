@@ -25,23 +25,64 @@
 @endif
 
 <div class="box box-success">
-	<!--<div class="box-header"></div>-->
+	<div class="box-header" style="margin-bottom: 10px;">
+		<div class="box-tools" >
+			{!! Form::open(['action' => 'LA\CountriesController@index', 'method' => 'get',  'id' => 'countries-search-form']) !!}
+			@php
+				$keyword = app('request')->input('keyword');
+			@endphp
+			<div class="input-group input-group-sm field-search">
+				<input type="text" name="keyword" class="form-control pull-right" value="{{$keyword}}" placeholder="Keyword">
+				<div class="input-group-btn">
+					<button type="submit" class="btn btn-default"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+
+			@if($keyword)
+				<div class="input-group">
+					<a href="{{url(config('laraadmin.adminRoute') . "/countries")}}" type="submit" class="btn btn-default btn-sm" style="margin-left: 20px;">Clear</a>
+				</div>
+			@endif
+
+			{!! Form::close() !!}
+		</div>
+	</div>
 	<div class="box-body">
 		<table id="example1" class="table table-bordered">
-		<thead>
-		<tr class="success">
-			@foreach( $listing_cols as $col )
-			<th>{{ $module->fields[$col]['label'] or ucfirst($col) }}</th>
-			@endforeach
-			@if($show_actions)
-			<th>Actions</th>
+			<thead>
+			<tr class="success">
+				@foreach( $listing_cols as $col )
+					<th>{{ $module->fields[$col]['label'] or ucfirst($col) }}</th>
+				@endforeach
+				@if($show_actions)
+					<th>Actions</th>
+				@endif
+			</tr>
+			</thead>
+			<tbody>
+			@if($values)
+				@foreach($values as $value)
+					<tr>
+						@foreach( $listing_cols as $col )
+							<td>@if ($col == $view_col){!!$value->$col!!}@else{{$value->$col}}@endif</td>
+						@endforeach
+						<td>{!!$value->actions!!}</td>
+					</tr>
+				@endforeach
+			@else
+				<tr class="odd"><td valign="top" colspan="9" class="dataTables_empty text-center">No records found.</td></tr>
 			@endif
-		</tr>
-		</thead>
-		<tbody>
-			
-		</tbody>
+			</tbody>
 		</table>
+		@if($values)
+			<ul class="pagination pagination-sm no-margin pull-right">
+				@if($keyword)
+					{{ $values->appends(['keyword' => $keyword])->links() }}
+				@else
+					{{ $values->links() }}
+				@endif
+			</ul>
+		@endif
 	</div>
 </div>
 
@@ -78,26 +119,21 @@
 @endsection
 
 @push('styles')
-<link rel="stylesheet" type="text/css" href="{{ asset('la-assets/plugins/datatables/datatables.min.css') }}"/>
+
 @endpush
 
 @push('scripts')
-<script src="{{ asset('la-assets/plugins/datatables/datatables.min.js') }}"></script>
+	<style>
+		#countries-search-form {
+			display: flex;
+			flex-direction: row;
+		}
+		#countries-search-form .field-search{
+			width: 150px;
+		}
+	</style>
 <script>
 $(function () {
-	$("#example1").DataTable({
-		processing: true,
-        serverSide: true,
-        ajax: "{{ url(config('laraadmin.adminRoute') . '/country_dt_ajax') }}",
-		language: {
-			lengthMenu: "_MENU_",
-			search: "_INPUT_",
-			searchPlaceholder: "Search"
-		},
-		@if($show_actions)
-		columnDefs: [ { orderable: false, targets: [-1] }],
-		@endif
-	});
 	$("#country-add-form").validate({
 		
 	});

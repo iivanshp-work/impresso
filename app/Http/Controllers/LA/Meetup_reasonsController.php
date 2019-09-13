@@ -7,6 +7,7 @@
 namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
@@ -39,19 +40,72 @@ class Meetup_reasonsController extends Controller
 	
 	/**
 	 * Display a listing of the Meetup_reasons.
-	 *
+     * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		$module = Module::get('Meetup_reasons');
-		
+        $paginateLimit = getenv('PAGINATION_LIMIT');
+
 		if(Module::hasAccess($module->id)) {
-			return View('la.meetup_reasons.index', [
-				'show_actions' => $this->show_action,
-				'listing_cols' => $this->listing_cols,
-				'module' => $module
-			]);
+            $query = DB::table('meetup_reasons')->select($this->listing_cols)->whereNull('deleted_at');
+            $params = [];
+            $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
+            $params['status'] = $request->has('status') ? intval($request->input('status')) : null;
+
+            if ($params['keyword']) {
+                $query = $query->where(function ($query) use ($params) {
+                    $query->orWhere("title", "like", "%" . $params['keyword'] . "%");
+                });
+            }
+            if ($params['status'] !== null) {
+                $query = $query->where("status", "=", $params['status']);
+            }
+            $values = $query->orderBy("id", 'asc')->paginate($paginateLimit);
+            if($values){
+                $fields_popup = ModuleFields::getModuleFields('Meetup_reasons');
+                for($i=0; $i < count($values); $i++) {
+                    for ($j=0; $j < count($this->listing_cols); $j++) {
+                        $col = $this->listing_cols[$j];
+                        if ($col == 'status') {
+                            $values[$i]->$col = $values[$i]->$col ? "Active" : "Inactive";
+                            continue;
+                        }
+                        if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
+                            $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+                        }
+                        if($col == $this->view_col) {
+                            $values[$i]->$col = '<a href="'.url(config('laraadmin.adminRoute') . '/meetup_reasons/'.$values[$i]->id).'">'.$values[$i]->$col.'</a>';
+                        }
+                    }
+
+                    if($this->show_action) {
+                        $output = '';
+                        if(Module::hasAccess("Meetup_reasons", "edit")) {
+                            $output .= '<a href="'.url(config('laraadmin.adminRoute') . '/meetup_reasons/'.$values[$i]->id.'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                        }
+
+                        if(Module::hasAccess("Meetup_reasons", "delete")) {
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.meetup_reasons.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
+                            $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
+                            $output .= Form::close();
+                        }
+                        $values[$i]->actions = (string)$output;
+                    }
+                }
+            }
+            if($values->count() == 0){
+                $values = 0;
+            }
+
+            return View('la.meetup_reasons.index', [
+                'show_actions' => $this->show_action,
+                'listing_cols' => $this->listing_cols,
+                'view_col' => $this->view_col,
+                'module' => $module,
+                'values' => $values
+            ]);
 		} else {
             return redirect(config('laraadmin.adminRoute')."/");
         }

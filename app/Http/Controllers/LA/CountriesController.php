@@ -42,15 +42,62 @@ class CountriesController extends Controller
 	 *
 	 * @return \Illuminate\Http\Response
 	 */
-	public function index()
+	public function index(Request $request)
 	{
 		$module = Module::get('Countries');
-		
+        $paginateLimit = getenv('PAGINATION_LIMIT');
+
 		if(Module::hasAccess($module->id)) {
-			return View('la.countries.index', [
+            $query = DB::table('countries')->select($this->listing_cols)->whereNull('deleted_at');
+            $params = [];
+            $params['keyword'] = $request->has('keyword') ? trim($request->input('keyword')) : null;
+
+            if ($params['keyword']) {
+                $query = $query->where(function ($query) use ($params) {
+                    $query->orWhere("country", "like", "%" . $params['keyword'] . "%");
+                    $query->orWhere("country_code", "like", "%" . $params['keyword'] . "%");
+                    $query->orWhere("country_iso_code", "like", "%" . $params['keyword'] . "%");
+                });
+            }
+            $values = $query->orderBy("country", 'asc')->paginate($paginateLimit);
+            if($values){
+                $fields_popup = ModuleFields::getModuleFields('Countries');
+                for($i=0; $i < count($values); $i++) {
+                    for ($j=0; $j < count($this->listing_cols); $j++) {
+                        $col = $this->listing_cols[$j];
+                        if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
+                            $values[$i]->$col = ModuleFields::getFieldValue($fields_popup[$col], $values[$i]->$col);
+
+                        }
+                        if($col == $this->view_col) {
+                            $values[$i]->$col = '<a href="'.url(config('laraadmin.adminRoute') . '/countries/'.$values[$i]->id).'">'.$values[$i]->$col.'</a>';
+                        }
+                    }
+
+                    if($this->show_action) {
+                        $output = '';
+                        if(Module::hasAccess("Countries", "edit")) {
+                            $output .= '<a href="'.url(config('laraadmin.adminRoute') . '/countries/'.$values[$i]->id.'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
+                        }
+
+                        if(Module::hasAccess("Countries", "delete")) {
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.countries.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
+                            $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
+                            $output .= Form::close();
+                        }
+                        $values[$i]->actions = (string)$output;
+                    }
+                }
+            }
+            if($values->count() == 0){
+                $values = 0;
+            }
+		    return View('la.countries.index', [
 				'show_actions' => $this->show_action,
 				'listing_cols' => $this->listing_cols,
-				'module' => $module
+                'view_col' => $this->view_col,
+				'module' => $module,
+                'values' => $values
 			]);
 		} else {
             return redirect(config('laraadmin.adminRoute')."/");
