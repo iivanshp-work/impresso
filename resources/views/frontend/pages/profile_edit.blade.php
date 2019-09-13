@@ -9,6 +9,10 @@
     <div class="main">
         <header class="header">
             <h4 class="header-title">Edit Profile</h4>
+
+            <a href="{{url()->previous()}}" class="header__icon-left back-btn" data-back-btn="" data-current-step="1">
+                <img src="{{asset('img/icons/arrow-back.svg')}}" alt="arrow-back" />
+            </a>
             <span class="header__icon-right">
                 <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" /></a>
                 <a href="{{url('/notifications')}}" class="header__icon-right">

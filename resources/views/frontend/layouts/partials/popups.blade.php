@@ -16,7 +16,7 @@
         <div class="modal-window__body text-center">
             <h3 class="title mb-34 custom-title">Error!</h3>
             <div class=""><p class="custom-message"></p></div>
-            <button type="button" class="btn btn-violet close-modal" data-callback-button="" >
+            <button type="button" class="btn btn-border close-modal" data-callback-button="" >
                 Close
             </button>
         </div>

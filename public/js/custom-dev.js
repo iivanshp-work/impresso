@@ -1,27 +1,13 @@
 const $window = $(window), $document = $(document);
 
 //default error popup
-function showError(message, title, callback){
+function showError(message, title, callback, hideTitle){
     title = title || 'Error!';
     message = message || '';
-    $('#customValidateSuccess .custom-title').text(title);
-    $('#customValidateSuccess .custom-message').html(message);
-    $('.customValidateSuccess').click().trigger('click');
-    $('#customValidateSuccess [data-callback-button]').on('click', function(e){
-        e.preventDefault();
-        if(callback && typeof (callback) === "function"){
-            callback();
-        }else{
-            $('.customValidateSuccess .close-modal').trigger('click');
-        }
-    });
-}
-
-//default success popup
-function showSuccess(message, title, callback){
-    title = title || 'Success!';
-    message = message || '';
-    $('#customValidateError .custom-title').text(title);
+    $('#customValidateError .custom-title').text(title).show();
+    if (typeof hideTitle != 'undefined') {
+        $('#customValidateError .custom-title').hide();
+    }
     $('#customValidateError .custom-message').html(message);
     $('.customValidateError').click().trigger('click');
     $('#customValidateError [data-callback-button]').on('click', function(e){
@@ -30,6 +16,26 @@ function showSuccess(message, title, callback){
             callback();
         }else{
             $('.customValidateError .close-modal').trigger('click');
+        }
+    });
+}
+
+//default success popup
+function showSuccess(message, title, callback, hideTitle){
+    title = title || 'Success!';
+    message = message || '';
+    $('#customValidateSuccess .custom-title').text(title);
+    if (typeof hideTitle != 'undefined') {
+        $('#customValidateSuccess .custom-title').hide();
+    }
+    $('#customValidateSuccess .custom-message').html(message);
+    $('.customValidateSuccess').click().trigger('click');
+    $('#customValidateSuccess [data-callback-button]').on('click', function(e){
+        e.preventDefault();
+        if(callback && typeof (callback) === "function"){
+            callback();
+        }else{
+            $('.customValidateSuccess .close-modal').trigger('click');
         }
     });
 }
@@ -749,20 +755,36 @@ $document.ready(function(){
         });
     });
 
+    //open edit step
     function openEditStep(step) {
         if ($('.edit-profile .step-' + step).length) {
             $('.edit-profile .steps').hide();
             $('.edit-profile .step-' + step).show();
             if (step != 1) {
+                if (step == 3) {
+                    textareaResize();
+                }
                 $('.edit-profile').addClass('nobg');
             } else {
                 $('.edit-profile').removeClass('nobg');
             }
+            $('[data-current-step]').data('current-step', step);
         } else {
             showError("Steps error occurred. Please try again later.");
         }
     }
 
+    //back button on edit profile
+    $document.on('click change', '[data-back-btn]', function(e){
+        let btn = $(this);
+        let step = parseInt(btn.data('current-step'));
+        if (step != 1)  {
+            e.preventDefault();
+            openEditStep((step-1));
+        }
+    });
+
+    //click switch step button
     $document.on('click change', '[data-edit-profile-step]', function(e){
         e.preventDefault();
         let btn = $(this);
@@ -778,12 +800,9 @@ $document.ready(function(){
             data: form.serialize() + '&action=check_step&step=' + step,
             success: function(response){
                 if(response.has_error){
-                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.', '', null, true);
                 }else{
                     openEditStep((step+1));
-                    /*showSuccess(response.message, 'Success', function() {
-                        redirect(response.redirect);
-                    });*/
                 }
             },
             error: function(){
@@ -1253,7 +1272,6 @@ $document.ready(function(){
             resizeTextarea(this);
         });
     }
-    textareaResize();
     //edit profile end
 
     //edit settings start

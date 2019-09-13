@@ -247,9 +247,9 @@ class ProfileSettingsController extends Controller
                     '2' => array(
                         'impress' => 'required|string', // impress can only be alphanumeric
                         "top_skills"    => "required|array|min:1",
-                        "top_skills.*"  => "required|string|distinct|min:1",
+                        "top_skills.0"  => "required|string|distinct|min:1",
                         "soft_skills"    => "required|array|min:1",
-                        "soft_skills.*"  => "required|string|distinct|min:1",
+                        "soft_skills.0"  => "required|string|distinct|min:1",
                     ),
                 );
                 $validator = Validator::make($request->all(), $rules[$step]);
@@ -270,9 +270,9 @@ class ProfileSettingsController extends Controller
             'job_title' => 'required|string', // company_title can only be alphanumeric,
             'impress' => 'required|string', // impress can only be alphanumeric
             "top_skills"    => "required|array|min:1",
-            "top_skills.*"  => "required|string|distinct|min:1",
+            "top_skills.0"  => "required|string|distinct|min:1",
             "soft_skills"    => "required|array|min:1",
-            "soft_skills.*"  => "required|string|distinct|min:1",
+            "soft_skills.0"  => "required|string|distinct|min:1",
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
