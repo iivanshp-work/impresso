@@ -25,6 +25,9 @@
                     <li class="tab-navigation__item active" data-feeds-tab="" data-ftype="jobs">
                         Jobs
                     </li>
+                    {{--<li class="tab-navigation__item active" data-feeds-tab="" data-ftype="promos">
+                        Promos
+                    </li>--}}
                     <li class="tab-navigation__item tab-navigation__item_right" data-feeds-tab="" data-ftype="professionals">
                         Professionals
                     </li>
@@ -40,6 +43,10 @@
                     <div class="tab-content__item open jobs-wrapper">
                         @include('frontend.pages.includes.feeds_jobs_items')
                     </div>
+                    {{--
+                    <div class="tab-content__item promos-wrapper">
+                        @include('frontend.pages.includes.feeds_promos_items')
+                    </div>--}}
                     <div class="tab-content__item professionals-wrapper">
                         @include('frontend.pages.includes.feeds_professionals_items')
                     </div>

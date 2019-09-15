@@ -113,4 +113,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Meetup_reasons ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/meetup_reasons', 'LA\Meetup_reasonsController');
 	Route::get(config('laraadmin.adminRoute') . '/meetup_reason_dt_ajax', 'LA\Meetup_reasonsController@dtajax');
+
+	/* ================== Promos ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/promos', 'LA\PromosController');
+	Route::get(config('laraadmin.adminRoute') . '/promo_dt_ajax', 'LA\PromosController@dtajax');
 });

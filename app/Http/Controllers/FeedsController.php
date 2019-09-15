@@ -9,6 +9,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests;
 use App\Models\Job;
 use App\Models\Jobs_AD;
+use App\Models\Promo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -40,14 +41,18 @@ class FeedsController extends Controller
 
         $jobs = Job::withDistance($userData)->notDeleted()->where('status', '=', 1)->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($jobs->count() == 0) $jobs = null;
+        $jobAd = Jobs_AD::notDeleted()->active()->orderBy('id', 'desc')->limit(1)->first();
+
+        $promos = Promo::notDeleted()->withImage()->active()->orderBy('id', 'desc')->limit($this->paginationLimit)->get();
+
         $professionals = User::withDistance($userData)->notDeleted()->users()->notMe()->where('is_verified', '1')->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($professionals->count() == 0) $professionals = null;
-        $jobAd = Jobs_AD::notDeleted()->active()->orderBy('id', 'desc')->limit(1)->first();
 
         return view('frontend.pages.feeds', [
             'jobs' => $jobs,
-            'professionals' => $professionals,
             'jobAd' => $jobAd,
+            'professionals' => $professionals,
+            'promos' => $promos,
             'page' => 1
         ]);
     }
@@ -124,6 +129,30 @@ class FeedsController extends Controller
                 if ($professionals->count() == 0) $professionals = null;
                 $html = view('frontend.pages.includes.feeds_professionals_items', [
                     'professionals' => $professionals,
+                    'page' => $page
+                ])->render();
+                $responseData['html'] = $html;
+                $responseData['has_more'] = $html ? true : false;
+                $responseData['page'] = $page;
+                $responseData['keyword'] = $keyword;
+                break;
+
+            case 'promos':
+                $promos = Promo::notDeleted()
+                    ->withImage()
+                    ->active()
+                    ->where(function ($query) use ($keyword) {
+                        $query->orWhere("title", "like", "%" . $keyword . "%");
+                        $query->orWhere("tags", "like", "%" . $keyword . "%");
+                    })
+                    ->orderBy('id', 'desc')
+                    ->offset($offset)
+                    ->limit($this->paginationLimit)
+                    ->get();
+                if ($promos->count() == 0) $promos = null;
+
+                $html = view('frontend.pages.includes.feeds_promos_items', [
+                    'promos' => $promos,
                     'page' => $page
                 ])->render();
                 $responseData['html'] = $html;
