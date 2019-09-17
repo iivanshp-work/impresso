@@ -445,8 +445,8 @@ $document.ready(function(){
                 }else{
                     goToValidationStep('step4');
                 }
-                alert(request.responseText);
-                showError('An error occurred. Please try again later2.');
+                //alert(request.responseText);
+                showError('An error occurred. Please try again later.');
             },
             complete: function(){
                 loadingEnd();
@@ -490,10 +490,10 @@ $document.ready(function(){
                 }
             },
             error: function(request, status, error){
-                alert(request.responseText);
-                /*alert(status);
+                /*alert(request.responseText);
+                alert(status);
                 alert(error);*/
-                showError('An error occurred. Please try again later2.');
+                showError('An error occurred. Please try again later.');
             },
             complete: function(){
                 loadingEnd();
