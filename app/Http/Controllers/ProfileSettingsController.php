@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Buy_Credit;
+use App\Models\Country;
 use App\Models\Location;
 use App\Models\User_certification;
 use App\Models\User_Education;
@@ -761,5 +762,100 @@ class ProfileSettingsController extends Controller
         return response()->json(['saved' => $saved]);
     }
 
+    /**
+     * Phone Validation Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function phoneValidationPage(Request $request) {
+        $user = Auth::user();
+        $countries = Country::orderBy('country', 'asc')->get();
+        //select current country start
+        $lat = $user->latitude;
+        $lon = $user->longitude;
+        $countryCode = '';
+        if ($lat && $lon) {
+            $locationExists = Location::where('latitude', $lat)->where('longitude', $lon)->first();
+            if ($locationExists) {
+                $countryCode = $locationExists->country_code;
+            } else {
+                try {
+                    $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
+                    $output = @json_decode($geocode);
+                }catch (\Exception $e) {
+                    $output = null;
+                }
+                if ($output && isset($output->results[0]->address_components) && !empty($output->results[0]->address_components)) {
+                    $city = '';
+                    $country = '';
+                    $countryCode = '';
+                    foreach($output->results[0]->address_components as $component) {
+                        if (!$city && in_array('locality', $component->types)) {
+                            $city = $component->short_name;
+                        }
+                        if (!$country && in_array('country', $component->types)) {
+                            $country = $component->long_name;
+                        }
+                        if (!$countryCode && in_array('country', $component->types)) {
+                            $countryCode = $component->short_name;
+                        }
+                    }
+                    if (!$city) {
+                        foreach($output->results[0]->address_components as $component) {
+                            if (!$city && in_array('political', $component->types)) {
+                                $city = $component->short_name;
+                            }
+                        }
+                    }
+                    $location = new Location;
+                    $location->latitude = $lat;
+                    $location->longitude = $lon;
+                    $location->city = $city;
+                    $location->country = $country;
+                    $location->country_code = $countryCode;
+                    $location->locaiton_data = json_encode($output->results[0]);
+                    $location->save();
+                }
+            }
+        }
+        $user->country_code = $countryCode;
+        //select current country end
+        return view('frontend.pages.phone-validation', [
+            'countries' => $countries,
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Phone Validation functionality
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function phoneValidation(Request $request) {
+        $responseData = [
+            'has_error' => false,
+            'message' => '',
+            'redirect' => ''
+        ];
+        $fields = [];
+        $fields['phone_number_country_code'] = $request->has('phone_number_country_code') ? trim($request->input('phone_number_country_code')) : '';
+        $fields['phone_number'] = $request->has('phone_number') ? trim($request->input('phone_number')) : '';
+        if (!$fields['phone_number']) {
+            $responseData['has_error'] = true;
+            $responseData['message'] = 'Please, enter your mobile number.';
+        }
+        if (!$responseData['has_error']) {
+            $user = Auth::user();
+            if ($user) {
+                $user->phone = $fields['phone_number_country_code'] . ' ' . $fields['phone_number'];
+                $user->save();
+                $responseData['redirect'] = url(getenv('BASE_LOGEDIN_PAGE'));
+            } else {
+                $responseData['has_error'] = true;
+                $responseData['message'] = 'Phone number cannot be saved, try again later.';
+            }
+        }
+        return response()->json($responseData);
+    }
 
 }

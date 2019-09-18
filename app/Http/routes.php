@@ -35,6 +35,8 @@ Route::get('transaction-history', 'ProfileSettingsController@transactionHistoryP
 Route::post('save-geo-data', 'ProfileSettingsController@saveGeo')->name('save_geo_post');
 Route::post('save-share', 'ProfileSettingsController@saveShare')->name('save_share_post');
 Route::post('save-push-notification-token', 'ProfileSettingsController@savePushNotificationToken')->name('save_push_notification_token_post');
+Route::get('phone-validation', 'ProfileSettingsController@phoneValidationPage')->name('phone-validation');
+Route::post('phone-validation', 'ProfileSettingsController@phoneValidation')->name('phone-validation_post');
 
 /* settings */
 Route::get('settings', 'ProfileSettingsController@settingsPage')->name('settings');
