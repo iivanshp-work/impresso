@@ -842,13 +842,14 @@ class ProfileSettingsController extends Controller
         $fields['phone_number'] = $request->has('phone_number') ? trim($request->input('phone_number')) : '';
         if (!$fields['phone_number']) {
             $responseData['has_error'] = true;
-            $responseData['message'] = 'Please, enter your mobile number.';
+            $responseData['message'] = 'Please enter your mobile number.';
         }
         if (!$responseData['has_error']) {
             $user = Auth::user();
             if ($user) {
                 $user->phone = $fields['phone_number_country_code'] . ' ' . $fields['phone_number'];
                 $user->save();
+                $responseData['message'] = 'Your mobile number successfully saved.';
                 $responseData['redirect'] = url(getenv('BASE_LOGEDIN_PAGE'));
             } else {
                 $responseData['has_error'] = true;

@@ -53,7 +53,10 @@ class UserRedirects
                 if (!in_array($requestUrl, $skipPathsLogin)) {
                     Auth::loginUsingId($user->id, true);
                 }
-                if (!$user->varification_pending && !$user->is_verified && $requestUrl != getenv('VALIDATION_PAGE') && !in_array($requestUrl, $skipPaths)) {
+                if (!$user->phone && $requestUrl != '/phone-validation' && !in_array($requestUrl, $skipPaths)) {
+                    $path = '/phone-validation';
+                    $needRedirect = true;
+                }else if (!$user->varification_pending && !$user->is_verified && $requestUrl != getenv('VALIDATION_PAGE') && !in_array($requestUrl, $skipPaths)) {
                     $path = '/validation';
                     $needRedirect = true;
                 } else if ($user->varification_pending && !$user->is_verified && $requestUrl == getenv('BASE_LOGEDIN_PAGE') && !in_array($requestUrl, $skipPaths)) {

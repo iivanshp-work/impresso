@@ -30,6 +30,8 @@ use PhpOffice\PhpSpreadsheet\IOFactory;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 
 use App\Models\User;
+use App\User as AuthUser;
+use App\Role;
 
 class UsersController extends Controller
 {
@@ -294,7 +296,11 @@ class UsersController extends Controller
 			}
 
 			$insert_id = Module::insert("Users", $request);
-
+            if ($insert_id && $mode == "admins") {
+                $user = AuthUser::find($insert_id);
+                $role = Role::where('name', 'SUPER_ADMIN')->first();
+                $user->attachRole($role);
+            }
             if ($mode == "admins") {
                 return redirect(config('laraadmin.adminRoute')."/administrators");
             } else {

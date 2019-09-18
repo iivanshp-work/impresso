@@ -399,6 +399,26 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 @media only screen and (min-height: 800px) { .validation__title { margin: 30px 0 90px; } }
 
+.cards-jobs { display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-align-items: center; -ms-flex-align: center; align-items: center; padding: 28px 18px; }
+
+.cards-jobs__avatar { display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; width: 60px; height: 60px; border-radius: 50%; -webkit-border-radius: 50%; -moz-border-radius: 50%; -ms-border-radius: 50%; -o-border-radius: 50%; overflow: hidden; margin-right: 10px; -o-object-fit: cover; object-fit: cover; }
+
+.cards-jobs__avatar > img { width: 100%; height: 100%; }
+
+.cards-jobs__detail a { color: #000; font-size: 17px; line-height: 22px; letter-spacing: -0.41px; margin-bottom: 3px; }
+
+.cards-jobs__detail span, .cards-jobs__detail .cards-jobs__company { font-size: 11px; line-height: 18px; color: #979797; display: inline-block; min-width: 86px; letter-spacing: -0.07px; }
+
+.cards-jobs__company { margin-top: 10px; }
+
+.cards-jobs.bg-violet-gradient { color: #fff; box-shadow: none; padding: 36px; position: relative; font-size: 17px; line-height: 22px; letter-spacing: -0.41px; }
+
+.cards-jobs.bg-violet-gradient .icon { position: absolute; background-color: #fff; border-radius: 14px; -webkit-border-radius: 14px; -moz-border-radius: 14px; -ms-border-radius: 14px; -o-border-radius: 14px; min-width: 25px; color: #000; font-size: 10px; text-align: center; line-height: 15px; }
+
+.cards-jobs.bg-violet-gradient .icon_bottom { bottom: 6px; right: 6px; display: -webkit-flex; display: -ms-flexbox; display: flex; }
+
+.cards-jobs.bg-violet-gradient .icon_top { left: 6px; top: 6px; }
+
 .promos-image { margin: 0 14px 20px; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -ms-border-radius: 5px; -o-border-radius: 5px; overflow: hidden; box-shadow: 0 5px 9px rgba(0, 0, 0, 0.1); display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-align-items: center; -ms-flex-align: center; align-items: center; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; }
 
 .promos-image > img { width: 100%; }
@@ -613,11 +633,11 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 .settings .logo-bottom { display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-justify-content: center; -ms-flex-pack: center; justify-content: center; }
 
-.log-out { padding: 21px 14px 20px; }
+.log-out { padding: 31px 14px 20px; }
 
-.log-out p { font-size: 11px; line-height: 24px; color: #979797; letter-spacing: -0.41px; padding: 0; }
+.log-out p { padding: 0; }
 
-.log-out .line { border-top: 1px solid #dadae4; margin: 18px 0; }
+.log-out .line { border-top: 1px solid #dadae4; margin: 30px 0 10px; }
 
 .personal-details .user__header { margin: 30px auto 36px; }
 
@@ -688,7 +708,9 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 .jq-selectbox__trigger-arrow::before { content: url(../img/icons/arrow-down-white.svg); }
 
-.jq-selectbox__dropdown { width: 100%; max-height: 170px; background: #f5f5f5; font-family: "Montserrat", sans-serif; font-size: 15px; color: #000; text-align: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; -ms-border-radius: 10px; -o-border-radius: 10px; padding-top: 20px; margin-top: -10px; z-index: -1; overflow-y: auto; }
+.jq-selectbox__dropdown { width: 100%; background: #f5f5f5; font-family: "Montserrat", sans-serif; font-size: 15px; color: #000; text-align: left; border-radius: 10px; -webkit-border-radius: 10px; -moz-border-radius: 10px; -ms-border-radius: 10px; -o-border-radius: 10px; padding-top: 20px; margin-top: -10px; z-index: -1; }
+
+.jq-selectbox__dropdown ul { max-height: 152px; }
 
 .jq-selectbox li { padding: 0 10px; margin-bottom: 20px; }
 

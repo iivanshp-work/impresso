@@ -1,3 +1,67 @@
+.cards-jobs {
+	display: flex;
+	align-items: center;
+	padding: 28px 18px;
+	&__avatar {
+		@include circle-img(60px, 60px);
+		margin-right: 10px;
+		> img {
+			width: 100%;
+			height: 100%;
+		}
+		object-fit: cover;
+	}
+	&__detail {
+		a {
+			color: $text-color;
+			font-size: $base-fs + 2px;
+			line-height: $base-line-height + 2px;
+			letter-spacing: -0.41px;
+			margin-bottom: 3px;
+		}
+		span,
+		.cards-jobs__company {
+			font-size: $base-fs - 4px;
+			line-height: $base-line-height - 2px;
+			color: $text-gray;
+			display: inline-block;
+			min-width: 86px;
+			letter-spacing: -0.07px;
+		}
+	}
+	&__company {
+		margin-top: 10px;
+	}
+	&.bg-violet-gradient {
+		color: $white;
+		box-shadow: none;
+		padding: 36px;
+		position: relative;
+		font-size: $base-fs + 2px;
+		line-height: $base-line-height + 2px;
+		letter-spacing: -0.41px;
+		.icon {
+			position: absolute;
+			background-color: $base-bg;
+			@include radius(14px);
+			min-width: 25px;
+			color: $text-color;
+			font-size: $base-fs - 5px;
+			text-align: center;
+			line-height: 15px;
+			&_bottom {
+				bottom: 6px;
+				right: 6px;
+				display: flex;
+			}
+			&_top {
+				left: 6px;
+				top: 6px;
+			}
+		}
+	}
+}
+
 .promos-image {
 	margin: 0 14px 20px;
 	@include radius(5px);

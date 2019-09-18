@@ -1492,4 +1492,29 @@ $document.ready(function(){
         });
     });
     //phone number validation end
+
+    $document.on('paste input', '[data-form-number-form] [name="phone_number"]', function(e){
+        $(this).val($(this).val().replace(/[a-zA-Z\_\*\!\@\#\$\%\^&\*]/g ,"").replace(/\s\s+/g, ' ').replace(/\+\++/g, '+').replace(/--+/g, '-'));
+    });
+
+    /*$document.on('change blur', '[data-form-number-form] [name="phone_number"]', function(e){
+        phonenumber($(this));
+    });
+
+    function phonenumber(This) {
+        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
+        //var phoneno = /^(\([0-9]{3}\)\s*|[0-9]{3}\-)[0-9]{3}-[0-9]{4}$/;
+        if(This.val().match(phoneno)) {
+            return true;
+        }
+        else {
+            alert("error");
+            return false;
+        }
+    }*/
+
+    /*
+        $(#txtid).bind("paste input’,function(){
+        $(this).val ( $(this).val().replace (/[<>]/g ,"")  )
+        });*/
 });
