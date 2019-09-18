@@ -21,7 +21,7 @@
                 <p>New to IMPRESSO? <a href="{{url('/sign-up')}}">Sign Up</a></p>
                 <div class="form__btn">
                     <small>Thank you for choosing us.</small>
-                    <button type="submit" class="btn btn-border">Log In</button>
+                    <button type="submit" class="btn btn-violet">Log In</button>
                 </div>
             </form>
         </div>

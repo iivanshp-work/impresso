@@ -14,9 +14,9 @@
 		> li {
 			margin-bottom: 18px;
 			position: relative;
+			margin-bottom: 20px;
 			.style-input-text {
 				font-size: $base-fs;
-				padding: 0 0 24px;
 				height: 20px;
 				&[disabled] {
 					color: $text-color;

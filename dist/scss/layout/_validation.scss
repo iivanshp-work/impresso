@@ -39,11 +39,8 @@
 		margin-bottom: 26px;
 	}
 	&__icon {
-		width: 186px;
-		margin: 104px auto;
-		&_big {
-			margin: 104px auto 47px;
-		}
+		width: 235px;
+		margin: 78px auto;
 	}
 	.text-gray {
 		margin: 16px 28px 17px;
@@ -80,7 +77,7 @@
 			height: 100vh;
 			display: none;
 			&_first {
-				background: url(../../img/bg-login.png) no-repeat top center/contain;
+				background: url(../img/background-image.png) no-repeat top center/contain;
 				display: block;
 				padding: 20px 28px;
 			}
@@ -99,10 +96,6 @@
 		&__icon {
 			width: 146px;
 			margin: 74px auto;
-			&_big {
-				width: 132px;
-				margin: 74px auto 20px;
-			}
 		}
 		.text-gray {
 			margin: 16px 28px 17px;
@@ -145,7 +138,7 @@
 	}
 }
 
-@media only screen and (max-width: 350px) and (max-height: 500px) {
+@media only screen and (max-width: 450px) and (max-height: 675px) {
 	.validation {
 		&__step {
 			height: auto;
@@ -155,7 +148,8 @@
 			position: relative;
 			bottom: 0;
 			.btn {
-				width: 264px;
+				width: 100%;
+				max-width: 320px;
 			}
 		}
 		&__btn {

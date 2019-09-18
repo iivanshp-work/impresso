@@ -1,23 +1,10 @@
 $(window).on("load", function() {
-	if (
-		/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)
-	) {
+	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
 		$("body").addClass("ios");
 	} else {
 		$("body").addClass("web");
 	}
-
-	if ($('.data-load-wrapper').length) {
-		$('.data-load-wrapper').click(function(e){
-			$("body").removeClass("loaded");
-		});
-		setTimeout(function (){
-			$("body").removeClass("loaded");
-		}, 4000);
-	} else {
-		$("body").removeClass("loaded");
-	}
-
+	$("body").removeClass("loaded");
 });
 
 $(document).ready(function() {
@@ -29,7 +16,7 @@ $(document).ready(function() {
 	$(".slider").slick({
 		arrows: false,
 		dots: true,
-		infinite: false,
+		infinite: true,
 		speed: 400,
 		slidesToShow: 1,
 		slidesToScroll: 1,
@@ -64,9 +51,7 @@ $(document).ready(function() {
 	$(".tab-navigation__item").click(function() {
 		let dataTab = $(this).data("tab");
 		let getBlock = $(this).closest(".tabs-block");
-		let tabContent = $(
-			".tab-content>div.tab-content__item[data-tab=" + dataTab + "]"
-		);
+		let tabContent = $(".tab-content>div.tab-content__item[data-tab=" + dataTab + "]");
 		getBlock
 			.find(tabContent)
 			.addClass("open")
@@ -112,15 +97,15 @@ $(document).ready(function() {
 	});
 
 	// edit profile
-	//  $("#edit-profile").click(function() {
-	//  	$(".user").addClass("edit-profile");
-	//  	$(".header-title").text("Edit Profile");
-	//  });
+	$("#edit-profile").click(function() {
+		$(".user").addClass("edit-profile");
+		$(".header-title").text("Edit Profile");
+	});
 
-	//  $("#save").click(function() {
-	//  	$(".user").removeClass("edit-profile");
-	//  	$(".header-title").text("Profile");
-	//  });
+	$("#save").click(function() {
+		$(".user").removeClass("edit-profile");
+		$(".header-title").text("Profile");
+	});
 
 	// $(".edit-info").click(function() {
 	// 	$(this)
@@ -128,4 +113,18 @@ $(document).ready(function() {
 	// 		.find("input, textarea")
 	// 		.removeAttr("disabled");
 	// });
+
+	if ($("select").length === 1) {
+		$("select").styler();
+	}
+
+	$(".notifications__arrow>img").click(function() {
+		$(this).toggleClass("rotate");
+		$(this)
+			.parent()
+			.parent()
+			.parent()
+			.find(".notifications__body")
+			.slideToggle();
+	});
 });

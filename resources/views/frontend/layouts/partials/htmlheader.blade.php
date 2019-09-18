@@ -8,7 +8,7 @@
     <meta name="csrf-token" content="{{csrf_token()}}">
     <link rel="shortcut icon" type="image/x-icon" href="{{ asset('/la-assets/favicon.ico') }}" type="image/x-icon">
     <!-- fonts google -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <!-- main style -->
     <link href="{{ asset('css/style.css?v=' . getenv('ASSETS_VERSION')) }}" rel="stylesheet" type="text/css">
     <link href="{{ asset('css/custom-dev.css?v=' . getenv('ASSETS_VERSION')) }}" rel="stylesheet" type="text/css">

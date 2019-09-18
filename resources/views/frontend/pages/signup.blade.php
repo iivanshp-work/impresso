@@ -20,7 +20,7 @@
                 <p>Already have an account? <a href="{{url('/sign-in')}}">Log In</a></p>
                 <div class="form__btn">
                     <small>By signing up you agree with our <a href="https://www.impressolabs.io/privacy">T&Cs</a>.</small>
-                    <button type="submit" class="btn btn-border">
+                    <button type="submit" class="btn btn-violet">
                         Sign Up
                     </button>
                 </div>

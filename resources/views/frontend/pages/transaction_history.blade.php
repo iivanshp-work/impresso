@@ -23,7 +23,12 @@
             </a>
         </header>
         <main class="dashboard">
-            <h1 class="title text-center">{{$user->credits_count}} {{getenv('CREDITS_LABEL')}}</h1>
+            <h1 class="title text-center">
+                {{$user->credits_count}} {{getenv('CREDITS_LABEL')}}
+                <button type="button" class="dashboard__btn open-pop-up" data-target="#infoAboutXims">
+                    <img src="{{asset('img/icons/icon-info.svg')}}" alt="icon info">
+                </button>
+            </h1>
             @if($userTransactions)
                 @foreach($userTransactions as $userTransaction)
                     <div class="cards dashboard__card">
@@ -106,6 +111,20 @@
 @endsection
 
 @push('popups')
+    <!-- modal window -->
+    <div class="modal-window" id="infoAboutXims">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <h2>What are XIMs?</h2>
+                <p>XIMs are tokens.</p>
+                <p>One XIM is a unit value that exists on IMPRESSO’s blockchain.</p>
+                <p>It’s a cryptocurrency that you can use on IMPRESSO app for making transactions.</p>
+                <button type="button" class="btn btn-border close-modal">
+                    Got it!
+                </button>
+            </div>
+        </div>
+    </div>
 @endpush
 
 @push('styles')

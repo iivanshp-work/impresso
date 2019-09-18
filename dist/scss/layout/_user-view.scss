@@ -144,6 +144,19 @@
 		display: none;
 		z-index: 100;
 	}
+	&__meetup-btn {
+		padding: 20px 0;
+		border-top: 1px solid $border-color-light;
+	}
+	.btn-meetup-connected {
+		position: relative;
+		&::after {
+			content: url(../img/icons/checked-circle.svg);
+			position: absolute;
+			top: 3px;
+			right: 3px;
+		}
+	}
 }
 
 .user {
@@ -166,7 +179,7 @@
 
 .style-input-text {
 	font-size: inherit;
-	font-weight: 300;
+	font-weight: 400;
 	height: 21px;
 	border: none;
 	background: $base-bg;
@@ -184,22 +197,29 @@
 		font-size: $base-fs - 3px;
 	}
 	&::placeholder {
-		color: $gray;
+		color: $text-gray;
 	}
-	&[disabled] {
+	&:disabled {
 		color: $text-color;
+		-webkit-text-fill-color: $text-color;
+		opacity: 1;
 	}
 }
 
 .style-textarea {
 	font-size: inherit;
-	font-weight: 300;
+	font-weight: 400;
 	line-height: $base-line-height + 4px;
 	width: 100%;
 	background: $base-bg;
 	color: $text-color;
 	resize: none;
 	&::placeholder {
-		color: $gray;
+		color: $text-gray;
+	}
+	&:disabled {
+		color: $text-color;
+		-webkit-text-fill-color: $text-color;
+		opacity: 1;
 	}
 }

@@ -1,107 +1,149 @@
 // modal-
 .exemple-modal {
-    .btn {
-        margin-top: 20px;
-    }
+	.btn {
+		margin-top: 20px;
+	}
 }
 .modal-window {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba($color: #fff, $alpha: 0.8);
-    z-index: 100;
-    display: none;
-    &__content {
-        width: 100%;
-        min-height: 100vh;
-        display: flex;
-        align-items: flex-end;
-        justify-content: center;
-        @include transition(transform 0.4s ease);
-        @include transform(translateY(90%));
-    }
-    &__body {
-        width: calc(100% - 28px);
-        background-color: $base-bg;
-        box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.2);
-        @include radius(10px);
-        padding: 41px 14px 20px;
-        margin: 9px 14px;
-        max-width: 425px;
-        > .btn {
-            margin-top: 10px;
-            width: 100%;
-        }
-        > p {
-            padding-bottom: 20px;
-            letter-spacing: -0.41px;
-        }
-    }
-    &__img-top {
-        margin: 10px 0 21px;
-    }
-    &.show {
-        display: block;
-        .modal-window__content {
-            @include transform(translateY(0));
-        }
-    }
-    .my-10 {
-        margin: 10px 0;
-    }
+	position: fixed;
+	top: 0;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	background-color: rgba($color: #fff, $alpha: 0.8);
+	z-index: 100;
+	display: none;
+	&__content {
+		width: 100%;
+		min-height: 100vh;
+		display: flex;
+		align-items: flex-end;
+		justify-content: center;
+		@include transition(transform 0.4s ease);
+		@include transform(translateY(90%));
+	}
+	&__body {
+		width: calc(100% - 28px);
+		background-color: $base-bg;
+		box-shadow: -2px 2px 10px rgba(0, 0, 0, 0.2);
+		@include radius(10px);
+		padding: 41px 14px 20px;
+		margin: 9px 14px;
+		max-width: 425px;
+		> .btn {
+			margin-top: 10px;
+			width: 100%;
+		}
+		> p {
+			padding-bottom: 20px;
+			letter-spacing: -0.41px;
+		}
+	}
+	&__img-top {
+		margin: 10px 0 21px;
+	}
+	&.show {
+		display: block;
+		.modal-window__content {
+			@include transform(translateY(0));
+		}
+	}
+	.my-10 {
+		margin: 10px 0;
+	}
 }
 
 .location {
-    &__title {
-        font-size: $font-size-h3;
-        line-height: $line-height-h3;
-        letter-spacing: -0.41px;
-    }
-    &__icon {
-        margin: 37px 0 37px;
-    }
+	&__title {
+		font-size: $font-size-h3;
+		line-height: $line-height-h3;
+		letter-spacing: -0.41px;
+	}
+	&__icon {
+		margin: 37px 0 37px;
+	}
 }
 
 .validation-modal {
-    p {
-        line-height: $base-line-height + 4px;
-    }
+	p {
+		line-height: $base-line-height + 4px;
+	}
 }
 
 .upload-modal {
-    &__title {
-        font-size: $base-fs + 2px;
-        line-height: $base-line-height + 4px;
-        letter-spacing: -0.41px;
-    }
-    .or {
-        display: block;
-        margin: 18px 0;
-        font-size: $base-fs + 2px;
-    }
-    .btn-download {
-        margin: 0 auto 18px;
-    }
-    .text-color-gray {
-        color: $gray;
-        margin-bottom: 10px;
-        display: block;
-    }
+	&__title {
+		font-size: $base-fs + 2px;
+		line-height: $base-line-height + 4px;
+		letter-spacing: -0.41px;
+	}
+	.or {
+		display: block;
+		margin: 18px 0;
+		font-size: $base-fs + 2px;
+	}
+	.btn-download {
+		margin: 0 auto 18px;
+	}
+	.text-color-gray {
+		color: $text-gray;
+		margin-bottom: 10px;
+		display: block;
+	}
 }
 
 #notEnoughMinerals,
 #share {
-    h3 {
-        font-size: $base-fs + 5px;
-        line-height: $base-line-height + 4px;
-        margin-bottom: 27px;
-    }
+	h3 {
+		font-size: $base-fs + 5px;
+		line-height: $base-line-height + 4px;
+		margin-bottom: 27px;
+	}
+}
+
+#infoAboutXims {
+	h2 {
+		font-size: $font-size-h2 + 10px;
+		line-height: $line-height-h2 + 13px;
+		margin-bottom: 39px;
+	}
+	p {
+		font-size: $base-fs + 1px;
+		line-height: $base-line-height + 4px;
+		padding-bottom: 22px;
+	}
+}
+
+#meetupInvite {
+	img {
+		margin-bottom: 21px;
+	}
+	.title {
+		margin-bottom: 59px;
+	}
+	p {
+		padding-bottom: 40px;
+	}
+}
+
+#notHaveMixs {
+	h3 {
+		font-size: $base-fs + 5px;
+	}
+	p {
+		padding-bottom: 40px;
+	}
 }
 
 @media only screen and (max-height: 480px) {
-    .modal-window {
-        overflow: auto;
-    }
+	.modal-window {
+		overflow: auto;
+	}
+}
+
+@media only screen and (max-width: 350px) {
+	#acceptInvite {
+		br {
+			display: none;
+		}
+	}
 }

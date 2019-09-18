@@ -8,9 +8,9 @@
     <div class="main">
         <header class="header">
             <h4 class="header-title">Personal Details</h4>
-            <a href="{{url('/settings')}}" class="header__icon-left">
-                <img src="{{url('img/icons/arrow-back.svg')}}" alt="arrow-back">
-            </a>
+            <span class="header__icon-left">
+                <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" class="settings-icon" /></a>
+            </span>
         </header>
         <main class="personal-details">
             <div class="user__header">

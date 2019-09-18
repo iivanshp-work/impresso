@@ -10,9 +10,6 @@
         <header class="header">
             <h4 class="header-title">Profile</h4>
             <span class="header__icon-right">
-                @if($mode == "me")
-                    <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" /></a>
-                @endif
                 <a href="{{url('/notifications')}}" class="header__icon-right">
                     <img src="{{asset('img/icons/bell.svg')}}" alt="" />
                     @php
@@ -24,6 +21,11 @@
                     @endif
                 </a>
             </span>
+            @if($mode == "me")
+                <span class="header__icon-left">
+                    <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" class="settings-icon" /></a>
+                </span>
+            @endif
         </header>
         <main>
             <div class="user">

@@ -1,7 +1,5 @@
 $(window).on("load", function() {
-	if (
-		/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)
-	) {
+	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
 		$("body").addClass("ios");
 	} else {
 		$("body").addClass("web");
@@ -53,9 +51,7 @@ $(document).ready(function() {
 	$(".tab-navigation__item").click(function() {
 		let dataTab = $(this).data("tab");
 		let getBlock = $(this).closest(".tabs-block");
-		let tabContent = $(
-			".tab-content>div.tab-content__item[data-tab=" + dataTab + "]"
-		);
+		let tabContent = $(".tab-content>div.tab-content__item[data-tab=" + dataTab + "]");
 		getBlock
 			.find(tabContent)
 			.addClass("open")
@@ -117,4 +113,18 @@ $(document).ready(function() {
 	// 		.find("input, textarea")
 	// 		.removeAttr("disabled");
 	// });
+
+	if ($("select").length === 1) {
+		$("select").styler();
+	}
+
+	$(".notifications__arrow>img").click(function() {
+		$(this).toggleClass("rotate");
+		$(this)
+			.parent()
+			.parent()
+			.parent()
+			.find(".notifications__body")
+			.slideToggle();
+	});
 });

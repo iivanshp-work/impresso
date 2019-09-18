@@ -1,0 +1,109 @@
+.meetup {
+	padding: 36px 25px 0;
+	max-width: 450px;
+	margin: 0 auto;
+	&__user {
+		margin: 41px 0 36px;
+		.line {
+			display: inline-block;
+			width: 12px;
+			height: 2px;
+			background-color: $border-violet;
+			@include radius(1px);
+			&:first-of-type {
+				margin-right: 5px;
+			}
+		}
+	}
+	&__circle {
+		position: relative;
+		width: 100px;
+		height: 100px;
+		border: 2.5px solid $border-violet;
+		@include radius(50%);
+	}
+	&__avatar {
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		@include transform(translate(-50%, -50%));
+		@include circle-img(83px, 83px);
+		> img {
+			width: 100%;
+			height: 100%;
+			object-fit: cover;
+		}
+	}
+	&__list {
+		margin-bottom: 10px;
+		> li {
+			position: relative;
+			padding: 12px 40px 12px 0;
+			border-top: 1px solid $border-color-light;
+			&:last-of-type {
+				border-bottom: 1px solid $border-color-light;
+			}
+			.invite {
+				display: block;
+				width: 30px;
+				height: 30px;
+				position: absolute;
+				top: 50%;
+				margin-top: -15px;
+				right: 0;
+			}
+		}
+	}
+
+	.btn-violet {
+		display: flex;
+		margin: 30px auto 10px;
+	}
+
+	&.waiting-invite {
+		.waiting {
+			.line {
+				background-color: $border-color-light;
+			}
+		}
+		.meetup__circle_right {
+			border-color: $border-color-light;
+		}
+		.invite {
+			display: none;
+		}
+		.btn-meetup {
+			display: none;
+		}
+	}
+}
+
+@media only screen and (max-width: 370px) {
+	.meetup {
+		padding: 36px 14px 0;
+		&__user {
+			.line {
+				width: 10px;
+			}
+		}
+		&__circle {
+			width: 88px;
+			height: 88px;
+			border: 2px solid $border-violet;
+		}
+		&__avatar {
+			min-width: 73px;
+			height: 73px;
+			width: 73px;
+		}
+		&__list {
+			> li {
+				padding: 12px 36px 12px 0;
+				.invite {
+					width: 26px;
+					height: 26px;
+				}
+			}
+		}
+	}
+}

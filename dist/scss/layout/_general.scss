@@ -5,8 +5,9 @@ body {
 	background-color: $base-bg;
 	height: 100%;
 	line-height: $base-line-height;
-	font-weight: 300;
+	font-weight: 400;
 	letter-spacing: -0.24px;
+	color: $text-color;
 	position: relative;
 	font-size: $base-fs;
 	-webkit-font-smoothing: antialiased;
@@ -18,7 +19,7 @@ h3,
 h4,
 h5,
 h6 {
-	font-weight: 300;
+	font-weight: 400;
 }
 
 .overflow-hidden {
@@ -29,11 +30,7 @@ h6 {
 
 // background color
 .bg-violet-gradient {
-	background: linear-gradient(
-		180deg,
-		#58138e 0%,
-		rgba(126, 32, 200, 0.39) 100%
-	);
+	background: linear-gradient(180deg, #58138e 0%, rgba(126, 32, 200, 0.39) 100%);
 }
 
 // flex property
@@ -117,7 +114,7 @@ h6 {
 	font-family: $base-font-family;
 	font-size: $font-size-h1;
 	line-height: $line-height-h1;
-	font-weight: 300;
+	font-weight: 400;
 	letter-spacing: 0.41px;
 }
 
@@ -128,7 +125,7 @@ h6 {
 	color: $text-color;
 	font-size: $base-fs + 1px;
 	line-height: normal;
-	font-weight: 300;
+	font-weight: 400;
 	font-style: normal;
 	border: 1px solid transparent;
 	background-color: transparent;
@@ -155,6 +152,10 @@ h6 {
 		color: $text-color;
 		border: 1px solid $black;
 	}
+}
+
+.btn-gray {
+	background-color: $btn-gray;
 }
 
 .btn-white {

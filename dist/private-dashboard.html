@@ -10,9 +10,11 @@
     <meta name="keywords" content="" />
     <!-- <link rel="icon" type="image/x-icon" href="favicon.ico" /> -->
     <!-- fonts google -->
-    <link href="https://fonts.googleapis.com/css?family=Montserrat:300,400&display=swap" rel="stylesheet" />
+    <!-- REPLACED THE FONT -->
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700&display=swap" rel="stylesheet">
     <!-- main style -->
     <link rel="stylesheet" type="text/css" href="css/style.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom-dev.css">
 </head>
 
 <body class="loaded">
@@ -27,7 +29,11 @@
             </span>
         </header>
         <main class="dashboard">
-            <h1 class="title text-center">1.618,03 XIM</h1>
+            <h1 class="title text-center">1.618,03 XIM
+                <button type="button" class="dashboard__btn open-pop-up" data-target="#infoAboutXims">
+                    <img src="img/icons/icon-info.svg" alt="icon info">
+                </button>
+            </h1>
             <div class="cards dashboard__card">
                 <div class="dashboard__header">
                     <span class="dashboard__date">11 Jan, 2019</span>
@@ -203,6 +209,21 @@
                 </div>
             </div>
         </footer>
+    </div>
+
+    <!-- modal window -->
+    <div class="modal-window" id="infoAboutXims">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <h2>What are XIMs?</h2>
+                <p>XIMs are tokens.</p>
+                <p>One XIM is a unit value that exists on IMPRESSO’s blockchain.</p>
+                <p>It’s a cryptocurrency that you can use on IMPRESSO app for making transactions.</p>
+                <button type="button" class="btn btn-border close-modal">
+                    Got it!
+                </button>
+            </div>
+        </div>
     </div>
 
     <div class="load">

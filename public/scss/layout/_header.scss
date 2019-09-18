@@ -18,7 +18,7 @@
 		right: 10px;
 		> img {
 			margin-left: 10px;
-			width: 15px;
+			width: 18px;
 		}
 		> a {
 			display: flex;
@@ -36,8 +36,14 @@
 		position: absolute;
 		bottom: 10px;
 		left: 10px;
+		> a {
+			display: flex;
+		}
 		> img {
 			width: 18px;
+		}
+		.settings-icon {
+			width: 20px;
 		}
 	}
 }

@@ -14,7 +14,7 @@
                 <img src="{{asset('img/icons/arrow-back.svg')}}" alt="arrow-back" />
             </a>
             <span class="header__icon-right">
-                <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" /></a>
+                {{--<a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" /></a>--}}
                 <a href="{{url('/notifications')}}" class="header__icon-right">
                     <img src="{{asset('img/icons/bell.svg')}}" alt="" />
                     @php
