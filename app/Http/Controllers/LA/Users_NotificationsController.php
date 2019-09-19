@@ -97,7 +97,7 @@ class Users_NotificationsController extends Controller
                     if ($this->show_action) {
                         $output = '';
                         if (Module::hasAccess("Users_Notifications", "delete")) {
-                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.users_notifications.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline']);
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.users_notifications.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline', 'class'=>'custom-confirm']);
                             $output .= ' <button title="Delete" class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                             $output .= Form::close();
                         }

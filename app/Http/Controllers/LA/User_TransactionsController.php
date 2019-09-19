@@ -130,7 +130,7 @@ class User_TransactionsController extends Controller
                     if ($this->show_action) {
                         $output = '';
                         if (Module::hasAccess("User_Transactions", "delete")) {
-                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_transactions.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline']);
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_transactions.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline', 'class'=>'custom-confirm']);
                             $output .= ' <button title="Delete" class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                             $output .= Form::close();
                         }

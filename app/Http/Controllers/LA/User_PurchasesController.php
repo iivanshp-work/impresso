@@ -134,7 +134,7 @@ class User_PurchasesController extends Controller
                             $output .= '<a title="View Transaction Reference" href="' . url(config('laraadmin.adminRoute') . '/user_transactions/' . $values[$i]->transaction_id . '' . ($params['selected_user_id'] ? '?selected_user_id='.$params['selected_user_id'] : '')) . '" class="btn btn-success btn-xs margin-r-5" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-eye"></i>&nbsp;<i class="fa fa-money"></i>&nbsp;View</a>';
                         }
                         if (Module::hasAccess("User_Purchases", "delete")) {
-                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_purchases.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline']);
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_purchases.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline', 'class'=>'custom-confirm']);
                             $output .= ' <button title="Delete" class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                             $output .= Form::close();
                         }

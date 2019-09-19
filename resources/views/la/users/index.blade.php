@@ -228,16 +228,7 @@ $(function () {
         frm.append('<input type="hidden" name="action" value="export">');
         frm.submit();
     });
-	$(document).on('click change', 'form.custom-confirm .btn', function(e) {
-	   e.preventDefault();
-	   var frm = $(this).closest('form');
-	   var confirmText = 'Are you sure you want to delete this record?';
-        if(confirm(confirmText))
-        {
-            frm.submit();
-        }
-        return;
-    });
+
 });
 </script>
 @endpush

@@ -101,7 +101,7 @@ class PromosController extends Controller
                         }
 
                         if(Module::hasAccess("Promos", "delete")) {
-                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.promos.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.promos.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline', 'class'=>'custom-confirm']);
                             $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                             $output .= Form::close();
                         }

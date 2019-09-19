@@ -236,7 +236,7 @@ class Buy_CreditsController extends Controller
 				}
 				
 				if(Module::hasAccess("Buy_Credits", "delete")) {
-					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.buy_credits.destroy', $data->data[$i][0]], 'method' => 'delete', 'style'=>'display:inline']);
+					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.buy_credits.destroy', $data->data[$i][0]], 'method' => 'delete', 'style'=>'display:inline', 'class'=>'custom-confirm']);
 					$output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
 					$output .= Form::close();
 				}

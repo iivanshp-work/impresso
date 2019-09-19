@@ -87,7 +87,7 @@ class Meetup_reasonsController extends Controller
                         }
 
                         if(Module::hasAccess("Meetup_reasons", "delete")) {
-                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.meetup_reasons.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline']);
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.meetup_reasons.destroy', $values[$i]->id], 'method' => 'delete', 'style'=>'display:inline', 'class'=>'custom-confirm']);
                             $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                             $output .= Form::close();
                         }

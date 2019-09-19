@@ -111,7 +111,7 @@ class User_EducationsController extends Controller
                         }
 
                         if (Module::hasAccess("User_Educations", "delete")) {
-                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_educations.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline']);
+                            $output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.user_educations.destroy', $values[$i]->id], 'method' => 'delete', 'style' => 'display:inline', 'class'=>'custom-confirm']);
                             $output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
                             $output .= Form::close();
                         }
