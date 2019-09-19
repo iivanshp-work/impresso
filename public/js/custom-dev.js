@@ -1512,9 +1512,4 @@ $document.ready(function(){
             return false;
         }
     }*/
-
-    /*
-        $(#txtid).bind("paste input’,function(){
-        $(this).val ( $(this).val().replace (/[<>]/g ,"")  )
-        });*/
 });
