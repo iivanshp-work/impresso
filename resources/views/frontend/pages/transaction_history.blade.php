@@ -8,7 +8,7 @@
     <div class="main">
         <header class="header">
             <h4 class="header-title">Transaction History</h4>
-            <a href="{{url()->previous()}}" class="header__icon-left">
+            <a href="{{url()->previous() != url()->current() ? url()->previous() : url('/profile')}}" class="header__icon-left">
                 <img src="{{url('img/icons/arrow-back.svg')}}" alt="arrow-back">
             </a>
             <a href="{{url('/notifications')}}" class="header__icon-right">

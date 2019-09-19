@@ -10,7 +10,7 @@
         <header class="header">
             <h4 class="header-title">Edit Profile</h4>
 
-            <a href="{{url()->previous()}}" class="header__icon-left back-btn" data-back-btn="" data-current-step="1">
+            <a href="{{url()->previous() != url()->current() ? url()->previous() : url('/profile')}}" class="header__icon-left back-btn" data-back-btn="" data-current-step="1">
                 <img src="{{asset('img/icons/arrow-back.svg')}}" alt="arrow-back" />
             </a>
             <span class="header__icon-right">

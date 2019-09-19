@@ -11,7 +11,7 @@
             <a href="{{url('/notifications')}}" class="header__icon-right icon-bell">
                 <img src="{{asset('img/icons/arror-circle.svg')}}" alt="arror-circle" />
             </a>
-            <a href="{{url()->previous()}}" class="header__icon-left">
+            <a href="{{url()->previous() != url()->current() ? url()->previous() : url('/profile')}}" class="header__icon-left">
                 <img src="{{asset('img/icons/arrow-back.svg')}}" alt="arrow-back" />
             </a>
         </header>
