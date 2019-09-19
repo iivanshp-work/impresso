@@ -184,11 +184,13 @@ $document.ready(function(){
             success: function(response){
                 if($('#allowLocationAccess').length){
                     $('#allowLocationAccess .close-modal').trigger('click');
+                    if ($('.location-page').length){
+                        redirect(window.location);
+                    }
                 }
                 if($('.user__info .location_title_field').length){
                     $('.user__info .location_title_field').text(response.user_address);
                 }
-
             },
             error: function(){
                 //showError("API Geolocation error2!");
