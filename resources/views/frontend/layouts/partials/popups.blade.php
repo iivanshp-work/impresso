@@ -148,12 +148,31 @@
                 <button data-allow-location="" type="button" class="btn btn-violet">
                     Allow
                 </button>
-                <button type="button" class="btn btn-border close-modal">
-                    Cancel
+                <button type="button" class="btn btn-border open-pop-up" data-target="#allowLocationTellMeMore">
+                    Tell Me More
+                </button>
+                <button type="button" class="btn btn-border close-modal hide">
+                    Close
                 </button>
             </div>
         </div>
     </div>
     <button class="btn btn-violet open-pop-up hide allowLocationAccess" data-target="#allowLocationAccess">Location</button>
+
+    <div class="modal-window" id="allowLocationTellMeMore">
+        <div class="modal-window__content">
+            <div class="modal-window__body location text-center">
+                <h3 class="location__title" style="line-height: 41px;">
+                    Connect And Meet<br/> Professionals Nearby.
+                </h3>
+                <p style="margin-top: 58px;padding-bottom: 40px;">
+                    Your location will be used to show you other professionals near to you.
+                </p>
+                <button type="button" class="btn btn-border close-modal">
+                    Got It!
+                </button>
+            </div>
+        </div>
+    </div>
 @endif
 @stack('popups')
