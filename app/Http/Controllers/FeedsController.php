@@ -44,7 +44,6 @@ class FeedsController extends Controller
         $jobAd = Jobs_AD::notDeleted()->active()->orderBy('id', 'desc')->limit(1)->first();
 
         $promos = Promo::notDeleted()->withImage()->active()->orderBy('id', 'desc')->limit($this->paginationLimit)->get();
-
         $professionals = User::withDistance($userData)->notDeleted()->users()->notMe()->where('is_verified', '1')->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($professionals->count() == 0) $professionals = null;
 
