@@ -102,7 +102,10 @@
                     </div>
                 @endforeach
             @else
-                <h1 class="title text-center no-records">There are no records yet.</h1>
+                <div class="text-center">
+                    <a href="{{url('/settings/credits')}}" class="btn btn-violet">Buy {{getenv('CREDITS_LABEL')}}</a>
+                </div>
+                <h1 class="title text-center no-records">No transaction history yet.</h1>
             @endif
 
         </main>
@@ -116,9 +119,9 @@
         <div class="modal-window__content">
             <div class="modal-window__body text-center">
                 <h2>What are XIMs?</h2>
-                <p>XIMs are tokens.</p>
-                <p>One XIM is a unit value that exists on IMPRESSO’s blockchain.</p>
-                <p>It’s a cryptocurrency that you can use on IMPRESSO app for making transactions.</p>
+                <p>XIMs are Credits</p>
+                <p>You can use XIMs for meetups and for document validation.</p>
+                <p>You also earn XIMs when you first sign up and when you go to a meetup !</p>
                 <button type="button" class="btn btn-border close-modal">
                     Got it!
                 </button>

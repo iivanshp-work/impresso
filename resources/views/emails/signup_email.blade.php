@@ -1,8 +1,15 @@
-You registered in the <a href="{{ url('/') }}"> Impresso </a> system. <br> <br>
+Dear "{{$user->email}}"<br> <br>
 
-Your login-data: <br> <br>
+Thank you joining IMPRESSO.<br>
+Your password is: {{$password}}<br><br>
 
-Email: {{$user->email}} <br>
-Password: {{$password}} <br> <br>
+Please complete your Professional Profile to start meeting up with other Professionals close to you.  Market research shows that over 80% of jobs and business deals are closed through referrals. Setup your impressive profile today to start meeting up.<br><br>
 
-You can enter: <a href="{{ url('/sign-in') }}"> {{str_replace ("http: //", "", url ('/ sign-in'))}} </a> . <br> <br>
+Thank you again for your trust and support in IMPRESSO.<br><br>
+
+- Jian Yuan Lok<br>
+Co-founder<br><br>
+
+IMPRESSO - A Face to Face Professional Networking App that allows for users to meetup in person with other professionals. No swiping or messaging required.<br>
+IMPRESSO is Designed in Switzerland by Impresso Labs  www.impressoapp.com<br>
+We want to make IMPRESSO better for you, please give us your feedback <a href="https://www.impressolabs.io/feedback">HERE</a>.<br>
