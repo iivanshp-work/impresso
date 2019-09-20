@@ -592,7 +592,7 @@ $document.ready(function(){
                         }
                     }else if(response.keyword){
                         wrapper.empty();
-                        wrapper.append("<div class='text-center'>No record found.</div>");
+                        wrapper.append("<div class='text-center'>No records found.</div>");
                     }
                 }
             },
