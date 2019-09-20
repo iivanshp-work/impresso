@@ -582,7 +582,9 @@ $document.ready(function(){
                         }
                         wrapper.append(response.html);
                         if(needloadmore || response.page == 1){
-                            if(type == 'jobs'){
+                            if(type == 'promos'){
+                                loadMorePromos();
+                            } else if(type == 'jobs'){
                                 loadMoreJobs();
                             }else{
                                 loadMoreProfessionals();
@@ -712,8 +714,61 @@ $document.ready(function(){
         });
     }
 
+    //load more for promos
+    function loadMorePromos(){
+        $('[data-load-more-promos]').each(function(){
+            let element = $(this), container = $(this).parent(), win = $(window), busy = false, errors = 0, retry = 3;
+            let frm = $('[data-feeds-search-form]'), targetLink = base_url + '/feeds';
+
+            function error(){
+                errors++;
+                if(errors >= retry) unbind();
+            }
+
+            function unbind(){
+                win.unbind('scroll resize orientationchange', check);
+                needloadmore = 1;
+            }
+
+            function check(){
+                let type = frm.find('[data-feeds-search-type]').val();
+                if(type != 'promos') return;
+                if(container.offset().top + container.height() > win.scrollTop() + win.height()) return;
+                if(busy) return;
+                busy = true;
+                loadingStart();
+                $.ajax({
+                    url: targetLink,
+                    type: 'post',
+                    data: frm.serialize(),
+                    dataType: 'json',
+                    success: function(response){
+                        if(response.html){
+                            container.find('[data-page="' + response.page + '"]').remove();
+                            container.append(response.html);
+                            element = container.find("[data-load-more-promos]").last();
+                            let page = response.page || frm.find('[data-feeds-search-page]').val();
+                            $('[data-feeds-search-page]').val((parseInt(page) + 1));
+                        }else error();
+
+                        if(response.has_more) check();
+                        else unbind();
+                    },
+                    error: error,
+                    complete: function(response){
+                        busy = false;
+                        loadingEnd();
+                    }
+                });
+            }
+
+            win.bind('scroll resize orientationchange', check);
+            check();
+        });
+    }
+
     //default jobs check
-    loadMoreJobs();
+    loadMoreProfessionals();
     //feeds end
 
     //profile start
