@@ -20,7 +20,7 @@ use Illuminate\Support\Facades\Auth;
  */
 class FeedsController extends Controller
 {
-    private $paginationLimit = 2;
+    private $paginationLimit = 5;
 
     /**
      * Create a new controller instance.

@@ -43,7 +43,6 @@
                     {{--<div class="tab-content__item open jobs-wrapper">
                         @include('frontend.pages.includes.feeds_jobs_items')
                     </div>--}}
-
                     <div class="tab-content__item open promos-wrapper">
                         @include('frontend.pages.includes.feeds_promos_items')
                     </div>
