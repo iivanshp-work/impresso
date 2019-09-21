@@ -1569,4 +1569,10 @@ $document.ready(function(){
             return false;
         }
     }*/
+    $(".closeAllowLocationTellMeMore").click(function(e) {
+        console.log($(this));
+        $(this).closest(".modal-window")
+            .fadeOut(400)
+            .removeClass("show");
+    });
 });
