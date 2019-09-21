@@ -123,7 +123,7 @@ class FeedsController extends Controller
                 if (!$radius) {
                     $radius = 100;
                 }
-                $professionals = User::withDistance($userData)
+                $query = User::withDistance($userData)
                     ->notDeleted()
                     ->users()
                     ->notMe()
@@ -137,12 +137,15 @@ class FeedsController extends Controller
                         $query->orWhere("top_skills", "like", "%" . $keyword . "%");
                         $query->orWhere("soft_skills", "like", "%" . $keyword . "%");
                         $query->orWhere("impress", "like", "%" . $keyword . "%");
-                    })
-                    ->isWithinMaxDistance($userData, $radius)
-                    ->orderBy('distance')
+                    });
+                if (!$keyword) {
+                    $query = $query->isWithinMaxDistance($userData, $radius);
+                }
+                $query = $query->orderBy('distance')
                     ->offset($offset)
-                    ->limit($this->paginationLimit)
-                    ->get();
+                    ->limit($this->paginationLimit);
+
+                $professionals = $query->get();
                 if ($professionals->count() == 0) $professionals = null;
                 $html = view('frontend.pages.includes.feeds_professionals_items', [
                     'professionals' => $professionals,

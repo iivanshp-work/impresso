@@ -168,7 +168,7 @@
                 <p style="margin-top: 58px;padding-bottom: 40px;">
                     Your location will be used to show you other professionals near to you.
                 </p>
-                <button type="button" class="btn btn-border close-modal">
+                <button type="button" class="btn btn-border closeAllowLocationTellMeMore">
                     Got It!
                 </button>
             </div>

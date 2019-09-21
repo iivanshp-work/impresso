@@ -1554,6 +1554,14 @@ $document.ready(function(){
     });
     //phone number validation end
 
+    //allow location tell me more start
+	$(".closeAllowLocationTellMeMore").click(function(e) {
+        $(this).closest(".modal-window")
+            .fadeOut(400)
+            .removeClass("show");
+    });
+    //allow location tell me more end
+
     //meetup start
     $document.on('click', '.meetup__list [data-meetup-reason-id]', function(e){
         e.preventDefault();

@@ -28,7 +28,8 @@ class UserRedirects
                 '/push-notification-token',
                 '/files',
                 '/admin',
-                '/check_unique_val'
+                '/check_unique_val',
+                '/phone-validation'
             ];
             $skipPathsLogin = [
                 '/check_unique_val',
