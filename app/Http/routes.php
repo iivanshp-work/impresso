@@ -31,10 +31,18 @@ Route::get('profile', 'ProfileSettingsController@profilePage')->name('profile');
 Route::get('profile/edit', 'ProfileSettingsController@profileEditPage')->name('profile_edit');
 Route::post('profile/edit', 'ProfileSettingsController@profileEdit')->name('profile_edit_post');
 Route::get('profile/{id}', 'ProfileSettingsController@profilePage')->name('profile_other');
+
+/* profile meetup */
+Route::get('profile/{id}/meetup', 'ProfileSettingsController@meetupPage')->name('meetup');
+Route::post('profile/{id}/meetup', 'ProfileSettingsController@meetup')->name('meetup_post');
+
+/* diff rules */
 Route::get('transaction-history', 'ProfileSettingsController@transactionHistoryPage')->name('transaction_history');
 Route::post('save-geo-data', 'ProfileSettingsController@saveGeo')->name('save_geo_post');
 Route::post('save-share', 'ProfileSettingsController@saveShare')->name('save_share_post');
 Route::post('save-push-notification-token', 'ProfileSettingsController@savePushNotificationToken')->name('save_push_notification_token_post');
+
+/* phone-validation */
 Route::get('phone-validation', 'ProfileSettingsController@phoneValidationPage')->name('phone-validation');
 Route::post('phone-validation', 'ProfileSettingsController@phoneValidation')->name('phone-validation_post');
 
@@ -46,6 +54,7 @@ Route::get('settings/credits', 'ProfileSettingsController@settingsCreditsPage')-
 Route::get('settings/credits/checkout', 'ProfileSettingsController@settingsCreditsCheckoutPage')->name('settings_credits_checkout');
 Route::post('settings/credits/checkout', 'ProfileSettingsController@settingsCreditsCheckout')->name('settings_credits_checkout_post');
 
+/* notifications */
 Route::get('notifications', 'NotificationsController@notificationsPage')->name('notifications');
 
 /* feeds */

@@ -1548,25 +1548,27 @@ $document.ready(function(){
             }
         });
     });
-    //phone number validation end
 
     $document.on('paste input', '[data-form-number-form] [name="phone_number"]', function(e){
         $(this).val($(this).val().replace(/[a-zA-Z\_\*\!\@\#\$\%\^&\*]/g ,"").replace(/\s\s+/g, ' ').replace(/\+\++/g, '+').replace(/--+/g, '-'));
     });
+    //phone number validation end
 
-    /*$document.on('change blur', '[data-form-number-form] [name="phone_number"]', function(e){
-        phonenumber($(this));
+    //meetup start
+    $document.on('click', '.meetup__list [data-meetup-reason-id]', function(e){
+        e.preventDefault();
+        let id = parseInt($(this).data('meetup-reason-id'));
+        console.log(id);
+        if ($(this).hasClass('active-reason')) {
+            $(this).removeClass('active-reason');
+            $('.meetup-wrapper').addClass('waiting-invite');
+            $('[data-meetup-form] [data-meetup-reason]').val('');
+        } else {
+            $(".meetup__list [data-meetup-reason-id]").removeClass('active-reason');
+            $(this).addClass('active-reason');
+            $('.meetup-wrapper').removeClass('waiting-invite');
+            $('[data-meetup-form] [data-meetup-reason]').val(id);
+        }
     });
-
-    function phonenumber(This) {
-        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-        //var phoneno = /^(\([0-9]{3}\)\s*|[0-9]{3}\-)[0-9]{3}-[0-9]{4}$/;
-        if(This.val().match(phoneno)) {
-            return true;
-        }
-        else {
-            alert("error");
-            return false;
-        }
-    }*/
+    //meetup end
 });

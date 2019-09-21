@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Buy_Credit;
 use App\Models\Country;
 use App\Models\Location;
+use App\Models\Meetup_reason;
 use App\Models\User_certification;
 use App\Models\User_Education;
 use App\Models\User_Purchase;
@@ -878,4 +879,72 @@ class ProfileSettingsController extends Controller
         }
     }
 
+    /**
+     * Meetup
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function meetup(Request $request) {
+        $responseData = [
+            'has_error' => false,
+            'message' => ''
+        ];
+        $rules = array(
+            'full_name_birth' => 'required|string',
+            'email' => 'required|email',
+            'phone' => 'regex:/^[\+0-9\- ]{5,18}$/'
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $responseData['has_error'] = true;
+            $messages = $validator->errors();
+            foreach ($messages->all() as $message) {
+                $responseData['message'] .= $message . '<br>';
+            }
+        } else {
+            $id = Auth::id();
+            $user = UserModel::find($id);
+            $user->full_name_birth = $request->has('full_name_birth') ? trim($request->input('full_name_birth')) : '';
+            $user->email = $request->has('email') ? trim($request->input('email')) : '';
+            $user->phone = $request->has('phone') ? trim($request->input('phone')) : '';
+            $user->address = $request->has('address') ? trim($request->input('address')) : '';
+            $user->address2 = $request->has('address2') ? trim($request->input('address2')) : '';
+            $user->city = $request->has('city') ? trim($request->input('city')) : '';
+            try {
+                $checkUser = User::where('email', '=', $user->email)->notMe()->users()->NotDeleted()->first();
+                if ($checkUser) {
+                    $responseData['has_error'] = true;
+                    $responseData['message'] .= 'User with entered email already exists.';
+                } else {
+                    if ($user->save()) {
+                        $responseData['message'] = 'Personal data successfully saved.';
+                    } else {
+                        $responseData['has_error'] = true;
+                        $responseData['message'] .= 'An error occurred while saving data.' . '<br>';
+                    }
+                }
+            } catch (\Exception $e) {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= $e->getMessage() . '<br>';
+            }
+        }
+        return response()->json($responseData);
+    }
+
+    /**
+     * Meetup Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function meetupPage(Request $request, $id = '') {
+        $user = Auth::user();
+        $userData = User::where('id', '=', $id)->first();
+
+        $reasons = Meetup_reason::all();
+        return view('frontend.pages.meetup', [
+            'user' => $user,
+            'userData' => $userData,
+            'reasons' => $reasons,
+        ]);
+    }
 }

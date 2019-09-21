@@ -53,7 +53,7 @@
                         </span>
                     @endif
                 </div>
-                <h4 class="user__name">@if($userData->name){{$userData->name}}@else @if ($mode == 'me'){{'Name'}}@else{{'None'}}@endif @endif</h4>
+                <h4 class="user__name">@if($userData->name){{$userData->name}}@else @if ($mode == 'me'){{'None Name'}}@else{{$userData->email}}@endif @endif</h4>
                 @if ($mode == 'me')
                     <div class="job-title">
                         <span>
@@ -81,6 +81,16 @@
                         <a href="https://www.impressolabs.io/meetups/">@if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif Meetups</a>
                     </p>
                 </div>
+
+                @if ($mode != 'me')
+                    <!-- style button -->
+                    <div class="user__meetup-btn text-center">
+                        <a href="{{url('/profile/' . $userData->id . '/meetup')}}" class="btn btn-violet btn-meetup">Meetup</a>
+                        {{--<button type="submit" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>
+                        <button type="submit" class="btn btn-violet btn-meetup-connected">Connected</button>--}}
+                    </div>
+                    <!-- style button -->
+                @endif
                 <div class="cards user__card">
                     <h5 class="user__card_title">Basic Information</h5>
                     <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
