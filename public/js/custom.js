@@ -4,7 +4,16 @@ $(window).on("load", function() {
 	} else {
 		$("body").addClass("web");
 	}
-	$("body").removeClass("loaded");
+	if ($('.data-load-wrapper').length) {
+		$('.data-load-wrapper').click(function(e){
+			$("body").removeClass("loaded");
+		});
+		setTimeout(function (){
+			$("body").removeClass("loaded");
+		}, 4000);
+	} else {
+		$("body").removeClass("loaded");
+	}
 });
 
 $(document).ready(function() {
@@ -16,7 +25,7 @@ $(document).ready(function() {
 	$(".slider").slick({
 		arrows: false,
 		dots: true,
-		infinite: true,
+		infinite: false,
 		speed: 400,
 		slidesToShow: 1,
 		slidesToScroll: 1,
@@ -97,15 +106,15 @@ $(document).ready(function() {
 	});
 
 	// edit profile
-	$("#edit-profile").click(function() {
-		$(".user").addClass("edit-profile");
-		$(".header-title").text("Edit Profile");
-	});
+	//$("#edit-profile").click(function() {
+	//	$(".user").addClass("edit-profile");
+	//	$(".header-title").text("Edit Profile");
+	//});
 
-	$("#save").click(function() {
-		$(".user").removeClass("edit-profile");
-		$(".header-title").text("Profile");
-	});
+	//$("#save").click(function() {
+	//	$(".user").removeClass("edit-profile");
+	//	$(".header-title").text("Profile");
+	//});
 
 	// $(".edit-info").click(function() {
 	// 	$(this)

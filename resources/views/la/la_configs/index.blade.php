@@ -96,6 +96,11 @@
 				<input type="text" class="form-control" placeholder="Meetup Accept Invite - Credits Amount(XIMS)" maxlength="100" name="accepted_invite_xims_amount" value="{{$configs->accepted_invite_xims_amount}}">
 			</div>
 
+			<div class="form-group">
+				<label>Feeds Professionals radius(KM)</label>
+				<input type="text" class="form-control" placeholder="Feeds Professionals radius" maxlength="100" name="professionals_radius" value="{{$configs->professionals_radius}}">
+			</div>
+
             <div class="form-group">
                 <label>New Jobs notification radius(KM)</label>
                 <input type="text" class="form-control" placeholder="New Jobs notification radius" maxlength="100" name="new_jobs_radius" value="{{$configs->new_jobs_radius}}">

@@ -13,7 +13,7 @@ use App\Models\Promo;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-
+use Dwij\Laraadmin\Models\LAConfigs;
 /**
  * Class HomeController
  * @package App\Http\Controllers
@@ -44,7 +44,20 @@ class FeedsController extends Controller
         $jobAd = Jobs_AD::notDeleted()->active()->orderBy('id', 'desc')->limit(1)->first();
 
         $promos = Promo::notDeleted()->withImage()->active()->orderBy('id', 'desc')->limit($this->paginationLimit)->get();
-        $professionals = User::withDistance($userData)->notDeleted()->users()->notMe()->where('is_verified', '1')->orderBy('distance')->limit($this->paginationLimit)->get();
+
+        $radius = LAConfigs::getByKey('professionals_radius');
+        if (!$radius) {
+            $radius = 100;
+        }
+        $professionals = User::withDistance($userData)
+            ->notDeleted()
+            ->users()
+            ->notMe()
+            ->where('is_verified', '1')
+            ->orderBy('distance')
+            ->limit($this->paginationLimit)
+            ->isWithinMaxDistance($userData, $radius)
+            ->get();
         if ($professionals->count() == 0) $professionals = null;
 
         return view('frontend.pages.feeds', [
@@ -106,6 +119,10 @@ class FeedsController extends Controller
                 break;
 
             case 'professionals':
+                $radius = LAConfigs::getByKey('professionals_radius');
+                if (!$radius) {
+                    $radius = 100;
+                }
                 $professionals = User::withDistance($userData)
                     ->notDeleted()
                     ->users()
@@ -121,6 +138,7 @@ class FeedsController extends Controller
                         $query->orWhere("soft_skills", "like", "%" . $keyword . "%");
                         $query->orWhere("impress", "like", "%" . $keyword . "%");
                     })
+                    ->isWithinMaxDistance($userData, $radius)
                     ->orderBy('distance')
                     ->offset($offset)
                     ->limit($this->paginationLimit)
