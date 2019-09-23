@@ -6,6 +6,7 @@
 
 namespace App;
 
+use App\Models\Meetup;
 use App\Models\Notification;
 use Carbon\Carbon;
 use Illuminate\Auth\Authenticatable;
@@ -210,6 +211,59 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
     public function transactions()
     {
         return $this->hasMany('App\Models\User_Transaction')->notDeleted()->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function meetups()
+    {
+        $id = $this->id;
+        return Meetup::notDeleted()
+            ->where(function ($query) use ($id) {
+                $query->orWhere(function ($query2) use ($id) {
+                    $query2->where("user_id_invited", "=", $id);
+                });
+                $query->orWhere(function ($query2) use ($id) {
+                    $query2->where("user_id_inviting", "=", $id);
+                });
+            })
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function lastMeetup()
+    {
+        $id = $this->id;
+        return Meetup::notDeleted()
+        ->where(function ($query) use ($id) {
+            $query->orWhere(function ($query2) use ($id) {
+                $query2->where("user_id_invited", "=", $id);
+            });
+            $query->orWhere(function ($query2) use ($id) {
+                $query2->where("user_id_inviting", "=", $id);
+            });
+        })
+        ->orderBy('created_at', 'desc')
+        ->first();
+    }
+
+    public function meetup($id = null)
+    {
+        if (!$id) $id = $this->id;
+        if (!$id) return null;
+        return Meetup::notDeleted()
+            ->where(function ($query) use ($id) {
+                $query->orWhere(function ($query2) use ($id) {
+                    $query2->where("user_id_inviting", "=", Auth::id());
+                    $query2->where("user_id_invited", "=", $id);
+                });
+                $query->orWhere(function ($query2) use ($id) {
+                    $query2->where("user_id_inviting", "=", $id);
+                    $query2->where("user_id_invited", "=", Auth::id());
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->first();
     }
 
     /**

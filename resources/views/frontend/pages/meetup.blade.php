@@ -17,8 +17,8 @@
                     <img src="{{asset('img/icons/exclamation-mark.svg')}}" alt="" class="bell-exclamation">
                 @endif
             </a>
-            <a href="{{url()->previous() != url()->current() ? url()->previous() : url('/profile/' . $user->id)}}" class="header__icon-left">
-                <img src="{{url('img/icons/arrow-back.svg')}}" alt="arrow-back">
+            <a href="{{url()->previous() != url()->current() ? url()->previous() : url('/profile/' . $userData->id)}}" class="header__icon-left">
+                <img src="{{asset('img/icons/arrow-back.svg')}}" alt="arrow-back">
             </a>
         </header>
         <main>
@@ -77,6 +77,55 @@
 @endsection
 
 @push('popups')
+
+    <div class="modal-window" id="meetupCost" data-meetupCost-popup="">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <p>A Meetup will cost you {{LAConfigs::getByKey('invite_xims_amount')}} XIMs. </p>
+                <p>Once the Meetup is accepted, mobile numbers will be exchanged.</p>
+                <button type="button" class="btn btn-violet" data-submit-meetup-invite-btn="">
+                    Continue
+                </button>
+                <button type="button" class="btn btn-border close-modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-violet open-pop-up hide" btn-meetupCost-popup="" data-target="#meetupCost">Meetup will cost</button>
+
+    <div class="modal-window" id="meetupInvite" data-meetupInviteSuccess-popup="">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <img src="{{asset('img/icons/like.png')}}" alt="like" class="modal-window__img-top" />
+                <h3 class="title">Awesome!</h3>
+                <p>We will notify you when the meetup invite was accepted, together with the invitee’s phone number.</p>
+                <a href="{{url('/profile/' . $userData->id)}}" class="btn btn-violet">
+                    Close
+                </a>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-violet open-pop-up hide" btn-meetupInviteSuccess-popup="" data-target="#meetupInvite">Meetup invite</button>
+
+    <div class="modal-window" id="notHaveMixs" data-notHaveXims-popup="">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <h3 class="mb-34">Uh-oh!</h3>
+                <p>
+                    Looks like you don’t have enough XIMs.
+                </p>
+                <a href="{{url('/settings/credits')}}" type="button" class="btn btn-violet">
+                    Buy XIMs
+                </a>
+                <button type="button" class="btn btn-border close-modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-violet open-pop-up hide" btn-notHaveXims-popup="" data-target="#notHaveMixs">Don't have XIMs</button>
+
 @endpush
 
 @push('styles')

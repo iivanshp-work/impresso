@@ -61,6 +61,12 @@
                     </div>--}}
 
                     @foreach($notifications as $notification)
+                        @php
+                            if (isset($notification->type) && ($notification->type == 'meetup_wants' || $notification->type == 'meetup_accepted' || $notification->type == 'meetup_declined')) {
+                                $meetup = App\Models\Meetup::find($notification->reference_id);
+                                if (!$meetup) continue;
+                            }
+                        @endphp
                         <div class="cards notifications__card" data-type="{{isset($notification->type) ? $notification->type : 'admin_general_not'}}">
                             <div class="notifications__header">
                                 <div class="notifications__arrow d-flex justify-content-between">
@@ -78,9 +84,9 @@
                                                 @endif
                                             @endif
                                     @endif
-                                    {{--@if ($notification->type == 'meetup_wants' || $notification->type == 'meetup_accepted')
+                                    @if (isset($notification->type) && ($notification->type == 'meetup_wants' || $notification->type == 'meetup_accepted' || $notification->type == 'meetup_declined'))
                                         <img src="{{asset('img/icons/arrow-down.svg')}}" alt="">
-                                    @endif--}}
+                                    @endif
                                 </div>
                                 @if(isset($notification->user_id))
                                     @if ($notification->type == 'no_xims')
@@ -173,6 +179,18 @@
                                             </p>
                                         </div>
                                     @elseif ($notification->type == 'meetup_wants')
+                                        <div class="d-flex align-items-center">
+                                            <a href="{{url('/profile/' . $meetup->user_id_inviting)}}" class="avatar">
+                                                @if ($meetup->invitingUser->photo)
+                                                    <img src="{{url('/files/' . $meetup->invitingUser->photo . '?s=200')}}" alt="" />
+                                                @else
+                                                    <img src="{{asset('img/icons/icon-user.png')}}" alt="" />
+                                                @endif
+                                            </a>
+                                            <a href="{{url('/profile/' . $meetup->user_id_inviting)}}">
+                                                <p>{{$meetup->invitingUser->name ? $meetup->invitingUser->name : $meetup->invitingUser->email}} | Meetup Invitation <span>16:09</span></p>
+                                            </a>
+                                        </div>
                                     @elseif ($notification->type == 'meetup_accepted')
                                     @elseif ($notification->type == 'app_rating')
                                     @endif
@@ -187,6 +205,17 @@
                                     </div>
                                 @endif
                             </div>
+                            @if (isset($notification->type))
+                                @if ($notification->type == 'meetup_wants')
+                                    <div class="notifications__body">
+                                        @if ($meetup->meetupReason->title)
+                                            <span>Reason for invite:</span>
+                                            <p>{{$meetup->meetupReason->title}}</p>
+                                        @endif
+                                        <p>Accept to receive {{$notification->notification_text}} XIMs.</p>
+                                    </div>
+                                @endif
+                            @endif
                         </div>
                     @endforeach
                 </div>

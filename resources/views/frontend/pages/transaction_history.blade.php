@@ -61,6 +61,8 @@
                                         @else
                                             <a href="javascript:void(0);">Certificate Validation</a>
                                         @endif
+                                    @elseif($userTransaction->type == 'meetup_inviting')
+                                        <a href="{{url('/profile/' . $userTransaction->meetup->user_id_invited)}}">{{$userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name :$userTransaction->meetup->invitedUser->email }} {!!$userTransaction->meetup->invitedUser->job_title ? '<span>' . $userTransaction->meetup->invitedUser->job_title . '</span>' : ''!!}</a>
                                     @elseif($userTransaction->type == 'other')
                                         <a href="javascript:void(0);">{{'Impresso Labs'}}</a>
                                     @endif
@@ -95,6 +97,9 @@
                                 @else
                                     <p>Certificate validation</p>
                                 @endif
+                            @elseif($userTransaction->type == 'meetup_inviting')
+                                <p>You have used {{abs($userTransaction->amount)}}  for inviting {{$userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name : $userTransaction->meetup->invitedUser->email}} to Meetup.</p>
+                                <p>Meetup: {{$userTransaction->meetup->statusLabel}}</p>
                             @elseif($userTransaction->type == 'other')
                                 <p>{{$userTransaction->notes}}</p>
                             @endif
