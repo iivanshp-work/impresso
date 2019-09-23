@@ -1586,6 +1586,7 @@ $document.ready(function(){
         openMeetupPopup('meetupCost');
     });
 
+    //submit meetup
     $('[data-submit-meetup-invite-btn]').on('click change', function(e){
         e.preventDefault();
         let btn = $(this), targetLink = window.location;
@@ -1616,6 +1617,38 @@ $document.ready(function(){
             complete: function(){
                 loadingEnd();
                 btn.data("busy", false);
+            }
+        });
+    });
+
+    //check invite meetup
+    $('[data-meetup-invite]').on('click change', function(e){
+        e.preventDefault();
+        let btn = $(this), targetLink = base_url + '/meetup';
+        let id = parseInt(btn.data('meetup-id')), type = btn.data('meetup-invite');
+        //send request to server
+        if (btn.data("busy")) return;
+        $('[data-meetup-invite]').data("busy", true);
+        loadingStart();
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            dataType: 'json',
+            data: {id: id, type: type},
+            success: function(response){
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.', 'Error');
+                }else{
+                    closeMeetupPopup('acceptInvite');
+                    openMeetupPopup('acceptInviteSuccess')
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                $('[data-meetup-invite]').data("busy", false);
             }
         });
     });

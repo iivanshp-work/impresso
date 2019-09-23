@@ -35,6 +35,7 @@ Route::get('profile/{id}', 'ProfileSettingsController@profilePage')->name('profi
 /* profile meetup */
 Route::get('profile/{id}/meetup', 'ProfileSettingsController@meetupPage')->name('meetup');
 Route::post('profile/{id}/meetup', 'ProfileSettingsController@meetup')->name('meetup_post');
+Route::post('meetup', 'ProfileSettingsController@meetup')->name('meetup_post');
 
 /* diff rules */
 Route::get('transaction-history', 'ProfileSettingsController@transactionHistoryPage')->name('transaction_history');

@@ -85,7 +85,15 @@
                 @if ($mode != 'me')
                     <!-- style button -->
                     <div class="user__meetup-btn text-center">
+                        @if (!$meetup || ($meetup && $meetup->status == 3)) {{--failed-declined meetup--}}
                         <a href="{{url('/profile/' . $userData->id . '/meetup')}}" class="btn btn-violet btn-meetup">Meetup</a>
+                        @elseif ($meetup && $meetup->status == 2)
+                            <button type="button" class="btn btn-violet btn-meetup-connected">Connected</button>
+                        @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_inviting == $user->id)
+                            <button type="button" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>
+                        @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_invited == $user->id)
+                            <button type="button" class="btn btn-violet open-pop-up" data-target="#acceptInvite" data-meetup-check-invite="">Check invite</button>
+                        @endif
                         {{--<button type="submit" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>
                         <button type="submit" class="btn btn-violet btn-meetup-connected">Connected</button>--}}
                     </div>
@@ -430,6 +438,43 @@
             </div>
         </div>
     @endif
+
+    @if ($mode != 'me' && $meetup && $meetup->status == 1 && $meetup->user_id_invited == $user->id)
+        <div class="modal-window" id="acceptInvite" data-acceptInvite-popup="">
+            <div class="modal-window__content">
+                <div class="modal-window__body text-center">
+                    <p>By accepting this invite you will receive<br /> {{LAConfigs::getByKey('accepted_invite_xims_amount')}} XIMs.</p>
+                    <p>Once the Meetup is accepted, mobile numbers will be exhanged.</p>
+                    <button type="button" data-meetup-invite="accept" data-meetup-id="{{$meetup->id}}" class="btn btn-violet">
+                        Accept
+                    </button>
+                    <button type="button" data-meetup-invite="decline" data-meetup-id="{{$meetup->id}}" class="btn btn-border">
+                        Decline
+                    </button>
+                    <button type="button" class="btn btn-border close-modal hide">
+                        Close
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
+
+    <button class="btn btn-violet open-pop-up hide" data-target="#acceptInvite" btn-acceptInvite-popup="">Accept invite</button>
+
+
+    <div class="modal-window" id="acceptInviteSuccess" data-acceptInviteSuccess-popup="">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <img src="{{asset('img/icons/like.png')}}" alt="like" class="modal-window__img-top" />
+                <h3 class="title mb-34">Success!</h3>
+                <button type="button" class="btn btn-violet close-modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <button class="btn btn-violet open-pop-up hide" data-target="#acceptInviteSuccess" btn-acceptInviteSuccess-popup="">Accept invite Success</button>
 
 @endpush
 
