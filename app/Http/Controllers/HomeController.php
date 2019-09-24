@@ -8,6 +8,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
+use Artisan;
 
 /**
  * Class HomeController
@@ -30,6 +31,11 @@ class HomeController extends Controller
      * @return Response
      */
     public function index() {
+
+        /*
+         * //TODO????
+         * $exitCode = Artisan::call('meetups_expires', []);*/
+        //$exitCode = Artisan::call('meetups_expires', []);
         return view('home');
     }
 }

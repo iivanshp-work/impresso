@@ -1638,9 +1638,30 @@ $document.ready(function(){
             success: function(response){
                 if(response.has_error){
                     showError(response.message ? response.message : 'An error occurred. Please try again later.', 'Error');
+                    if (response.refresh_page) {
+                        closeMeetupPopup('acceptInvite');
+                        showError(response.message ? response.message : 'An error occurred. Please try again later.', 'Error', function() {
+                            redirect(window.location);
+                        });
+                        setTimeout(function() {
+                            redirect(window.location);
+                        }, 5000);
+                    } else {
+                        closeMeetupPopup('acceptInvite');
+                        showError(response.message ? response.message : 'An error occurred. Please try again later.', 'Error');
+                    }
                 }else{
                     closeMeetupPopup('acceptInvite');
-                    openMeetupPopup('acceptInviteSuccess')
+                    openMeetupPopup('acceptInviteSuccess');
+                    //update check invite button
+                    if (type == 'accept') {
+                        $('[data-meetup-check-invite]').remove();
+                        $('[data-meetup-connected]').show();
+                    } else {
+                        $('[data-meetup-check-invite]').remove();
+                        $('[data-meetup-new-meetup]').show();
+
+                    }
                 }
             },
             error: function(){

@@ -18,48 +18,6 @@
         <main>
             @if($notifications)
                 <div class="notifications">
-                    {{--
-                    <div class="cards notifications__card">
-                        <div class="notifications__header">
-                            <div class="notifications__arrow d-flex justify-content-between">
-                                11 Jan, 2019
-                                <img src="img/icons/arrow-down.svg" alt="">
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <a href="#" class="avatar">
-                                    <img src="img/avatars/user-1.png" alt="" />
-                                </a>
-                                <p>Lilly Barton | Meetup Accepted! <span>16:09</span></p>
-                            </div>
-                        </div>
-                        <div class="notifications__body">
-                            <a href="#" class="d-flex align-items-center justify-content-between">+41 797 97 20 65
-                                <img src="img/icons/phone-violet.svg" alt="">
-                            </a>
-                            <p>Click to call and decide upon the time and date of your Meetup.</p>
-                        </div>
-                    </div>
-
-                    <div class="cards notifications__card">
-                        <div class="notifications__header">
-                            <div class="notifications__arrow d-flex justify-content-between">
-                                11 Jan, 2019
-                                <img src="img/icons/arrow-down.svg" alt="">
-                            </div>
-                            <div class="d-flex align-items-center">
-                                <a href="#" class="avatar">
-                                    <img src="img/avatars/user-3.png" alt="" />
-                                </a>
-                                <p>Lilly Barton | Meetup Accepted! <span>16:09</span></p>
-                            </div>
-                        </div>
-                        <div class="notifications__body">
-                            <span>Reason for invite:</span>
-                            <p>Asking for advice</p>
-                            <p>Accept to receive 24 XIMs.</p>
-                        </div>
-                    </div>--}}
-
                     @foreach($notifications as $notification)
                         @php
                             if (isset($notification->type) && ($notification->type == 'meetup_wants' || $notification->type == 'meetup_accepted' || $notification->type == 'meetup_declined')) {
@@ -84,7 +42,7 @@
                                                 @endif
                                             @endif
                                     @endif
-                                    @if (isset($notification->type) && ($notification->type == 'meetup_wants' || $notification->type == 'meetup_accepted' || $notification->type == 'meetup_declined'))
+                                    @if (isset($notification->type) && ($notification->type == 'meetup_wants' || $notification->type == 'meetup_accepted'))
                                         <img src="{{asset('img/icons/arrow-down.svg')}}" alt="">
                                     @endif
                                 </div>
@@ -257,22 +215,37 @@
                                 @elseif ($notification->type == 'meetup_accepted')
                                     @if ($user->id == $meetup->user_id_invited)
                                         <div class="notifications__body">
-                                            <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone){{$meetup->invitingUser->phone}}@elseif ($notification->notification_text){{$notification->notification_text}}@else{{"#"}}@endif" class="d-flex align-items-center justify-content-between">
+                                            <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone)tel:{{$meetup->invitingUser->phone}}@elseif ($notification->notification_text)tel:{{$notification->notification_text}}@else{{"#"}}@endif" class="d-flex align-items-center justify-content-between">
                                                 @if ($meetup->invitingUser && $meetup->invitingUser->phone)
                                                     {{$meetup->invitingUser->phone}}
+                                                    <img src="{{asset('img/icons/phone-violet.svg')}}" alt="">
                                                 @elseif ($notification->notification_text)
                                                     {{$notification->notification_text}}
+                                                    <img src="{{asset('img/icons/phone-violet.svg')}}" alt="">
+                                                @else
+                                                    {{'No contact info.'}}
                                                 @endif
-                                                <img src="{{asset('img/icons/phone-violet.svg')}}" alt="">
                                             </a>
-                                            <p>Click to call and decide upon the time and date of your Meetup.</p>
+                                            @if (($meetup->invitingUser && $meetup->invitingUser->phone) || $notification->notification_text)
+                                                <p>Click to call and decide upon the time and date of your Meetup.</p>
+                                            @endif
                                         </div>
                                     @else
                                         <div class="notifications__body">
-                                            <a href="#" class="d-flex align-items-center justify-content-between">+41 797 97 20 65
-                                                <img src="{{asset('img/icons/phone-violet.svg')}}" alt="">
+                                            <a href="@if ($meetup->invitedUser && $meetup->invitedUser->phone)tel:{{$meetup->invitedUser->phone}}@elseif ($notification->notification_text)tel:{{$notification->notification_text}}@else{{"#"}}@endif" class="d-flex align-items-center justify-content-between">
+                                                @if ($meetup->invitedUser && $meetup->invitedUser->phone)
+                                                    {{$meetup->invitedUser->phone}}
+                                                    <img src="{{asset('img/icons/phone-violet.svg')}}" alt="">
+                                                @elseif ($notification->notification_text)
+                                                    {{$notification->notification_text}}
+                                                    <img src="{{asset('img/icons/phone-violet.svg')}}" alt="">
+                                                @else
+                                                    {{'No contact info.'}}
+                                                @endif
                                             </a>
-                                            <p>Click to call and decide upon the time and date of your Meetup.</p>
+                                            @if (($meetup->invitedUser && $meetup->invitedUser->phone) || $notification->notification_text)
+                                                <p>Click to call and decide upon the time and date of your Meetup.</p>
+                                            @endif
                                         </div>
                                     @endif
                                 @endif

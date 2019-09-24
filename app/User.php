@@ -165,7 +165,8 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @return mixed
      */
     public function calculateMeetupCount($id) {
-        return 0; // TODO????????
+        $count = $this->meetups()->where('status', 2)->count();// accepted meetups
+        return $count;
     }
 
     /**

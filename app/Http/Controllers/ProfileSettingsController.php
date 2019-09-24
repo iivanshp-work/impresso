@@ -931,6 +931,11 @@ class ProfileSettingsController extends Controller
                     $responseData['has_error'] = true;
                     $responseData['message'] .= 'Meetup data not founds. Please try again later.<br>';
                     return response()->json($responseData);
+                } else if ($meetup && $meetup->status != 1) {
+                    $responseData['has_error'] = true;
+                    $responseData['message'] .= 'This Meetup invitation already ' . ( $meetup->status == 2 ? 'accepted' : 'declined') . '.<br>';
+                    $responseData['refresh_page'] = true;
+                    return response()->json($responseData);
                 }
 
                 switch ($type) {

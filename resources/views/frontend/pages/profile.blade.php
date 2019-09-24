@@ -21,11 +21,9 @@
                     @endif
                 </a>
             </span>
-            @if($mode == "me")
-                <span class="header__icon-left">
-                    <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" class="settings-icon" /></a>
-                </span>
-            @endif
+            <span class="header__icon-left">
+                <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" class="settings-icon" /></a>
+            </span>
         </header>
         <main>
             <div class="user">
@@ -78,24 +76,24 @@
                     </p>
                     <p>
                         <img src="{{asset('img/icons/multiple-users-silhouette.png')}}" alt="" />
-                        <a href="https://www.impressolabs.io/meetups/">@if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif Meetups</a>
+                        <a href="https://www.impressolabs.io/meetups/">@if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif @if($userData->meetup_count == 1){{'Meetup'}}@else{{'Meetups'}}@endif</a>
                     </p>
                 </div>
 
                 @if ($mode != 'me')
                     <!-- style button -->
                     <div class="user__meetup-btn text-center">
-                        @if (!$meetup || ($meetup && $meetup->status == 3)) {{--failed-declined meetup--}}
-                        <a href="{{url('/profile/' . $userData->id . '/meetup')}}" class="btn btn-violet btn-meetup">Meetup</a>
+                        @if (!$meetup || ($meetup && $meetup->status == 3) || ($meetup && $meetup->status == 4)) {{--failed-declined meetup--}}
+                            <a href="{{url('/profile/' . $userData->id . '/meetup')}}" class="btn btn-violet btn-meetup">Meetup</a>
                         @elseif ($meetup && $meetup->status == 2)
                             <button type="button" class="btn btn-violet btn-meetup-connected">Connected</button>
                         @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_inviting == $user->id)
                             <button type="button" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>
                         @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_invited == $user->id)
                             <button type="button" class="btn btn-violet open-pop-up" data-target="#acceptInvite" data-meetup-check-invite="">Check invite</button>
+                            <button type="button" class="btn btn-violet btn-meetup-connected hide" data-meetup-connected="">Connected</button>
+                            <a href="{{url('/profile/' . $userData->id . '/meetup')}}" class="btn btn-violet btn-meetup hide" data-meetup-new-meetup="">Meetup</a>
                         @endif
-                        {{--<button type="submit" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>
-                        <button type="submit" class="btn btn-violet btn-meetup-connected">Connected</button>--}}
                     </div>
                     <!-- style button -->
                 @endif

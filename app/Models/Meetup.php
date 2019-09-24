@@ -12,11 +12,11 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Meetup extends Model
 {
     use SoftDeletes;
-	
+
 	protected $table = 'meetups';
-	
+
 	protected $hidden = [
-        
+
     ];
 
 	protected $guarded = [];
@@ -65,8 +65,9 @@ class Meetup extends Model
             '1' => 'Processing',
             '2' => 'Accept',
             '3' => 'Declined',
+            '4' => 'Expired'
         ];
-        //status:: 1 - processing, 2 - success, 3 - fail
+        //status:: 1 - processing, 2 - success, 3 - fail, 4 expired
 
         return isset($statuses[$this->status]) ? $statuses[$this->status] : '';
     }
