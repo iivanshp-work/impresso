@@ -82,7 +82,7 @@
         <div class="modal-window__content">
             <div class="modal-window__body text-center">
                 <p>A Meetup will cost you {{LAConfigs::getByKey('invite_xims_amount')}} XIMs. </p>
-                <p>Once the Meetup is accepted, mobile numbers will be exchanged.</p>
+                <p>Once the Meetup is accepted,  your mobile numbers will also be exchanged.</p>
                 <button type="button" class="btn btn-violet" data-submit-meetup-invite-btn="">
                     Continue
                 </button>
@@ -99,7 +99,7 @@
             <div class="modal-window__body text-center">
                 <img src="{{asset('img/icons/like.png')}}" alt="like" class="modal-window__img-top" />
                 <h3 class="title">Awesome!</h3>
-                <p>We will notify you when the meetup invite was accepted, together with the invitee’s phone number.</p>
+                <p>Once your invite is accepted you can organize your meetup date.</p>
                 <a href="{{url('/profile/' . $userData->id)}}" class="btn btn-violet">
                     Close
                 </a>

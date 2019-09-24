@@ -146,6 +146,11 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
 
     }
 
+    public function getCreditsCountValueAttribute()
+    {
+        return round($this->attributes['credits_count'],2);
+    }
+
     /**
      * @return mixed
      */

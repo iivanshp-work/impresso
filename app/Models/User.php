@@ -114,6 +114,11 @@ class User extends Model
         }
     }
 
+    public function getCreditsCountValueAttribute()
+    {
+        return round($this->attributes['credits_count'],2);
+    }
+
     /**
      * @return mixed
      */

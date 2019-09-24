@@ -62,17 +62,12 @@
                                             <a href="javascript:void(0);">Certificate Validation</a>
                                         @endif
                                     @elseif($userTransaction->type == 'meetup_inviting')
-                                        <a href="{{url('/profile/' . $userTransaction->meetup->user_id_invited)}}">{{$userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name :$userTransaction->meetup->invitedUser->email }} {!!$userTransaction->meetup->invitedUser->job_title ? '<span>' . $userTransaction->meetup->invitedUser->job_title . '</span>' : ''!!}</a>
+                                        <a href="{{url('/profile/' . $userTransaction->meetup->user_id_invited)}}">{{$userTransaction->meetup->invitedUser ? ($userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name :$userTransaction->meetup->invitedUser->email) : ('Profile #' . $userTransaction->meetup->user_id_invited ) }} {!!$userTransaction->meetup->invitedUser && $userTransaction->meetup->invitedUser->job_title ? '<span>' . $userTransaction->meetup->invitedUser->job_title . '</span>' : ''!!}</a>
+                                    @elseif($userTransaction->type == 'meetup_accept')
+                                        <a href="{{url('/profile/' . $userTransaction->meetup->user_id_inviting)}}">{{$userTransaction->meetup->invitingUser ? ($userTransaction->meetup->invitingUser->name ? $userTransaction->meetup->invitingUser->name :$userTransaction->meetup->invitingUser->email) : ( 'Profile #' . $userTransaction->meetup->user_id_inviting ) }} {!!$userTransaction->meetup->invitingUser && $userTransaction->meetup->invitingUser->job_title ? '<span>' . $userTransaction->meetup->invitingUser->job_title . '</span>' : ''!!}</a>
                                     @elseif($userTransaction->type == 'other')
                                         <a href="javascript:void(0);">{{'Impresso Labs'}}</a>
                                     @endif
-                                    {{--@if($userTransaction->user)
-                                        @if($userTransaction->user->type == getenv('USERS_TYPE_ADMIN'))
-                                            <a href="javascript:void(0);">{{'Impresso Labs'}}</a>
-                                        @else
-                                            <a href="{{url('/profile/' . $userTransaction->user->id)}}">{{$userTransaction->user->name}} @if($userTransaction->user->job_title)<span>{{$userTransaction->user->job_title}}</span>@endif</a>
-                                        @endif
-                                    @endif--}}
                                     <small>{{Carbon::parse($userTransaction->created_at)->format('H:i')}}</small>
                                 </div>
                                 <p>@if($userTransaction->amount > 0)+@elseif($userTransaction->amount < 0)-@endif @if($userTransaction->amount >= 0){{$userTransaction->amount}} @else {{str_replace('-', '', (string)$userTransaction->amount)}} @endif {{getenv('CREDITS_LABEL')}}</p>
@@ -98,7 +93,10 @@
                                     <p>Certificate validation</p>
                                 @endif
                             @elseif($userTransaction->type == 'meetup_inviting')
-                                <p>You have used {{abs($userTransaction->amount)}}  for inviting {{$userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name : $userTransaction->meetup->invitedUser->email}} to Meetup.</p>
+                                <p>You have used {{abs($userTransaction->amount)}} XIMS  for inviting {{$userTransaction->meetup->invitedUser ? ($userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name : $userTransaction->meetup->invitedUser->email) : ('Profile #' . $userTransaction->meetup->user_id_invited)}} to Meetup.</p>
+                                <p>Meetup: {{$userTransaction->meetup->statusLabel}}</p>
+                            @elseif($userTransaction->type == 'meetup_accept')
+                                <p>You have received {{abs($userTransaction->amount)}} XIMS from {{$userTransaction->meetup->invitingUser ? ($userTransaction->meetup->invitingUser->name ? $userTransaction->meetup->invitingUser->name : $userTransaction->meetup->invitingUser->email) : ('Profile #' . $userTransaction->meetup->user_id_inviting)}} for accepting his Meetup invitation.</p>
                                 <p>Meetup: {{$userTransaction->meetup->statusLabel}}</p>
                             @elseif($userTransaction->type == 'other')
                                 <p>{{$userTransaction->notes}}</p>

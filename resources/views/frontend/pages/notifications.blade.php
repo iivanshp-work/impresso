@@ -181,17 +181,57 @@
                                     @elseif ($notification->type == 'meetup_wants')
                                         <div class="d-flex align-items-center">
                                             <a href="{{url('/profile/' . $meetup->user_id_inviting)}}" class="avatar">
-                                                @if ($meetup->invitingUser->photo)
+                                                @if ($meetup->invitingUser && $meetup->invitingUser->photo)
                                                     <img src="{{url('/files/' . $meetup->invitingUser->photo . '?s=200')}}" alt="" />
                                                 @else
                                                     <img src="{{asset('img/icons/icon-user.png')}}" alt="" />
                                                 @endif
                                             </a>
                                             <a href="{{url('/profile/' . $meetup->user_id_inviting)}}">
-                                                <p>{{$meetup->invitingUser->name ? $meetup->invitingUser->name : $meetup->invitingUser->email}} | Meetup Invitation <span>16:09</span></p>
+                                                <p>{{$meetup->invitingUser ? ($meetup->invitingUser->name ? $meetup->invitingUser->name : $meetup->invitingUser->email) : ('Profile #' . $meetup->user_id_inviting)}} | Meetup Invitation <span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span></p>
                                             </a>
                                         </div>
                                     @elseif ($notification->type == 'meetup_accepted')
+                                        @if ($user->id == $meetup->user_id_invited)
+                                            <div class="d-flex align-items-center">
+                                                <a href="{{url('/profile/' . $meetup->user_id_inviting)}}" class="avatar">
+                                                    @if ($meetup->invitingUser && $meetup->invitingUser->photo)
+                                                        <img src="{{url('/files/' . $meetup->invitingUser->photo . '?s=200')}}" alt="" />
+                                                    @else
+                                                        <img src="{{asset('img/icons/icon-user.png')}}" alt="" />
+                                                    @endif
+                                                </a>
+                                                <a href="{{url('/profile/' . $meetup->user_id_inviting)}}">
+                                                    <p>{{$meetup->invitingUser ? ($meetup->invitingUser->name ? $meetup->invitingUser->name : $meetup->invitingUser->email) : ('Profile #' . $meetup->user_id_inviting)}} | Meetup Accepted! <span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span></p>
+                                                </a>
+                                            </div>
+                                        @else
+                                            <div class="d-flex align-items-center">
+                                                <a href="{{url('/profile/' . $meetup->user_id_invited)}}" class="avatar">
+                                                    @if ($meetup->invitedUser && $meetup->invitedUser->photo)
+                                                        <img src="{{url('/files/' . $meetup->invitedUser->photo . '?s=200')}}" alt="" />
+                                                    @else
+                                                        <img src="{{asset('img/icons/icon-user.png')}}" alt="" />
+                                                    @endif
+                                                </a>
+                                                <a href="{{url('/profile/' . $meetup->user_id_invited)}}">
+                                                    <p>{{$meetup->invitedUser ? ($meetup->invitedUser->name ? $meetup->invitedUser->name : $meetup->invitedUser->email) : ('Profile #' . $meetup->user_id_invited)}} | Meetup Accepted! <span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span></p>
+                                                </a>
+                                            </div>
+                                        @endif
+                                    @elseif ($notification->type == 'meetup_declined')
+                                        <div class="d-flex align-items-center">
+                                            <a href="{{url('/profile/' . $meetup->user_id_invited)}}" class="avatar">
+                                                @if ($meetup->invitedUser && $meetup->invitedUser->photo)
+                                                    <img src="{{url('/files/' . $meetup->invitedUser->photo . '?s=200')}}" alt="" />
+                                                @else
+                                                    <img src="{{asset('img/icons/icon-user.png')}}" alt="" />
+                                                @endif
+                                            </a>
+                                            <a href="{{url('/profile/' . $meetup->user_id_invited)}}">
+                                                <p>{{$meetup->invitedUser ? ($meetup->invitedUser->name ? $meetup->invitedUser->name : $meetup->invitedUser->email) : ('Profile #' . $meetup->user_id_invited)}} | Meetup Declined! <span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span></p>
+                                            </a>
+                                        </div>
                                     @elseif ($notification->type == 'app_rating')
                                     @endif
                                 @else
@@ -214,6 +254,27 @@
                                         @endif
                                         <p>Accept to receive {{$notification->notification_text}} XIMs.</p>
                                     </div>
+                                @elseif ($notification->type == 'meetup_accepted')
+                                    @if ($user->id == $meetup->user_id_invited)
+                                        <div class="notifications__body">
+                                            <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone){{$meetup->invitingUser->phone}}@elseif ($notification->notification_text){{$notification->notification_text}}@else{{"#"}}@endif" class="d-flex align-items-center justify-content-between">
+                                                @if ($meetup->invitingUser && $meetup->invitingUser->phone)
+                                                    {{$meetup->invitingUser->phone}}
+                                                @elseif ($notification->notification_text)
+                                                    {{$notification->notification_text}}
+                                                @endif
+                                                <img src="{{asset('img/icons/phone-violet.svg')}}" alt="">
+                                            </a>
+                                            <p>Click to call and decide upon the time and date of your Meetup.</p>
+                                        </div>
+                                    @else
+                                        <div class="notifications__body">
+                                            <a href="#" class="d-flex align-items-center justify-content-between">+41 797 97 20 65
+                                                <img src="{{asset('img/icons/phone-violet.svg')}}" alt="">
+                                            </a>
+                                            <p>Click to call and decide upon the time and date of your Meetup.</p>
+                                        </div>
+                                    @endif
                                 @endif
                             @endif
                         </div>
