@@ -67,7 +67,7 @@ class ProfileSettingsController extends Controller
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function profileEditPage(Request $request) {
+    public function profileEditPage(Request $request, $step = '1') {
         /*$id = 16;
         $user = $id ? User::find($id) : null;
         $message = "message - " . date("Y-m-d H:i:s");
@@ -78,7 +78,8 @@ class ProfileSettingsController extends Controller
         }*/
         $user = Auth::user();
         return view('frontend.pages.profile_edit', [
-            'userData' => $user
+            'userData' => $user,
+            'step' => $step
         ]);
     }
 
@@ -261,6 +262,27 @@ class ProfileSettingsController extends Controller
                 if ($validator->fails()) {
                     $responseData['has_error'] = true;
                     $responseData['message'] .= 'Please fill in all mandatory fields marked by an asterisk symbol ( * ).<br>';
+                }
+                $id = Auth::id();
+                $user = UserModel::find($id);
+                if ($step == '1') {
+                    $user->photo = $request->has('photo') ? intval($request->input('photo')) : 0;
+                    $user->name = $request->has('name') ? trim($request->input('name')) : '';
+                    $user->company_title = $request->has('company_title') ? trim($request->input('company_title')) : '';
+                    $user->job_title = $request->has('job_title') ? trim($request->input('job_title')) : '';
+                    $user->university_title = $request->has('university_title') ? trim($request->input('university_title')) : '';
+                    $user->certificate_title = $request->has('certificate_title') ? trim($request->input('certificate_title')) : '';
+                } else if ($step == '2') {
+                    $topSkills = $request->has('top_skills') ? implode("\n", $request->input('top_skills')) : '';
+                    $softSkills = $request->has('soft_skills') ? implode("\n", $request->input('soft_skills')) : '';
+                    $user->impress = $request->has('impress') ? trim($request->input('impress')) : '';
+                    $user->top_skills = $topSkills;
+                    $user->soft_skills = $softSkills;
+                }
+                if ($user->save()) {
+                } else {
+                    $responseData['has_error'] = true;
+                    $responseData['message'] .= 'An error occurred while saving data.' . '<br>';
                 }
             } else {
                 $responseData['has_error'] = true;

@@ -29,6 +29,7 @@ Route::post('validation', 'SignController@validation')->name('validation_post');
 /* profile */
 Route::get('profile', 'ProfileSettingsController@profilePage')->name('profile');
 Route::get('profile/edit', 'ProfileSettingsController@profileEditPage')->name('profile_edit');
+Route::get('profile/edit/step/{id}', 'ProfileSettingsController@profileEditPage')->name('profile_edit');
 Route::post('profile/edit', 'ProfileSettingsController@profileEdit')->name('profile_edit_post');
 Route::get('profile/{id}', 'ProfileSettingsController@profilePage')->name('profile_other');
 Route::get('transaction-history', 'ProfileSettingsController@transactionHistoryPage')->name('transaction_history');

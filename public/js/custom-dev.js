@@ -815,7 +815,12 @@ $document.ready(function(){
     //open edit step
     function openEditStep(step) {
         if ($('.edit-profile .step-' + step).length) {
-            $('.edit-profile .steps').hide();
+            if (step != 1) {
+                redirect(base_url + '/profile/edit/step/' + step);
+            } else {
+                redirect(base_url + '/profile/edit');
+            }
+            /*$('.edit-profile .steps').hide();
             $('.edit-profile .step-' + step).show();
             if (step != 1) {
                 if (step == 3) {
@@ -825,7 +830,7 @@ $document.ready(function(){
             } else {
                 $('.edit-profile').removeClass('nobg');
             }
-            $('[data-current-step]').data('current-step', step);
+            $('[data-current-step]').data('current-step', step);*/
         } else {
             showError("Steps error occurred. Please try again later.");
         }
