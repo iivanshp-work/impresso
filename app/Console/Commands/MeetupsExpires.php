@@ -31,9 +31,8 @@ class MeetupsExpires extends Command
     public function handle()
     {
         $meetups = Meetup::where('status', 1)
-            //->where('inviting_date', "<", Carbon::now()->subDays(30))
+            ->where('inviting_date', "<", Carbon::now()->subDays(30))
             ->get();
-        test($meetups);
         if ($meetups) {
             foreach ($meetups as $meetup) {
                 $meetup->status = 4;//expired

@@ -32,10 +32,11 @@ class HomeController extends Controller
      */
     public function index() {
 
-        /*
-         * //TODO????
-         * $exitCode = Artisan::call('meetups_expires', []);*/
-        //$exitCode = Artisan::call('meetups_expires', []);
+        //updates meetup expires
+        // cron example
+        //* * * * * cd /var/www/html/laravelPath && php artisan schedule:run >> /dev/null 2>&1
+        $exitCode = Artisan::call('meetups_expires', []);
+
         return view('home');
     }
 }

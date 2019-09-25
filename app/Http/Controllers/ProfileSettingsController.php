@@ -1021,6 +1021,12 @@ class ProfileSettingsController extends Controller
             $responseData['message'] .= 'Invited user not found.<br>';
             return response()->json($responseData);
         }
+        $meetup = $userData ? $userData->meetup() : null;
+        if ($meetup && $meetup->status == 1) {
+            $responseData['has_error'] = true;
+            $responseData['message'] .= 'Meetup request already sent. Once your invite is accepted you can organize your meetup date.<br>';
+            return response()->json($responseData);
+        }
         $rules = array(
             'meetup_reason' => 'required|numeric',
         );

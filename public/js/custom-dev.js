@@ -1656,11 +1656,12 @@ $document.ready(function(){
                     //update check invite button
                     if (type == 'accept') {
                         $('[data-meetup-check-invite]').remove();
-                        $('[data-meetup-connected]').show();
+                        $('[data-meetup-new-meetup]').remove();
+                        $('[data-meetup-connected]').removeClass('hide');
                     } else {
                         $('[data-meetup-check-invite]').remove();
-                        $('[data-meetup-new-meetup]').show();
-
+                        $('[data-meetup-connected]').remove();
+                        $('[data-meetup-new-meetup]').removeClass('hide');
                     }
                 }
             },
