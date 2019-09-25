@@ -372,3 +372,7 @@ customValidateConfirm{
     background: none;
     padding-top: 25px;
 }
+
+.user__card_group-btn .btn {
+    padding: 0 15px;
+}
