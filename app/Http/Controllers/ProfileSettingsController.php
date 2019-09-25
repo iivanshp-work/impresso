@@ -13,6 +13,7 @@ use App\Models\Users_Notification;
 use App\User;
 use App\Models\User as UserModel;
 use App\Models\Mails;
+use Brick\PhoneNumber\PhoneNumberFormat;
 use Carbon\Carbon;
 use Dwij\Laraadmin\Models\LAConfigs;
 use Exception;
@@ -24,6 +25,9 @@ use Redirect;
 use Hash;
 use Stripe;
 use DB;
+
+use Brick\PhoneNumber\PhoneNumber;
+use Brick\PhoneNumber\PhoneNumberParseException;
 
 use App\Http\Controllers\LA\UploadsController as UploadsController;
 
@@ -412,7 +416,7 @@ class ProfileSettingsController extends Controller
         $rules = array(
             'full_name_birth' => 'required|string',
             'email' => 'required|email',
-            'phone' => 'regex:/^[\+0-9\- ]{5,18}$/'
+            'phone' => 'required|regex:/^[\+0-9\- \(\)]{5,25}$/'
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
@@ -422,11 +426,17 @@ class ProfileSettingsController extends Controller
                 $responseData['message'] .= $message . '<br>';
             }
         } else {
+            if (!$this->validatePhoneNumber($request->input('phone'))) {
+                $responseData['has_error'] = true;
+                $responseData['message'] = 'Invalid phone number.';
+                return response()->json($responseData);
+            }
+
             $id = Auth::id();
             $user = UserModel::find($id);
             $user->full_name_birth = $request->has('full_name_birth') ? trim($request->input('full_name_birth')) : '';
             $user->email = $request->has('email') ? trim($request->input('email')) : '';
-            $user->phone = $request->has('phone') ? trim($request->input('phone')) : '';
+            $user->phone = $this->formatPhoneNumber($request->has('phone') ? trim($request->input('phone')) : '');
             $user->address = $request->has('address') ? trim($request->input('address')) : '';
             $user->address2 = $request->has('address2') ? trim($request->input('address2')) : '';
             $user->city = $request->has('city') ? trim($request->input('city')) : '';
@@ -843,14 +853,14 @@ class ProfileSettingsController extends Controller
         if (!$fields['phone_number']) {
             $responseData['has_error'] = true;
             $responseData['message'] = 'Please enter your mobile number.';
-        } else if (!$this->validate_phone_number($fields['phone_number_country_code'] . ' ' . $fields['phone_number']) == true) {
+        } else if (!$this->validatePhoneNumber($fields['phone_number_country_code'] . ' ' . $fields['phone_number'])) {
             $responseData['has_error'] = true;
             $responseData['message'] = 'Invalid phone number.';
         }
         if (!$responseData['has_error']) {
             $user = Auth::user();
             if ($user) {
-                $user->phone = $fields['phone_number_country_code'] . ' ' . $fields['phone_number'];
+                $user->phone = $this->formatPhoneNumber($fields['phone_number_country_code'] . ' ' . $fields['phone_number']);
                 $user->save();
                 $responseData['message'] = 'Your mobile number successfully saved.';
                 $responseData['redirect'] = url(getenv('BASE_LOGEDIN_PAGE'));
@@ -863,8 +873,34 @@ class ProfileSettingsController extends Controller
     }
 
 
-    function validate_phone_number($phone)
-    {
+    function formatPhoneNumber($phone) {
+        $newPhone = $phone;
+        try {
+            $number = PhoneNumber::parse($phone, "CH");
+            if ($number->isValidNumber()) {
+                $newPhone = $number->format(PhoneNumberFormat::INTERNATIONAL);
+            }
+        }
+        catch (PhoneNumberParseException $e) {
+        }
+        return $newPhone;
+    }
+
+    function validatePhoneNumber($phone) {
+        $isValid = false;
+        try {
+            $number = PhoneNumber::parse($phone, "CH");
+
+            if ($number->isValidNumber()) {
+                $isValid = true;
+            }
+        }
+        catch (PhoneNumberParseException $e) {
+            // 'The string supplied is too short to be a phone number.'
+        }
+        return $isValid;
+
+        /*
         // Allow +, - and . in phone number
         $filtered_phone_number = filter_var($phone, FILTER_SANITIZE_NUMBER_INT);
         // Remove "-" from number
@@ -875,7 +911,7 @@ class ProfileSettingsController extends Controller
             return false;
         } else {
             return true;
-        }
+        }*/
     }
 
 }
