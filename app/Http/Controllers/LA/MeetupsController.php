@@ -18,6 +18,7 @@ use Datatables;
 use Collective\Html\FormFacade as Form;
 use Dwij\Laraadmin\Models\Module;
 use Dwij\Laraadmin\Models\ModuleFields;
+use Carbon\Carbon;
 
 use App\Models\Meetup;
 
@@ -26,7 +27,7 @@ class MeetupsController extends Controller
 	public $show_action = true;
 	public $view_col = 'unique_code';
 	public $listing_cols = ['id', 'unique_code', 'user_id_inviting', 'user_id_invited', 'reason', 'inviting_date', 'invited_date', 'status'];
-	
+
 	public function __construct() {
 		// Field Access of Listing Columns
 		if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
@@ -71,13 +72,16 @@ class MeetupsController extends Controller
                 $query = $query->where("inviting_date", "<=", Carbon::parse($params['date_to'])->endOfDay());
             }
             $values = $query->orderBy("id", 'desc')->paginate($paginateLimit);
+
+            $statuses = (new Meetup())->getStatuses();
+            $reasons = Meetup_reason::pluck('title', 'id');
+
             if($values){
-                $statuses = (new Meetup())->getStatuses();
-                $reasons = Meetup_reason::pluck('title', 'id');
                 $userIDS = [];
                 for($i=0; $i < count($values); $i++) {
                     //get status
                     $values[$i]->status = isset($statuses[$values[$i]->status]) ? $statuses[$values[$i]->status] : '-';
+                    $values[$i]->reason = isset($reasons[$values[$i]->reason]) ? $reasons[$values[$i]->reason] : '-';
                     //get users
                     if (!in_array($values[$i]->user_id_inviting, $userIDS)) {
                         $userIDS[] = $values[$i]->user_id_inviting;
@@ -119,7 +123,9 @@ class MeetupsController extends Controller
 				'show_actions' => $this->show_action,
 				'listing_cols' => $this->listing_cols,
 				'module' => $module,
-                'values' => $values
+                'values' => $values,
+                'statuses' => $statuses,
+                'reasons' => $reasons
 			]);
 		} else {
             return redirect(config('laraadmin.adminRoute')."/");
@@ -145,19 +151,19 @@ class MeetupsController extends Controller
 	public function store(Request $request)
 	{
 		if(Module::hasAccess("Meetups", "create")) {
-		
+
 			$rules = Module::validateRules("Meetups", $request);
-			
+
 			$validator = Validator::make($request->all(), $rules);
-			
+
 			if ($validator->fails()) {
 				return redirect()->back()->withErrors($validator)->withInput();
 			}
-			
+
 			$insert_id = Module::insert("Meetups", $request);
-			
+
 			return redirect()->route(config('laraadmin.adminRoute') . '.meetups.index');
-			
+
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
@@ -172,12 +178,12 @@ class MeetupsController extends Controller
 	public function show($id)
 	{
 		if(Module::hasAccess("Meetups", "view")) {
-			
+
 			$meetup = Meetup::find($id);
 			if(isset($meetup->id)) {
 				$module = Module::get('Meetups');
 				$module->row = $meetup;
-				
+
 				return view('la.meetups.show', [
 					'module' => $module,
 					'view_col' => $this->view_col,
@@ -203,13 +209,13 @@ class MeetupsController extends Controller
 	 */
 	public function edit($id)
 	{
-		if(Module::hasAccess("Meetups", "edit")) {			
+		if(Module::hasAccess("Meetups", "edit")) {
 			$meetup = Meetup::find($id);
-			if(isset($meetup->id)) {	
+			if(isset($meetup->id)) {
 				$module = Module::get('Meetups');
-				
+
 				$module->row = $meetup;
-				
+
 				return view('la.meetups.edit', [
 					'module' => $module,
 					'view_col' => $this->view_col,
@@ -235,19 +241,19 @@ class MeetupsController extends Controller
 	public function update(Request $request, $id)
 	{
 		if(Module::hasAccess("Meetups", "edit")) {
-			
+
 			$rules = Module::validateRules("Meetups", $request, true);
-			
+
 			$validator = Validator::make($request->all(), $rules);
-			
+
 			if ($validator->fails()) {
 				return redirect()->back()->withErrors($validator)->withInput();;
 			}
-			
+
 			$insert_id = Module::updateRow("Meetups", $request, $id);
-			
+
 			return redirect()->route(config('laraadmin.adminRoute') . '.meetups.index');
-			
+
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
@@ -263,14 +269,14 @@ class MeetupsController extends Controller
 	{
 		if(Module::hasAccess("Meetups", "delete")) {
 			Meetup::find($id)->delete();
-			
+
 			// Redirecting to index() method
 			return redirect()->route(config('laraadmin.adminRoute') . '.meetups.index');
 		} else {
 			return redirect(config('laraadmin.adminRoute')."/");
 		}
 	}
-	
+
 	/**
 	 * Datatable Ajax fetch
 	 *
@@ -283,9 +289,9 @@ class MeetupsController extends Controller
 		$data = $out->getData();
 
 		$fields_popup = ModuleFields::getModuleFields('Meetups');
-		
+
 		for($i=0; $i < count($data->data); $i++) {
-			for ($j=0; $j < count($this->listing_cols); $j++) { 
+			for ($j=0; $j < count($this->listing_cols); $j++) {
 				$col = $this->listing_cols[$j];
 				if($fields_popup[$col] != null && starts_with($fields_popup[$col]->popup_vals, "@")) {
 					$data->data[$i][$j] = ModuleFields::getFieldValue($fields_popup[$col], $data->data[$i][$j]);
@@ -297,13 +303,13 @@ class MeetupsController extends Controller
 				//    $data->data[$i][$j];
 				// }
 			}
-			
+
 			if($this->show_action) {
 				$output = '';
 				if(Module::hasAccess("Meetups", "edit")) {
 					$output .= '<a href="'.url(config('laraadmin.adminRoute') . '/meetups/'.$data->data[$i][0].'/edit').'" class="btn btn-warning btn-xs" style="display:inline;padding:2px 5px 3px 5px;"><i class="fa fa-edit"></i></a>';
 				}
-				
+
 				if(Module::hasAccess("Meetups", "delete")) {
 					$output .= Form::open(['route' => [config('laraadmin.adminRoute') . '.meetups.destroy', $data->data[$i][0]], 'method' => 'delete', 'style'=>'display:inline']);
 					$output .= ' <button class="btn btn-danger btn-xs" type="submit"><i class="fa fa-times"></i></button>';
