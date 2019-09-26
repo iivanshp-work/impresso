@@ -1621,6 +1621,10 @@ $document.ready(function(){
         });
     });
 
+    if($('[data-meetup-check-invite]').hasClass("open_check_popup")) {
+        $('[data-meetup-check-invite]').trigger('click');
+    }
+
     //check invite meetup
     $('[data-meetup-invite]').on('click change', function(e){
         e.preventDefault();

@@ -90,7 +90,7 @@
                         @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_inviting == $user->id)
                             <button type="button" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>
                         @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_invited == $user->id)
-                            <button type="button" class="btn btn-violet open-pop-up" data-target="#acceptInvite" data-meetup-check-invite="">Check invite</button>
+                            <button type="button" class="btn btn-violet open-pop-up @if (app('request')->has('open_check_popup')){{'open_check_popup'}}@endif" data-target="#acceptInvite" data-meetup-check-invite="">Check invite</button>
                             <button type="button" class="btn btn-violet btn-meetup-connected hide" data-meetup-connected="">Connected</button>
                             <a href="{{url('/profile/' . $userData->id . '/meetup')}}" class="btn btn-violet btn-meetup hide" data-meetup-new-meetup="">Meetup</a>
                         @endif

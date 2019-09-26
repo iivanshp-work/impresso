@@ -7,6 +7,8 @@
 namespace App\Http\Controllers\LA;
 
 use App\Http\Controllers\Controller;
+use App\Models\Meetup_reason;
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
@@ -36,21 +38,88 @@ class MeetupsController extends Controller
 			$this->listing_cols = ModuleFields::listingColumnAccessScan('Meetups', $this->listing_cols);
 		}
 	}
-	
-	/**
-	 * Display a listing of the Meetups.
-	 *
-	 * @return \Illuminate\Http\Response
-	 */
-	public function index()
+
+    /**
+     * Display a listing of the Meetups.
+     *
+     * @param Request $request
+     * @return \Illuminate\Http\Response
+     */
+	public function index(Request $request)
 	{
 		$module = Module::get('Meetups');
-		
+        $paginateLimit = getenv('PAGINATION_LIMIT');
+
 		if(Module::hasAccess($module->id)) {
+            $query = DB::table('meetups')->select($this->listing_cols)->whereNull('deleted_at');
+            $params = [];
+            $params['status'] = $request->has('status') ? intval($request->input('status')) : null;
+            $params['reason'] = $request->has('reason') ? intval($request->input('reason')) : null;
+            $params['date_from'] = $request->has('date_from') ? trim($request->input('date_from')) : null;
+            $params['date_to'] = $request->has('date_to') ? trim($request->input('date_to')) : null;
+
+            if ($params['status'] !== null) {
+                $query = $query->where("status", "=", $params['status']);
+            }
+            if ($params['reason'] !== null) {
+                $query = $query->where("reason", "=", $params['reason']);
+            }
+            if ($params['date_from']) {
+                $query = $query->where("inviting_date", ">=", Carbon::parse($params['date_from'])->startOfDay());
+            }
+            if ($params['date_to']) {
+                $query = $query->where("inviting_date", "<=", Carbon::parse($params['date_to'])->endOfDay());
+            }
+            $values = $query->orderBy("id", 'desc')->paginate($paginateLimit);
+            if($values){
+                $statuses = (new Meetup())->getStatuses();
+                $reasons = Meetup_reason::pluck('title', 'id');
+                $userIDS = [];
+                for($i=0; $i < count($values); $i++) {
+                    //get status
+                    $values[$i]->status = isset($statuses[$values[$i]->status]) ? $statuses[$values[$i]->status] : '-';
+                    //get users
+                    if (!in_array($values[$i]->user_id_inviting, $userIDS)) {
+                        $userIDS[] = $values[$i]->user_id_inviting;
+                    }
+                    if (!in_array($values[$i]->user_id_invited, $userIDS)) {
+                        $userIDS[] = $values[$i]->user_id_invited;
+                    }
+                }
+                if (!empty($userIDS)) {
+                    $users = User::whereIn('id', $userIDS)->get();
+                    if ($users->count()) {
+                        $users = $users->keyBy('id');
+                    }
+                    for($i=0; $i < count($values); $i++) {
+                        //get status
+                        $values[$i]->inviting_user = 'Profile #' . $values[$i]->user_id_inviting;
+                        if (isset($users[$values[$i]->user_id_inviting])) {
+                            if (isset($users[$values[$i]->user_id_inviting]->name) && $users[$values[$i]->user_id_inviting]->name) {
+                                $values[$i]->inviting_user = $users[$values[$i]->user_id_inviting]->name;
+                            } else {
+                                $values[$i]->inviting_user = $users[$values[$i]->user_id_inviting]->email;
+                            }
+                        }
+                        $values[$i]->invited_user = 'Profile #' . $values[$i]->user_id_invited;
+                        if (isset($users[$values[$i]->user_id_invited])) {
+                            if (isset($users[$values[$i]->user_id_invited]->name) && $users[$values[$i]->user_id_invited]->name) {
+                                $values[$i]->invited_user = $users[$values[$i]->user_id_invited]->name;
+                            } else {
+                                $values[$i]->invited_user = $users[$values[$i]->user_id_invited]->email;
+                            }
+                        }
+                    }
+                }
+            }
+            if($values->count() == 0){
+                $values = 0;
+            }
 			return View('la.meetups.index', [
 				'show_actions' => $this->show_action,
 				'listing_cols' => $this->listing_cols,
-				'module' => $module
+				'module' => $module,
+                'values' => $values
 			]);
 		} else {
             return redirect(config('laraadmin.adminRoute')."/");

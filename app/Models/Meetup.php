@@ -61,6 +61,11 @@ class Meetup extends Model
      */
     public function getStatusLabelAttribute()
     {
+        $statuses = $this->getStatuses();
+        return isset($statuses[$this->status]) ? $statuses[$this->status] : '';
+    }
+
+    public function getStatuses() {
         $statuses = [
             '1' => 'Processing',
             '2' => 'Accept',
@@ -68,7 +73,6 @@ class Meetup extends Model
             '4' => 'Expired'
         ];
         //status:: 1 - processing, 2 - success, 3 - fail, 4 expired
-
-        return isset($statuses[$this->status]) ? $statuses[$this->status] : '';
+        return $statuses;
     }
 }

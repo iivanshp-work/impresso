@@ -7,9 +7,6 @@
 @section("htmlheader_title", "Meetups Listing")
 
 @section("headerElems")
-@la_access("Meetups", "create")
-	<button class="btn btn-success btn-sm pull-right" data-toggle="modal" data-target="#AddModal">Add Meetup</button>
-@endla_access
 @endsection
 
 @section("main-content")
@@ -33,78 +30,42 @@
 			@foreach( $listing_cols as $col )
 			<th>{{ $module->fields[$col]['label'] or ucfirst($col) }}</th>
 			@endforeach
-			@if($show_actions)
-			<th>Actions</th>
-			@endif
 		</tr>
 		</thead>
 		<tbody>
-			
+			@if($values)
+				@foreach($values as $value)
+					<tr>
+						@foreach( $listing_cols as $col )
+							@if($col == 'user_id_inviting')
+								<td><a class="black_link" href="{{url(config('laraadmin.adminRoute') . '/users/' . $value->user_id_inviting . '/edit')}}">{{$value->inviting_user}}</td>
+							@elseif($col == 'user_id_invited')
+								<td><a class="black_link" href="{{url(config('laraadmin.adminRoute') . '/users/' . $value->user_id_invited . '/edit')}}">{{$value->invited_user}}</td>
+							@else
+								<td>{{$value->$col}}</td>
+							@endif
+						@endforeach
+					</tr>
+				@endforeach
+			@else
+				<tr class="odd"><td valign="top" colspan="9" class="dataTables_empty text-center">No records found.</td></tr>
+			@endif
 		</tbody>
 		</table>
 	</div>
 </div>
 
-@la_access("Meetups", "create")
-<div class="modal fade" id="AddModal" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel">Add Meetup</h4>
-			</div>
-			{!! Form::open(['action' => 'LA\MeetupsController@store', 'id' => 'meetup-add-form']) !!}
-			<div class="modal-body">
-				<div class="box-body">
-                    @la_form($module)
-					
-					{{--
-					@la_input($module, 'unique_code')
-					@la_input($module, 'user_id_inviting')
-					@la_input($module, 'user_id_invited')
-					@la_input($module, 'reason')
-					@la_input($module, 'inviting_date')
-					@la_input($module, 'invited_date')
-					@la_input($module, 'status')
-					--}}
-				</div>
-			</div>
-			<div class="modal-footer">
-				<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-				{!! Form::submit( 'Submit', ['class'=>'btn btn-success']) !!}
-			</div>
-			{!! Form::close() !!}
-		</div>
-	</div>
-</div>
-@endla_access
+
 
 @endsection
 
 @push('styles')
-<link rel="stylesheet" type="text/css" href="{{ asset('la-assets/plugins/datatables/datatables.min.css') }}"/>
 @endpush
 
 @push('scripts')
-<script src="{{ asset('la-assets/plugins/datatables/datatables.min.js') }}"></script>
 <script>
 $(function () {
-	$("#example1").DataTable({
-		processing: true,
-        serverSide: true,
-        ajax: "{{ url(config('laraadmin.adminRoute') . '/meetup_dt_ajax') }}",
-		language: {
-			lengthMenu: "_MENU_",
-			search: "_INPUT_",
-			searchPlaceholder: "Search"
-		},
-		@if($show_actions)
-		columnDefs: [ { orderable: false, targets: [-1] }],
-		@endif
-	});
-	$("#meetup-add-form").validate({
-		
-	});
+
 });
 </script>
 @endpush
