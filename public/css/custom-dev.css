@@ -167,6 +167,7 @@ customValidateConfirm{
 .user__name.not_verified {
     margin-top: -16px;
 }
+.sign-up .form__btn,
 .login .form__btn {
     position: static;
     left: 0;
@@ -375,4 +376,13 @@ customValidateConfirm{
 
 .user__card_group-btn .btn {
     padding: 0 15px;
+}
+
+#upload .spinner {
+    color: #7e20c8;
+}
+#upload .spinner,
+#upload .spinner:before,
+#upload .spinner:after {
+    background: #7e20c8;
 }

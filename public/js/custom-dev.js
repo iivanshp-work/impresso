@@ -1042,6 +1042,9 @@ $document.ready(function(){
         };
         requestValidationData = data;
         clearUploadForm();
+        if ($('.upload-modal .text-color-gray').length) {
+            $('.upload-modal .text-color-gray').width(Math.min(400, ($(window).width() - 50)));
+        }
         openProfileEditPopup('upload');
     });
 
