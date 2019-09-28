@@ -97,8 +97,8 @@
 			</div>
 
 			<div class="form-group">
-				<label>Feeds Professionals radius(KM)</label>
-				<input type="text" class="form-control" placeholder="Feeds Professionals radius" maxlength="100" name="professionals_radius" value="{{$configs->professionals_radius}}">
+				<label>Feeds radius(KM)</label>
+				<input type="text" class="form-control" placeholder="Feeds radius" maxlength="100" name="professionals_radius" value="{{$configs->professionals_radius}}">
 			</div>
 
             <div class="form-group">

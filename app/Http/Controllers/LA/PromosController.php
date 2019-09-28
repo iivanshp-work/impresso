@@ -23,7 +23,7 @@ class PromosController extends Controller
 {
 	public $show_action = true;
 	public $view_col = 'title';
-	public $listing_cols = ['id', 'title', 'tags', 'status'];
+	public $listing_cols = ['id', 'title', 'tags', 'location_title', 'status'];
 	
 	public function __construct() {
 		// Field Access of Listing Columns

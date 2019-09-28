@@ -38,6 +38,7 @@ class DashboardController extends Controller
         $usersPendingCount = DB::table("users")->where("type", '=', getenv('USERS_TYPE_USER'))->whereNull('deleted_at')->where("is_verified", "=", 0)->where("varification_pending", "=", 1)->count();
         $usersAdminCount = DB::table("users")->where("type", '=', getenv('USERS_TYPE_ADMIN'))->whereNull('deleted_at')->count();
         $jobsCount = DB::table("jobs")->whereNull('deleted_at')->count();
+        $promosCount = DB::table("promos")->whereNull('deleted_at')->count();
         $educationCount = DB::table("user_educations")->where("status", '=', 2)->whereNull('deleted_at')->count();
         $certificationCount = DB::table("user_certifications")->where("status", '=', 2)->whereNull('deleted_at')->count();
         $purchasesCount = DB::table("user_purchases")->where("status", '=', 0)->whereNull('deleted_at')->count();
@@ -50,6 +51,7 @@ class DashboardController extends Controller
             'certificationCount' => $certificationCount,
             'purchasesCount' => $purchasesCount,
             'jobsCount' => $jobsCount,
+            'promosCount' => $promosCount,
         ]);
     }
 }

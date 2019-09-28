@@ -9,7 +9,7 @@
         <section class="content">
           <!-- Small boxes (Stat box) -->
           <div class="row">
-            <div class="col-lg-4 col-xs-4">
+            <div class="col-lg-3 col-xs-3">
               <!-- small box -->
               <div class="small-box bg-red-active">
                 <div class="inner">
@@ -23,7 +23,7 @@
               </div>
             </div><!-- ./col -->
 
-            <div class="col-lg-4 col-xs-4">
+            <div class="col-lg-3 col-xs-3">
               <!-- small box -->
               <div class="small-box bg-aqua">
                 <div class="inner">
@@ -37,7 +37,7 @@
               </div>
             </div><!-- ./col -->
 
-            <div class="col-lg-4 col-xs-4">
+            <div class="col-lg-3 col-xs-3">
               <!-- small box -->
               <div class="small-box bg-green">
                 <div class="inner">
@@ -48,6 +48,20 @@
                   <i class="fa fa-joomla"></i>
                 </div>
                 <a href="{{ url(config('laraadmin.adminRoute') . '/jobs') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
+              </div>
+            </div><!-- ./col -->
+
+            <div class="col-lg-3 col-xs-3">
+              <!-- small box -->
+              <div class="small-box bg-maroon">
+                <div class="inner">
+                  <h3>@if ($promosCount) {{$promosCount}} @else 0 @endif</h3>
+                  <p>Promos</p>
+                </div>
+                <div class="icon">
+                  <i class="fa fa-bullhorn"></i>
+                </div>
+                <a href="{{ url(config('laraadmin.adminRoute') . '/promos') }}" class="small-box-footer">More info <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div><!-- ./col -->
 
