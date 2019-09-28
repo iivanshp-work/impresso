@@ -75,20 +75,20 @@
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 <li>
-                                    <input class="style-input-text" type="text" value="@if($userData->company_title){{$userData->company_title}}@else{{''}}@endif"
-                                           name="company_title" autocomplete="off" placeholder="Add company">
+                                    <input class="style-input-text" type="text" value="@if($userData->job_title){{$userData->job_title}}@else{{''}}@endif"
+                                            name="job_title" autocomplete="off" placeholder="Job Title or Status">
                                 </li>
                                 <li>
-                                    <input class="style-input-text" type="text" value="@if($userData->job_title){{$userData->job_title}}@else{{''}}@endif"
-                                            name="job_title" autocomplete="off" placeholder="Add job title / status">
+                                    <input class="style-input-text" type="text" value="@if($userData->company_title){{$userData->company_title}}@else{{''}}@endif"
+                                           name="company_title" autocomplete="off" placeholder="Company Name">
                                 </li>
                                 <li>
                                     <input class="style-input-text" type="text" value="@if($userData->university_title){{$userData->university_title}}@else{{''}}@endif"
-                                           name="university_title" autocomplete="off" placeholder="Add university">
+                                           name="university_title" autocomplete="off" placeholder="School or University">
                                 </li>
                                 <li>
                                     <input class="style-input-text" type="text" value="@if($userData->certificate_title){{$userData->certificate_title}}@else{{''}}@endif"
-                                           name="certificate_title" autocomplete="off" placeholder="Add certificate">
+                                           name="certificate_title" autocomplete="off" placeholder="Certificate">
                                 </li>
                             </ul>
                         </div>
@@ -100,7 +100,7 @@
                             <h5 class="user__card_title">IMPRESSIVE BIO: *</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <textarea class="style-textarea border-violet" rows="4" cols="50"
-                                      name="impress" autocomplete="off" placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
+                                      name="impress" autocomplete="off" placeholder="What do you do best in your professional and non-professional life?">{{$userData->impress}}</textarea>
                         </div>
 
 
@@ -119,7 +119,7 @@
                         @endif
 
                         <div class="cards user__card">
-                            <h5 class="user__card_title">Top Skills / Areas of Interest *</h5>
+                            <h5 class="user__card_title">What are your top skills or interest? *</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 @if(!empty($topSkills))
@@ -165,7 +165,7 @@
                         @endif
 
                         <div class="cards user__card">
-                            <h5 class="user__card_title">Soft Skills *</h5>
+                            <h5 class="user__card_title">What's your personality? *</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 @if(!empty($softSkills))
