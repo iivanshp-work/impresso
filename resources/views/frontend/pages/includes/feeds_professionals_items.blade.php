@@ -72,6 +72,7 @@
             </ul>
             @php
                 $meetup = $professional->meetup();
+                $user = Auth::user();
             @endphp
             @if (!$meetup || ($meetup && $meetup->status == 3) || ($meetup && $meetup->status == 4)) {{--failed-declined meetup--}}
                 <a href="{{url('/profile/' . $professional->id . '/meetup')}}" class="btn btn-violet btn-meetup">Meetup</a>

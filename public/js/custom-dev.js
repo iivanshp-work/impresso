@@ -882,7 +882,7 @@ $document.ready(function(){
         let val = $(this).val();
         let val2 = $(this).closest("form").find('[name="job_title"]').val();
         if (val && val2){
-            $(this).closest("form").find('.job-title span').text(val + ' at ' + val2);
+            $(this).closest("form").find('.job-title span').text(val2 + ' at ' + val);
         } else {
             if (val2){
                 $(this).closest("form").find('.job-title span').text(val2);
