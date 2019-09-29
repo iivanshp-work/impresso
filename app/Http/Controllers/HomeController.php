@@ -8,7 +8,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests;
 use Illuminate\Http\Request;
-use Artisan;
 
 /**
  * Class HomeController
@@ -31,12 +30,6 @@ class HomeController extends Controller
      * @return Response
      */
     public function index() {
-
-        //updates meetup expires
-        // cron example
-        //* * * * * cd /var/www/html/laravelPath && php artisan schedule:run >> /dev/null 2>&1
-        $exitCode = Artisan::call('meetups_expires', []);
-
         return view('home');
     }
 }

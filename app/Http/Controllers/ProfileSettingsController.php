@@ -28,6 +28,8 @@ use Hash;
 use Stripe;
 use DB;
 
+use Artisan;
+
 use Brick\PhoneNumber\PhoneNumber;
 use Brick\PhoneNumber\PhoneNumberParseException;
 
@@ -426,6 +428,11 @@ class ProfileSettingsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function settingsEditPage(Request $request) {
+        //updates meetup expires
+        // cron example
+        //* * * * * cd /var/www/html/laravelPath && php artisan schedule:run >> /dev/null 2>&1
+        $exitCode = Artisan::call('meetups_expires', []);
+
         $user = Auth::user();
         return view('frontend.pages.settings_edit', [
             'user' => $user,
