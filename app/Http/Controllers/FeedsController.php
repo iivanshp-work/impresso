@@ -42,13 +42,21 @@ class FeedsController extends Controller
         $jobs = Job::withDistance($userData)->notDeleted()->where('status', '=', 1)->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($jobs->count() == 0) $jobs = null;
         $jobAd = Jobs_AD::notDeleted()->active()->orderBy('id', 'desc')->limit(1)->first();
-
-        $promos = Promo::notDeleted()->withImage()->active()->orderBy('id', 'desc')->limit($this->paginationLimit)->get();
-
         $radius = LAConfigs::getByKey('professionals_radius');
         if (!$radius) {
             $radius = 100;
         }
+
+        $promos = Promo::withDistance($userData)
+            ->notDeleted()
+            ->withImage()
+            ->active()
+            ->orderBy('distance')
+            ->limit($this->paginationLimit)
+            ->isWithinMaxDistance($userData, $radius)
+            ->get();
+
+
         $professionals = User::withDistance($userData)
             ->notDeleted()
             ->users()
@@ -87,7 +95,10 @@ class FeedsController extends Controller
         $keyword = $request->has('keyword') ? trim($request->input('keyword')) : '';
         $page = $request->has('page') ? intval($request->input('page')) : 1;
         $offset = ($page - 1) * $this->paginationLimit;
-
+        $radius = LAConfigs::getByKey('professionals_radius');
+        if (!$radius) {
+            $radius = 100;
+        }
         switch ($type) {
             case 'jobs':
                 $jobs = Job::withDistance($userData)
@@ -119,10 +130,6 @@ class FeedsController extends Controller
                 break;
 
             case 'professionals':
-                $radius = LAConfigs::getByKey('professionals_radius');
-                if (!$radius) {
-                    $radius = 100;
-                }
                 $query = User::withDistance($userData)
                     ->notDeleted()
                     ->users()
@@ -158,17 +165,21 @@ class FeedsController extends Controller
                 break;
 
             case 'promos':
-                $promos = Promo::notDeleted()
+                $query = Promo::withDistance($userData)
+                    ->notDeleted()
                     ->withImage()
                     ->active()
                     ->where(function ($query) use ($keyword) {
                         $query->orWhere("title", "like", "%" . $keyword . "%");
                         $query->orWhere("tags", "like", "%" . $keyword . "%");
-                    })
-                    ->orderBy('id', 'desc')
+                    });
+                if (!$keyword) {
+                    $query = $query->isWithinMaxDistance($userData, $radius);
+                }
+                $query = $query->orderBy('distance')
                     ->offset($offset)
-                    ->limit($this->paginationLimit)
-                    ->get();
+                    ->limit($this->paginationLimit);
+                $promos = $query->get();
                 if ($promos->count() == 0) $promos = null;
 
                 $html = view('frontend.pages.includes.feeds_promos_items', [

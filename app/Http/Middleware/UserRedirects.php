@@ -60,7 +60,7 @@ class UserRedirects
                 }else if (!$user->varification_pending && !$user->is_verified && $requestUrl != getenv('VALIDATION_PAGE') && !in_array($requestUrl, $skipPaths)) {
                     $path = '/validation';
                     $needRedirect = true;
-                } else if ($user->varification_pending && !$user->is_verified && $requestUrl == getenv('BASE_LOGEDIN_PAGE') && !in_array($requestUrl, $skipPaths)) {
+                } else if ($user->varification_pending && !$user->is_verified && ($requestUrl == getenv('BASE_LOGEDIN_PAGE') || $requestUrl == '/settings/credits' || $requestUrl == '/settings/credits/checkout' || $requestUrl == '/transaction-history') && !in_array($requestUrl, $skipPaths)) {
                     $path = '/profile?show_pending_popup=1';
                     $needRedirect = true;
                 }

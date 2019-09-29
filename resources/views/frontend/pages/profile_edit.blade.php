@@ -10,7 +10,7 @@
         <header class="header">
             <h4 class="header-title">Edit Profile</h4>
 
-            <a href="{{url()->previous() != url()->current() ? url()->previous() : url('/profile')}}" class="header__icon-left back-btn" data-back-btn="" data-current-step="1">
+            <a href="{{url('/profile')}}" class="header__icon-left back-btn" data-back-btn="" data-current-step="{{$step}}">
                 <img src="{{asset('img/icons/arrow-back.svg')}}" alt="arrow-back" />
             </a>
             <span class="header__icon-right">
@@ -29,8 +29,8 @@
         </header>
         <main>
             <form id="edit_profile_form" action="{{url('/profile/edit')}}" method="post" data-edit-profile-form="">
-                <div class="user edit-profile">
-                    <div class="steps step-1">
+                <div class="user edit-profile @if($step != '1') nobg @endif">
+                    <div class="steps step-1 @if($step != '1') hide @endif">
                         <div class="user__header">
                             <div class="user__avatar">
                                 <input type="hidden" name="photo" data-photo-hidden value="{{$userData->photo}}">
@@ -75,32 +75,32 @@
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 <li>
-                                    <input class="style-input-text" type="text" value="@if($userData->company_title){{$userData->company_title}}@else{{''}}@endif"
-                                           name="company_title" autocomplete="off" placeholder="Add company">
+                                    <input class="style-input-text" type="text" value="@if($userData->job_title){{$userData->job_title}}@else{{''}}@endif"
+                                            name="job_title" autocomplete="off" placeholder="Job Title or Status">
                                 </li>
                                 <li>
-                                    <input class="style-input-text" type="text" value="@if($userData->job_title){{$userData->job_title}}@else{{''}}@endif"
-                                            name="job_title" autocomplete="off" placeholder="Add job title / status">
+                                    <input class="style-input-text" type="text" value="@if($userData->company_title){{$userData->company_title}}@else{{''}}@endif"
+                                           name="company_title" autocomplete="off" placeholder="Company Name">
                                 </li>
                                 <li>
                                     <input class="style-input-text" type="text" value="@if($userData->university_title){{$userData->university_title}}@else{{''}}@endif"
-                                           name="university_title" autocomplete="off" placeholder="Add university">
+                                           name="university_title" autocomplete="off" placeholder="School or University">
                                 </li>
                                 <li>
                                     <input class="style-input-text" type="text" value="@if($userData->certificate_title){{$userData->certificate_title}}@else{{''}}@endif"
-                                           name="certificate_title" autocomplete="off" placeholder="Add certificate">
+                                           name="certificate_title" autocomplete="off" placeholder="Certificate">
                                 </li>
                             </ul>
                         </div>
-                        <button type="button" data-edit-profile-step="1" class="btn btn-violet btn-save">continue</button>
+                        <button type="button" data-edit-profile-step="1" class="btn btn-violet btn-save">Save & Continue</button>
                     </div>
 
-                    <div class="steps step-2">
+                    <div class="steps step-2 @if($step != '2') hide @endif">
                         <div class="cards user__card">
                             <h5 class="user__card_title">IMPRESSIVE BIO: *</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <textarea class="style-textarea border-violet" rows="4" cols="50"
-                                      name="impress" autocomplete="off" placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
+                                      name="impress" autocomplete="off" placeholder="What do you do best in your professional and non-professional life?">{{$userData->impress}}</textarea>
                         </div>
 
 
@@ -119,7 +119,7 @@
                         @endif
 
                         <div class="cards user__card">
-                            <h5 class="user__card_title">Top Skills / Areas of Interest *</h5>
+                            <h5 class="user__card_title">What are your top skills or interest? *</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 @if(!empty($topSkills))
@@ -165,7 +165,7 @@
                         @endif
 
                         <div class="cards user__card">
-                            <h5 class="user__card_title">Soft Skills *</h5>
+                            <h5 class="user__card_title">What's your personality? *</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 @if(!empty($softSkills))
@@ -194,10 +194,10 @@
                                 @endif
                             </ul>
                         </div>
-                        <button type="button" data-edit-profile-step="2" class="btn btn-violet btn-save">continue</button>
+                        <button type="button" data-edit-profile-step="2" class="btn btn-violet btn-save">Save & Continue</button>
                     </div>
 
-                    <div class="steps step-3">
+                    <div class="steps step-3 @if($step != '3') hide @endif">
                         <div class="cards user__card" id="educations" data-education-wrapper="">
                             <h5 class="user__card_title">Education:</h5>
                             <span class="edit-info" data-add-new-education=""><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
@@ -312,7 +312,7 @@
                             @endif
                         </div>
 
-                        <button type="submit" id="save" class="btn btn-violet btn-save">Save</button>
+                        <button type="submit" id="save" class="btn btn-violet btn-save">Save & Finish</button>
                     </div>
 
 

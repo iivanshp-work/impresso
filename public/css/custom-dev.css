@@ -167,6 +167,7 @@ customValidateConfirm{
 .user__name.not_verified {
     margin-top: -16px;
 }
+.sign-up .form__btn,
 .login .form__btn {
     position: static;
     left: 0;
@@ -362,16 +363,17 @@ customValidateConfirm{
 .sign-up .form__btn a{
     color: #7e20c8;
 }
-.edit-profile .steps {
+/*.edit-profile .steps {
     display: none;
 }
 .edit-profile .steps.step-1 {
     display: block;
-}
+}*/
 .edit-profile.nobg {
     background: none;
     padding-top: 25px;
 }
+
 
 /*meetup start*/
 .meetup .meetup__list li {
@@ -384,3 +386,16 @@ customValidateConfirm{
     display: block;
 }
 /*meetup end*/
+
+.user__card_group-btn .btn {
+    padding: 0 15px;
+}
+
+#upload .spinner {
+    color: #7e20c8;
+}
+#upload .spinner,
+#upload .spinner:before,
+#upload .spinner:after {
+    background: #7e20c8;
+}

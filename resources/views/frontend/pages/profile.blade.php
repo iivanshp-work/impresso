@@ -108,28 +108,29 @@
                                            placeholder="NO DATA YET." disabled="disabled">
                                 </li>
                             @endif
-                            @if($userData->company_title)
-                                <li>
-                                    <input class="style-input-text" type="text" value="{{$userData->company_title}}"
-                                           placeholder="Add company" disabled="disabled">
-                                </li>
-                            @endif
                             @if($userData->job_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="{{$userData->job_title}}"
-                                           placeholder="Add job title / status" disabled="disabled">
+                                           placeholder="Job Title or Status" disabled="disabled">
                                 </li>
                             @endif
+
+                                @if($userData->company_title)
+                                    <li>
+                                        <input class="style-input-text" type="text" value="{{$userData->company_title}}"
+                                               placeholder="Company Name" disabled="disabled">
+                                    </li>
+                                @endif
                             @if($userData->university_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="{{$userData->university_title}}"
-                                           placeholder="Add university" disabled="disabled">
+                                           placeholder="School or University" disabled="disabled">
                                 </li>
                             @endif
                             @if($userData->certificate_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="{{$userData->certificate_title}}"
-                                           placeholder="Add certificate" disabled="disabled">
+                                           placeholder="Certificate" disabled="disabled">
                                 </li>
                             @endif
                         @else
@@ -139,28 +140,28 @@
                                            placeholder="NO DATA YET." disabled="disabled">
                                 </li>
                             @endif
-                            @if($userData->company_title)
-                                <li>
-                                    <input class="style-input-text" type="text" value="{{$userData->company_title}}"
-                                           placeholder="Add company" disabled="disabled">
-                                </li>
-                            @endif
                             @if($userData->job_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="{{$userData->job_title}}"
-                                           placeholder="Add job title / status" disabled="disabled">
+                                           placeholder="Job Title or Status" disabled="disabled">
+                                </li>
+                            @endif
+                            @if($userData->company_title)
+                                <li>
+                                    <input class="style-input-text" type="text" value="{{$userData->company_title}}"
+                                           placeholder="Company Name" disabled="disabled">
                                 </li>
                             @endif
                             @if($userData->university_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="{{$userData->university_title}}"
-                                           placeholder="Add university" disabled="disabled">
+                                           placeholder="School or University" disabled="disabled">
                                 </li>
                             @endif
                             @if($userData->certificate_title)
                                 <li>
                                     <input class="style-input-text" type="text" value="{{$userData->certificate_title}}"
-                                           placeholder="Add certificate" disabled="disabled">
+                                           placeholder="Certificate" disabled="disabled">
                                 </li>
                             @endif
                         @endif
@@ -173,7 +174,7 @@
                             <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <textarea class="style-textarea border-violet" rows="4" cols="50" disabled="disabled"
-                                      placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
+                                      placeholder="What do you do best in your professional and non-professional life?">{{$userData->impress}}</textarea>
                         </div>
                     @endif
                 @else
@@ -182,7 +183,7 @@
                             <h5 class="user__card_title">IMPRESSIVE BIO:</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <textarea class="style-textarea border-violet" rows="4" cols="50" disabled="disabled"
-                                  placeholder="Write something to impress your recruiters and future meetups!">{{$userData->impress}}</textarea>
+                                  placeholder="What do you do best in your professional and non-professional life?">{{$userData->impress}}</textarea>
                         </div>
                     @endif
 
@@ -204,7 +205,7 @@
                     @endif
                     @if(!empty($topSkills))
                         <div class="cards user__card">
-                            <h5 class="user__card_title">Top Skills / Areas of Interest</h5>
+                            <h5 class="user__card_title">What are your top skills or interest? *</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 @foreach($topSkills as $skill)
@@ -266,7 +267,7 @@
                     @endif
                     @if(!empty($softSkills))
                         <div class="cards user__card">
-                            <h5 class="user__card_title">Soft Skills</h5>
+                            <h5 class="user__card_title">What's your personality? *</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 @foreach($softSkills as $skill)

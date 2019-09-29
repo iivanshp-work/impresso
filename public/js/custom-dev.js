@@ -815,7 +815,12 @@ $document.ready(function(){
     //open edit step
     function openEditStep(step) {
         if ($('.edit-profile .step-' + step).length) {
-            $('.edit-profile .steps').hide();
+            if (step != 1) {
+                redirect(base_url + '/profile/edit/step/' + step);
+            } else {
+                redirect(base_url + '/profile/edit');
+            }
+            /*$('.edit-profile .steps').hide();
             $('.edit-profile .step-' + step).show();
             if (step != 1) {
                 if (step == 3) {
@@ -825,7 +830,7 @@ $document.ready(function(){
             } else {
                 $('.edit-profile').removeClass('nobg');
             }
-            $('[data-current-step]').data('current-step', step);
+            $('[data-current-step]').data('current-step', step);*/
         } else {
             showError("Steps error occurred. Please try again later.");
         }
@@ -1037,6 +1042,9 @@ $document.ready(function(){
         };
         requestValidationData = data;
         clearUploadForm();
+        if ($('.upload-modal .text-color-gray').length) {
+            $('.upload-modal .text-color-gray').width(Math.min(400, ($(window).width() - 50)));
+        }
         openProfileEditPopup('upload');
     });
 
@@ -1143,6 +1151,8 @@ $document.ready(function(){
         let availableExtensions = ["jpg", "jpeg", "png", "pdf", "doc", "docx"];
         let files = $this.get(0).files;
         let notAvailable = false;
+        let maxSizeLimit = false;
+        let maxSize = 5 * 1024 * 1024;
         let selectedFiles = '';
         $('#edit_profile_upload_attach_form .default_title').show();
         $('#edit_profile_upload_attach_form .selected_files_title').hide().find('.files_text').text('');
@@ -1150,20 +1160,31 @@ $document.ready(function(){
         if(files.length){
             selectedFiles += files.length + ' file' + (files.length > 1 ? 's ' : ' ') + 'selected:';
             $.each(files, function(index, file){
+                if (file.size > maxSize) {
+                    maxSizeLimit = true;
+                }
                 let ext = file.name.split(".");
                 ext = ext[ext.length - 1].toLowerCase();
                 if($.inArray(ext, availableExtensions) == -1){
                     notAvailable = true;
                 }
                 if(index == 0){
-                    selectedFiles += '“' + file.name + '...”';
+                    selectedFiles += '“' + file.name.substr(0, 20) + '...”';
                 }
             });
             if(notAvailable){
+                closeProfileEditPopup('upload');
                 showError('Selected file has not allowed extension.', 'Error!', function(){
                     openProfileEditPopup('upload');
                 });
                 return;
+            }
+            if(maxSizeLimit) {
+                closeProfileEditPopup('upload');
+                // will be new popup(see in figma) //TODO????
+                showError('File max size limit exceeded.', 'Error!', function(){
+                    openProfileEditPopup('upload');
+                });
             }
         }else{
             showError('No files selected.', 'Error!', function(){
