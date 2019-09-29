@@ -374,6 +374,19 @@ customValidateConfirm{
     padding-top: 25px;
 }
 
+
+/*meetup start*/
+.meetup .meetup__list li {
+    cursor: pointer;
+}
+.meetup .meetup__list .invite {
+    display: none;
+}
+.meetup .meetup__list .active-reason .invite {
+    display: block;
+}
+/*meetup end*/
+
 .user__card_group-btn .btn {
     padding: 0 15px;
 }

@@ -114,6 +114,11 @@ class User extends Model
         }
     }
 
+    public function getCreditsCountValueAttribute()
+    {
+        return round($this->attributes['credits_count'],2);
+    }
+
     /**
      * @return mixed
      */
@@ -128,7 +133,8 @@ class User extends Model
      * @return mixed
      */
     public function calculateMeetupCount($id) {
-        return 0; // TODO????????
+        $count = $this->meetups()->where('status', 2)->count();// accepted meetups
+        return $count;
     }
 
     /**
@@ -177,6 +183,59 @@ class User extends Model
     public function transactions()
     {
         return $this->hasMany('App\Models\User_Transaction')->notDeleted()->orderBy('created_at', 'desc');
+    }
+
+    /**
+     * @return mixed
+     */
+    public function meetups()
+    {
+        $id = $this->id;
+        return Meetup::notDeleted()
+            ->where(function ($query) use ($id) {
+                $query->orWhere(function ($query2) use ($id) {
+                    $query2->where("user_id_invited", "=", $id);
+                });
+                $query->orWhere(function ($query2) use ($id) {
+                    $query2->where("user_id_inviting", "=", $id);
+                });
+            })
+            ->orderBy('created_at', 'desc');
+    }
+
+    public function lastMeetup()
+    {
+        $id = $this->id;
+        return Meetup::notDeleted()
+            ->where(function ($query) use ($id) {
+                $query->orWhere(function ($query2) use ($id) {
+                    $query2->where("user_id_invited", "=", $id);
+                });
+                $query->orWhere(function ($query2) use ($id) {
+                    $query2->where("user_id_inviting", "=", $id);
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->first();
+    }
+
+    public function meetup($id = null)
+    {
+        if (!$id) $id = $this->id;
+        if (!$id) return null;
+        return Meetup::notDeleted()
+            ->where(function ($query) use ($id) {
+                $query->orWhere(function ($query2) use ($id) {
+                    $query2->where("user_id_inviting", "=", Auth::id());
+                    $query2->where("user_id_invited", "=", $id);
+                });
+                $query->orWhere(function ($query2) use ($id) {
+                    $query2->where("user_id_inviting", "=", $id);
+                    $query2->where("user_id_invited", "=", Auth::id());
+                });
+            })
+            ->orderBy('created_at', 'desc')
+            ->first();
     }
 
     /**

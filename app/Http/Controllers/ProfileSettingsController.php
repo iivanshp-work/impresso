@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Buy_Credit;
 use App\Models\Country;
 use App\Models\Location;
+use App\Models\Meetup;
+use App\Models\Meetup_reason;
 use App\Models\User_certification;
 use App\Models\User_Education;
 use App\Models\User_Purchase;
@@ -25,6 +27,8 @@ use Redirect;
 use Hash;
 use Stripe;
 use DB;
+
+use Artisan;
 
 use Brick\PhoneNumber\PhoneNumber;
 use Brick\PhoneNumber\PhoneNumberParseException;
@@ -52,13 +56,19 @@ class ProfileSettingsController extends Controller
         $mode = !$id || ($id && $user && $user->id == $id) ? 'me' : 'other';
         if ($mode != 'me') {
             $userData = User::where('id', '=', $id)->first();
+            if (!$userData) {
+                return redirect('/feeds');
+            }
+            $meetup = $userData ? $userData->meetup() : null;
         } else {
             $userData = $user;
+            $meetup = null;
         }
         return view('frontend.pages.profile', [
             'user' => $user,
             'mode' => $mode,
-            'userData' => $userData
+            'userData' => $userData,
+            'meetup' => $meetup
         ]);
     }
 
@@ -172,7 +182,7 @@ class ProfileSettingsController extends Controller
             if (!$neededCredits) {
                 $neededCredits = 30;
             }
-            if ($user->credits_count < $neededCredits) {
+            if ($user->credits_count_value < $neededCredits) {
                 $responseData['no_xims'] = true;
                 //save notification
                 Users_Notification::saveNotification('no_xims', 'You’re out of XIMs');
@@ -224,15 +234,15 @@ class ProfileSettingsController extends Controller
                 } else {
                     $User_Transaction->type = 'validation_certificate';
                     $User_Transaction->notes = 'Certificate Validation "' . $data->title . '" - #' . $data->id;
-                    $User_Transaction->education_id = $data->id;
+                    $User_Transaction->certificate_id = $data->id;
                 }
                 $User_Transaction->by_user_id = $user->id;
-                $User_Transaction->old_credits_amount = $user->credits_count;
-                $User_Transaction->new_credits_amount = $user->credits_count + $amount;
+                $User_Transaction->old_credits_amount = $user->credits_count_value;
+                $User_Transaction->new_credits_amount = $user->credits_count_value + $amount;
                 $User_Transaction->save();
 
                 //adjust user credits amount
-                $user->credits_count = $user->credits_count + $amount;
+                $user->credits_count = $user->credits_count_value + $amount;
                 $user->save();
             }
             $responseData['id'] = $data->id;
@@ -418,6 +428,11 @@ class ProfileSettingsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function settingsEditPage(Request $request) {
+        //updates meetup expires
+        // cron example
+        //* * * * * cd /var/www/html/laravelPath && php artisan schedule:run >> /dev/null 2>&1
+        $exitCode = Artisan::call('meetups_expires', []);
+
         $user = Auth::user();
         return view('frontend.pages.settings_edit', [
             'user' => $user,
@@ -637,6 +652,7 @@ class ProfileSettingsController extends Controller
             $byUsersIDS = [];
             $educationIDS = [];
             $certificationIDS = [];
+            $meetupIDS = [];
             foreach($userTransactions as $transaction) {
                 $byUsersIDS[] = $transaction->by_user_id;
                 if ($transaction->education_id) {
@@ -644,6 +660,9 @@ class ProfileSettingsController extends Controller
                 }
                 if ($transaction->certificate_id) {
                     $certificationIDS[] = $transaction->certificate_id;
+                }
+                if ($transaction->type == 'meetup_inviting' || $transaction->type == 'meetup_accept') {
+                    $meetupIDS[] = $transaction->share_id;
                 }
             }
             if (!empty($byUsersIDS)) {
@@ -675,6 +694,20 @@ class ProfileSettingsController extends Controller
                     foreach($userTransactions as $key => $transaction) {
                         if ($transaction->education_id && isset($educations[$transaction->education_id])) {
                             $userTransactions[$key]->education = $educations[$transaction->education_id];
+                        }
+                    }
+                }
+            }
+            if (!empty($meetupIDS)) {
+                $meetups = Meetup::notDeleted()->whereIn('id', $meetupIDS)->get();
+                if ($meetups->count()) {
+                    $meetups = $meetups->keyBy('id');
+                    foreach($userTransactions as $key => $transaction) {
+                        if ($transaction->type == 'meetup_inviting' && $transaction->share_id && isset($meetups[$transaction->share_id])) {
+                            $userTransactions[$key]->meetup = $meetups[$transaction->share_id];
+                        }
+                        if ($transaction->type == 'meetup_accept' && $transaction->share_id && isset($meetups[$transaction->share_id])) {
+                            $userTransactions[$key]->meetup = $meetups[$transaction->share_id];
                         }
                     }
                 }
@@ -936,4 +969,213 @@ class ProfileSettingsController extends Controller
         }*/
     }
 
+    /**
+     * Meetup
+     * @param Request $request
+     * @param string $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function meetup(Request $request, $id = '') {
+        $user = Auth::user();
+        if (!$id) {
+            $type = $request->has('type') ? trim($request->input('type')) : '';
+            $id = $request->has('id') ? intval($request->input('id')) : 0;
+
+            $responseData = [
+                'has_error' => false,
+                'message' => ''
+            ];
+            if (!$id || !$type) {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= 'An error occurred while checking meetup invite. Please try again later.<br>';
+                return response()->json($responseData);
+            } else {
+                //get meetup based on id
+                $meetup = Meetup::find($id);
+                if (!$meetup) {
+                    $responseData['has_error'] = true;
+                    $responseData['message'] .= 'Meetup data not founds. Please try again later.<br>';
+                    return response()->json($responseData);
+                } else if ($meetup && $meetup->status != 1) {
+                    $responseData['has_error'] = true;
+                    $responseData['message'] .= 'This Meetup invitation already ' . ( $meetup->status == 2 ? 'accepted' : 'declined') . '.<br>';
+                    $responseData['refresh_page'] = true;
+                    return response()->json($responseData);
+                }
+
+                switch ($type) {
+                    case "accept":
+                        //update meetup
+                        $meetup->status = 2; //accept
+                        $meetup->invited_date = Carbon::now();
+                        $result = $meetup->save();
+                        if (!$result) {
+                            $responseData['has_error'] = true;
+                            $responseData['message'] .= 'An error occurred while accepting meetup. Please try again later.<br>';
+                            return response()->json($responseData);
+                        }
+                        //send notifications to both users
+                        $acceptNeededCredits = LAConfigs::getByKey('accepted_invite_xims_amount');
+                        if (!$acceptNeededCredits) {
+                            $acceptNeededCredits = 24;
+                        }
+                        //send notifications to inviting user
+                        $userData = User::find($meetup->user_id_inviting);
+                        if ($userData) {
+                            Users_Notification::saveNotification('meetup_accepted', ($user && $user->phone ? $user->phone : '#'), $userData->id, $meetup->id);
+                        }
+                        //send notifications to invited user
+                        Users_Notification::saveNotification('meetup_accepted', ($userData && $userData->phone ? $userData->phone : '#'), $user->id, $meetup->id);
+
+                        //save transaction to invited user
+                        $amount = $acceptNeededCredits;
+                        $User_Transaction = new User_Transaction;
+                        $User_Transaction->user_id = $user->id;
+                        $User_Transaction->amount = $amount;
+                        $User_Transaction->type = 'meetup_accept';
+                        $User_Transaction->notes = 'You have received ' . $acceptNeededCredits . ' XIMs from ' . ($userData ? ($userData->name ? $userData->name : $userData->email) : '-') . ' for accepting his Meetup invitation.';
+                        $User_Transaction->share_id = $meetup->id;
+
+                        $User_Transaction->by_user_id = $user->id;
+                        $User_Transaction->old_credits_amount = $user->credits_count_value;
+                        $User_Transaction->new_credits_amount = floatval($user->credits_count_value) + $amount;
+                        $User_Transaction->save();
+
+                        //minus balance to inviting user
+                        $user->credits_count = $user->credits_count_value + $amount;
+                        $user->save();
+                        break;
+                    case "decline":
+                        //update meetup
+                        $meetup->status = 3; //decline
+                        $meetup->invited_date = Carbon::now();
+                        $result = $meetup->save();
+                        if (!$result) {
+                            $responseData['has_error'] = true;
+                            $responseData['message'] .= 'An error occurred while declining meetup. Please try again later.<br>';
+                            return response()->json($responseData);
+                        }
+
+                        //send notification to inviting user
+                        $acceptNeededCredits = LAConfigs::getByKey('accepted_invite_xims_amount');
+                        if (!$acceptNeededCredits) {
+                            $acceptNeededCredits = 24;
+                        }
+                        $userData = User::find($meetup->user_id_inviting);
+                        if ($userData) {
+                            Users_Notification::saveNotification('meetup_declined', $acceptNeededCredits, $userData->id, $meetup->id);
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+
+            }
+            return response()->json($responseData);
+        }
+
+        $userData = User::where('id', '=', $id)->first();
+
+        $responseData = [
+            'has_error' => false,
+            'message' => ''
+        ];
+        if (!$userData) {
+            $responseData['has_error'] = true;
+            $responseData['message'] .= 'Invited user not found.<br>';
+            return response()->json($responseData);
+        }
+        $meetup = $userData ? $userData->meetup() : null;
+        if ($meetup && $meetup->status == 1) {
+            $responseData['has_error'] = true;
+            $responseData['message'] .= 'Meetup request already sent. Once your invite is accepted you can organize your meetup date.<br>';
+            return response()->json($responseData);
+        }
+        $rules = array(
+            'meetup_reason' => 'required|numeric',
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $responseData['has_error'] = true;
+            $responseData['message'] .= 'Please, select meetup reason.<br>';
+            return response()->json($responseData);
+        }
+
+        //check users balance and minus it
+        $neededCredits = LAConfigs::getByKey('invite_xims_amount');
+        if (!$neededCredits) {
+            $neededCredits = 30;
+        }
+        if ($user->credits_count_value < $neededCredits) {
+            $responseData['no_xims'] = true;
+            //save notification
+            Users_Notification::saveNotification('no_xims', 'You’re out of XIMs');
+            return response()->json($responseData);
+        } else {
+            //save meetup
+            $meetup = new Meetup;
+            $meetup->unique_code = uniqid();
+            $meetup->user_id_inviting = $user->id;
+            $meetup->user_id_invited = $userData->id;
+            $meetup->reason = $request->has('meetup_reason') ? trim($request->input('meetup_reason')) : '';
+            $meetup->inviting_date = Carbon::now();
+            $meetup->invited_date = null;
+            $meetup->status = 1;
+            $result = $meetup->save();
+
+            if ($result) {
+                $responseData['id'] = $result;
+                //save notification to invited user
+                $acceptNeededCredits = LAConfigs::getByKey('accepted_invite_xims_amount');
+                if (!$acceptNeededCredits) {
+                    $acceptNeededCredits = 24;
+                }
+                Users_Notification::saveNotification('meetup_wants', $acceptNeededCredits, $userData->id, $meetup->id);
+
+                //save transaction to inviting user
+                $amount = 0 - $neededCredits;
+                $User_Transaction = new User_Transaction;
+                $User_Transaction->user_id = $user->id;
+                $User_Transaction->amount = $amount;
+                $User_Transaction->type = 'meetup_inviting';
+                $User_Transaction->notes = 'You have used ' . $neededCredits . 'XIMS for inviting ' . ($userData->name ? $userData->name : $userData->email) . ' to Meetup.';
+                $User_Transaction->share_id = $meetup->id;
+
+                $User_Transaction->by_user_id = $user->id;
+                $User_Transaction->old_credits_amount = $user->credits_count_value;
+                $User_Transaction->new_credits_amount = $user->credits_count_value + $amount;
+                $User_Transaction->save();
+
+                //minus balance to inviting user
+                $user->credits_count = $user->credits_count_value + $amount;
+                $user->save();
+            } else {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= 'An error occurred while saving meetup data. Please try again later.<br>';
+            }
+
+        }
+
+
+        return response()->json($responseData);
+    }
+
+    /**
+     * Meetup Page
+     * @param Request $request
+     * @param string $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function meetupPage(Request $request, $id = '') {
+        $user = Auth::user();
+        $userData = User::where('id', '=', $id)->first();
+
+        $reasons = Meetup_reason::where('status', '=', 1)->get();
+        return view('frontend.pages.meetup', [
+            'user' => $user,
+            'userData' => $userData,
+            'reasons' => $reasons,
+        ]);
+    }
 }

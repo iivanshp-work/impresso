@@ -533,9 +533,9 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 .user__meetup-btn { padding: 20px 0; border-top: 1px solid #d5d5e0; }
 
-.user .btn-meetup-connected { position: relative; }
+.btn-meetup-connected { position: relative; }
 
-.user .btn-meetup-connected::after { content: url(../img/icons/checked-circle.svg); position: absolute; top: 3px; right: 3px; }
+.btn-meetup-connected::after { content: url(../img/icons/checked-circle.svg); position: absolute; top: 3px; right: 3px; }
 
 .user.edit-profile { padding-bottom: 45px; }
 

@@ -70,7 +70,18 @@
                     </li>
                 @endif
             </ul>
-            <a href="https://www.impressolabs.io/meetups/" class="btn btn-border disabled">Meetup</a>
+            @php
+                $meetup = $professional->meetup();
+            @endphp
+            @if (!$meetup || ($meetup && $meetup->status == 3) || ($meetup && $meetup->status == 4)) {{--failed-declined meetup--}}
+                <a href="{{url('/profile/' . $professional->id . '/meetup')}}" class="btn btn-violet btn-meetup">Meetup</a>
+            @elseif ($meetup && $meetup->status == 2)
+                <button type="button" class="btn btn-violet btn-meetup-connected">Connected</button>
+            @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_inviting == $user->id)
+                <button type="button" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>
+            @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_invited == $user->id)
+                <a href="{{url('/profile/' . $professional->id . '?open_check_popup=1')}}" class="btn btn-violet btn-meetup" data-meetup-new-meetup="">Check invite</a>
+            @endif
         </div>
     @endforeach
 @endif

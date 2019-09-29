@@ -1569,31 +1569,151 @@ $document.ready(function(){
             }
         });
     });
-    //phone number validation end
 
     $document.on('paste input', '[data-form-number-form] [name="phone_number"]', function(e){
         $(this).val($(this).val().replace(/[a-zA-Z\_\*\!\@\#\$\%\^&\*]/g ,"").replace(/\s\s+/g, ' ').replace(/\+\++/g, '+').replace(/--+/g, '-'));
     });
+    //phone number validation end
 
-    /*$document.on('change blur', '[data-form-number-form] [name="phone_number"]', function(e){
-        phonenumber($(this));
-    });
-
-    function phonenumber(This) {
-        var phoneno = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
-        //var phoneno = /^(\([0-9]{3}\)\s*|[0-9]{3}\-)[0-9]{3}-[0-9]{4}$/;
-        if(This.val().match(phoneno)) {
-            return true;
-        }
-        else {
-            alert("error");
-            return false;
-        }
-    }*/
-    $(".closeAllowLocationTellMeMore").click(function(e) {
-        console.log($(this));
+    //allow location tell me more start
+	$(".closeAllowLocationTellMeMore").click(function(e) {
         $(this).closest(".modal-window")
             .fadeOut(400)
             .removeClass("show");
     });
+    //allow location tell me more end
+
+    //meetup start
+    // chose meetup reason
+    $document.on('click', '.meetup__list [data-meetup-reason-id]', function(e){
+        e.preventDefault();
+        let id = parseInt($(this).data('meetup-reason-id'));
+        console.log(id);
+        if ($(this).hasClass('active-reason')) {
+            $(this).removeClass('active-reason');
+            $('.meetup-wrapper').addClass('waiting-invite');
+            $('[data-meetup-form] [data-meetup-reason]').val('');
+        } else {
+            $(".meetup__list [data-meetup-reason-id]").removeClass('active-reason');
+            $(this).addClass('active-reason');
+            $('.meetup-wrapper').removeClass('waiting-invite');
+            $('[data-meetup-form] [data-meetup-reason]').val(id);
+        }
+    });
+
+    //click meetup button
+    $document.on('click change', '[data-meetup-form] [data-meetup-submit]', function(e){
+        e.preventDefault();
+        openMeetupPopup('meetupCost');
+    });
+
+    //submit meetup
+    $('[data-submit-meetup-invite-btn]').on('click change', function(e){
+        e.preventDefault();
+        let btn = $(this), targetLink = window.location;
+        //send request to server
+        if (btn.data("busy")) return;
+        btn.data("busy", true);
+        loadingStart();
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            dataType: 'json',
+            data: $('[data-meetup-form]').serialize(),
+            success: function(response){
+                if(response.has_error){
+                    closeMeetupPopup('meetupCost');
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.', 'Error');
+                }else{
+                    if(response.no_xims){
+                        openMeetupPopup('notHaveXims');
+                    }else if(response.id){
+                        openMeetupPopup('meetupInviteSuccess');
+                    }
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                btn.data("busy", false);
+            }
+        });
+    });
+
+    if($('[data-meetup-check-invite]').hasClass("open_check_popup")) {
+        $('[data-meetup-check-invite]').trigger('click');
+    }
+
+    //check invite meetup
+    $('[data-meetup-invite]').on('click change', function(e){
+        e.preventDefault();
+        let btn = $(this), targetLink = base_url + '/meetup';
+        let id = parseInt(btn.data('meetup-id')), type = btn.data('meetup-invite');
+        //send request to server
+        if (btn.data("busy")) return;
+        $('[data-meetup-invite]').data("busy", true);
+        loadingStart();
+        $.ajax({
+            url: targetLink,
+            type: 'post',
+            dataType: 'json',
+            data: {id: id, type: type},
+            success: function(response){
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.', 'Error');
+                    if (response.refresh_page) {
+                        closeMeetupPopup('acceptInvite');
+                        showError(response.message ? response.message : 'An error occurred. Please try again later.', 'Error', function() {
+                            redirect(window.location);
+                        });
+                        setTimeout(function() {
+                            redirect(window.location);
+                        }, 5000);
+                    } else {
+                        closeMeetupPopup('acceptInvite');
+                        showError(response.message ? response.message : 'An error occurred. Please try again later.', 'Error');
+                    }
+                }else{
+                    closeMeetupPopup('acceptInvite');
+                    openMeetupPopup('acceptInviteSuccess');
+                    //update check invite button
+                    if (type == 'accept') {
+                        $('[data-meetup-check-invite]').remove();
+                        $('[data-meetup-new-meetup]').remove();
+                        $('[data-meetup-connected]').removeClass('hide');
+                    } else {
+                        $('[data-meetup-check-invite]').remove();
+                        $('[data-meetup-connected]').remove();
+                        $('[data-meetup-new-meetup]').removeClass('hide');
+                    }
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                $('[data-meetup-invite]').data("busy", false);
+            }
+        });
+    });
+
+    //function to open meetup popup
+    function openMeetupPopup(id){
+        let selector = '[btn-' + id + '-popup]';
+        if($(selector).length){
+            $(selector).click().trigger('click');
+        }
+    }
+
+    //function to open needed meetup popup
+    function closeMeetupPopup(id){
+        let selector = '[data-' + id + '-popup]';
+        if($(selector).length){
+            $(selector + ' .close-modal').trigger('click');
+        }
+    }
+    //meetup end
 });

@@ -439,13 +439,13 @@ class UsersController extends Controller
                 $User_Transaction->type = 'user_validation';
                 $User_Transaction->notes = 'Tokens which every user receives to start with.';
                 $User_Transaction->by_user_id = $user->id;
-                $User_Transaction->old_credits_amount = $user->credits_count;
-                $User_Transaction->new_credits_amount = $user->credits_count + $amount;
+                $User_Transaction->old_credits_amount = $user->credits_count_value;
+                $User_Transaction->new_credits_amount = $user->credits_count_value + $amount;
                 $User_Transaction->save();
 
                 //adjust user credits amount
                 $user = User::find($id);
-                $user->credits_count = $user->credits_count + $amount;
+                $user->credits_count = $user->credits_count_value + $amount;
                 $user->save();
             }
 			if ($mode == "admins") {

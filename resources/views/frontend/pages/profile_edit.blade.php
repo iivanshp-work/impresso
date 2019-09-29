@@ -67,7 +67,7 @@
                             </p>
                             <p>
                                 <img src="{{asset('img/icons/multiple-users-silhouette.png')}}" alt="" />
-                                <a href="https://www.impressolabs.io/meetups/">@if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif Meetups</a>
+                                <a href="https://www.impressolabs.io/meetups/">@if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif @if($userData->meetup_count == 1){{'Meetup'}}@else{{'Meetups'}}@endif</a>
                             </p>
                         </div>
                         <div class="cards user__card">

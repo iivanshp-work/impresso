@@ -391,8 +391,8 @@ class User_TransactionsController extends Controller
             $User_Transaction->notes = 'Automatic Accrual of credits for user purchase #' . $user_purchase->id;
             $User_Transaction->by_user_id = Auth::id();
             $User_Transaction->purchase_id = $id;
-            $User_Transaction->old_credits_amount = $selectedUser->credits_count;
-            $User_Transaction->new_credits_amount = $selectedUser->credits_count + $amount;
+            $User_Transaction->old_credits_amount = $selectedUser->credits_count_value;
+            $User_Transaction->new_credits_amount = $selectedUser->credits_count_value + $amount;
             try{
                 $User_Transaction->save();
             } catch (\Exception $e) {
@@ -405,7 +405,7 @@ class User_TransactionsController extends Controller
             //save notification
             Users_Notification::saveNotification('xim_purchase_complete', 'XIM purchase complete', $selectedUser->id, $user_purchase->id);
             //adjust user credits amount
-            $selectedUser->credits_count = $selectedUser->credits_count + $amount;
+            $selectedUser->credits_count = $selectedUser->credits_count_value + $amount;
             $selectedUser->save();
             return redirect()->back();
         } elseif($mode == "manual") {
@@ -432,8 +432,8 @@ class User_TransactionsController extends Controller
                 $User_Transaction->notes = $request->has("notes") ? $request->input("notes") : '';
                 $User_Transaction->by_user_id = Auth::id();
                 $User_Transaction->purchase_id = $id;
-                $User_Transaction->old_credits_amount = $selectedUser->credits_count;
-                $User_Transaction->new_credits_amount = $selectedUser->credits_count + $amount;
+                $User_Transaction->old_credits_amount = $selectedUser->credits_count_value;
+                $User_Transaction->new_credits_amount = $selectedUser->credits_count_value + $amount;
 
                 try{
                     $User_Transaction->save();
@@ -445,7 +445,7 @@ class User_TransactionsController extends Controller
                 $user_purchase->transaction_id = $User_Transaction->id;
                 $user_purchase->save();
                 //adjust user credits amount
-                $selectedUser->credits_count = $selectedUser->credits_count + $amount;
+                $selectedUser->credits_count = $selectedUser->credits_count_value + $amount;
                 $selectedUser->save();
                 if ($selectedUser) {
                     return redirect(config('laraadmin.adminRoute') . "/user_purchases?selected_user_id=" . $selectedUser->id);
@@ -470,8 +470,8 @@ class User_TransactionsController extends Controller
                 $User_Transaction->type = $request->has("type") ? $request->input("type") : '';
                 $User_Transaction->notes = $request->has("notes") ? $request->input("notes") : '';
                 $User_Transaction->by_user_id = Auth::id();
-                $User_Transaction->old_credits_amount = $selectedUser->credits_count;
-                $User_Transaction->new_credits_amount = $selectedUser->credits_count + $amount;
+                $User_Transaction->old_credits_amount = $selectedUser->credits_count_value;
+                $User_Transaction->new_credits_amount = $selectedUser->credits_count_value + $amount;
 
                 try{
                     $User_Transaction->save();
@@ -479,7 +479,7 @@ class User_TransactionsController extends Controller
                     return redirect()->back()->withErrors(['save_error' => ['Saving Error.']])->withInput();
                 }
                 //adjust user credits amount
-                $selectedUser->credits_count = $selectedUser->credits_count + $amount;
+                $selectedUser->credits_count = $selectedUser->credits_count_value + $amount;
                 $selectedUser->save();
             }
         }
