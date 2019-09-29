@@ -51,12 +51,17 @@
 	.my-10 {
 		margin: 10px 0;
 	}
+	&__subtitle {
+		font-size: $large-fs;
+		line-height: $line-height-large + 7px;
+		margin-bottom: 30px;
+	}
 }
 
 .location {
 	&__title {
-		font-size: $font-size-h3;
-		line-height: $line-height-h3;
+		font-size: $large-fs;
+		line-height: $line-height-large;
 		letter-spacing: -0.41px;
 	}
 	&__icon {
@@ -72,14 +77,14 @@
 
 .upload-modal {
 	&__title {
-		font-size: $base-fs + 2px;
-		line-height: $base-line-height + 4px;
+		font-size: $base-fs;
+		line-height: $base-line-height + 2px;
 		letter-spacing: -0.41px;
 	}
 	.or {
 		display: block;
 		margin: 18px 0;
-		font-size: $base-fs + 2px;
+		font-size: $base-fs;
 	}
 	.btn-download {
 		margin: 0 auto 18px;
@@ -94,20 +99,19 @@
 #notEnoughMinerals,
 #share {
 	h3 {
-		font-size: $base-fs + 5px;
-		line-height: $base-line-height + 4px;
+		font-size: $large-fs;
+		line-height: $line-height-large + 2px;
 		margin-bottom: 27px;
 	}
 }
 
 #infoAboutXims {
 	h2 {
-		font-size: $font-size-h2 + 10px;
-		line-height: $line-height-h2 + 13px;
+		font-size: $big-fs;
+		line-height: $line-height-big;
 		margin-bottom: 39px;
 	}
 	p {
-		font-size: $base-fs + 1px;
 		line-height: $base-line-height + 4px;
 		padding-bottom: 22px;
 	}
@@ -127,10 +131,31 @@
 
 #notHaveMixs {
 	h3 {
-		font-size: $base-fs + 5px;
+		font-size: $large-fs;
 	}
 	p {
 		padding-bottom: 40px;
+	}
+}
+
+#validateProgress {
+	img {
+		margin: 10px 0 22px;
+	}
+}
+
+#goToProfile {
+	.modal-window__body {
+		padding-top: 50px;
+	}
+}
+
+#validationFail {
+	.modal-window__body {
+		padding-top: 32px;
+	}
+	img {
+		margin-bottom: 15px;
 	}
 }
 

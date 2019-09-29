@@ -43,11 +43,15 @@
         <button class="btn btn-violet open-pop-up" data-target="#shareSuccess">Share success</button>
         <button class="btn btn-violet open-pop-up" data-target="#shareSuccess2">Share success 2</button>
 
-
         <button class="btn btn-violet open-pop-up" data-target="#meetupCost">Meetup will cost</button>
         <button class="btn btn-violet open-pop-up" data-target="#meetupInvite">Meetup invite</button>
         <button class="btn btn-violet open-pop-up" data-target="#notHaveMixs">Don't have XIMs</button>
         <button class="btn btn-violet open-pop-up" data-target="#acceptInvite">Accept invite</button>
+
+        <button class="btn btn-violet open-pop-up" data-target="#validateProgress">Your validation is in
+            progress</button>
+        <button class="btn btn-violet open-pop-up" data-target="#goToProfile">Complete Your Profile</button>
+        <button class="btn btn-violet open-pop-up" data-target="#validationFail">Validation Fail</button>
 
     </main>
 
@@ -97,6 +101,7 @@
         </div>
     </div>
 
+    <!-- this modal window don't use -->
     <div class="modal-window" id="thankYou">
         <div class="modal-window__content">
             <div class="modal-window__body validation-modal text-center">
@@ -239,11 +244,8 @@
     <div class="modal-window" id="share">
         <div class="modal-window__content">
             <div class="modal-window__body text-center">
-                <img src="img/icons/icon.svg" alt="" class="modal-window__img-top" />
-                <h3>Sharing is caring and you’re awesome for doing it!</h3>
-                <p>
-                    This is why we reward you every time you share IMPRESSO with someone.
-                </p>
+                <img src="img/icons/icon-share-modal.svg" alt="" class="modal-window__img-top" />
+                <h5 class="modal-window__subtitle">Sharing is caring and you’re awesome for doing it!</h5>
                 <button type="button" class="btn btn-violet">
                     Share IMPRESSO
                 </button>
@@ -337,6 +339,50 @@
                 </button>
                 <button type="button" class="btn btn-border close-modal">
                     Decline
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal-window" id="validateProgress">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <img src="img/icons/smiley.svg" alt="">
+                <h5 class="modal-window__subtitle">Your validation is in progress.</h5>
+                <p>Once your profile is approved, you will have access to all our features. </p>
+                <p>It’s a perfect opportunity to meditate, water your plants or share IMPRESSO with your friends!</p>
+                <button type="button" class="btn btn-violet">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-window" id="goToProfile">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <h5 class="modal-window__subtitle">Complete Your Profile</h5>
+                <p>Get Validated Quicker!</p>
+                <p>Meetup with Professionals<br /> for business and career opportunities.</p>
+                <a href="#" class="btn btn-violet">
+                    Go to Profile
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-window" id="validationFail">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <img src="img/icons/smiley-sad.svg" alt="">
+                <h5 class="modal-window__subtitle">Uh-Oh! <br />Looks like a validation error.<br /> Let’s try again!
+                </h5>
+                <p>Getting validated is also important for other users.</p>
+                <p>We just need one <b>clear image</b> of your <b>ID Card</b> and one <b>Selfie</b> of you together
+                    <b>with the ID Card</b> and you’re all set! </p>
+                <button type="button" class="btn btn-violet">
+                    Get Validated
                 </button>
             </div>
         </div>

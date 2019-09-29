@@ -4,12 +4,12 @@ body {
 	font-family: $base-font-family;
 	background-color: $base-bg;
 	height: 100%;
+	font-size: $base-fs;
 	line-height: $base-line-height;
 	font-weight: 400;
 	letter-spacing: -0.24px;
 	color: $text-color;
 	position: relative;
-	font-size: $base-fs;
 	-webkit-font-smoothing: antialiased;
 	-moz-osx-font-smoothing: grayscale;
 }
@@ -66,8 +66,8 @@ h6 {
 
 .text-gray {
 	color: $text-gray;
-	font-size: $base-fs + 1px;
-	line-height: $base-line-height + 1px;
+	font-size: $base-fs;
+	line-height: $base-line-height;
 	letter-spacing: -0.32px;
 }
 
@@ -112,8 +112,8 @@ h6 {
 // title section
 .title {
 	font-family: $base-font-family;
-	font-size: $font-size-h1;
-	line-height: $line-height-h1;
+	font-size: $big-fs;
+	line-height: $line-height-big;
 	font-weight: 400;
 	letter-spacing: 0.41px;
 }
@@ -123,7 +123,7 @@ h6 {
 	align-items: center;
 	justify-content: center;
 	color: $text-color;
-	font-size: $base-fs + 1px;
+	font-size: $base-fs;
 	line-height: normal;
 	font-weight: 400;
 	font-style: normal;
@@ -163,7 +163,7 @@ h6 {
 	height: 32px;
 	background-color: $white;
 	color: $violet;
-	font-size: $base-fs + 5px;
+	font-size: $large-fs;
 	font-weight: 500;
 }
 
@@ -171,7 +171,7 @@ h6 {
 	background-color: $pink;
 	color: $white;
 	font-weight: 700;
-	font-size: $base-fs + 10px;
+	font-size: $large-fs + 5px;
 }
 
 .filter-blur {
@@ -191,7 +191,7 @@ h6 {
 	border: 1px solid transparent;
 	@include radius(10px);
 	box-shadow: none;
-	font-size: $base-fs + 1px;
+	font-size: $base-fs;
 	line-height: normal;
 	padding: 0 14px;
 	color: $text-gray;
@@ -278,8 +278,8 @@ h6 {
 
 @media only screen and (max-width: 370px) {
 	.title {
-		font-size: $font-size-h1 - 6px;
-		line-height: $line-height-h1 - 6px;
+		font-size: $big-fs - 4px;
+		line-height: $line-height-big - 4px;
 	}
 
 	.btn {
@@ -302,7 +302,7 @@ h6 {
 
 @media only screen and (max-width: 570px) and (orientation: landscape) {
 	.title {
-		font-size: $font-size-h1 - 6px;
-		line-height: $line-height-h1 - 6px;
+		font-size: $big-fs - 4px;
+		line-height: $line-height-big - 4px;
 	}
 }

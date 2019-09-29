@@ -21,7 +21,7 @@
 		position: relative;
 		padding: 10px 32px;
 		color: $white;
-		font-size: $base-fs + 5px;
+		font-size: $large-fs;
 		background-color: $violet-light;
 		border: 2px solid $violet;
 		@include radius(25px);

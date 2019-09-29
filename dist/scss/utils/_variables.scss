@@ -1,7 +1,7 @@
 /* reset */
 $base-bg: #fff;
-$base-fs: 15px;
-$base-line-height: 20px;
+$base-fs: 16px;
+$base-line-height: 21px;
 $base-font-family: "Montserrat", sans-serif;
 $default-transition: all 0.2s linear;
 
@@ -13,14 +13,22 @@ $title-color: #000;
 $text-gray: #979797;
 $text-white: #fff;
 
-$font-size-h1: 34px;
-$line-height-h1: 41px;
+/* font size */
+$small-fs: 12px;
+$line-height-small: 16px;
 
-$font-size-h2: 22px;
-$line-height-h2: 28px;
+$large-fs: 20px;
+$line-height-large: 24px;
 
-$font-size-h3: 20px;
-$line-height-h3: 24px;
+$big-fs: 32px;
+$line-height-big: 40px;
+
+// $font-size-h1: 32px;
+// $line-height-h1: 40px;
+// $font-size-h2: 22px;
+// $line-height-h2: 28px;
+// $font-size-h3: 20px;
+// $line-height-h3: 24px;
 
 // colors
 $white: #fff;
