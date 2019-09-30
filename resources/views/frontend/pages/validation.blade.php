@@ -34,7 +34,7 @@
             <div id="step2" class="validation__step">
                 <header class="header">
                     <h4>Profile Validation</h4>
-                    <span class="header__icon-left" data-validation-step="step1">
+                    <span class="header__icon-left" data-validation-step-to-first="" data-validation-step="step1">
                         <img src="{{ asset('img/icons/arrow-back.svg') }}" alt="arrow-back"/>
                     </span>
                 </header>
@@ -121,6 +121,28 @@
                     </button>
                 </div>
             </div>
+            <div id="step2_1" class="validation__step">
+                <section class="wizard">
+                    <div class="wizard__body">
+                        <header class="header">
+                            <h4>Profile Validation</h4>
+                            <span class="header__icon-left" data-validation-step="step1">
+                                <img src="{{ asset('img/icons/arrow-back.svg') }}" alt="arrow-back"/>
+                            </span>
+                        </header>
+                        <h3 class="wizard__subtitle">The Wizard</h3>
+                        <div class="wizard__image">
+                            <img src="{{ asset('img/wizard-img.png') }}" alt="wizard">
+                        </div>
+                        <h2 class="wizard__title">YOU SHALL NOT PASS!</h2>
+                        <p class="wizard__text">Unless you take a selfie with your valid identity card.</p>
+                    </div>
+                    <div class="wizard__footer">
+                        <a href="#" class="wizard__link open-pop-up" data-target="#validationMyProfile">Why do I need to do this?</a>
+                        <a href="#" class="btn btn-violet" data-validation-step="step2">Start Now</a>
+                    </div>
+                </section>
+            </div>
         </form>
     </main>
 @endsection
@@ -171,8 +193,11 @@
                 <p>
                     Only validated Professionals will be able to use the App.  Your personal data will not be shared with other users.
                 </p>
-                <button type="button" class="btn btn-border close-modal">
+                <button type="button" data-validation-step="step2_1" class="btn btn-border">
                     Got it!
+                </button>
+                <button type="button" class="btn btn-border hide close-modal">
+                    Close
                 </button>
             </div>
         </div>

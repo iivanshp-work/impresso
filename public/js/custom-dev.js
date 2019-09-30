@@ -315,13 +315,19 @@ $document.ready(function(){
     });
 
     //validation profile start
-    $document.on('click', '[data-validation-step]', function(e){
+    $('[data-validation-step]').on('click', function(e){
         e.preventDefault();
         let step = $(this).data('validation-step');
         let form = $('#validationForm');
         form.find('.validation__step').hide();
         if(form.find('#' + step).length){
             form.find('#' + step).show();
+            if (step == 'step2_1') {
+                $('#validationMyProfile .close-modal').trigger('click');
+            }
+            if (step == 'step2_1' || step == 'step1') {
+                $('[data-validation-step-to-first]').attr('data-validation-step', step).data('validation-step', step);
+            }
         }
     });
 
