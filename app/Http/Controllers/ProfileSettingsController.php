@@ -452,6 +452,7 @@ class ProfileSettingsController extends Controller
         ];
         $rules = array(
             'full_name_birth' => 'required|string',
+            'birth_date' => 'required|string',
             'email' => 'required|email',
             'phone' => 'required|regex:/^[\+0-9\- \(\)]{5,25}$/'
         );
@@ -472,6 +473,7 @@ class ProfileSettingsController extends Controller
             $id = Auth::id();
             $user = UserModel::find($id);
             $user->full_name_birth = $request->has('full_name_birth') ? trim($request->input('full_name_birth')) : '';
+            $user->birth_date = $request->has('birth_date') ? trim($request->input('birth_date')) : '';
             $user->email = $request->has('email') ? trim($request->input('email')) : '';
             $user->phone = $this->formatPhoneNumber($request->has('phone') ? trim($request->input('phone')) : '');
             $user->address = $request->has('address') ? trim($request->input('address')) : '';

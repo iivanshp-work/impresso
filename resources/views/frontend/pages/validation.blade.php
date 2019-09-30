@@ -8,7 +8,12 @@
     <main class="main">
         <form id="validationForm" class="validation text-center">
             <div id="step1" class="validation__step validation__step_first">
-                <h2 class="validation__title">Profile Validation</h2>
+                <header class="header">
+                    <h4>Profile Validation</h4>
+                    <span class="header__icon-left">
+                        <img src="{{ asset('img/icons/arrow-back.svg') }}" alt="arrow-back" />
+                    </span>
+                </header>
                 <p>Verify your identity in order to use the App</p>
                 <div class="validation__user-img">
                     <img src="{{ asset('img/icons/user-icon.svg') }}" alt="user-icon"/>
@@ -37,14 +42,14 @@
                 <div class="validation__icon">
                     <img src="{{ asset('img/icons/validation-1.svg') }}" alt=""/>
                 </div>
-                <p>1. Upload a clear photo of your ID</p>
-                <p class="text-gray">
-                    Accepted IDs: national ID, passport and driver’s license.
-                </p>
+
+                <p class="validation__text-big">Take a clear photo of your ID</p>
+                <p>We Accept Only:<br />
+                    National ID, Passport or Driver’s license.</p>
                 <div class="validation__group-btn">
-                    <input type="file" class="hide" data-validation-send-file-hidden="" data-image-id="photo_id">
+                    <input type="file"  capture="capture" accept="image/*" class="hide" data-validation-send-file-hidden="" data-image-id="photo_id">
                     <button type="button" class="btn btn-violet" data-validation-send-file="">
-                        Upload ID photo
+                        Take ID photo
                     </button>
                 </div>
             </div>
@@ -59,15 +64,14 @@
                 <div class="validation__picture">
                     <img data-validation-photo_id-src="" src="{{ asset('img/image-1.png') }}" alt=""/>
                 </div>
-                <p>1. Upload a clear photo of your ID</p>
-                <p class="text-gray">
-                    Accepted IDs: national ID, passport and driver’s license.
-                </p>
+                <p class="validation__text-big">Take a clear photo of your ID</p>
+                <p>We Accept Only:<br />
+                    National ID, Passport or Driver’s license.</p>
                 <div class="validation__group-btn">
                     <button type="button" class="btn btn-violet" data-validation-step="step4">
                         Save
                     </button>
-                    <input type="file" class="hide" data-validation-send-file-hidden="" data-image-id="photo_id">
+                    <input type="file" capture="capture" accept="image/*" class="hide" data-validation-send-file-hidden="" data-image-id="photo_id">
                     <button type="button" class="btn btn-border" data-validation-send-file="">
                         Retake
                     </button>
@@ -84,12 +88,10 @@
                 <div class="validation__icon">
                     <img src="{{ asset('img/icons/validation-2.svg') }}" alt=""/>
                 </div>
-                <p>2. Take a selfie with the same ID</p>
-                <p class="text-gray">
-                    This will not be used as your profile photo and nobody else will be able to see it.
-                </p>
+                <p class="validation__text-big">Take a selfie with the same ID</p>
+                <p>This will not be used as your profile photo and will not be visible on the App.</p>
                 <div class="validation__group-btn">
-                    <input type="file" class="hide" data-validation-send-file-hidden="" data-image-id="photo_selfie">
+                    <input type="file"  capture="capture" accept="image/*" class="hide" data-validation-send-file-hidden="" data-image-id="photo_selfie">
                     <button type="button" class="btn btn-violet" data-validation-send-file="">
                         Take a photo
                     </button>
@@ -107,15 +109,13 @@
                 <div class="validation__picture">
                     <img data-validation-photo_selfie-src=""  src="{{ asset('img/image-2.png') }}" alt=""/>
                 </div>
-                <p>2. Take a selfie with the same ID</p>
-                <p class="text-gray">
-                    This will not be used as your profile photo and nobody else will be able to see it.
-                </p>
+                <p class="validation__text-big">Take a selfie with the same ID</p>
+                <p>This will not be used as your profile photo and will not be visible on the App.</p>
                 <div class="validation__group-btn">
                     <button type="button" class="btn btn-violet" data-validation-check="">
                         Save
                     </button>
-                    <input type="file" class="hide" data-validation-send-file-hidden="" data-image-id="photo_selfie">
+                    <input type="file"  capture="capture" accept="image/*" class="hide" data-validation-send-file-hidden="" data-image-id="photo_selfie">
                     <button type="button" class="btn btn-border" data-validation-send-file="">
                         Retake
                     </button>
@@ -126,6 +126,7 @@
 @endsection
 
 @push('popups')
+    {{--
     <button class="hide open-pop-up" id="clickThankYou" data-target="#thankYou">success validation</button>
     <div class="modal-window" id="thankYou">
         <div class="modal-window__content">
@@ -140,6 +141,23 @@
             </div>
         </div>
     </div>
+    --}}
+    <button class="btn btn-violet hide open-pop-up" id="showPendingPopup" data-target="#pendingPopup">
+        Pending popup
+    </button>
+    <div class="modal-window" id="pendingPopup">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <img src="{{asset('img/icons/smile.svg')}}" alt="like" class="modal-window__img-top">
+                <h3 class="title mb-34">Your validation is in progress.</h3>
+                <p>Once your profile is approved, you will have access to all our features.</p>
+                <p>It’s a perfect opportunity to meditate, water your plants or share IMPRESSO with your friends!</p>
+                <a href="{{url(getenv('BASE_LOGEDIN_PAGE') . '?show_profile_setup_profile=1')}}" type="button" class="btn btn-violet">
+                    Close
+                </a>
+            </div>
+        </div>
+    </div>
 
     <div class="modal-window" id="validationMyProfile">
         <div class="modal-window__content">
@@ -148,11 +166,10 @@
                     Why validate?
                 </h3>
                 <p>
-                    IMPRESSO is all about validated information, so we can provide you with the most accurate and
-                    valid data only.
+                    IMPRESSO is all about meeting face to face with other Professionals for your business and career growth.
                 </p>
                 <p>
-                    The validation process is secure and your personal information will not be shared with anyone.
+                    Only validated Professionals will be able to use the App.  Your personal data will not be shared with other users.
                 </p>
                 <button type="button" class="btn btn-border close-modal">
                     Got it!
@@ -160,6 +177,25 @@
             </div>
         </div>
     </div>
+
+    @if($user->fail_validation)
+        <button class="btn btn-violet hide open-pop-up" data-target="#validationFail">Validation Fail</button>
+        <div class="modal-window show" id="validationFail" style="display: block">
+            <div class="modal-window__content">
+                <div class="modal-window__body text-center">
+                    <img src="{{asset('img/icons/smiley-sad.svg')}}" alt="">
+                    <h5 class="modal-window__subtitle">Uh-Oh! <br />Looks like a validation error.<br /> Let’s try again!
+                    </h5>
+                    <p>Getting validated is also important for other users.</p>
+                    <p>We just need one <b>clear image</b> of your <b>ID Card</b> and one <b>Selfie</b> of you together
+                        <b>with the ID Card</b> and you’re all set! </p>
+                    <button type="button" class="btn btn-violet close-modal">
+                        Get Validated
+                    </button>
+                </div>
+            </div>
+        </div>
+    @endif
 @endpush
 
 @push('styles')

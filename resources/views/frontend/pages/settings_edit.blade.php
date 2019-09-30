@@ -30,8 +30,13 @@
             <form id="edit_settings_form" action="{{url('/settings/edit')}}" method="post" data-edit-settings-form="">
                 <ul class="personal-details__list">
                     <li>
-                        <span>Full Name & Date of Birth</span>
-                        <input type="text" class="style-input-text" value="{{$userData->full_name_birth}}" autocomplete="off" name="full_name_birth" placeholder="Full Name & Date of Birth" >
+                        <span>Full Name</span>
+                        <input type="text" class="style-input-text" value="{{$userData->full_name_birth}}" autocomplete="off" name="full_name_birth" placeholder="Full Name" >
+                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                    </li>
+                    <li>
+                        <span>Date of Birth</span>
+                        <input type="text" class="style-input-text" data-birth_date="" value="{{$userData->birth_date}}" autocomplete="off" name="birth_date">
                         <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     </li>
                     <li>
@@ -49,6 +54,11 @@
                     <li>
                         <span>Email</span>
                         <input type="text" class="style-input-text" value="{{$userData->email}}" autocomplete="off" name="email" placeholder="Email" >
+                        <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
+                    </li>
+                    <li>
+                        <span>Password</span>
+                        <input type="password" class="style-input-text" value="" placeholder="Change password" disabled>
                         <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     </li>
                 </ul>
@@ -69,4 +79,5 @@
 @endpush
 
 @push('scripts')
+    <script src="{{ asset('/js/components/jquery.mask.js') }}"></script>
 @endpush

@@ -109,7 +109,7 @@ class SignController extends Controller
 
         $rules = array(
             'email' => 'required|email', // make sure the email is an actual email
-            'password' => 'required|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
+            'password' => 'required|confirmed|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
         );
 
         $validator = Validator::make($request->all(), $rules);
@@ -171,7 +171,9 @@ class SignController extends Controller
         if ($user && ($user->varification_pending || $user->is_verified)) {
             return redirect(getenv('BASE_LOGEDIN_PAGE'));
         }
-        return view('frontend.pages.validation');
+        return view('frontend.pages.validation', [
+            'user' => $user
+        ]);
     }
 
     /**

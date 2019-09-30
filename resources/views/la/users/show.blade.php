@@ -90,6 +90,7 @@
 						<div class="panel-body">
 							@la_display($module, 'phone')
 							@la_display($module, 'full_name_birth')
+							@la_display($module, 'birth_date')
 							@la_display($module, 'address')
 							@la_display($module, 'address2')
 							@la_display($module, 'city')

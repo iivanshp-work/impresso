@@ -488,7 +488,7 @@ $document.ready(function(){
                 if(response.has_error){
                     showError(response.message ? response.message : 'An error occurred. Please try again later.');
                 }else{
-                    $('#clickThankYou').trigger('click');
+                    $('#showPendingPopup').trigger('click');
                 }
             },
             error: function(request, status, error){
@@ -776,8 +776,8 @@ $document.ready(function(){
     if($('#showFeedsLetStartImpressing').length){
         $('#showFeedsLetStartImpressing').trigger('click');
     }
-    if($('#showPendingPopup').length){
-        $('#showPendingPopup').trigger('click');
+    if($('#goToProfilePopup').length){
+        $('#goToProfilePopup').trigger('click');
     }
     //profile end
 
@@ -1383,6 +1383,12 @@ $document.ready(function(){
             }
         });
     });
+
+    //mask for settings birth date fields
+    if ($('#edit_settings_form').length) {
+        $('#edit_settings_form [data-birth_date]').mask("00:00:0000", {placeholder: "DD:MM:YYYY", clearIfNotMatch: true});
+    }
+
     //edit settings end
 
     //credits settings start

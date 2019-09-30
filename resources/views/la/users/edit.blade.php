@@ -61,7 +61,10 @@
                     <div class="row" style="border-bottom: 1px dashed #e2e4e8;">
                         <div class="col-md-6">
                             <h4>General Info:</h4>
-                            @la_input($module, 'name')
+                            <div class="form-group">
+                                <label for="name">Name* :</label>
+                                <input class="form-control" placeholder="Name" data-rule-maxlength="255" name="name" type="text" value="{{$user->name}}">
+                            </div>
                             @la_input($module, 'email')
                             @la_input($module, 'password')
                             <div class="form-group">
@@ -110,6 +113,7 @@
                             <h4>Profile Private Info:</h4>
                             @la_input($module, 'phone')
                             @la_input($module, 'full_name_birth')
+                            @la_input($module, 'birth_date')
                             @la_input($module, 'address')
                             @la_input($module, 'address2')
                             @la_input($module, 'city')
@@ -164,11 +168,15 @@
 @endsection
 
 @push('scripts')
+<script src="{{ asset('/js/components/jquery.mask.js') }}"></script>
 <script>
 $(function () {
 	$("#user-edit-form").validate({
 
 	});
+    if ($('[name="birth_date"]').length) {
+        $('[name="birth_date"]').mask("00:00:0000", {placeholder: "DD:MM:YYYY", clearIfNotMatch: true});
+    }
 });
 </script>
 @endpush

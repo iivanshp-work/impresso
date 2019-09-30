@@ -397,7 +397,7 @@ class UsersController extends Controller
                 $request->request->remove('password');
             }
 			$rules = Module::validateRules("Users", $request, true);
-
+            unset($rules['name']);
 			$validator = Validator::make($request->all(), $rules);
 
 			if ($validator->fails()) {
@@ -413,6 +413,11 @@ class UsersController extends Controller
             } else if ($status == 3) {
                 $request->request->add(['is_verified_hidden' => 'false']);
                 $request->request->add(['varification_pending_hidden' => 'false']);
+            }
+			if ($status == 3 && $user->status != 3) {
+                $request->request->add(['fail_validation' => 'fail_validation']);
+            } elseif ($status != 3) {
+                $request->request->add(['fail_validation_hidden' => 'false']);
             }
             $addCredits = false;
 			if (!$user->added_init_credits && !$user->is_verified && $status == 1){

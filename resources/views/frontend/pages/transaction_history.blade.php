@@ -30,6 +30,7 @@
                 </button>
             </h1>
             @if($userTransactions)
+                <a href="{{url('/settings/credits')}}" class="btn btn-violet">Buy {{getenv('CREDITS_LABEL')}}</a>
                 @foreach($userTransactions as $userTransaction)
                     <div class="cards dashboard__card">
                         <div class="dashboard__header">
@@ -105,10 +106,8 @@
                     </div>
                 @endforeach
             @else
-                <div class="text-center">
-                    <a href="{{url('/settings/credits')}}" class="btn btn-violet">Buy {{getenv('CREDITS_LABEL')}}</a>
-                </div>
-                <h1 class="title text-center no-records">No transaction history yet.</h1>
+                <a href="{{url('/settings/credits')}}" class="btn btn-violet">Buy {{getenv('CREDITS_LABEL')}}</a>
+                <p class="dashboard__not">No transaction history yet.</p>
             @endif
 
         </main>

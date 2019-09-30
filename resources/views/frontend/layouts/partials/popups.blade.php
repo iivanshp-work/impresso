@@ -45,11 +45,8 @@
 <div class="modal-window sharePopupData" id="share">
     <div class="modal-window__content">
         <div class="modal-window__body text-center">
-            <img src="{{asset('img/icons/icon.svg')}}" alt="" class="modal-window__img-top" />
-            <h3>Sharing is caring and you’re awesome for doing it!</h3>
-            <p>
-                This is why we reward you every time you share IMPRESSO with someone.
-            </p>
+            <img src="{{asset('img/icons/icon-share-modal.svg')}}" alt="" class="modal-window__img-top" />
+            <h5 class="modal-window__subtitle">Sharing is caring and you’re awesome for doing it!</h5>
             <button type="button" data-share-btn="" class="btn btn-violet">
                 Share IMPRESSO
             </button>
@@ -139,11 +136,11 @@
         <div class="modal-window__content">
             <div class="modal-window__body location text-center">
                 <h3 class="location__title">
-                    Allow Location Access
+                    Allow Location Access To Use IMPRESSO
                 </h3>
                 <img src="{{asset('img/icons/location.svg')}}" alt="location" class="location__icon" />
                 <p>
-                    In order to use IMPRESSO, you need to enable your location.
+                    Enable your location to connect with Professionals near to you.
                 </p>
                 <button data-allow-location="" type="button" class="btn btn-violet">
                     Allow
@@ -163,7 +160,8 @@
         <div class="modal-window__content">
             <div class="modal-window__body location text-center">
                 <h3 class="location__title" style="line-height: 41px;">
-                    Connect And Meet<br/> Professionals Nearby.
+                    Connect and Meetup with<br/>
+                    Professionals Nearby
                 </h3>
                 <p style="margin-top: 58px;padding-bottom: 40px;">
                     Your location will be used to show you other professionals near to you.

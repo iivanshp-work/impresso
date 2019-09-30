@@ -397,42 +397,18 @@
 @endsection
 
 @push('popups')
-    @if (app('request')->has('show_pending_popup') && !$userData->is_verified)
-        <button class="btn btn-violet hide open-pop-up" id="showPendingPopup" data-target="#pendingPopup">
-            Pending popup
-        </button>
-        <div class="modal-window show" id="pendingPopup" style="display: block;">
+    @if ((app('request')->has('show_pending_popup') && !$userData->is_verified) || app('request')->has('show_profile_setup_profile'))
+        <button class="btn btn-violet hide open-pop-up" id="goToProfilePopup" data-target="#goToProfile">Complete Your Profile</button>
+
+        <div class="modal-window" id="goToProfile">
             <div class="modal-window__content">
                 <div class="modal-window__body text-center">
-                    <img src="{{asset('img/icons/smile.svg')}}" alt="like" class="modal-window__img-top">
-                    <h3 class="title mb-34">Your validation is in progress.</h3>
-                    <p>Once your profile is approved, you will have access to all our features. It’s a perfect opportunity to meditate, water your plants or share IMPRESSO with your friends!</p>
-                    <button type="button" class="btn btn-violet close-modal">
-                        Close
-                    </button>
-                </div>
-            </div>
-        </div>
-    @endif
-    @if (app('request')->has('show_profile_setup_profile'))
-        <button class="btn btn-violet hide open-pop-up" id="showFeedsLetStartImpressing" data-target="#letStartImpressing">
-            Let's start Impressing
-        </button>
-        <div class="modal-window" id="letStartImpressing">
-            <div class="modal-window__content">
-                <div class="modal-window__body validation-modal text-center">
-                    <h3 class="title mb-34">
-                        Let’s start impressing!
-                    </h3>
-                    <p>
-                        Complete your profile in order to show others how impressive you are ;)
-                    </p>
-                    <a href="{{url('/profile/edit')}}" type="button" class="btn btn-violet">
+                    <h5 class="modal-window__subtitle">Complete Your Profile</h5>
+                    <p>Get Validated Quicker!</p>
+                    <p>Meetup with Professionals<br /> for business and career opportunities.</p>
+                    <a href="{{url('/profile/edit')}}" class="btn btn-violet">
                         Go to Profile
                     </a>
-                    <button type="button" class="btn btn-border close-modal">
-                        Do this later
-                    </button>
                 </div>
             </div>
         </div>
