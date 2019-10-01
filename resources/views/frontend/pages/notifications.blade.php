@@ -50,7 +50,7 @@
                                     @if ($notification->type == 'no_xims')
                                         <div class="d-flex align-items-center">
                                             <a href="{{url('/settings/credits')}}" class="avatar">
-                                                <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
                                                 IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
@@ -60,7 +60,7 @@
                                     @elseif ($notification->type == 'education_validation_failure')
                                         <div class="d-flex align-items-center">
                                             <a href="{{url('/profile')}}" class="avatar">
-                                                <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
                                                 IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
@@ -70,7 +70,7 @@
                                     @elseif ($notification->type == 'education_validation_success')
                                         <div class="d-flex align-items-center">
                                             <a href="{{url('/profile')}}" class="avatar">
-                                                <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
                                                 IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
@@ -80,7 +80,7 @@
                                     @elseif ($notification->type == 'certificate_validation_failure')
                                         <div class="d-flex align-items-center">
                                             <a href="{{url('/profile')}}" class="avatar">
-                                                <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
                                                 IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
@@ -90,7 +90,7 @@
                                     @elseif ($notification->type == 'certificate_validation_success')
                                         <div class="d-flex align-items-center">
                                             <a href="{{url('/profile')}}" class="avatar">
-                                                <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
                                                 IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
@@ -100,7 +100,7 @@
                                     @elseif ($notification->type == 'xim_purchase_complete')
                                         <div class="d-flex align-items-center">
                                             <a href="{{url('/transaction-history')}}" class="avatar">
-                                                <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
                                                 IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
@@ -110,7 +110,7 @@
                                     @elseif ($notification->type == 'new_job')
                                         <div class="d-flex align-items-center">
                                             <a href="{{url('/feeds')}}" class="avatar">
-                                                <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
                                                 IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
@@ -120,7 +120,7 @@
                                     @elseif ($notification->type == 'user_validation_success')
                                         <div class="d-flex align-items-center">
                                             <a href="{{url('/feeds')}}" class="avatar">
-                                                <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
                                                 IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
@@ -130,7 +130,7 @@
                                     @elseif ($notification->type == 'admin_manual')
                                         <div class="d-flex align-items-center">
                                             <a href="javascript:void(0);" class="avatar">
-                                                <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
                                                 IMPRESSO <Br>
@@ -209,7 +209,7 @@
                                 @else
                                     <div class="d-flex align-items-center">
                                         <a href="javascript:void(0);" class="avatar">
-                                            <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
+                                            <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
                                         </a>
                                         <div>
                                             IMPRESSO  {!!$notification->notification_text!!} @if($notification->created_at)<p><span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span></p>@endif

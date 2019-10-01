@@ -8,7 +8,7 @@
     <main class="main">
         <div class="sign-up text-center">
             <h1 class="title sign-up__title">Sign Up</h1>
-            <a href="#" class="logo"><img src="{{ asset('/img/Logo.png') }}" alt="" class="logo" /></a>
+            <a href="#" class="logo"><img src="{{ asset('/img/Logo.png') }}" alt="" class="" /></a>
             <form id="signup_form" class="form" method="post" action="{{url('/sign-up')}}">
                 <div class="form__body">
                     {{ csrf_field() }}
