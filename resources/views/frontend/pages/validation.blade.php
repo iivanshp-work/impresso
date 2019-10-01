@@ -40,7 +40,7 @@
                 </header>
                 <p>Step 1 / 2</p>
                 <div class="validation__icon">
-                    <img src="{{ asset('img/icons/validation-1.svg') }}" alt=""/>
+                    <img src="{{ asset('img/validate-image-1.png') }}" alt=""/>
                 </div>
 
                 <p class="validation__text-big">Take a clear photo of your ID</p>
@@ -86,7 +86,7 @@
                 </header>
                 <p>Step 2 / 2</p>
                 <div class="validation__icon">
-                    <img src="{{ asset('img/icons/validation-2.svg') }}" alt=""/>
+                    <img src="{{ asset('img/validate-image-2.png') }}" alt=""/>
                 </div>
                 <p class="validation__text-big">Take a selfie with the same ID</p>
                 <p>This will not be used as your profile photo and will not be visible on the App.</p>

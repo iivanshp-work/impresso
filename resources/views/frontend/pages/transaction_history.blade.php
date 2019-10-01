@@ -41,33 +41,51 @@
                                     @php
                                         $imageColor = ($userTransaction->id % 13) + 1;
                                     @endphp
-                                    <img src="{{asset('img/avatars/color-' . $imageColor . '.png')}}" alt="" />
+                                    @if (in_array($userTransaction->type, ['user_validation', 'purchase', 'share', 'validation_education', 'validation_certificate', 'other']))
+                                        <img src="{{asset('img/logo-circle.png')}}" alt="" />
+                                    @elseif(in_array($userTransaction->type, ['meetup_inviting', 'meetup_accept']))
+                                        @if ($userTransaction->type == "meetup_inviting")
+                                            @if ($userTransaction->meetup->invitedUser && $userTransaction->meetup->invitedUser->photo)
+                                                <img src="{{url('/files/' . $userTransaction->meetup->invitedUser->photo . '?s=200')}}" alt="" />
+                                            @else
+                                                <img src="{{asset('img/icons/icon-user.png')}}" alt="" />
+                                            @endif
+                                        @else
+                                            @if ($userTransaction->meetup->invitingUser && $userTransaction->meetup->invitingUser->photo)
+                                                <img src="{{url('/files/' . $userTransaction->meetup->invitingUser->photo . '?s=200')}}" alt="" />
+                                            @else
+                                                <img src="{{asset('img/icons/icon-user.png')}}" alt="" />
+                                            @endif
+                                        @endif
+                                    @else
+                                        <img src="{{asset('img/avatars/color-' . $imageColor . '.png')}}" alt="" />
+                                    @endif
                                 </a>
                                 <div class="dashboard__text">
                                     @if($userTransaction->type == 'user_validation')
-                                        <a href="javascript:void(0);">{{'Impresso Labs'}}</a>
+                                        <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
                                     @elseif($userTransaction->type == 'purchase')
-                                        <a href="javascript:void(0);">{{'Your Purchase'}}</a>
+                                        <a href="javascript:void(0);">{{'IMPRESSO'}} <span>{{'Your Purchase'}}</span></a>
                                     @elseif($userTransaction->type == 'share')
-                                        <a href="javascript:void(0);">{{'Impresso Labs'}} <span>Share</span></a>
+                                        <a href="javascript:void(0);">{{'IMPRESSO'}} <span>{{'Share'}}</span></a>
                                     @elseif($userTransaction->type == 'validation_education')
                                         @if($userTransaction->education)
                                             <a href="javascript:void(0);">{{ str_limit($userTransaction->education->title, 15) }} <span>Education Validation</span></a>
                                         @else
-                                            <a href="javascript:void(0);">Education Validation</a>
+                                            <a href="javascript:void(0);">{{'IMPRESSO'}} <span>Education Validation</span></a>
                                         @endif
                                     @elseif($userTransaction->type == 'validation_certificate')
                                         @if($userTransaction->certificate)
                                             <a href="javascript:void(0);">{{ str_limit($userTransaction->certificate->title, 15) }} <span>Certificate Validation</span></a>
                                         @else
-                                            <a href="javascript:void(0);">Certificate Validation</a>
+                                            <a href="javascript:void(0);">{{'IMPRESSO'}} <span>Certificate Validation</span></a>
                                         @endif
                                     @elseif($userTransaction->type == 'meetup_inviting')
                                         <a href="{{url('/profile/' . $userTransaction->meetup->user_id_invited)}}">{{$userTransaction->meetup->invitedUser ? ($userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name :$userTransaction->meetup->invitedUser->email) : ('Profile #' . $userTransaction->meetup->user_id_invited ) }} {!!$userTransaction->meetup->invitedUser && $userTransaction->meetup->invitedUser->job_title ? '<span>' . $userTransaction->meetup->invitedUser->job_title . '</span>' : ''!!}</a>
                                     @elseif($userTransaction->type == 'meetup_accept')
                                         <a href="{{url('/profile/' . $userTransaction->meetup->user_id_inviting)}}">{{$userTransaction->meetup->invitingUser ? ($userTransaction->meetup->invitingUser->name ? $userTransaction->meetup->invitingUser->name :$userTransaction->meetup->invitingUser->email) : ( 'Profile #' . $userTransaction->meetup->user_id_inviting ) }} {!!$userTransaction->meetup->invitingUser && $userTransaction->meetup->invitingUser->job_title ? '<span>' . $userTransaction->meetup->invitingUser->job_title . '</span>' : ''!!}</a>
                                     @elseif($userTransaction->type == 'other')
-                                        <a href="javascript:void(0);">{{'Impresso Labs'}}</a>
+                                        <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
                                     @endif
                                     <small>{{Carbon::parse($userTransaction->created_at)->format('H:i')}}</small>
                                 </div>

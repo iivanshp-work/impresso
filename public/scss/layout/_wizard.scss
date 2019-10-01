@@ -1,0 +1,39 @@
+.wizard {
+	display: flex;
+	flex-direction: column;
+	justify-content: space-between;
+	text-align: center;
+	min-height: 100vh;
+	padding-bottom: 20px;
+	&__body {
+		margin-bottom: 20px;
+	}
+	&__subtitle {
+		margin: 26px 0;
+		font-size: $large-fs;
+		line-height: $line-height-large + 4px;
+		letter-spacing: 0.35px;
+	}
+	&__title {
+		text-transform: uppercase;
+		font-size: $large-fs;
+		letter-spacing: -0.24px;
+		margin: 35px 0 20px;
+	}
+	&__image {
+		img {
+			margin-left: 20px;
+		}
+	}
+	&__text {
+		max-width: 250px;
+		margin: 0 auto;
+	}
+	&__link {
+		color: $text-gray;
+	}
+	.btn-violet {
+		display: flex;
+		margin: 12px auto 0;
+	}
+}

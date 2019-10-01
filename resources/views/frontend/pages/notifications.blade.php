@@ -53,7 +53,7 @@
                                                 <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
-                                                {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
+                                                IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
                                             </p>
                                         </div>
                                         <a class="full-link" href="{{url('/settings/credits')}}"></a>
@@ -63,7 +63,7 @@
                                                 <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
-                                                {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
+                                                IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
                                             </p>
                                         </div>
                                         <a class="full-link" href="{{url('/profile')}}"></a>
@@ -73,7 +73,7 @@
                                                 <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
-                                                {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
+                                                IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
                                             </p>
                                         </div>
                                         <a class="full-link" href="{{url('/profile')}}"></a>
@@ -83,7 +83,7 @@
                                                 <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
-                                                {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
+                                                IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
                                             </p>
                                         </div>
                                         <a class="full-link" href="{{url('/profile')}}"></a>
@@ -93,7 +93,7 @@
                                                 <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
-                                                {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
+                                                IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
                                             </p>
                                         </div>
                                         <a class="full-link" href="{{url('/profile')}}"></a>
@@ -103,7 +103,7 @@
                                                 <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
-                                                {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
+                                                IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
                                             </p>
                                         </div>
                                         <a class="full-link" href="{{url('/transaction-history')}}"></a>
@@ -113,7 +113,7 @@
                                                 <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
-                                                {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
+                                                IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
                                             </p>
                                         </div>
                                         <a class="full-link" href="{{url('/feeds')}}"></a>
@@ -123,7 +123,7 @@
                                                 <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
-                                                {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
+                                                IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
                                             </p>
                                         </div>
                                         <a class="full-link" href="{{url('/feeds')}}"></a>
@@ -133,6 +133,7 @@
                                                 <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
                                             </a>
                                             <p>
+                                                IMPRESSO <Br>
                                                 {!!nl2br($notification->notification_text)!!} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
                                             </p>
                                         </div>
@@ -211,7 +212,7 @@
                                             <img src="{{asset('img/logo-circle.png')}}" alt="Impresso" />
                                         </a>
                                         <div>
-                                            {!!$notification->notification_text!!} @if($notification->created_at)<p><span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span></p>@endif
+                                            IMPRESSO  {!!$notification->notification_text!!} @if($notification->created_at)<p><span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span></p>@endif
                                         </div>
                                     </div>
                                 @endif

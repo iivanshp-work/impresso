@@ -1188,9 +1188,7 @@ $document.ready(function(){
             if(maxSizeLimit) {
                 closeProfileEditPopup('upload');
                 // will be new popup(see in figma) //TODO????
-                showError('File max size limit exceeded.', 'Error!', function(){
-                    openProfileEditPopup('upload');
-                });
+                openProfileEditPopup('validate-max_file_size');
             }
         }else{
             showError('No files selected.', 'Error!', function(){

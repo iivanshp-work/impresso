@@ -14,15 +14,15 @@
 	&__detail {
 		a {
 			color: $text-color;
-			font-size: $base-fs + 2px;
-			line-height: $base-line-height + 2px;
+			font-size: $base-fs;
+			line-height: $base-line-height;
 			letter-spacing: -0.41px;
 			margin-bottom: 3px;
 		}
 		span,
 		.cards-jobs__company {
-			font-size: $base-fs - 4px;
-			line-height: $base-line-height - 2px;
+			font-size: $small-fs;
+			line-height: $line-height-small;
 			color: $text-gray;
 			display: inline-block;
 			min-width: 86px;
@@ -37,8 +37,8 @@
 		box-shadow: none;
 		padding: 36px;
 		position: relative;
-		font-size: $base-fs + 2px;
-		line-height: $base-line-height + 2px;
+		font-size: $base-fs;
+		line-height: $base-line-height;
 		letter-spacing: -0.41px;
 		.icon {
 			position: absolute;
@@ -46,7 +46,7 @@
 			@include radius(14px);
 			min-width: 25px;
 			color: $text-color;
-			font-size: $base-fs - 5px;
+			font-size: $small-fs;
 			text-align: center;
 			line-height: 15px;
 			&_bottom {
@@ -106,38 +106,38 @@
 		width: 80%;
 		a {
 			color: $text-color;
-			font-size: $base-fs + 2px;
-			line-height: $base-line-height + 2px;
+			font-size: $base-fs;
+			line-height: $base-line-height;
 			letter-spacing: -0.41px;
 			margin-bottom: 7px;
 		}
 		span {
-			font-size: $base-fs - 4px;
-			line-height: $base-line-height - 2px;
+			font-size: $small-fs;
+			line-height: $line-height-small;
 			color: $text-gray;
 			display: inline-block;
 			letter-spacing: -0.07px;
 		}
 	}
 	&__desc {
-		font-size: $base-fs - 2px;
-		line-height: $base-line-height + 4px;
+		font-size: $small-fs;
+		line-height: $line-height-small + 4px;
 		letter-spacing: -0.41px;
 		> li {
 			border-top: 0.5px solid $border-light-gray;
 			padding: 11.5px 0;
 			span {
 				color: $text-gray;
-				font-size: $base-fs - 3px;
-				line-height: $base-line-height - 4px;
+				font-size: $small-fs;
+				line-height: $line-height-small;
 			}
 			.border-violet {
 				margin-top: 7px;
 			}
 			p {
 				color: $text-gray;
-				font-size: $base-fs - 4px;
-				line-height: $base-line-height - 4px;
+				font-size: $small-fs;
+				line-height: $line-height-small;
 				> span {
 					margin-left: 10px;
 					display: inline-block;

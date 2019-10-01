@@ -1,6 +1,15 @@
 .personal-details {
 	.user__header {
 		margin: 30px auto 36px;
+		width: 100px;
+	}
+	.user__avatar {
+		width: 100px;
+		height: 100px;
+	}
+	.user__checked {
+		width: 28px;
+		margin-left: -14px;
 	}
 	&__list {
 		padding: 0 26px;
@@ -8,13 +17,13 @@
 		span {
 			display: block;
 			color: $text-gray;
-			font-size: $base-fs - 4px;
+			font-size: $small-fs;
 			letter-spacing: -0.41px;
 		}
 		> li {
 			margin-bottom: 18px;
 			position: relative;
-			margin-bottom: 20px;
+			margin-bottom: 12px;
 			.style-input-text {
 				font-size: $base-fs;
 				height: 20px;

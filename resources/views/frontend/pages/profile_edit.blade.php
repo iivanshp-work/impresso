@@ -329,7 +329,8 @@
     <button btn-upload-remove-popup="" class="hide btn btn-violet open-pop-up" data-target="#uploadFile2">Upload file 2</button>
     <button btn-validate-popup="" class="hide btn btn-violet open-pop-up" data-target="#validate">Validate</button>
     <button btn-validate-success-popup="" class="hide btn btn-violet open-pop-up" data-target="#validateSuccess">Validate success</button>
-    <button btn-validate-not_xims-popup="" class="hide btn btn-violet open-pop-up" data-target="#notEnoughMinerals">Not enough minerals</button>
+    <button btn-validate-not_xims-popup="" class="hide btn btn-violet open-pop-up" data-target="#notHaveMixs">Not enough minerals</button>
+    <button btn-validate-max_file_size-popup="" class="hide btn btn-violet open-pop-up" data-target="#notEnoughMinerals">notEnoughMinerals</button>
 
     <div class="modal-window" id="upload" data-upload-popup="">
         <div class="modal-window__content">
@@ -404,7 +405,7 @@
         </div>
     </div>
 
-    <div class="modal-window" id="notEnoughMinerals" data-validate-not_xims-popup="">
+    <div class="modal-window" id="notHaveMixs" data-validate-not_xims-popup="">
         <div class="modal-window__content">
             <div class="modal-window__body text-center">
                 <h3 class="mb-34">Uh-oh!</h3>
@@ -417,6 +418,19 @@
                 </a>
                 <button type="button" class="btn btn-border close-modal">
                     Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-window" id="notEnoughMinerals" data-validate-max_file_size-popup="">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <h3>Uh-oh!</h3>
+                <p>Looks like your file size is too big.</p>
+                <p>Maximum file size is 5MB</p>
+                <button type="button" class="btn btn-violet close-modal">
+                    Close
                 </button>
             </div>
         </div>
