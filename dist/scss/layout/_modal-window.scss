@@ -96,12 +96,16 @@
 	}
 }
 
-#notEnoughMinerals,
-#share {
+#notEnoughMinerals {
 	h3 {
-		font-size: $large-fs;
-		line-height: $line-height-large + 2px;
-		margin-bottom: 27px;
+		font-size: $big-fs;
+		margin-bottom: 29px;
+	}
+	p {
+		padding-bottom: 15px;
+	}
+	.btn-violet {
+		margin-bottom: 51px;
 	}
 }
 
