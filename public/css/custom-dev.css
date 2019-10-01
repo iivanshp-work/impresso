@@ -400,3 +400,8 @@ customValidateConfirm{
 #upload .spinner:after {
     background: #7e20c8;
 }
+
+.btn-meetup-connected:hover {
+    color: #fff;
+    background-color: #7e20c8;
+}
