@@ -97,78 +97,15 @@
 }
 
 @media only screen and (max-width: 860px) and (orientation: landscape) {
-	// .slider {
-	// 	&__item {
-	// 		background-size: 450px;
-	// 		&_first {
-	// 			background-image: url(../img/slider/dude.jpg);
-	// 		}
-	// 		&_second {
-	// 			background-image: url(../img/slider/vendetta_dude.jpg);
-	// 		}
-	// 		&_third {
-	// 			background-image: url(../img/slider/robot.jpg);
-	// 		}
-	// 		&_fourth {
-	// 			background-image: url(../img/slider/pretending_to_work.jpg);
-	// 		}
-	// 	}
-	// 	&__content {
-	// 		padding: 40px 20px;
-	// 		br {
-	// 			display: none;
-	// 		}
-	// 	}
-	// 	&__title {
-	// 		margin-bottom: 12px;
-	// 	}
-	// }
-}
-
-@media only screen and (max-width: 640px) and (orientation: landscape) {
-	// .slider {
-	// 	&__item {
-	// 		background-size: 366px;
-	// 	}
-	// }
-}
-
-@media only screen and (max-width: 500px) and (orientation: landscape) {
-	// .slider {
-	// 	&__item {
-	// 		background-size: 320px;
-	// 	}
-	// 	&__content {
-	// 		padding: 20px;
-	// 	}
-	// }
-}
-
-@media only screen and (max-width: 350px) and (max-height: 520px) {
-	// .slider {
-	// 	&__item {
-	// 		background-size: 500px;
-	// 		&_first {
-	// 			background-image: url(../img/slider/dude.jpg);
-	// 		}
-	// 		&_second {
-	// 			background-image: url(../img/slider/vendetta_dude.jpg);
-	// 		}
-	// 		&_third {
-	// 			background-image: url(../img/slider/robot.jpg);
-	// 		}
-	// 		&_fourth {
-	// 			background-image: url(../img/slider/pretending_to_work.jpg);
-	// 		}
-	// 	}
-	// 	&__content {
-	// 		padding: 40px 20px;
-	// 		br {
-	// 			display: none;
-	// 		}
-	// 	}
-	// 	&__title {
-	// 		margin-bottom: 12px;
-	// 	}
-	// }
+	.slider {
+		&__content {
+			padding: 30px 20px 90px;
+		}
+		.slick-dots {
+			bottom: 74px;
+		}
+		&__author {
+			bottom: 40px;
+		}
+	}
 }

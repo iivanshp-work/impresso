@@ -295,11 +295,17 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 @media only screen and (max-width: 370px) { .slider__content { padding: 110px 26px 100px; } }
 
+@media only screen and (max-width: 860px) and (orientation: landscape) { .slider__content { padding: 30px 20px 90px; }
+  .slider .slick-dots { bottom: 74px; }
+  .slider__author { bottom: 40px; } }
+
 .sign-up, .login { background: url(../img/bg-logIn-singUp.svg) no-repeat top left/235px; width: 100%; max-width: 425px; min-height: 100vh; padding: 20px 28px; position: relative; margin: 0 auto; }
 
 .sign-up__title, .login__title { margin-top: 125px; }
 
-.sign-up .logo, .login .logo { display: -webkit-flex; display: -ms-flexbox; display: flex; width: 55px; margin: 36px auto; }
+.sign-up .logo, .login .logo { display: -webkit-flex; display: -ms-flexbox; display: flex; width: 55px; height: 55px; margin: 36px auto; }
+
+.sign-up .logo > img, .login .logo > img { width: 100%; height: 100%; -o-object-fit: cover; object-fit: cover; }
 
 .form { width: 100%; height: calc(100vh - 336px); display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; }
 
