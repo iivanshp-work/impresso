@@ -39,7 +39,30 @@ class MeetupsExpires extends Command
                 $meetup->invited_date = Carbon::now();
                 $meetup->save();
                 if ($meetup->invitingUser) {
+                    //send notification to inviting user
                     Users_Notification::saveNotification('meetup_expired', 'expires', $meetup->invitingUser->id, $meetup->id);
+
+                    //save transaction to inviting user
+                    $neededCredits = LAConfigs::getByKey('invite_xims_amount');
+                    if (!$neededCredits) {
+                        $neededCredits = 30;
+                    }
+                    $amount = $neededCredits;
+                    $User_Transaction = new User_Transaction;
+                    $User_Transaction->user_id = $meetup->invitingUser->id;
+                    $User_Transaction->amount = $amount;
+                    $User_Transaction->type = 'meetup_declined';
+                    $User_Transaction->notes = 'meetup_expired';
+                    $User_Transaction->share_id = $meetup->id;
+
+                    $User_Transaction->by_user_id = $meetup->invitingUser->id;
+                    $User_Transaction->old_credits_amount = $meetup->invitingUser->credits_count_value;
+                    $User_Transaction->new_credits_amount = floatval($meetup->invitingUser->credits_count_value) + $amount;
+                    $User_Transaction->save();
+
+                    //adding balance to inviting user
+                    $meetup->invitingUser->credits_count = $meetup->invitingUser->credits_count_value + $amount;
+                    $meetup->invitingUser->save();
                 }
             }
         }

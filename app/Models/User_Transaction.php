@@ -55,6 +55,7 @@ class User_Transaction extends Model
             'validation_certificate' => 'Certificate Validation',
             'meetup_inviting' => 'Meetup Invitation',
             'meetup_accept' => 'Meetup Accept',
+            'meetup_declined' => 'Meetup Rejection',
             'other' => 'Other',
         ];
     }

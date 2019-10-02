@@ -663,7 +663,7 @@ class ProfileSettingsController extends Controller
                 if ($transaction->certificate_id) {
                     $certificationIDS[] = $transaction->certificate_id;
                 }
-                if ($transaction->type == 'meetup_inviting' || $transaction->type == 'meetup_accept') {
+                if ($transaction->type == 'meetup_inviting' || $transaction->type == 'meetup_accept' || $transaction->type == 'meetup_declined') {
                     $meetupIDS[] = $transaction->share_id;
                 }
             }
@@ -709,6 +709,9 @@ class ProfileSettingsController extends Controller
                             $userTransactions[$key]->meetup = $meetups[$transaction->share_id];
                         }
                         if ($transaction->type == 'meetup_accept' && $transaction->share_id && isset($meetups[$transaction->share_id])) {
+                            $userTransactions[$key]->meetup = $meetups[$transaction->share_id];
+                        }
+                        if ($transaction->type == 'meetup_declined' && $transaction->share_id && isset($meetups[$transaction->share_id])) {
                             $userTransactions[$key]->meetup = $meetups[$transaction->share_id];
                         }
                     }
@@ -1043,7 +1046,7 @@ class ProfileSettingsController extends Controller
                         $User_Transaction->new_credits_amount = floatval($user->credits_count_value) + $amount;
                         $User_Transaction->save();
 
-                        //minus balance to inviting user
+                        //adding balance to invited user
                         $user->credits_count = $user->credits_count_value + $amount;
                         $user->save();
                         break;
@@ -1058,14 +1061,37 @@ class ProfileSettingsController extends Controller
                             return response()->json($responseData);
                         }
 
-                        //send notification to inviting user
-                        $acceptNeededCredits = LAConfigs::getByKey('accepted_invite_xims_amount');
-                        if (!$acceptNeededCredits) {
-                            $acceptNeededCredits = 24;
-                        }
+
                         $userData = User::find($meetup->user_id_inviting);
                         if ($userData) {
+                            //send notification to inviting user
+                            $acceptNeededCredits = LAConfigs::getByKey('accepted_invite_xims_amount');
+                            if (!$acceptNeededCredits) {
+                                $acceptNeededCredits = 24;
+                            }
                             Users_Notification::saveNotification('meetup_declined', $acceptNeededCredits, $userData->id, $meetup->id);
+
+                            //save transaction to inviting user
+                            $neededCredits = LAConfigs::getByKey('invite_xims_amount');
+                            if (!$neededCredits) {
+                                $neededCredits = 30;
+                            }
+                            $amount = $neededCredits;
+                            $User_Transaction = new User_Transaction;
+                            $User_Transaction->user_id = $userData->id;
+                            $User_Transaction->amount = $amount;
+                            $User_Transaction->type = 'meetup_declined';
+                            $User_Transaction->notes = 'meetup_declined';
+                            $User_Transaction->share_id = $meetup->id;
+
+                            $User_Transaction->by_user_id = $userData->id;
+                            $User_Transaction->old_credits_amount = $userData->credits_count_value;
+                            $User_Transaction->new_credits_amount = floatval($userData->credits_count_value) + $amount;
+                            $User_Transaction->save();
+
+                            //adding balance to inviting user
+                            $userData->credits_count = $userData->credits_count_value + $amount;
+                            $userData->save();
                         }
 
                         break;

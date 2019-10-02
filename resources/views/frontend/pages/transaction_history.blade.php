@@ -43,8 +43,14 @@
                                     @endphp
                                     @if (in_array($userTransaction->type, ['user_validation', 'purchase', 'share', 'validation_education', 'validation_certificate', 'other']))
                                         <img src="{{asset('img/logo-circle.png')}}" alt="" />
-                                    @elseif(in_array($userTransaction->type, ['meetup_inviting', 'meetup_accept']))
+                                    @elseif(in_array($userTransaction->type, ['meetup_inviting', 'meetup_accept', 'meetup_declined']))
                                         @if ($userTransaction->type == "meetup_inviting")
+                                            @if ($userTransaction->meetup->invitedUser && $userTransaction->meetup->invitedUser->photo)
+                                                <img src="{{url('/files/' . $userTransaction->meetup->invitedUser->photo . '?s=200')}}" alt="" />
+                                            @else
+                                                <img src="{{asset('img/icons/icon-user.png')}}" alt="" />
+                                            @endif
+                                        @elseif ($userTransaction->type == "meetup_declined")
                                             @if ($userTransaction->meetup->invitedUser && $userTransaction->meetup->invitedUser->photo)
                                                 <img src="{{url('/files/' . $userTransaction->meetup->invitedUser->photo . '?s=200')}}" alt="" />
                                             @else
@@ -84,6 +90,8 @@
                                         <a href="{{url('/profile/' . $userTransaction->meetup->user_id_invited)}}">{{$userTransaction->meetup->invitedUser ? ($userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name :$userTransaction->meetup->invitedUser->email) : ('Profile #' . $userTransaction->meetup->user_id_invited ) }} {!!$userTransaction->meetup->invitedUser && $userTransaction->meetup->invitedUser->job_title ? '<span>' . $userTransaction->meetup->invitedUser->job_title . '</span>' : ''!!}</a>
                                     @elseif($userTransaction->type == 'meetup_accept')
                                         <a href="{{url('/profile/' . $userTransaction->meetup->user_id_inviting)}}">{{$userTransaction->meetup->invitingUser ? ($userTransaction->meetup->invitingUser->name ? $userTransaction->meetup->invitingUser->name :$userTransaction->meetup->invitingUser->email) : ( 'Profile #' . $userTransaction->meetup->user_id_inviting ) }} {!!$userTransaction->meetup->invitingUser && $userTransaction->meetup->invitingUser->job_title ? '<span>' . $userTransaction->meetup->invitingUser->job_title . '</span>' : ''!!}</a>
+                                    @elseif($userTransaction->type == 'meetup_declined')
+                                        <a href="{{url('/profile/' . $userTransaction->meetup->user_id_invited)}}">{{$userTransaction->meetup->invitedUser ? ($userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name :$userTransaction->meetup->invitedUser->email) : ('Profile #' . $userTransaction->meetup->user_id_invited ) }} {!!$userTransaction->meetup->invitedUser && $userTransaction->meetup->invitedUser->job_title ? '<span>' . $userTransaction->meetup->invitedUser->job_title . '</span>' : ''!!}</a>
                                     @elseif($userTransaction->type == 'other')
                                         <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
                                     @endif
@@ -116,6 +124,9 @@
                                 <p>Meetup: {{$userTransaction->meetup->statusLabel}}</p>
                             @elseif($userTransaction->type == 'meetup_accept')
                                 <p>You have received {{abs($userTransaction->amount)}} XIMS from {{$userTransaction->meetup->invitingUser ? ($userTransaction->meetup->invitingUser->name ? $userTransaction->meetup->invitingUser->name : $userTransaction->meetup->invitingUser->email) : ('Profile #' . $userTransaction->meetup->user_id_inviting)}} for accepting his Meetup invitation.</p>
+                                <p>Meetup: {{$userTransaction->meetup->statusLabel}}</p>
+                            @elseif($userTransaction->type == 'meetup_declined')
+                                <p>You have received back {{abs($userTransaction->amount)}} XIMS, due to Meetup rejection. @if($userTransaction->notes == "meetup_expired"){{'(Expired)'}}@endif</p>
                                 <p>Meetup: {{$userTransaction->meetup->statusLabel}}</p>
                             @elseif($userTransaction->type == 'other')
                                 <p>{{$userTransaction->notes}}</p>
