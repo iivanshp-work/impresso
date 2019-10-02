@@ -14,27 +14,25 @@
                         <img src="{{ asset('img/icons/arrow-back.svg') }}" alt="arrow-back" />
                     </span>
                 </header>
-                <p>Verify your identity in order to use the App</p>
+                <p>Real People = Real Professionals</p>
                 <div class="validation__user-img">
-                    <img src="{{ asset('img/icons/user-icon.svg') }}" alt="user-icon"/>
+                    <img src="{{ asset('img/icons/user-icon-new.svg') }}" alt="user-icon"/>
                 </div>
                 <p class="validation__text">
-                    1. Upload a clear photo of your ID
-                </p>
-                <p class="validation__text">
-                    2. Take a selfie together with the uploaded ID
+                    Verify your identity in order to use<br>
+                    IMPRESSO
                 </p>
                 <div class="validation__btn">
                     <span class="open-pop-up" data-target="#validationMyProfile">Why do I need to do this?</span>
-                    <button type="button" data-validation-step="step2" class="btn btn-violet" data-target="#validationMyProfile">
-                        Validate my profile
+                    <button type="button" data-validation-step="step1_1" class="btn btn-violet" data-target="#validationMyProfile">
+                        Please Verify Me
                     </button>
                 </div>
             </div>
             <div id="step2" class="validation__step">
                 <header class="header">
                     <h4>Profile Validation</h4>
-                    <span class="header__icon-left" data-validation-step-to-first="" data-validation-step="step1">
+                    <span class="header__icon-left" data-validation-step-to-first="" data-validation-step="step1_1">
                         <img src="{{ asset('img/icons/arrow-back.svg') }}" alt="arrow-back"/>
                     </span>
                 </header>
@@ -121,7 +119,7 @@
                     </button>
                 </div>
             </div>
-            <div id="step2_1" class="validation__step">
+            <div id="step1_1" class="validation__step">
                 <section class="wizard">
                     <div class="wizard__body">
                         <header class="header">
@@ -193,11 +191,8 @@
                 <p>
                     Only validated Professionals will be able to use the App.  Your personal data will not be shared with other users.
                 </p>
-                <button type="button" data-validation-step="step2_1" class="btn btn-border">
+                <button type="button" class="btn btn-border close-modal">
                     Got it!
-                </button>
-                <button type="button" class="btn btn-border hide close-modal">
-                    Close
                 </button>
             </div>
         </div>

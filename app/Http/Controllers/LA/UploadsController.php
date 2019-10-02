@@ -23,7 +23,7 @@ use DB;
 use File;
 use Validator;
 use Datatables;
-
+//use Image;
 use App\Models\Upload;
 
 class UploadsController extends Controller
@@ -441,6 +441,57 @@ class UploadsController extends Controller
 
     return array("error" => $error, "status" => $status, "image" => $newFileName);
   }*/
+    /**
+     * Check if the PHP Exif component is enabled
+     *
+     * @return bool
+     */
+    function exifExtIsEnabled()
+    {
+        try {
+            if (extension_loaded('exif') && function_exists('exif_read_data')) {
+                return true;
+            }
+
+            return false;
+        } catch (\Exception $e) {
+            return false;
+        }
+    }
+    /**
+     * correct image orientation
+     *
+     * @return void
+     */
+    function correctImageOrientation($filename) {
+        if ($this->exifExtIsEnabled()) {
+            test($filename, 0);
+            $exif = exif_read_data($filename);
+            if($exif && isset($exif['Orientation'])) {
+                $orientation = $exif['Orientation'];
+                if($orientation != 1){
+                    $img = imagecreatefromjpeg($filename);
+                    $deg = 0;
+                    switch ($orientation) {
+                        case 3:
+                            $deg = 180;
+                            break;
+                        case 6:
+                            $deg = 270;
+                            break;
+                        case 8:
+                            $deg = 90;
+                            break;
+                    }
+                    if ($deg) {
+                        $img = imagerotate($img, $deg, 0);
+                    }
+                    // then rewrite the rotated image back to the disk as $filename
+                    imagejpeg($img, $filename, 95);
+                } // if there is some rotation necessary
+            } // if have the exif orientation info
+        } // if function exists
+    }
 
     /**
      * Upload fiels via DropZone.js
@@ -471,10 +522,18 @@ class UploadsController extends Controller
                 $filename = $file->getClientOriginalName();
 
                 $date_append = date("Y-m-d-His-");
-                $upload_success = $file->move($folder, $date_append . $filename);
+                if($file && substr($file->getMimeType(), 0, 5) == 'image') {
+                    //$image = Image::make($file);
+                    // perform orientation using intervention
+                    //$image->orientate();
+                    // save image
+                    //$upload_success = $image->save($folder . $date_append . $filename);
+                    $upload_success = $file->move($folder, $date_append . $filename);
+                } else {
+                    $upload_success = $file->move($folder, $date_append . $filename);
+                }
 
                 if ($upload_success) {
-
                     // Get public preferences
                     // config("laraadmin.uploads.default_public")
                     $public = Input::get('public');

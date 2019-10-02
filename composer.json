@@ -12,7 +12,8 @@
         "doctrine/inflector": "~1.1.0",
         "cartalyst/stripe-laravel": "4.0.*",
         "phpoffice/phpspreadsheet": "1.8.*",
-        "brick/phonenumber": "0.1.*"
+        "brick/phonenumber": "0.1.*",
+        "intervention/image": "^2.5"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",

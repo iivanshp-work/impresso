@@ -43,8 +43,8 @@
                     <a href="https://www.impressolabs.io/privacy">Privacy Policy</a>
                 </li>
                 <li>
-                    <span>Account Management:</span>
-                    <a href="https://www.impressolabs.io/contact">Contact</a>
+                    <span>Contact:</span>
+                    <a href="https://www.impressoapp.com/feedback">Feedback</a>
                 </li>
                 <li>
                     <a href="#" class="open-pop-up" data-target="#logOut">Log Out</a>

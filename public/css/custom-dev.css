@@ -405,3 +405,9 @@ customValidateConfirm{
     color: #fff;
     background-color: #7e20c8;
 }
+.cards-professionals__info a {
+    word-break: break-all;
+}
+.personal-details__list > li .style-input-text {
+    width: 92%;
+}

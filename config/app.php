@@ -157,7 +157,8 @@ return [
         App\Providers\RouteServiceProvider::class,
         Dwij\Laraadmin\LAProvider::class,
         Laravel\Socialite\SocialiteServiceProvider::class,
-        Cartalyst\Stripe\Laravel\StripeServiceProvider::class
+        Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
+        //Intervention\Image\ImageServiceProvider::class
     ],
 
     /*
@@ -206,7 +207,7 @@ return [
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
         'Carbon' => \Carbon\Carbon::class,
         'Stripe' => Cartalyst\Stripe\Laravel\Facades\Stripe::class,
-
+        'Image' => Intervention\Image\Facades\Image::class,
     ],
 
 ];
