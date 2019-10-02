@@ -23,7 +23,7 @@ use DB;
 use File;
 use Validator;
 use Datatables;
-//use Image;
+use Intervention\Image\ImageManagerStatic as Image;
 use App\Models\Upload;
 
 class UploadsController extends Controller
@@ -523,12 +523,12 @@ class UploadsController extends Controller
 
                 $date_append = date("Y-m-d-His-");
                 if($file && substr($file->getMimeType(), 0, 5) == 'image') {
-                    //$image = Image::make($file);
+                    $image = Image::make($file);
                     // perform orientation using intervention
-                    //$image->orientate();
+                    $image->orientate();
                     // save image
-                    //$upload_success = $image->save($folder . $date_append . $filename);
-                    $upload_success = $file->move($folder, $date_append . $filename);
+                    $upload_success = $image->save($folder . '/' . $date_append . $filename);
+                    //$upload_success = $file->move($folder, $date_append . $filename);
                 } else {
                     $upload_success = $file->move($folder, $date_append . $filename);
                 }

@@ -428,7 +428,7 @@
             <div class="modal-window__body text-center">
                 <h3>Uh-oh!</h3>
                 <p>Looks like your file size is too big.</p>
-                <p>Maximum file size is 5MB</p>
+                <p>Maximum file size is 10MB</p>
                 <button type="button" class="btn btn-violet close-modal">
                     Close
                 </button>

@@ -1153,7 +1153,7 @@ $document.ready(function(){
         let files = $this.get(0).files;
         let notAvailable = false;
         let maxSizeLimit = false;
-        let maxSize = 5 * 1024 * 1024;
+        let maxSize = 10 * 1024 * 1024;
         let selectedFiles = '';
         $('#edit_profile_upload_attach_form .default_title').show();
         $('#edit_profile_upload_attach_form .selected_files_title').hide().find('.files_text').text('');
