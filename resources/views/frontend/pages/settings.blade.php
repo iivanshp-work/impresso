@@ -28,7 +28,7 @@
                 @endif
             </div>
             <h4 class="user__name text-center @if(!$userData->is_verified){{'not_verified'}}@endif">@if($userData->name){{$userData->name}}@else{{'None'}}@endif</h4>
-            <ul class="settings__list">
+            <ul class="settings__list" style="margin-bottom: 0;">
                 <li>
                     <span>Profile:</span>
                     <a href="{{url('/settings/edit')}}">Personal Details</a>
@@ -50,10 +50,12 @@
                     <a href="#" class="open-pop-up" data-target="#logOut">Log Out</a>
                 </li>
             </ul>
+            {{--
             <div class="text-center">
                 <a href="{{url('/')}}" class="logo-bottom"><img src="{{url('img/logo-small.png')}}" alt=""></a>
                 <span class="text-center version">VERSION: {{getenv('APP_VERSION')}}</span>
             </div>
+            --}}
         </main>
     </div>
 @endsection

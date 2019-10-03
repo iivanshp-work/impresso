@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
-
+use Session;
 class UserRedirects
 {
     /**
@@ -21,6 +21,17 @@ class UserRedirects
         $path = '/';
         $needRedirect = false;
         $requestUrl = $request->getPathInfo();
+        $urls['current'] = url()->current();
+        if (url()->current() != url()->previous()) {
+            if(strpos(url()->previous(), '/files/') === false) {
+                $urls['previous'] = url()->previous();
+            }
+        }
+        Session::put('current', $urls['current']);
+        if (isset($urls['previous'])) {
+            Session::put('previous', $urls['previous']);
+        }
+        Session::save();
         if ($user) {
             $skipPaths = [
                 '/save-geo-data',

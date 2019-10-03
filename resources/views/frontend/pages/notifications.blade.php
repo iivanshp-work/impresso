@@ -11,7 +11,11 @@
             <a href="{{url('/notifications')}}" class="header__icon-right icon-bell">
                 <img src="{{asset('img/icons/arror-circle.svg')}}" alt="arror-circle" />
             </a>
-            <a href="{{url()->previous() != url()->current() ? url()->previous() : url('/profile')}}" class="header__icon-left">
+            @php
+                $currentUrl = Session::has('current') ? Session::get('current') : url()->current();
+                $previousUrl = Session::has('previous') ? Session::get('previous') : url()->previous();
+            @endphp
+            <a href="{{$previousUrl != $currentUrl ? $previousUrl : url('/profile')}}" class="header__icon-left">
                 <img src="{{asset('img/icons/arrow-back.svg')}}" alt="arrow-back" />
             </a>
         </header>

@@ -8,31 +8,31 @@
     <main class="main">
         <form id="validationForm" class="validation text-center">
             <div id="step1" class="validation__step validation__step_first">
-                <header class="header">
-                    <h4>Profile Validation</h4>
-                    <span class="header__icon-left">
-                        <img src="{{ asset('img/icons/arrow-back.svg') }}" alt="arrow-back" />
-                    </span>
-                </header>
-                <p>Real People = Real Professionals</p>
-                <div class="validation__user-img">
-                    <img src="{{ asset('img/icons/user-icon-new.svg') }}" alt="user-icon"/>
-                </div>
-                <p class="validation__text">
-                    Verify your identity in order to use<br>
-                    IMPRESSO
-                </p>
-                <div class="validation__btn">
-                    <span class="open-pop-up" data-target="#validationMyProfile">Why do I need to do this?</span>
-                    <button type="button" data-validation-step="step1_1" class="btn btn-violet" data-target="#validationMyProfile">
-                        Please Verify Me
-                    </button>
-                </div>
+                <section class="wizard">
+                    <div class="wizard__body">
+                        <header class="header">
+                            <h4>Profile Validation</h4>
+                            {{--<span class="header__icon-left" data-validation-step="step1">
+                                <img src="{{ asset('img/icons/arrow-back.svg') }}" alt="arrow-back"/>
+                            </span>--}}
+                        </header>
+                        <h3 class="wizard__subtitle">The Wizard</h3>
+                        <div class="wizard__image">
+                            <img src="{{ asset('img/wizard-img.png') }}" alt="wizard">
+                        </div>
+                        <h2 class="wizard__title">YOU SHALL NOT PASS!</h2>
+                        <p class="wizard__text">Unless you take a selfie with your valid identity card.</p>
+                    </div>
+                    <div class="wizard__footer">
+                        <a href="#" class="wizard__link open-pop-up" data-target="#validationMyProfile">Why do I need to do this?</a>
+                        <a href="#" class="btn btn-violet" data-validation-step="step2">Start Now</a>
+                    </div>
+                </section>
             </div>
             <div id="step2" class="validation__step">
                 <header class="header">
                     <h4>Profile Validation</h4>
-                    <span class="header__icon-left" data-validation-step-to-first="" data-validation-step="step1_1">
+                    <span class="header__icon-left" data-validation-step-to-first="" data-validation-step="step1">
                         <img src="{{ asset('img/icons/arrow-back.svg') }}" alt="arrow-back"/>
                     </span>
                 </header>
@@ -118,28 +118,6 @@
                         Retake
                     </button>
                 </div>
-            </div>
-            <div id="step1_1" class="validation__step">
-                <section class="wizard">
-                    <div class="wizard__body">
-                        <header class="header">
-                            <h4>Profile Validation</h4>
-                            <span class="header__icon-left" data-validation-step="step1">
-                                <img src="{{ asset('img/icons/arrow-back.svg') }}" alt="arrow-back"/>
-                            </span>
-                        </header>
-                        <h3 class="wizard__subtitle">The Wizard</h3>
-                        <div class="wizard__image">
-                            <img src="{{ asset('img/wizard-img.png') }}" alt="wizard">
-                        </div>
-                        <h2 class="wizard__title">YOU SHALL NOT PASS!</h2>
-                        <p class="wizard__text">Unless you take a selfie with your valid identity card.</p>
-                    </div>
-                    <div class="wizard__footer">
-                        <a href="#" class="wizard__link open-pop-up" data-target="#validationMyProfile">Why do I need to do this?</a>
-                        <a href="#" class="btn btn-violet" data-validation-step="step2">Start Now</a>
-                    </div>
-                </section>
             </div>
         </form>
     </main>

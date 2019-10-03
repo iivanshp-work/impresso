@@ -17,7 +17,11 @@
                     <img src="{{asset('img/icons/exclamation-mark.svg')}}" alt="" class="bell-exclamation">
                 @endif
             </a>
-            <a href="{{url()->previous() != url()->current() ? url()->previous() : url('/profile/' . $userData->id)}}" class="header__icon-left">
+            @php
+                $currentUrl = Session::has('current') ? Session::get('current') : url()->current();
+                $previousUrl = Session::has('previous') ? Session::get('previous') : url()->previous();
+            @endphp
+            <a href="{{$previousUrl != $currentUrl ? $previousUrl : url('/profile/' . $userData->id)}}" class="header__icon-left">
                 <img src="{{asset('img/icons/arrow-back.svg')}}" alt="arrow-back">
             </a>
         </header>
