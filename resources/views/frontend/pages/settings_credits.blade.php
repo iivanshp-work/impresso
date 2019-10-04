@@ -8,7 +8,11 @@
     <div class="main">
         <header class="header">
             <h4 class="header-title">Buy XIMs</h4>
-            <a href="{{url('/settings')}}" class="header__icon-left">
+            @php
+                $currentUrl = Session::has('current') ? Session::get('current') : url()->current();
+                $previousUrl = Session::has('previous') ? Session::get('previous') : url()->previous();
+            @endphp
+            <a href="{{$previousUrl != $currentUrl ? $previousUrl : url('/settings')}}" class="header__icon-left">
                 <img src="{{url('img/icons/arrow-back.svg')}}" alt="arrow-back">
             </a>
         </header>
