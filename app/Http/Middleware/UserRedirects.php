@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Mockery\Exception;
 use Session;
 class UserRedirects
 {
@@ -17,21 +18,26 @@ class UserRedirects
      */
     public function handle($request, Closure $next, $guard = null)
     {
+        ini_set('display_errors',1);
+        error_reporting(E_ALL);
         $user = Auth::user();
         $path = '/';
         $needRedirect = false;
         $requestUrl = $request->getPathInfo();
-        $urls['current'] = url()->current();
-        if (url()->current() != url()->previous()) {
-            if(strpos(url()->previous(), '/files/') === false) {
-                $urls['previous'] = url()->previous();
+        try {
+            $urls['current'] = url()->current();
+            if (url()->current() != url()->previous()) {
+                if (strpos(url()->previous(), '/files/') === false) {
+                    $urls['previous'] = url()->previous();
+                }
             }
+            Session::put('current', $urls['current']);
+            if (isset($urls['previous'])) {
+                Session::put('previous', $urls['previous']);
+            }
+            Session::save();
+        } catch(\Exception $e) {
         }
-        Session::put('current', $urls['current']);
-        if (isset($urls['previous'])) {
-            Session::put('previous', $urls['previous']);
-        }
-        Session::save();
         if ($user) {
             $skipPaths = [
                 '/save-geo-data',

@@ -514,11 +514,16 @@ $document.ready(function(){
         $('[data-feeds-search-page]').val(1);
         $('[data-feeds-search-keyword]').val('');
         $('[data-feeds-search-type]').val(type);
+        createCookie('ftype', type, 1);
         setTimeout(function(){
             $('[data-feeds-search-form]').submit();
         }, 100);
     });
-    $('[data-ftype="professionals"]').click();
+    if (readCookie('ftype') == 'promos'){
+        $('[data-ftype="promos"]').click();
+    } else {
+        $('[data-ftype="professionals"]').click();
+    }
     //submit form on change search field, avoid many requests on keypress
     function throttle(f, delay){
         let timer = null;

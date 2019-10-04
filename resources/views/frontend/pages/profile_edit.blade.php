@@ -99,7 +99,7 @@
                         <div class="cards user__card">
                             <h5 class="user__card_title">IMPRESSIVE BIO: *</h5>
                             <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
-                            <textarea class="style-textarea border-violet" rows="4" cols="50"
+                            <textarea class="style-textarea border-violet" rows="4" cols="50" maxlength="150"
                                       name="impress" autocomplete="off" placeholder="What do you do best in your professional and non-professional life?">{{$userData->impress}}</textarea>
                         </div>
 
