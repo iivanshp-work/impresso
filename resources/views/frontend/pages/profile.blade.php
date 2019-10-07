@@ -21,9 +21,19 @@
                     @endif
                 </a>
             </span>
-            <span class="header__icon-left">
-                <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" class="settings-icon" /></a>
-            </span>
+            @if($mode == "me")
+                <span class="header__icon-left">
+                    <a href="{{url('/settings')}}"><img src="{{asset('img/icons/settings.svg')}}" alt="" class="settings-icon" /></a>
+                </span>
+            @else
+                @php
+                    $currentUrl = Session::has('current') ? Session::get('current') : url()->current();
+                    $previousUrl = Session::has('previous') ? Session::get('previous') : url()->previous();
+                @endphp
+                <a href="{{$previousUrl != $currentUrl ? $previousUrl : url('/feeds')}}" class="header__icon-left">
+                    <img src="{{asset('img/icons/arrow-back.svg')}}" alt="arrow-back" />
+                </a>
+            @endif
         </header>
         <main>
             <div class="user">

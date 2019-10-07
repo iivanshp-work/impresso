@@ -6,7 +6,7 @@
 
 @section("main-content")
     <main class="main">
-        <div class="location-page">
+        <div class="location-page" @if ($user && (!$user->location_title || (!$user->longitude && !$user->latitude))) style="opacity: 0;" @endif>
             <div class="location-page__body">
                 <form action="{{url('/phone-validation')}}" method="post" data-form-number-form="">
                     <div class="location-page__header">

@@ -410,6 +410,8 @@ customValidateConfirm{
 }
 .personal-details__list > li .style-input-text {
     width: 92%;
+    padding: 0;
+    outline: 0;
 }
 .cards-professionals__info span:nth-child(1) {
     margin-right: 5px;
