@@ -1,7 +1,7 @@
 Dear "{{$user->email}}"<br> <br>
 
 Thank you joining IMPRESSO.<br>
-Your password is: {{$password}}<br><br>
+{{--Your password is: {{$password}}<br>--}}<br>
 
 Please complete your Professional Profile to start meeting up with other Professionals close to you.  Market research shows that over 80% of jobs and business deals are closed through referrals. Setup your impressive profile today to start meeting up.<br><br>
 

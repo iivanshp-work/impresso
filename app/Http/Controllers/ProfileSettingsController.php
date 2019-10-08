@@ -22,11 +22,13 @@ use Exception;
 use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
+use Illuminate\Support\Facades\Cookie;
 use Validator;
 use Redirect;
 use Hash;
 use Stripe;
 use DB;
+use Session;
 
 use Artisan;
 
@@ -839,6 +841,11 @@ class ProfileSettingsController extends Controller
      */
     public function phoneValidationPage(Request $request) {
         $user = Auth::user();
+
+        $session_start = Session::has('session_start') ? Session::get('session_start') : null;
+        if (!$session_start || ($session_start && (Carbon::now()->timestamp - Carbon::parse($session_start)->timestamp) > 2 * 60)) {
+            return redirect(url('/logout?redirect=') . urlencode(url('/sign-up')));
+        }
         $countries = Country::orderBy('country', 'asc')->get();
         //select current country start
         $lat = $user->latitude;

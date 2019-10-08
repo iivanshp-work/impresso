@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\User;
 use App\Models\Mails;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;
 use App\Http\Requests;
@@ -11,6 +12,7 @@ use Auth;
 use Validator;
 use Redirect;
 use Hash;
+use Session;
 
 use App\Http\Controllers\LA\UploadsController as UploadsController;
 
@@ -82,6 +84,8 @@ class SignController extends Controller
                     $redirectURL = $user && $user->is_verified ? getenv('BASE_LOGEDIN_PAGE') : getenv('VALIDATION_PAGE');
                     $responseData['redirect'] = url($redirectURL);
                     $responseData['user'] = Auth::user();
+                    Session::put('session_start', Carbon::now()->format("Y-m-d H:i:s"));
+                    Session::save();
                 } else {
                     Auth::logout();
                     $responseData['has_error'] = true;
@@ -148,6 +152,8 @@ class SignController extends Controller
                         $mail->signup_email($user, $request->input('password'));
 
                         $responseData['redirect'] = url(getenv('VALIDATION_PAGE'));
+                        Session::put('session_start', Carbon::now()->format("Y-m-d H:i:s"));
+                        Session::save();
                     } else {
                         $responseData['has_error'] = true;
                         $responseData['message'] = 'Error while sign-in.';

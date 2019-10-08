@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Auth;
 use App\User;
 use App\Models\Employee;
 use App\Role;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Validator;
 use Eloquent;
 use App\Http\Controllers\Controller;
@@ -42,7 +44,7 @@ class AuthController extends Controller
     {
         $this->middleware($this->guestMiddleware(), ['except' => 'logout']);
     }
-    
+
     public function showRegistrationForm()
     {
         $roleCount = Role::count();
@@ -60,7 +62,7 @@ class AuthController extends Controller
 			]);
 		}
     }
-    
+
     public function showLoginForm()
     {
 		$roleCount = Role::count();
@@ -104,7 +106,7 @@ class AuthController extends Controller
     {
         // This is Not Standard. Need to find alternative
         Eloquent::unguard();
-        
+
         $employee = Employee::create([
             'name' => $data['name'],
             'designation' => "Super Admin",
@@ -121,7 +123,7 @@ class AuthController extends Controller
             'date_left' => date("Y-m-d"),
             'salary_cur' => 0,
         ]);
-        
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
@@ -131,7 +133,19 @@ class AuthController extends Controller
         ]);
         $role = Role::where('name', 'SUPER_ADMIN')->first();
         $user->attachRole($role);
-    
+
         return $user;
+    }
+
+    public function logout(Request $request)
+    {
+        Auth::guard($this->getGuard())->logout();
+
+        $redirect = $request->has('redirect') ? $request->input('redirect') : '';
+        if ($redirect) {
+            $this->redirectAfterLogout = $redirect;
+        }
+
+        return redirect(property_exists($this, 'redirectAfterLogout') ? $this->redirectAfterLogout : '/');
     }
 }

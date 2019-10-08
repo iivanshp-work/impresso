@@ -31,7 +31,7 @@
                         <button type="submit" class="btn btn-violet">
                             Submit
                         </button>
-                        <a href="{{url(getenv('BASE_LOGEDIN_PAGE'))}}" type="button" class="btn btn-border">
+                        <a href="{{url('/logout?redirect=') . urlencode(url('/sign-up'))}}" type="button" class="btn btn-border">
                             Cancel
                         </a>
                     </div>
