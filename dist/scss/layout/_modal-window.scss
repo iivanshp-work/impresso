@@ -163,6 +163,22 @@
 	}
 }
 
+#resetPassword,
+#passwordChanged,
+#passwordChangedCancelled {
+	.modal-window__subtitle {
+		line-height: $line-height-large + 17px;
+		font-weight: 300;
+	}
+}
+
+#passwordChanged,
+#passwordChangedCancelled {
+	.modal-window__body {
+		min-height: 230px;
+	}
+}
+
 @media only screen and (max-height: 480px) {
 	.modal-window {
 		overflow: auto;

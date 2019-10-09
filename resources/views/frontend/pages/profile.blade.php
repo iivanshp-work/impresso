@@ -422,7 +422,7 @@
                     <h3 class="title mb-34">Your validation is in progress.</h3>
                     <p>Once your profile is approved, you will have access to all our features.</p>
                     <p>It’s a perfect opportunity to meditate, water your plants or share IMPRESSO with your friends!</p>
-                    <a href="{{url(getenv('BASE_LOGEDIN_PAGE') . '?show_profile_setup_profile=1')}}" type="button" class="btn btn-violet">
+                    <a href="#" type="button" class="btn btn-violet close-modal">
                         Close
                     </a>
                 </div>

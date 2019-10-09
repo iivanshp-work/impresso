@@ -1,16 +1,1 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!-- Generator: Adobe Illustrator 21.1.0, SVG Export Plug-In . SVG Version: 6.00 Build 0)  -->
-<svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-	 viewBox="0 0 29.5 29.5" style="enable-background:new 0 0 29.5 29.5;" xml:space="preserve">
-<style type="text/css">
-	.st0{fill:#7E20C8;}
-	.st1{fill:#FFFFFF;}
-</style>
-<path class="st0" d="M14.8,0C6.6,0,0,6.6,0,14.8c0,8.2,6.6,14.8,14.8,14.8s14.8-6.6,14.8-14.8C29.5,6.6,22.9,0,14.8,0z"/>
-<path class="st1" d="M14.8,3C8.3,3,3,8.3,3,14.8c0,6.5,5.2,11.7,11.7,11.7s11.7-5.2,11.7-11.7C26.5,8.3,21.2,3,14.8,3z"/>
-<g>
-	<polygon class="st0" points="16.3,17.8 16.9,5.4 12.6,5.4 13.2,17.8 	"/>
-	<path class="st0" d="M14.8,19.1c-1.4,0-2.5,1-2.5,2.5c0,1.4,1,2.5,2.4,2.5h0.1c1.5,0,2.4-1.1,2.4-2.5
-		C17.2,20.2,16.2,19.1,14.8,19.1z"/>
-</g>
-</svg>
+<svg id="Capa_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 29.5 29.5"><style>.st0{fill:#7e20c8}.st1{fill:#fff}</style><path class="st0" d="M14.8 0C6.6 0 0 6.6 0 14.8 0 23 6.6 29.6 14.8 29.6S29.6 23 29.6 14.8C29.5 6.6 22.9 0 14.8 0z"/><path class="st1" d="M14.8 3C8.3 3 3 8.3 3 14.8c0 6.5 5.2 11.7 11.7 11.7s11.7-5.2 11.7-11.7C26.5 8.3 21.2 3 14.8 3z"/><path class="st0" d="M16.3 17.8l.6-12.4h-4.3l.6 12.4zM14.8 19.1c-1.4 0-2.5 1-2.5 2.5 0 1.4 1 2.5 2.4 2.5h.1c1.5 0 2.4-1.1 2.4-2.5s-1-2.5-2.4-2.5z"/></svg>
