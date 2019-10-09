@@ -51,6 +51,8 @@
 								<div class="col-md-10 fvalue">
 									@if ($user->is_verified)
 										<div class='label label-success'>Verified</div>
+									@elseif($user->fail_validation)
+										<div class='label label-danger'>Failed Validation</div>
 									@elseif($user->varification_pending && !$user->is_verified)
 										<div class='label label-warning'>Pending Varification</div>
 									@else

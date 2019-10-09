@@ -411,7 +411,25 @@
 @endsection
 
 @push('popups')
-    @if ((app('request')->has('show_pending_popup') && !$userData->is_verified) || app('request')->has('show_profile_setup_profile'))
+    @if ((app('request')->has('show_pending_popup') && !$userData->is_verified))
+        <button class="btn btn-violet hide open-pop-up" id="showPendingPopupProfile" data-target="#pendingPopup">
+            Pending popup
+        </button>
+        <div class="modal-window" id="pendingPopup">
+            <div class="modal-window__content">
+                <div class="modal-window__body text-center">
+                    <img src="{{asset('img/icons/smile.svg')}}" alt="like" class="modal-window__img-top">
+                    <h3 class="title mb-34">Your validation is in progress.</h3>
+                    <p>Once your profile is approved, you will have access to all our features.</p>
+                    <p>It’s a perfect opportunity to meditate, water your plants or share IMPRESSO with your friends!</p>
+                    <a href="{{url(getenv('BASE_LOGEDIN_PAGE') . '?show_profile_setup_profile=1')}}" type="button" class="btn btn-violet">
+                        Close
+                    </a>
+                </div>
+            </div>
+        </div>
+    @endif
+    @if (app('request')->has('show_profile_setup_profile'))
         <button class="btn btn-violet hide open-pop-up" id="goToProfilePopup" data-target="#goToProfile">Complete Your Profile</button>
 
         <div class="modal-window" id="goToProfile">
@@ -432,15 +450,15 @@
         <div class="modal-window" id="acceptInvite" data-acceptInvite-popup="">
             <div class="modal-window__content">
                 <div class="modal-window__body text-center">
-                    <p>By accepting this invite you will receive<br /> {{LAConfigs::getByKey('accepted_invite_xims_amount')}} XIMs.</p>
-                    <p>Once the Meetup is accepted, mobile numbers will be exhanged.</p>
+                    <p>Accept to receive <strong>{{LAConfigs::getByKey('accepted_invite_xims_amount')}} XIMs</strong>.</p>
+                    <p>Your mobile numbers will be exhanged so you can both organize the meetup.</p>
                     <button type="button" data-meetup-invite="accept" data-meetup-id="{{$meetup->id}}" class="btn btn-violet">
                         Accept
                     </button>
-                    <button type="button" data-meetup-invite="decline" data-meetup-id="{{$meetup->id}}" class="btn btn-border">
+                    <button type="button" data-meetup-invite="decline" data-meetup-id="{{$meetup->id}}" class="btn btn-gray">
                         Decline
                     </button>
-                    <button type="button" class="btn btn-border close-modal hide">
+                    <button type="button" class="btn btn-border close-modal">
                         Close
                     </button>
                 </div>

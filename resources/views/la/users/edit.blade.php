@@ -87,8 +87,9 @@
                                 <label for="status">Status* :</label>
                                 <select class="form-control valid" required="1" name="status">
                                     <option value="1" @if($user->is_verified) selected @endif>Verified</option>
-                                    <option value="2" @if($user->varification_pending && !$user->is_verified) selected @endif>Pending Varification</option>
-                                    <option value="3" @if(!$user->varification_pending && !$user->is_verified) selected @endif>Not Verified</option>
+                                    <option value="2" @if($user->varification_pending && !$user->is_verified && !$user->fail_validation) selected @endif>Pending Varification</option>
+                                    <option value="3" @if(!$user->varification_pending && !$user->is_verified && !$user->fail_validation) selected @endif>Not Verified</option>
+                                    <option value="4" @if(!$user->is_verified && $user->fail_validation) selected @endif>Fail Validation</option>
                                 </select>
                             </div>
 

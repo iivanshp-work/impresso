@@ -419,3 +419,16 @@ customValidateConfirm{
 .cards-professionals__info span:nth-child(2) {
     text-align: right;
 }
+.header__icon-right .bell-exclamation {
+    width: 15px;
+    top: 0px;
+    left: -3.5px;
+}
+.cards-professionals.fake-professionals-cards {
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+}
+.cards-professionals.fake-professionals-cards .fake-professionals-cards__link {
+    margin: 0 auto;
+}

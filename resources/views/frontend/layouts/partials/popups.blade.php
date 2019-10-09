@@ -46,7 +46,7 @@
     <div class="modal-window__content">
         <div class="modal-window__body text-center">
             <img src="{{asset('img/icons/icon-share-modal.svg')}}" alt="" class="modal-window__img-top" />
-            <h5 class="modal-window__subtitle">Sharing is caring and you’re awesome for doing it!</h5>
+            <h5 class="modal-window__subtitle">Get more XIMs for sharing!</h5>
             <button type="button" data-share-btn="" class="btn btn-violet">
                 Share IMPRESSO
             </button>

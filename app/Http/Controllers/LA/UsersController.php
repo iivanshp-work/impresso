@@ -91,6 +91,8 @@ class UsersController extends Controller
                 $query = $query->where("is_verified", "=", 0)->where("varification_pending", "=", 1);
             } else if($params['status'] == 3) {
                 $query = $query->where("is_verified", "=", 0)->where("varification_pending", "=", 0);
+            } else if($params['status'] == 4) {
+                $query = $query->where("fail_validation", "=", 1);
             }
         }
         if ($isExport) {
@@ -413,12 +415,19 @@ class UsersController extends Controller
             } else if ($status == 3) {
                 $request->request->add(['is_verified_hidden' => 'false']);
                 $request->request->add(['varification_pending_hidden' => 'false']);
-            }
-			if ($status == 3 && $user->status != 3) {
+            } else if ($status == 4) {
                 $request->request->add(['fail_validation' => 'fail_validation']);
-            } elseif ($status != 3) {
+                $request->request->add(['is_verified_hidden' => 'false']);
+                $request->request->add(['varification_pending_hidden' => 'false']);
+            }
+			if ($status != 4) {
                 $request->request->add(['fail_validation_hidden' => 'false']);
             }
+
+            if ($status == 3 && $user->status != 3) {
+                $request->request->add(['fail_validation' => 'fail_validation']);
+            }
+
             $addCredits = false;
 			if (!$user->added_init_credits && !$user->is_verified && $status == 1){
 			    $addCredits = true;

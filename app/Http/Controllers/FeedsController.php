@@ -38,6 +38,7 @@ class FeedsController extends Controller
      */
     public function feedsPage() {
         $userData = Auth::user();
+        $showFakeProfiles = $userData && $userData->varification_pending && !$userData->is_verified;
 
         $jobs = Job::withDistance($userData)->notDeleted()->where('status', '=', 1)->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($jobs->count() == 0) $jobs = null;
@@ -67,13 +68,16 @@ class FeedsController extends Controller
             ->isWithinMaxDistance($userData, $radius)
             ->get();
         if ($professionals->count() == 0) $professionals = null;
-
+        if ($showFakeProfiles) {
+            $professionals = range(1, 5);
+        }
         return view('frontend.pages.feeds', [
             'jobs' => $jobs,
             'jobAd' => $jobAd,
             'professionals' => $professionals,
             'promos' => $promos,
-            'page' => 1
+            'page' => 1,
+            'show_fake_profiles' => $showFakeProfiles
         ]);
     }
 
@@ -90,6 +94,7 @@ class FeedsController extends Controller
             'keyword' => '',
         ];
         $userData = Auth::user();
+        $showFakeProfiles = $userData && $userData->varification_pending && !$userData->is_verified;
 
         $type = $request->has('type') ? $request->input('type') : '';
         $keyword = $request->has('keyword') ? trim($request->input('keyword')) : '';
@@ -154,9 +159,19 @@ class FeedsController extends Controller
 
                 $professionals = $query->get();
                 if ($professionals->count() == 0) $professionals = null;
+                if ($showFakeProfiles) {
+                    $start = ($page - 1) * $this->paginationLimit + 1;
+                    $end = ($page) * $this->paginationLimit;
+                    $professionals = range($start, $end);
+                    if ($page > 2) {
+                        $professionals = null;
+                    }
+                }
+
                 $html = view('frontend.pages.includes.feeds_professionals_items', [
                     'professionals' => $professionals,
-                    'page' => $page
+                    'page' => $page,
+                    'show_fake_profiles' => $showFakeProfiles
                 ])->render();
                 $responseData['html'] = $html;
                 $responseData['has_more'] = $html ? true : false;

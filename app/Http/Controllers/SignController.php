@@ -218,6 +218,7 @@ class SignController extends Controller
                     $user = Auth::user();
                     if ($user && $user->photo_id && $user->photo_selfie) {
                         $user->varification_pending = 1;
+                        $user->fail_validation = 0;
                         $user->save();
                     } else {
                         $responseData['has_error'] = true;

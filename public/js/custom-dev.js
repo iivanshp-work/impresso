@@ -785,6 +785,9 @@ $document.ready(function(){
     if($('#goToProfilePopup').length){
         $('#goToProfilePopup').trigger('click');
     }
+    if($('#showPendingPopupProfile').length){
+        $('#showPendingPopupProfile').trigger('click');
+    }
     //profile end
 
     //edit profile start

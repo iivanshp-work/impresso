@@ -41,9 +41,9 @@
                     <img src="{{ asset('img/validate-image-1.png') }}" alt=""/>
                 </div>
 
-                <p class="validation__text-big">Take a clear photo of your ID</p>
+                <p class="validation__text-big">Take a clear photo of your <strong>ID</strong></p>
                 <p>We Accept Only:<br />
-                    National ID, Passport or Driver’s license.</p>
+                    Driver’s license or any institutional government issued ID <strong>with photo</strong>.</p>
                 <div class="validation__group-btn">
                     <input type="file"  capture="capture" accept="image/*" class="hide" data-validation-send-file-hidden="" data-image-id="photo_id">
                     <button type="button" class="btn btn-violet" data-validation-send-file="">
@@ -62,9 +62,9 @@
                 <div class="validation__picture">
                     <img data-validation-photo_id-src="" src="{{ asset('img/image-1.png') }}" alt=""/>
                 </div>
-                <p class="validation__text-big">Take a clear photo of your ID</p>
+                <p class="validation__text-big">Take a clear photo of your <strong>ID</strong></p>
                 <p>We Accept Only:<br />
-                    National ID, Passport or Driver’s license.</p>
+                    Driver’s license or any institutional government issued ID <strong>with photo</strong>.</p>
                 <div class="validation__group-btn">
                     <button type="button" class="btn btn-violet" data-validation-step="step4">
                         Save
@@ -86,7 +86,7 @@
                 <div class="validation__icon">
                     <img src="{{ asset('img/validate-image-2.png') }}" alt=""/>
                 </div>
-                <p class="validation__text-big">Take a selfie with the same ID</p>
+                <p class="validation__text-big">Take a selfie</p>
                 <p>This will not be used as your profile photo and will not be visible on the App.</p>
                 <div class="validation__group-btn">
                     <input type="file"  capture="capture" accept="image/*" class="hide" data-validation-send-file-hidden="" data-image-id="photo_selfie">
@@ -107,7 +107,7 @@
                 <div class="validation__picture">
                     <img data-validation-photo_selfie-src=""  src="{{ asset('img/image-2.png') }}" alt=""/>
                 </div>
-                <p class="validation__text-big">Take a selfie with the same ID</p>
+                <p class="validation__text-big">Take a selfie</p>
                 <p>This will not be used as your profile photo and will not be visible on the App.</p>
                 <div class="validation__group-btn">
                     <button type="button" class="btn btn-violet" data-validation-check="">
@@ -185,8 +185,7 @@
                     <h5 class="modal-window__subtitle">Uh-Oh! <br />Looks like a validation error.<br /> Let’s try again!
                     </h5>
                     <p>Getting validated is also important for other users.</p>
-                    <p>We just need one <b>clear image</b> of your <b>ID Card</b> and one <b>Selfie</b> of you together
-                        <b>with the ID Card</b> and you’re all set! </p>
+                    <p>We just need one <b>clear image</b> of your <b>ID Card</b> and <b>Selfie</b>. </p>
                     <button type="button" class="btn btn-violet close-modal">
                         Get Validated
                     </button>

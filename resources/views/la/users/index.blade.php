@@ -53,6 +53,7 @@
                     <option value="1" @if($status == 1) selected @endif>Verified</option>
                     <option value="2" @if($status === 2) selected @endif>Pending Varification</option>
                     <option value="3" @if($status === 3) selected @endif>Not Verified</option>
+                    <option value="4" @if($status === 4) selected @endif>Failed Validation</option>
                 </select>
             </div>
             @endif
@@ -107,6 +108,8 @@
                                 @elseif($col == 'status')
                                     @if ($value->is_verified)
                                         Verified
+                                    @elseif($value->fail_validation)
+                                        Failed Validation
                                     @elseif($value->varification_pending && !$value->is_verified)
                                         Pending Varification
                                     @else
