@@ -1,5 +1,6 @@
 .sign-up,
-.login {
+.login,
+.password {
 	background: url(../img/bg-logIn-singUp.svg) no-repeat top left/235px;
 	width: 100%;
 	max-width: 425px;
@@ -86,7 +87,8 @@
 
 @media only screen and (max-width: 370px) {
 	.sign-up,
-	.login {
+	.login,
+	.password {
 		padding: 20px 15px;
 		&__title {
 			margin-top: 94px;
@@ -99,7 +101,7 @@
 		}
 	}
 	.form {
-		height: auto;
+		height: calc(100vh - 265px);
 		&__group {
 			> input {
 				width: 100%;
@@ -110,7 +112,8 @@
 
 @media only screen and (max-height: 490px) {
 	.sign-up,
-	.login {
+	.login,
+	.password {
 		height: auto;
 		&__title {
 			margin-top: 100px;
@@ -133,7 +136,8 @@
 
 @media only screen and (min-height: 800px) {
 	.sign-up,
-	.login {
+	.login,
+	.password {
 		&__title {
 			margin-top: 150px;
 		}
