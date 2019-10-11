@@ -312,6 +312,61 @@
                             @endif
                         </div>
 
+                        <div class="cards user__card" id="resumes" data-resume-wrapper="">
+                            <h5 class="user__card_title">CV/Resume:</h5>
+                            <span class="edit-info" data-add-new-resume=""><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
+                            <div data-resume-template="" class="hide">
+                                <div data-resume-item="" class="user__card_info">
+                                    <span class="user__card_icon">
+                                        <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
+                                    </span>
+                                    <div class="user__card_text">
+                                        <input data-id-field="" type="hidden" name="resume[%KEY%][id]" value="" >
+                                        <textarea rows="1" data-title-field="" class="style-input-text style-input-text_15" type="text"
+                                                  name="resume[%KEY%][title]" placeholder="CV/Resume Name"></textarea>
+                                    </div>
+                                    <div class="user__card_group-btn edit-group-btn">
+                                        <button type="button" data-remove-item="" data-id="" class="btn btn-border">Remove</button>
+                                        <button type="button" data-request-validation-item="" data-id="" class="btn btn-violet">
+                                            Verify My CV
+                                        </button>
+                                    </div>
+                                    <span class="user__validated hide">Pending</span>
+                                </div>
+                            </div>
+                            @if($userData->resumes->count())
+                                @foreach($userData->resumes as $resume)
+                                    <div class="user__card_info" data-resume-item="">
+                                            <span class="user__card_icon">
+                                                <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt="" />
+                                            </span>
+                                        <div class="user__card_text">
+                                            <input data-id-field="" type="hidden" name="resume[{{$resume->id}}][id]" value="{{$resume->id}}">
+                                            <textarea rows="1" data-autoresize data-title-field="" class="style-input-text style-input-text_15" type="text" @if($resume->status != getenv('VERIFIED_STATUSES_NEW')) disabled="disabled" @endif
+                                            name="resume[{{$resume->id}}][title]" value="{{$resume->title}}" placeholder="CV/Resume" >{{$resume->title}}</textarea>
+                                        </div>
+                                        <div class="user__card_group-btn edit-group-btn">
+                                            <button type="button" data-remove-item="" data-id="{{$resume->id}}" class="btn btn-border">Remove</button>
+                                            @if($resume->status == getenv('VERIFIED_STATUSES_NEW'))
+                                                <button type="button" data-request-validation-item="" data-id="{{$resume->id}}" class="btn btn-violet">
+                                                    Verify my CV
+                                                </button>
+                                            @endif
+                                        </div>
+                                        @if($resume->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                            <span class="user__validated">Verified <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                        @elseif($resume->status == getenv('VERIFIED_STATUSES_REQUEST_VERIFICATION'))
+                                            <span class="user__validated">Pending</span>
+                                        @elseif($resume->status == getenv('VERIFIED_STATUSES_FAILED'))
+                                            <span class="user__validated">Failed</span>
+                                        @else
+                                            <span class="user__validated hide">Pending</span>
+                                        @endif
+                                    </div>
+                                @endforeach
+                            @endif
+                        </div>
+
                         <button type="submit" id="save" class="btn btn-violet btn-save">Save & Finish</button>
                     </div>
 
@@ -326,6 +381,7 @@
 @push('popups')
 
     <button btn-upload-popup="" class="hide btn btn-violet open-pop-up" data-target="#upload">Upload</button>
+    <button btn-upload2-popup="" class="hide btn btn-violet open-pop-up" data-target="#upload2">Upload2</button>
     <button btn-upload-remove-popup="" class="hide btn btn-violet open-pop-up" data-target="#uploadFile2">Upload file 2</button>
     <button btn-validate-popup="" class="hide btn btn-violet open-pop-up" data-target="#validate">Validate</button>
     <button btn-validate-success-popup="" class="hide btn btn-violet open-pop-up" data-target="#validateSuccess">Validate success</button>
@@ -345,6 +401,31 @@
                     <input type="file" name="files_hidden" class="hide" multiple="multiple" data-edit-profile-send-popup-files-hidden="">
                     <a href="#" class="btn btn-border btn-download" data-edit-profile-send-popup-files="">Upload document</a>
                     <span class="text-color-gray default_title">Accepted files: PDF, JPG, PNG, DOC.</span>
+                    <span class="text-color-gray hide selected_files_title" ><span class="files_text"></span><span data-remove-selected-files="" class="remove_selected_files"><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span></span>
+                    <button type="button" class="btn btn-violet" data-profile-edit-upload-btn="">
+                        Continue
+                    </button>
+                    <button type="button" class="btn btn-border close-modal">
+                        Cancel
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-window" id="upload2" data-upload2-popup="">
+        <div class="modal-window__content">
+            <form id="edit_profile_upload_attach_form" action="" method="post">
+                <div class="modal-window__body upload-modal text-center">
+                    <p class="upload-modal__title">
+                        Add CV/Resume URL
+                    </p>
+                    <input name="url" type="text" class="gray-input" placeholder="Enter URL" />
+                    <input name="files" type="hidden" data-files-value="" value=""/>
+                    <span class="or">OR</span>
+                    <input type="file" name="files_hidden" class="hide" multiple="multiple" data-edit-profile-send-popup-files-hidden="">
+                    <a href="#" class="btn btn-border btn-download" data-edit-profile-send-popup-files="">Upload document</a>
+                    <span class="text-color-gray default_title">Accepted files: PDF, DOC.</span>
                     <span class="text-color-gray hide selected_files_title" ><span class="files_text"></span><span data-remove-selected-files="" class="remove_selected_files"><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span></span>
                     <button type="button" class="btn btn-violet" data-profile-edit-upload-btn="">
                         Continue

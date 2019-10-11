@@ -45,7 +45,7 @@
                                     @php
                                         $imageColor = ($userTransaction->id % 13) + 1;
                                     @endphp
-                                    @if (in_array($userTransaction->type, ['user_validation', 'purchase', 'share', 'validation_education', 'validation_certificate', 'other']))
+                                    @if (in_array($userTransaction->type, ['user_validation', 'purchase', 'share', 'validation_education', 'validation_certificate', 'validation_resume', 'other']))
                                         <img src="{{asset('img/logo-circle.png')}}" alt="" />
                                     @elseif(in_array($userTransaction->type, ['meetup_inviting', 'meetup_accept', 'meetup_declined']))
                                         @if ($userTransaction->type == "meetup_inviting")
@@ -90,6 +90,12 @@
                                         @else
                                             <a href="javascript:void(0);">{{'IMPRESSO'}} <span>Certificate Validation</span></a>
                                         @endif
+                                    @elseif($userTransaction->type == 'validation_resume')
+                                        @if($userTransaction->resume)
+                                            <a href="javascript:void(0);">{{ str_limit($userTransaction->resume->title, 15) }} <span>CV/Resume Verification</span></a>
+                                        @else
+                                            <a href="javascript:void(0);">{{'IMPRESSO'}} <span>CV/Resume Verification</span></a>
+                                        @endif
                                     @elseif($userTransaction->type == 'meetup_inviting')
                                         <a href="{{url('/profile/' . $userTransaction->meetup->user_id_invited)}}">{{$userTransaction->meetup->invitedUser ? ($userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name :$userTransaction->meetup->invitedUser->email) : ('Profile #' . $userTransaction->meetup->user_id_invited ) }} {!!$userTransaction->meetup->invitedUser && $userTransaction->meetup->invitedUser->job_title ? '<span>' . $userTransaction->meetup->invitedUser->job_title . '</span>' : ''!!}</a>
                                     @elseif($userTransaction->type == 'meetup_accept')
@@ -122,6 +128,12 @@
                                     <p>Certificate validation: {{$userTransaction->certificate->title}}</p>
                                 @else
                                     <p>Certificate validation</p>
+                                @endif
+                            @elseif($userTransaction->type == 'validation_resume')
+                                @if($userTransaction->resume)
+                                    <p>CV/Resume verification: {{$userTransaction->resume->title}}</p>
+                                @else
+                                    <p>CV/Resume verification</p>
                                 @endif
                             @elseif($userTransaction->type == 'meetup_inviting')
                                 <p>You have used {{abs($userTransaction->amount)}} XIMS  for inviting {{$userTransaction->meetup->invitedUser ? ($userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name : $userTransaction->meetup->invitedUser->email) : ('Profile #' . $userTransaction->meetup->user_id_invited)}} to Meetup.</p>

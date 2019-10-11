@@ -201,7 +201,21 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
         return $this->hasMany('App\Models\User_certification')->notDeleted()->verified();
     }
 
+    /**
+     * @return mixed
+     */
+    public function resumes()
+    {
+        return $this->hasMany('App\Models\User_Resume')->notDeleted();
+    }
 
+    /**
+     * @return mixed
+     */
+    public function resumes_verified()
+    {
+        return $this->hasMany('App\Models\User_Resume')->notDeleted()->verified();
+    }
 
     /**
      * @return mixed

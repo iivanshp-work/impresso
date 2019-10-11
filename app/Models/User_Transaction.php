@@ -53,6 +53,7 @@ class User_Transaction extends Model
             'share' => 'Share',
             'validation_education' => 'Education Validation',
             'validation_certificate' => 'Certificate Validation',
+            'validation_resume' => 'Resume Verification',
             'meetup_inviting' => 'Meetup Invitation',
             'meetup_accept' => 'Meetup Accept',
             'meetup_declined' => 'Meetup Rejection',
