@@ -442,7 +442,7 @@
                 @endif
             </div>
         </main>
-        @include('frontend.layouts.partials.footer_fixed')
+        @include('frontend.layouts.partials.footer_fixed_v2')
     </div>
 @endsection
 
