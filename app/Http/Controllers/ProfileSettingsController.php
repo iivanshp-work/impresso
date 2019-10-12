@@ -81,14 +81,6 @@ class ProfileSettingsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function profileEditPage(Request $request, $step = '1') {
-        /*$id = 16;
-        $user = $id ? User::find($id) : null;
-        $message = "message - " . date("Y-m-d H:i:s");
-        if ($user) {
-            if ($request->has("test")) {
-                test($user->sendPushNotifications($message));
-            }
-        }*/
         $user = Auth::user();
         return view('frontend.pages.profile_edit', [
             'userData' => $user,
@@ -545,6 +537,66 @@ class ProfileSettingsController extends Controller
                         $responseData['has_error'] = true;
                         $responseData['message'] .= 'An error occurred while saving data.' . '<br>';
                     }
+                }
+            } catch (\Exception $e) {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= $e->getMessage() . '<br>';
+            }
+        }
+        return response()->json($responseData);
+    }
+
+    /**
+     * Settings Change Password Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function settingsChangePasswordPage(Request $request) {
+        $user = Auth::user();
+        return view('frontend.pages.settings_change_password', [
+            'user' => $user
+        ]);
+    }
+
+    /**
+     * Settings Change Password
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function settingsChangePassword(Request $request) {
+        $responseData = [
+            'has_error' => false,
+            'message' => ''
+        ];
+        $rules = array(
+            'old_password' => 'required|string',
+            'password' => 'required|confirmed|alphaNum|min:3',
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $responseData['has_error'] = true;
+            $messages = $validator->errors();
+            foreach ($messages->all() as $message) {
+                $responseData['message'] .= $message . '<br>';
+            }
+        } else {
+            $id = Auth::id();
+            $user = UserModel::find($id);
+            if (!Hash::check($request->input('old_password'), $user->password)) {
+                $responseData['has_error'] = true;
+                $responseData['message'] .= 'Wrong old password.<br>';
+                return response()->json($responseData);
+            }
+            $user->password = Hash::make($request->input('password'));
+            try {
+                if ($user->save()) {
+                    $responseData['message'] = 'Password successfully changed.';
+                    //send message
+                    $mail = new Mails;
+                    $mail->change_password($user, $request->input('password'));
+                } else {
+                    $responseData['has_error'] = true;
+                    $responseData['message'] .= 'An error occurred while saving data.' . '<br>';
                 }
             } catch (\Exception $e) {
                 $responseData['has_error'] = true;

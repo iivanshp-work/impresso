@@ -52,6 +52,8 @@ Route::post('phone-validation', 'ProfileSettingsController@phoneValidation')->na
 Route::get('settings', 'ProfileSettingsController@settingsPage')->name('settings');
 Route::get('settings/edit', 'ProfileSettingsController@settingsEditPage')->name('settings_edit');
 Route::post('settings/edit', 'ProfileSettingsController@settingsEdit')->name('settings_edit_post');
+Route::get('settings/change-password', 'ProfileSettingsController@settingsChangePasswordPage')->name('settings_change_password');
+Route::post('settings/change-password', 'ProfileSettingsController@settingsChangePassword')->name('settings_change_password_post');
 Route::get('settings/credits', 'ProfileSettingsController@settingsCreditsPage')->name('settings_credits');
 Route::get('settings/credits/checkout', 'ProfileSettingsController@settingsCreditsCheckoutPage')->name('settings_credits_checkout');
 Route::post('settings/credits/checkout', 'ProfileSettingsController@settingsCreditsCheckout')->name('settings_credits_checkout_post');

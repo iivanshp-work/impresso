@@ -361,7 +361,8 @@ customValidateConfirm{
 /*spinner end*/
 
 .sign-up .form__btn a,
-.login .form__btn a{
+.login .form__btn a,
+.password .form__btn a{
     color: #000;
 }
 /*.edit-profile .steps {
@@ -392,12 +393,16 @@ customValidateConfirm{
     padding: 0 15px;
 }
 
-#upload .spinner {
+#upload .spinner,
+#upload2 .spinner {
     color: #7e20c8;
 }
 #upload .spinner,
 #upload .spinner:before,
-#upload .spinner:after {
+#upload .spinner:after,
+#upload2 .spinner,
+#upload2 .spinner:before,
+#upload2 .spinner:after {
     background: #7e20c8;
 }
 
@@ -431,4 +436,7 @@ customValidateConfirm{
 }
 .cards-professionals.fake-professionals-cards .fake-professionals-cards__link {
     margin: 0 auto;
+}
+.cards-professionals__info span {
+    word-break: break-all;
 }

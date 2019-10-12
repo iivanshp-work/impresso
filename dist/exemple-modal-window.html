@@ -52,6 +52,11 @@
             progress</button>
         <button class="btn btn-violet open-pop-up" data-target="#goToProfile">Complete Your Profile</button>
         <button class="btn btn-violet open-pop-up" data-target="#validationFail">Validation Fail</button>
+        <button class="btn btn-violet open-pop-up" data-target="#resetPassword">Reset Password</button>
+        <button class="btn btn-violet open-pop-up" data-target="#passwordChanged">Password Changed</button>
+        <button class="btn btn-violet open-pop-up" data-target="#passwordChangedCancelled">Password Changed
+            Cancelled</button>
+
 
     </main>
 
@@ -378,6 +383,36 @@
                 <button type="button" class="btn btn-violet">
                     Get Validated
                 </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-window" id="resetPassword">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <h5 class="modal-window__subtitle">Reset Password</h5>
+                <p>You have requested for a password reset
+                    Please check your e-mail.</p>
+                <a href="#" class="btn btn-border">
+                    Got it!
+                </a>
+            </div>
+        </div>
+    </div>
+    <div class="modal-window" id="passwordChanged">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <h5 class="modal-window__subtitle">Password changed</h5>
+                <p>Your password has been changed.<br />
+                    Please open the App to Log In</p>
+            </div>
+        </div>
+    </div>
+    <div class="modal-window" id="passwordChangedCancelled">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <h5 class="modal-window__subtitle">Password changed<br /> cancelled</h5>
+                <p>Your password has not been changed.</p>
             </div>
         </div>
     </div>

@@ -56,11 +56,11 @@
                         <input type="text" class="style-input-text" value="{{$userData->email}}" autocomplete="off" name="email" placeholder="Email" >
                         <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                     </li>
-                    {{--<li>
+                    <li>
                         <span>Password</span>
-                        <input type="password" class="style-input-text" value="" placeholder="Change password" disabled>
+                        <a href="{{url('/settings/change-password')}}" type="password" class="style-input-text" value="" placeholder="Change password" disabled>Change password</a>
                         <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
-                    </li>--}}
+                    </li>
                 </ul>
                 <div class="settings_edit_submit">
                     <button type="submit" id="save" class="btn btn-violet btn-save">Save</button>
