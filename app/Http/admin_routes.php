@@ -121,4 +121,8 @@ Route::group(['as' => $as, 'middleware' => ['auth', 'permission:ADMIN_PANEL']], 
 	/* ================== Meetups ================== */
 	Route::resource(config('laraadmin.adminRoute') . '/meetups', 'LA\MeetupsController');
 	Route::get(config('laraadmin.adminRoute') . '/meetup_dt_ajax', 'LA\MeetupsController@dtajax');
+
+	/* ================== User_Resumes ================== */
+	Route::resource(config('laraadmin.adminRoute') . '/user_resumes', 'LA\User_ResumesController');
+	Route::get(config('laraadmin.adminRoute') . '/user_resume_dt_ajax', 'LA\User_ResumesController@dtajax');
 });

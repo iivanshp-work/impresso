@@ -999,7 +999,8 @@ $document.ready(function(){
     //request validation data
     var requestValidationData = {};
     var requestItem = null;
-
+    var isResume = false;
+    var uploadPopup = 'upload';
     // add new education
     $document.on('click change', '[data-education-wrapper] [data-add-new-education]', function(e){
         e.preventDefault();
@@ -1050,11 +1051,13 @@ $document.ready(function(){
             action: 'request_validation'
         };
         requestValidationData = data;
+        isResume = false;
+        uploadPopup = 'upload';
         clearUploadForm();
         if ($('.upload-modal .text-color-gray').length) {
             $('.upload-modal .text-color-gray').width(Math.min(400, ($(window).width() - 50)));
         }
-        openProfileEditPopup('upload');
+        openProfileEditPopup(uploadPopup);
     });
 
     // add new certificate
@@ -1090,7 +1093,7 @@ $document.ready(function(){
         if(!$('[data-title-field]', item).val()){
             let message = '';
             if(!$('[data-title-field]', item).val()){
-                message += 'Certificate Name.<br>';
+                message += 'Certificate Name is empty.<br>';
             }
             showError(message);
             return;
@@ -1104,8 +1107,69 @@ $document.ready(function(){
         };
         requestValidationData = data;
         requestItem = item;
+        isResume = false;
+        uploadPopup = 'upload'
         clearUploadForm();
-        openProfileEditPopup('upload');
+        if ($('.upload-modal .text-color-gray').length) {
+            $('.upload-modal .text-color-gray').width(Math.min(400, ($(window).width() - 50)));
+        }
+        openProfileEditPopup(uploadPopup);
+    });
+
+    // add new resume
+    $document.on('click change', '[data-resume-wrapper] [data-add-new-resume]', function(e){
+        e.preventDefault();
+        let template = $('[data-resume-wrapper] [data-resume-template]').html();
+        template = $(template.replace(/%KEY%/g, Date.now()));
+        template.find('textarea').attr('data-autoresize', true);
+        let wrapper = $('[data-resume-wrapper]');
+        wrapper.append(template);
+        textareaResize();
+    });
+
+    //remove resume
+    $document.on('click change', '[data-resume-wrapper] [data-resume-item] [data-remove-item]', function(e){
+        e.preventDefault();
+        let $this = $(this);
+        let id = $this.data('id');
+        let item = $this.closest('[data-resume-item]');
+        showConfirm('Are you sure, you want to remove this item? This action cannot be undone.', 'Remove', function(){
+            item.remove();
+        });
+    });
+
+    //click on request-validation-item
+    $document.on('click change', '[data-resume-wrapper] [data-resume-item] [data-request-validation-item]', function(e){
+        e.preventDefault();
+        let $this = $(this);
+        let id = $this.data('id');
+        let item = $this.closest('[data-resume-item]');
+
+        //validete title and speciality
+        if(!$('[data-title-field]', item).val()){
+            let message = '';
+            if(!$('[data-title-field]', item).val()){
+                message += 'CV/Resume is empty.<br>';
+            }
+            showError(message);
+            return;
+        }
+
+        let data = {
+            id: $('[data-id-field]', item).val(),
+            title: $('[data-title-field]', item).val(),
+            type: 'resume',
+            action: 'request_validation'
+        };
+        requestValidationData = data;
+        requestItem = item;
+        isResume = true;
+        uploadPopup = 'upload2'
+        clearUploadForm();
+        if ($('.upload-modal .text-color-gray').length) {
+            $('.upload-modal .text-color-gray').width(Math.min(400, ($(window).width() - 50)));
+        }
+        openProfileEditPopup(uploadPopup);
     });
 
     //cleanup upload form
@@ -1144,20 +1208,20 @@ $document.ready(function(){
         e.preventDefault();
         clearUploadForm();
         closeProfileEditPopup('upload-remove');
-        openProfileEditPopup('upload');
+        openProfileEditPopup(uploadPopup);
     });
 
     //close remove upload popup
     $('[data-profile-edit-upload-remove-btn-cancel]').on('click change', function(e){
         e.preventDefault();
-        openProfileEditPopup('upload');
+        openProfileEditPopup(uploadPopup);
     });
 
     // upload file so server
     $('[data-edit-profile-send-popup-files-hidden]').on('change', function(e){
         let $this = $(this), item = $this.parent(), btn = item.find('[data-edit-profile-send-popup-files]'),
             formData = new FormData(), targetLink = base_url + '/profile/edit';
-        let availableExtensions = ["jpg", "jpeg", "png", "pdf", "doc", "docx"];
+        let availableExtensions = isResume ? ["pdf", "doc", "docx"] : ["jpg", "jpeg", "png", "pdf", "doc", "docx"];
         let files = $this.get(0).files;
         let notAvailable = false;
         let maxSizeLimit = false;
@@ -1182,20 +1246,19 @@ $document.ready(function(){
                 }
             });
             if(notAvailable){
-                closeProfileEditPopup('upload');
+                closeProfileEditPopup(uploadPopup);
                 showError('Selected file has not allowed extension.', 'Error!', function(){
-                    openProfileEditPopup('upload');
+                    openProfileEditPopup(uploadPopup);
                 });
                 return;
             }
             if(maxSizeLimit) {
-                closeProfileEditPopup('upload');
-                // will be new popup(see in figma) //TODO????
+                closeProfileEditPopup(uploadPopup);
                 openProfileEditPopup('validate-max_file_size');
             }
         }else{
             showError('No files selected.', 'Error!', function(){
-                openProfileEditPopup('upload');
+                openProfileEditPopup(uploadPopup);
             });
             return;
         }
@@ -1231,14 +1294,14 @@ $document.ready(function(){
                         $('#edit_profile_upload_attach_form [data-files-value]').val(response.files);
                     }else{
                         showError('An error occurred. Please try again later.', 'Error', function(){
-                            openProfileEditPopup('upload');
+                            openProfileEditPopup(uploadPopup);
                         });
                     }
                 }
             },
             error: function(){
                 showError('An error occurred. Please try again later.', 'Error', function(){
-                    openProfileEditPopup('upload');
+                    openProfileEditPopup(uploadPopup);
                 });
             },
             complete: function(){
@@ -1253,27 +1316,31 @@ $document.ready(function(){
     //click on upload button: require url or files
     $('[data-profile-edit-upload-btn]').on('click change', function(e){
         e.preventDefault();
-        let form = $('#edit_profile_upload_attach_form');
+        let form = $('#'+ uploadPopup + ' #edit_profile_upload_attach_form');
         //validete url or files
         if(!$('[name="url"]', form).val() && !$('[name="files"]', form).val()){
             let message = 'URL or files are required.';
-            closeProfileEditPopup('upload');
+            closeProfileEditPopup(uploadPopup);
             showError(message, 'Error', function(){
-                openProfileEditPopup('upload');
+                openProfileEditPopup(uploadPopup);
             });
             return;
         }else if($('[name="url"]', form).val() && !isUrlValid($('[name="url"]', form).val())){
             let message = 'URL is invalid.';
-            closeProfileEditPopup('upload');
+            closeProfileEditPopup(uploadPopup);
             showError(message, 'Error', function(){
-                openProfileEditPopup('upload');
+                openProfileEditPopup(uploadPopup);
             });
             return;
         }
 
         requestValidationData.url = $('[name="url"]', form).val();
         requestValidationData.files = $('[name="files"]', form).val();
-        openProfileEditPopup('validate');
+        if (isResume) {
+            $('[data-profile-edit-validate-btn]').trigger('click');
+        }else{
+            openProfileEditPopup('validate');
+        }
     });
 
     //send request to server
@@ -1323,7 +1390,7 @@ $document.ready(function(){
     //back to prev step
     $('[data-profile-edit-validate-btn-cancel]').on('click change', function(e){
         e.preventDefault();
-        openProfileEditPopup('upload');
+        openProfileEditPopup(uploadPopup);
     });
 
     //function to open needed edit profile popup

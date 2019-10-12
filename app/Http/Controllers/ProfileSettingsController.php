@@ -10,6 +10,7 @@ use App\Models\Meetup_reason;
 use App\Models\User_certification;
 use App\Models\User_Education;
 use App\Models\User_Purchase;
+use App\Models\User_Resume;
 use App\Models\User_Transaction;
 use App\Models\Users_Notification;
 use App\User;
@@ -161,6 +162,8 @@ class ProfileSettingsController extends Controller
                 $responseData['has_error'] = true;
                 if ($params['type'] == 'education') {
                     $responseData['message'] .= 'School Name is empty.';
+                } else if ($params['type'] == 'resume') {
+                    $responseData['message'] .= 'CV/Resume is empty.';
                 } else if ($params['type'] == 'certificate') {
                     $responseData['message'] .= 'Certificate Name is empty.';
                 } else {
@@ -184,7 +187,9 @@ class ProfileSettingsController extends Controller
             if (!$neededCredits) {
                 $neededCredits = 30;
             }
-            if ($user->credits_count_value < $neededCredits) {
+            $isResume = isset($params['type']) && $params['type'] == 'resume';
+
+            if (!$isResume && $user->credits_count_value < $neededCredits) {
                 $responseData['no_xims'] = true;
                 //save notification
                 Users_Notification::saveNotification('no_xims', 'You’re out of XIMs');
@@ -207,7 +212,22 @@ class ProfileSettingsController extends Controller
                     $data->user_id = $user->id;
                 }
                 $data->save();
-            } else {
+            } elseif($params['type'] == 'resume') {
+                $data = User_Resume::find($params['id']);
+                $newRecord = false;
+                if (!$data) {
+                    $data = new User_Resume;
+                    $newRecord = true;
+                }
+                $data->title = $params['title'];
+                $data->url = $params['url'];
+                $data->files_uploaded = $params['files'];
+                $data->status = getenv('VERIFIED_STATUSES_REQUEST_VERIFICATION');
+                if ($newRecord) {
+                    $data->user_id = $user->id;
+                }
+                $data->save();
+            }else {
                 $data = User_certification::find($params['id']);
                 $newRecord = false;
                 if (!$data) {
@@ -223,13 +243,13 @@ class ProfileSettingsController extends Controller
                 }
                 $data->save();
             }
-            if($data->id) {
+            if(!$isResume && $data->id) {
                 //save in transcations
                 $amount = 0 - $neededCredits;
                 $User_Transaction = new User_Transaction;
                 $User_Transaction->user_id = $user->id;
                 $User_Transaction->amount = $amount;
-                if ($params['type'] == 'validation_education') {
+                if ($params['type'] == 'education') {
                     $User_Transaction->type = 'validation_education';
                     $User_Transaction->notes = 'Education Validation "' . $data->title . '" - #' . $data->id;
                     $User_Transaction->education_id = $data->id;
@@ -304,33 +324,33 @@ class ProfileSettingsController extends Controller
         }
 
         $rules = array(
-            'name' => 'required|string', // make sure the name is an actual string
+            /*'name' => 'required|string', // make sure the name is an actual string
             'company_title' => 'required|string', // company_title can only be alphanumeric
             'job_title' => 'required|string', // company_title can only be alphanumeric,
             'impress' => 'required|string', // impress can only be alphanumeric
             "top_skills"    => "required|array|min:1",
             "top_skills.0"  => "required|string|distinct|min:1",
             "soft_skills"    => "required|array|min:1",
-            "soft_skills.0"  => "required|string|distinct|min:1",
+            "soft_skills.0"  => "required|string|distinct|min:1",*/
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             $responseData['has_error'] = true;
             $responseData['message'] .= 'Please fill in all mandatory fields marked by an asterisk symbol ( * ).<br>';
         } else {
-            $topSkills = $request->has('top_skills') ? implode("\n", $request->input('top_skills')) : '';
-            $softSkills = $request->has('soft_skills') ? implode("\n", $request->input('soft_skills')) : '';
             $id = Auth::id();
             $user = UserModel::find($id);
-            $user->photo = $request->has('photo') ? intval($request->input('photo')) : 0;
-            $user->name = $request->has('name') ? trim($request->input('name')) : '';
-            $user->company_title = $request->has('company_title') ? trim($request->input('company_title')) : '';
-            $user->job_title = $request->has('job_title') ? trim($request->input('job_title')) : '';
-            $user->university_title = $request->has('university_title') ? trim($request->input('university_title')) : '';
-            $user->certificate_title = $request->has('certificate_title') ? trim($request->input('certificate_title')) : '';
-            $user->impress = $request->has('impress') ? trim($request->input('impress')) : '';
-            $user->top_skills = $topSkills;
-            $user->soft_skills = $softSkills;
+            //$topSkills = $request->has('top_skills') ? implode("\n", $request->input('top_skills')) : '';
+            //$softSkills = $request->has('soft_skills') ? implode("\n", $request->input('soft_skills')) : '';
+            //$user->photo = $request->has('photo') ? intval($request->input('photo')) : 0;
+            //$user->name = $request->has('name') ? trim($request->input('name')) : '';
+            //$user->company_title = $request->has('company_title') ? trim($request->input('company_title')) : '';
+            //$user->job_title = $request->has('job_title') ? trim($request->input('job_title')) : '';
+            //$user->university_title = $request->has('university_title') ? trim($request->input('university_title')) : '';
+            //$user->certificate_title = $request->has('certificate_title') ? trim($request->input('certificate_title')) : '';
+            //$user->impress = $request->has('impress') ? trim($request->input('impress')) : '';
+            //$user->top_skills = $topSkills;
+            //$user->soft_skills = $softSkills;
             $existEducations = $user->educations()->get();
             $idsSaved = [];
             if ($request->has('education')) {
@@ -393,6 +413,38 @@ class ProfileSettingsController extends Controller
             foreach ($existCertifications as $certification) {
                 if (!in_array($certification->id, $idsSaved)) {
                     $certification->delete();
+                }
+            }
+
+            $existResumes = $user->resumes()->get();
+            $idsSaved = [];
+            if ($request->has('resume')) {
+                $resumes = $request->input('resume');
+                unset($resumes['%KEY%']);
+                if (!empty($resumes)) {
+                    foreach ($resumes as $resume) {
+                        if (!$resume['id'] && ($resume['title'])) {
+                            $data = new User_Resume;
+                            $data->user_id = $id;
+                            $data->title = $resume['title'];
+                            $data->url = '';
+                            $data->files_uploaded = '[]';
+                            $data->status = getenv('VERIFIED_STATUSES_NEW');
+                            $data->save();
+                        } else if ($resume['id']) {
+                            $idsSaved[] = $resume['id'];
+                            $data = User_Resume::find($resume['id']);
+                            if ($data && $data->status == getenv('VERIFIED_STATUSES_NEW')) {
+                                $data->title = $resume['title'];
+                                $data->save();
+                            }
+                        }
+                    }
+                }
+            }
+            foreach ($existResumes as $resume) {
+                if (!in_array($resume->id, $idsSaved)) {
+                    $resume->delete();
                 }
             }
 
@@ -656,6 +708,7 @@ class ProfileSettingsController extends Controller
             $byUsersIDS = [];
             $educationIDS = [];
             $certificationIDS = [];
+            $resumeIDS = [];
             $meetupIDS = [];
             foreach($userTransactions as $transaction) {
                 $byUsersIDS[] = $transaction->by_user_id;
@@ -663,7 +716,11 @@ class ProfileSettingsController extends Controller
                     $educationIDS[] = $transaction->education_id;
                 }
                 if ($transaction->certificate_id) {
-                    $certificationIDS[] = $transaction->certificate_id;
+                    if ($transaction->type == 'validation_resume') {
+                        $resumeIDS[] = $transaction->certificate_id;
+                    }else {
+                        $certificationIDS[] = $transaction->certificate_id;
+                    }
                 }
                 if ($transaction->type == 'meetup_inviting' || $transaction->type == 'meetup_accept' || $transaction->type == 'meetup_declined') {
                     $meetupIDS[] = $transaction->share_id;
@@ -687,6 +744,17 @@ class ProfileSettingsController extends Controller
                     foreach($userTransactions as $key => $transaction) {
                         if ($transaction->certificate_id && isset($certifications[$transaction->certificate_id])) {
                             $userTransactions[$key]->certificate = $certifications[$transaction->certificate_id];
+                        }
+                    }
+                }
+            }
+            if (!empty($resumeIDS)) {
+                $resumes = User_Resume::notDeleted()->whereIn('id', $resumeIDS)->get();
+                if ($resumes->count()) {
+                    $resumes = $resumes->keyBy('id');
+                    foreach($userTransactions as $key => $transaction) {
+                        if ($transaction->type == 'validation_resume' && $transaction->certificate_id && isset($resumes[$transaction->certificate_id])) {
+                            $userTransactions[$key]->resume = $resumes[$transaction->certificate_id];
                         }
                     }
                 }

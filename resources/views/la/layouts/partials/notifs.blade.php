@@ -100,8 +100,9 @@
 					$usersPendingCount = DB::table("users")->where("type", '=', getenv('USERS_TYPE_USER'))->whereNull('deleted_at')->where("is_verified", "=", 0)->where("varification_pending", "=", 1)->count();
 					$educationCount = DB::table("user_educations")->where("status", '=', 2)->whereNull('deleted_at')->count();
 					$certificationCount = DB::table("user_certifications")->where("status", '=', 2)->whereNull('deleted_at')->count();
+					$resumesCount = DB::table("user_resumes")->where("status", '=', 2)->whereNull('deleted_at')->count();
 					$purchasesCount = DB::table("user_purchases")->where("status", '=', 0)->whereNull('deleted_at')->count();
-					$totalCount = $usersPendingCount + $educationCount + $certificationCount + $purchasesCount;
+					$totalCount = $usersPendingCount + $educationCount + $certificationCount + $resumesCount + $purchasesCount;
 				@endphp
 				<!-- Notifications Menu -->
 				<li class="dropdown notifications-menu">
@@ -132,6 +133,11 @@
 										@if($certificationCount)
 											<a href="{{url(config('laraadmin.adminRoute') . '/user_certifications?status=2')}}">
 												<i class="fa fa-certificate text-aqua"></i> {{$certificationCount}} certificate request validation
+											</a>
+										@endif
+										@if($resumesCount)
+											<a href="{{url(config('laraadmin.adminRoute') . '/user_resumes?status=2')}}">
+												<i class="fa fa-certificate text-aqua"></i> {{$resumesCount}} resumes/CV request verification
 											</a>
 										@endif
 										@if($purchasesCount)

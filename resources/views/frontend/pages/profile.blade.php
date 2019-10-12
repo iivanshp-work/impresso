@@ -365,6 +365,24 @@
                             @endforeach
                         </div>
                     @endif
+                    @if($userData->resumes->count())
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">CV/Resume:</h5>
+                            @foreach($userData->resumes as $resume)
+                                <div class="user__card_info">
+                                <span class="user__card_icon">
+                                    <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt=""/>
+                                </span>
+                                    <div class="user__card_text">
+                                        <div class="style-input-text style-input-text_15 height-auto">{{$resume->title}}</div>
+                                    </div>
+                                    @if($resume->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                        <span class="user__validated">Verified <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
                 @else
                     @if($userData->educations->count())
                         <div class="cards user__card">
@@ -398,6 +416,24 @@
                                     </div>
                                     @if($certificate->status == getenv('VERIFIED_STATUSES_VALIDATED'))
                                         <span class="user__validated">Validated <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
+                                    @endif
+                                </div>
+                            @endforeach
+                        </div>
+                    @endif
+                    @if($userData->resumes->count())
+                        <div class="cards user__card">
+                            <h5 class="user__card_title">CV/Resume:</h5>
+                            @foreach($userData->resumes as $resume)
+                                <div class="user__card_info">
+                                <span class="user__card_icon">
+                                    <img src="{{asset('img/icons/guarantee-certificate.svg')}}" alt=""/>
+                                </span>
+                                    <div class="user__card_text">
+                                        <div class="style-input-text style-input-text_15 height-auto">{{$resume->title}}</div>
+                                    </div>
+                                    @if($resume->status == getenv('VERIFIED_STATUSES_VALIDATED'))
+                                        <span class="user__validated">Verified <img src="{{asset('img/icons/checked.svg')}}" alt=""></span>
                                     @endif
                                 </div>
                             @endforeach

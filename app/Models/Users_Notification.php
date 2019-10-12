@@ -53,6 +53,8 @@ class Users_Notification extends Model
     //Education_Validation:_success - education_validation_success
     //Certification_Validation:_failure - certificate_validation_failure
     //Certification_Validation:_success - certificate_validation_success
+    //Resume_Validation:_success - resume_validation_success
+    //Resume_Validation:_failure - resume_validation_failure
     //wants to meetup - meetup_wants
     //accepted your invite - meetup_accepted
     //declined your invite - meetup_declined

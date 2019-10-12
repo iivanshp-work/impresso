@@ -101,6 +101,26 @@
                                             </p>
                                         </div>
                                         <a class="full-link" href="{{url('/profile')}}"></a>
+                                    @elseif ($notification->type == 'resume_validation_failure')
+                                        <div class="d-flex align-items-center">
+                                            <a href="{{url('/profile')}}" class="avatar">
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
+                                            </a>
+                                            <p>
+                                                IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
+                                            </p>
+                                        </div>
+                                        <a class="full-link" href="{{url('/profile')}}"></a>
+                                    @elseif ($notification->type == 'resume_validation_success')
+                                        <div class="d-flex align-items-center">
+                                            <a href="{{url('/profile')}}" class="avatar">
+                                                <img src="{{asset('img/Logo.png')}}" alt="Impresso" />
+                                            </a>
+                                            <p>
+                                                IMPRESSO | {{$notification->notification_text}} @if($notification->created_at)<span>{{Carbon::parse($notification->created_at)->format('H:i')}}</span>@endif
+                                            </p>
+                                        </div>
+                                        <a class="full-link" href="{{url('/profile')}}"></a>
                                     @elseif ($notification->type == 'xim_purchase_complete')
                                         <div class="d-flex align-items-center">
                                             <a href="{{url('/transaction-history')}}" class="avatar">
