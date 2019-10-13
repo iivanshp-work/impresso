@@ -24,7 +24,8 @@ Route::get('sign-up', 'SignController@signupPage')->name('singup');
 Route::post('sign-up', 'SignController@signup')->name('singup_post');
 Route::get('validation', 'SignController@validationPage')->name('validation');
 Route::post('validation', 'SignController@validation')->name('validation_post');
-
+Route::get('forgot-password', 'SignController@forgotPage')->name('forgot');
+Route::post('forgot-password', 'SignController@forgot')->name('forgot_post');
 
 /* profile */
 Route::get('profile', 'ProfileSettingsController@profilePage')->name('profile');

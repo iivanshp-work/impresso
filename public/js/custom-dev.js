@@ -1494,6 +1494,68 @@ $document.ready(function(){
         });
     });
 
+    //submit forgot password form
+    $document.on('submit', '[data-forgot-password-form]', function(e){
+        e.preventDefault();
+        let form = $(this);
+        if (form.data("busy")) return;
+        form.data("busy", true);
+        loadingStart();
+        $.ajax({
+            url: form.attr("action"),
+            type: 'post',
+            dataType: 'json',
+            data: form.serialize(),
+            success: function(response){
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                }else{
+                    $('#forgotPasswordPopup').click().trigger('click');
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                form.data("busy", false);
+            }
+        });
+    });
+
+    //submit reset password form
+    $document.on('submit', '[data-reset-password-form]', function(e){
+        e.preventDefault();
+        let form = $(this);
+        if (form.data("busy")) return;
+        form.data("busy", true);
+        loadingStart();
+        $.ajax({
+            url: form.attr("action"),
+            type: 'post',
+            dataType: 'json',
+            data: form.serialize(),
+            success: function(response){
+                if(response.has_error){
+                    showError(response.message ? response.message : 'An error occurred. Please try again later.');
+                }else{
+                    if (response.failure) {
+                        $('#passwordResetFail').click().trigger('click');
+                    } else{
+                        $('#passwordResetSuccess').click().trigger('click');
+                    }
+                }
+            },
+            error: function(){
+                showError('An error occurred. Please try again later.');
+            },
+            complete: function(){
+                loadingEnd();
+                form.data("busy", false);
+            }
+        });
+    });
+
     //credits settings start
     $document.on('click change', '[data-settings-buy-credits]', function(e){
         e.preventDefault();

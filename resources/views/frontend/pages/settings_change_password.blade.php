@@ -8,7 +8,7 @@
     <main class="main">
         <div class="password text-center">
             <h1 class="title password__title">Change Password</h1>
-            <a href="#" class="logo"><img src="img/Logo.png" alt="" /></a>
+            <a href="#" class="logo"><img src="{{ asset('/img/Logo.png') }}" alt="" /></a>
             <form data-change-password-form="" class="form" method="post" action="{{url('/settings/change-password')}}">
                 <div class="form__body">
                     <div class="form__group">

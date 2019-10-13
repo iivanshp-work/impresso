@@ -231,4 +231,46 @@ class SignController extends Controller
         }
         return response()->json($responseData);
     }
+
+    /**
+     * Forgot Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function forgotPage(Request $request) {
+        return view('frontend.pages.password_forgot');
+    }
+
+    /**
+     * Forgot functionality
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function forgot(Request $request) {
+        $responseData = [
+            'has_error' => false,
+            'message' => '',
+            'redirect' => ''
+        ];
+
+        $rules = array(
+            'email' => 'required|email', // make sure the email is an actual email
+        );
+        $validator = Validator::make($request->all(), $rules);
+        if ($validator->fails()) {
+            $responseData['has_error'] = true;
+            $messages = $validator->errors();
+            foreach ($messages->all() as $message) {
+                $responseData['message'] .= $message . '<br>';
+            }
+        } else {
+            $user = User::where('email', '=', $request->input('email'))->users()->NotDeleted()->first();
+            if ($user) {
+                $mail = new Mails;
+                $mail->forgot_email($user, $request->input('password'));
+            }
+            $responseData['message'] .= 'User with entered email already exists.';
+        }
+        return response()->json($responseData);
+    }
 }
