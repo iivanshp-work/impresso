@@ -290,6 +290,9 @@ class UsersController extends Controller
 		if(Module::hasAccess("Users", "create")) {
 
 			$rules = Module::validateRules("Users", $request);
+            if (!empty($rules)) {
+                $rules['password'] = 'required|min:3|regex:' . getenv('PASSWORD_REGEX');
+            }
             $mode = $request->has('type') && $request->input('type') == getenv('USERS_TYPE_ADMIN') ? 'admins' : 'users';
 			$validator = Validator::make($request->all(), $rules);
 
@@ -399,6 +402,9 @@ class UsersController extends Controller
                 $request->request->remove('password');
             }
 			$rules = Module::validateRules("Users", $request, true);
+            if (!empty($rules)) {
+                $rules['password'] = 'min:3|regex:' . getenv('PASSWORD_REGEX');
+            }
             unset($rules['name']);
 			$validator = Validator::make($request->all(), $rules);
 

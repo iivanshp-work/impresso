@@ -38,8 +38,8 @@
 @endsection
 
 @push('popups')
-    <button class="btn btn-violet open-pop-up" data-target="#passwordChanged" id="passwordResetSuccess">Password Changed</button>
-    <button class="btn btn-violet open-pop-up" data-target="#passwordChangedCancelled" id="passwordResetFail">Password Changed Cancelled</button>
+    <button class="btn btn-violet open-pop-up hide" data-target="#passwordChanged" id="passwordResetSuccess">Password Changed</button>
+    <button class="btn btn-violet open-pop-up hide" data-target="#passwordChangedCancelled" id="passwordResetFail">Password Changed Cancelled</button>
 
     <div class="modal-window" id="passwordChanged">
         <div class="modal-window__content">
@@ -54,7 +54,7 @@
         <div class="modal-window__content">
             <div class="modal-window__body text-center">
                 <h5 class="modal-window__subtitle">Password changed<br /> cancelled</h5>
-                <p>Your password has not been changed.</p>
+                <p>Your password has not been changed.<br>Please open the App and try again.</p>
             </div>
         </div>
     </div>

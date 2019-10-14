@@ -570,7 +570,7 @@ class ProfileSettingsController extends Controller
         ];
         $rules = array(
             'old_password' => 'required|string',
-            'password' => 'required|confirmed|alphaNum|min:3',
+            'password' => 'required|confirmed|min:3|regex:' . getenv('PASSWORD_REGEX'),
         );
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {

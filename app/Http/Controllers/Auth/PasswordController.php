@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Mails;
 use Illuminate\Foundation\Auth\ResetsPasswords;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Facades\Auth;
@@ -138,13 +140,12 @@ class PasswordController extends Controller
             return response()->json(['has_error' => true, 'message' => $e->getMessage()]);
         }
         $credentials = $this->getResetCredentials($request);
-
+        test($credentials);
         $broker = $this->getBroker();
 
         $response = Password::broker($broker)->reset($credentials, function ($user, $password) {
             $this->resetPassword($user, $password);
         });
-
         switch ($response) {
             case Password::PASSWORD_RESET:
                 return $this->getResetSuccessResponse($response);
@@ -161,9 +162,9 @@ class PasswordController extends Controller
     protected function getResetValidationRules()
     {
         return [
-            'token' => 'required|email',
+            'token' => 'required',
             'email' => 'required|email',
-            'password' => 'required|confirmed|min:6',
+            'password' => 'required|confirmed|min:3|regex:' . getenv('PASSWORD_REGEX'), //confirmed
         ];
     }
 
@@ -176,11 +177,16 @@ class PasswordController extends Controller
      */
     protected function resetPassword($user, $password)
     {
-        $user->forceFill([
-            'password' => bcrypt($password),
+        $saved = $user->forceFill([
+            'password' => Hash::make($password),
             'remember_token' => Str::random(60),
         ])->save();
 
+        if ($saved) {
+            //send message
+            $mail = new Mails;
+            $mail->change_password($user, $password);
+        }
         //Auth::guard($this->getGuard())->login($user);
     }
 

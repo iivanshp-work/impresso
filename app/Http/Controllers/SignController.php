@@ -60,7 +60,7 @@ class SignController extends Controller
 
         $rules = array(
             'email' => 'required|email', // make sure the email is an actual email
-            'password' => 'required|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
+            'password' => 'required|string|min:3|regex:' . getenv('PASSWORD_REGEX')
         );
 
         $validator = Validator::make($request->all(), $rules);
@@ -113,7 +113,7 @@ class SignController extends Controller
 
         $rules = array(
             'email' => 'required|email', // make sure the email is an actual email
-            'password' => 'required|confirmed|alphaNum|min:3' // password can only be alphanumeric and has to be greater than 3 characters
+            'password' => 'required|confirmed|min:3|regex:' . getenv('PASSWORD_REGEX')
         );
 
         $validator = Validator::make($request->all(), $rules);
