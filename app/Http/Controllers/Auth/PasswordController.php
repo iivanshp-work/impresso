@@ -140,7 +140,6 @@ class PasswordController extends Controller
             return response()->json(['has_error' => true, 'message' => $e->getMessage()]);
         }
         $credentials = $this->getResetCredentials($request);
-        test($credentials);
         $broker = $this->getBroker();
 
         $response = Password::broker($broker)->reset($credentials, function ($user, $password) {

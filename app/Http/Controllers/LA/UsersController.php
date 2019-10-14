@@ -11,6 +11,7 @@ use App\Models\Upload;
 use App\Models\User_certification;
 use App\Models\User_Education;
 use App\Models\User_Purchase;
+use App\Models\User_Resume;
 use App\Models\User_Transaction;
 use App\Models\Users_Notification;
 use Carbon\Carbon;
@@ -495,6 +496,7 @@ class UsersController extends Controller
                 User_Education::where('user_id', $id)->delete();
                 User_certification::where('user_id', $id)->delete();
                 User_Purchase::where('user_id', $id)->delete();
+                User_Resume::where('user_id', $id)->delete();
                 User_Transaction::where('user_id', $id)->delete();
                 Users_Notification::where('user_id', $id)->delete();
                 Upload::where('user_id', $id)->delete();
