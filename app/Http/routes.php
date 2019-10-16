@@ -16,7 +16,9 @@ Route::get('/', 'HomeController@index')->name('home');
 
 /* sign-up / sign-in / validation */
 Route::get('sign-in/{provider}', 'SocialController@redirect')->where('provider','twitter|facebook|linkedin|google');
+Route::get('login/{provider}', 'SocialController@redirect')->where('provider','twitter|facebook|linkedin|google');
 Route::get('sign-in/{provider}/callback','SocialController@Callback')->where('provider','twitter|facebook|linkedin|google');
+Route::get('login/{provider}/callback','SocialController@Callback')->where('provider','twitter|facebook|linkedin|google');
 
 Route::get('sign-in', 'SignController@signinPage')->name('singin');
 Route::post('sign-in', 'SignController@signin')->name('singin_post');

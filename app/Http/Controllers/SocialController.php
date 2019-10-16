@@ -41,21 +41,24 @@ class SocialController extends Controller
             $userSocial = Socialite::driver($provider)->stateless()->user();
         } catch (Exception $exception) {
             $userSocial = null;
-            dd($exception->getMessage());
+            //dd($exception->getMessage());
         }
+        //test($userSocial);
         if ($userSocial) {
             $user = User::where(['email' => $userSocial->getEmail()])->first();
             if ($user) {
-                Auth::login($user);
-                return redirect()->route('home');
+                Auth::login($user, 1);
+                return redirect(getenv('BASE_LOGEDIN_PAGE'));
             } else {
                 $user = User::create([
                     'name' => $userSocial->getName(),
                     'email' => $userSocial->getEmail(),
+                    'type' => getenv('USERS_TYPE_USER'),
                     'provider_id' => $userSocial->getId(),
                     'provider' => $provider,
                 ]);
-                return redirect()->route('home');
+                Auth::login($user, 1);
+                return redirect(getenv('BASE_LOGEDIN_PAGE'));
             }
         }
     }

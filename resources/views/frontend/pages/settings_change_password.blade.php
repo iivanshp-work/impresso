@@ -11,9 +11,11 @@
             <a href="#" class="logo"><img src="{{ asset('/img/Logo.png') }}" alt="" /></a>
             <form data-change-password-form="" class="form" method="post" action="{{url('/settings/change-password')}}">
                 <div class="form__body">
-                    <div class="form__group">
-                        <input name="old_password" type="password" placeholder="Old Password">
-                    </div>
+                    @if ($user->provider == 'site')
+                        <div class="form__group">
+                            <input name="old_password" type="password" placeholder="Old Password">
+                        </div>
+                    @endif
                     <div class="form__group">
                         <input name="password" type="password" placeholder="New Password">
                     </div>
