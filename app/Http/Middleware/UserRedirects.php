@@ -18,8 +18,9 @@ class UserRedirects
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        ini_set('display_errors',1);
-        error_reporting(E_ALL);
+        /*if ($_SERVER['REMOTE_ADDR'] == '93.175.195.69') {
+            test($request->getPathInfo());
+        }*/
         $user = Auth::user();
         $path = '/';
         $needRedirect = false;
@@ -52,6 +53,10 @@ class UserRedirects
                 '/check_unique_val',
                 '/admin',
             ];
+            if (strpos($requestUrl, '/password/reset/') !== false && $user) {
+                Auth::logout();
+                return redirect($requestUrl);
+            }
             if($user->type != getenv('USERS_TYPE_USER')) {
                 return redirect('/admin');
             }

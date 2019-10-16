@@ -1413,7 +1413,7 @@ $document.ready(function(){
             var offset = this.offsetHeight - this.clientHeight;
             var resizeTextarea = function(el){
                 if($(el).val()){
-                    $(el).css('height', 'auto').css('height', el.scrollHeight + offset);
+                    $(el).css('height', 'auto').css('height', el.scrollHeight + offset + 4);
                 }else{
                     $(el).css('height', 21);
                 }

@@ -36,6 +36,7 @@ class PasswordController extends Controller
      */
     public function __construct()
     {
+        $this->middleware('redirects');
         $this->middleware('guest');
         $this->subject = 'IMPRESSO – Reset password request';
         $this->linkRequestView = 'frontend.pages.password_forgot';

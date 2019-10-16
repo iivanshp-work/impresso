@@ -40,7 +40,6 @@ class Mails extends Model
         if (!$user) return;
         $template = "emails.change_password";
         try {
-            $user->email = 'iivanshp@gmail.com';
             $send = Mail::send($template, ['user' => $user, 'password' => $password], function ($m) use ($user) {
                 $m->from($this->from_email, $this->from_name);
                 $m->to($user->email, $user->email)->subject('IMPRESSO – Your Password Has Been Changed');

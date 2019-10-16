@@ -15,7 +15,7 @@
                 {{$user->credits_count}} {{getenv('CREDITS_LABEL')}}
             </a>
             <a href="{{url('/profile/edit/step/3')}}">
-                <img src="{{ asset('img/icons/download.png') }}" alt="resume">
+                <img src="{{ asset('img/icons/download.svg') }}" alt="resume">
             </a>
             <a href="{{url('/profile')}}">
                 <img src="{{ asset('img/icons/user.svg') }}" alt="profile">
