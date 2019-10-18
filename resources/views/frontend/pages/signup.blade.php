@@ -21,7 +21,7 @@
                     <div class="form__group">
                         <input name="password_confirmation" type="password" placeholder="Confirm Password" />
                     </div>
-                    <span>By signing up you agree with our <a href="https://www.impressolabs.io/privacy">T&Cs.</a></span>
+                    <span>By signing up you agree with our <a href="https://www.impressoapp.com/privacy">T&Cs.</a></span>
                 </div>
                 <div class="form__btn">
                     <button type="submit" class="btn btn-violet">

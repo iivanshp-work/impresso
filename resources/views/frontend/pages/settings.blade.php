@@ -39,8 +39,8 @@
                 </li>
                 <li>
                     <span>Legal:</span>
-                    <a href="https://www.impressolabs.io/app-terms-conditions">Terms and Conditions</a>
-                    <a href="https://www.impressolabs.io/privacy">Privacy Policy</a>
+                    <a href="https://www.impressoapp.com/app-terms-conditions">Terms and Conditions</a>
+                    <a href="https://www.impressoapp.com/privacy">Privacy Policy</a>
                     <a href="https://www.impressoapp.com/copyrights">Credits & Copyrights</a>
                 </li>
                 <li>

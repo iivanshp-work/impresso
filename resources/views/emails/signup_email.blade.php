@@ -12,4 +12,4 @@ Co-founder<br><br>
 
 IMPRESSO - A Face to Face Professional Networking App that allows for users to meetup in person with other professionals. No swiping or messaging required.<br>
 IMPRESSO is Designed in Switzerland by Impresso Labs  www.impressoapp.com<br>
-We want to make IMPRESSO better for you, please give us your feedback <a href="https://www.impressolabs.io/feedback">HERE</a>.<br>
+We want to make IMPRESSO better for you, please give us your feedback <a href="https://www.impressoapp.com/feedback">HERE</a>.<br>
