@@ -33,9 +33,18 @@
 	}
 }
 
+.sign-up {
+	&__title {
+		margin-top: 90px;
+	}
+	.form {
+		height: calc(100vh - 300px);
+	}
+}
+
 .form {
 	width: 100%;
-	height: calc(100vh - 286px);
+	height: calc(100vh - 336px);
 	display: flex;
 	flex-direction: column;
 	justify-content: space-between;
@@ -100,6 +109,13 @@
 			margin: 20px auto;
 		}
 	}
+
+	.sign-up {
+		.form {
+			height: auto;
+		}
+	}
+
 	.form {
 		height: calc(100vh - 265px);
 		&__group {
@@ -129,6 +145,12 @@
 		}
 	}
 
+	.sign-up {
+		.form {
+			height: auto;
+		}
+	}
+
 	.form {
 		height: auto;
 	}
@@ -145,6 +167,13 @@
 			margin: 46px auto;
 		}
 	}
+
+	.sign-up {
+		.form {
+			height: calc(100vh - 380px);
+		}
+	}
+
 	.form {
 		height: calc(100vh - 378px);
 	}
