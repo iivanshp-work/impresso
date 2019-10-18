@@ -112,6 +112,7 @@ class SignController extends Controller
         ];
 
         $rules = array(
+            'name' => 'required|string',
             'email' => 'required|email', // make sure the email is an actual email
             'password' => 'required|confirmed|min:3|regex:' . getenv('PASSWORD_REGEX')
         );
@@ -131,7 +132,7 @@ class SignController extends Controller
                 $responseData['message'] .= 'User with entered email already exists.';
             } else {
                 $user = User::create([
-                    'name' => '',
+                    'name' => $request->input('name'),
                     'email' => $request->input('email'),
                     'password' => Hash::make($request->input('password')),
                     'provider_id' => uniqid(),

@@ -2,15 +2,14 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="ef7642f4-33fc-473a-9e6f-9143b64b7cd2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/public/img/icons/download.svg" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/Auth/PasswordController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/Auth/PasswordController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Http/Middleware/UserRedirects.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Middleware/UserRedirects.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/Models/Mails.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Models/Mails.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/img/icons/download.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/public/js/custom-dev.js" beforeDir="false" afterPath="$PROJECT_DIR$/public/js/custom-dev.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/layouts/partials/footer_fixed.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/layouts/partials/footer_fixed.blade.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/resources/views/frontend/layouts/partials/footer_fixed_v2.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/layouts/partials/footer_fixed_v2.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/Http/Controllers/SignController.php" beforeDir="false" afterPath="$PROJECT_DIR$/app/Http/Controllers/SignController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/custom-dev.css" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/custom-dev.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/css/style.css.map" beforeDir="false" afterPath="$PROJECT_DIR$/public/css/style.css.map" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/public/scss/layout/_fotm-login-sign-up.scss" beforeDir="false" afterPath="$PROJECT_DIR$/public/scss/layout/_fotm-login-sign-up.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/feeds.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/feeds.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/profile.blade.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/resources/views/frontend/pages/signup.blade.php" beforeDir="false" afterPath="$PROJECT_DIR$/resources/views/frontend/pages/signup.blade.php" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -341,6 +340,11 @@
       <workItem from="1571059209065" duration="6467000" />
       <workItem from="1571136457354" duration="6109000" />
       <workItem from="1571153125335" duration="734000" />
+      <workItem from="1571389066297" duration="1839000" />
+      <workItem from="1571395490570" duration="773000" />
+      <workItem from="1571396389551" duration="603000" />
+      <workItem from="1571397935493" duration="2721000" />
+      <workItem from="1571405771210" duration="1256000" />
     </task>
     <servers />
   </component>

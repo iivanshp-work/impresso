@@ -367,7 +367,7 @@
                     @endif
                     @if($userData->resumes->count())
                         <div class="cards user__card">
-                            <h5 class="user__card_title">CV/Resume:</h5>
+                            <h5 class="user__card_title">Reference Letter:</h5>
                             @foreach($userData->resumes as $resume)
                                 <div class="user__card_info">
                                 <span class="user__card_icon">
@@ -423,7 +423,7 @@
                     @endif
                     @if($userData->resumes->count())
                         <div class="cards user__card">
-                            <h5 class="user__card_title">CV/Resume:</h5>
+                            <h5 class="user__card_title">Reference Letter:</h5>
                             @foreach($userData->resumes as $resume)
                                 <div class="user__card_info">
                                 <span class="user__card_icon">

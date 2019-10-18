@@ -13,6 +13,9 @@
                 <div class="form__body">
                     {{ csrf_field() }}
                     <div class="form__group">
+                        <input name="name" type="text" placeholder="First & Last Name" />
+                    </div>
+                    <div class="form__group">
                         <input name="email" type="email" placeholder="Email" />
                     </div>
                     <div class="form__group">

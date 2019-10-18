@@ -7,7 +7,7 @@
 @section("main-content")
     <div class="main feed">
         <header class="header">
-            <h4>Feed</h4>
+            <h4>IMPRESSO</h4>
             <a href="{{url('/notifications')}}" class="header__icon-right">
                 <img src="{{asset('img/icons/bell.svg')}}" alt="">
                 @php
@@ -26,7 +26,7 @@
                         Jobs
                     </li>--}}
                     <li class="tab-navigation__item" data-feeds-tab="" data-ftype="promos">
-                        Promos
+                        Nooks
                     </li>
                     <li class="tab-navigation__item active tab-navigation__item_right" data-feeds-tab="" data-ftype="professionals">
                         Professionals
