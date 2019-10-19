@@ -11,15 +11,6 @@
 	&__title {
 		margin-top: 125px;
 	}
-	// &__title-top {
-	// 	position: absolute;
-	// 	top: 50px;
-	// 	left: 50%;
-	// 	@include transform(translateX(-50%));
-	// 	font-size: $large-fs;
-	// 	line-height: $line-height-large;
-	// 	letter-spacing: 0.35px;
-	// }
 	.logo {
 		display: flex;
 		width: 55px;
@@ -35,10 +26,10 @@
 
 .sign-up {
 	&__title {
-		margin-top: 90px;
+		margin-top: 76px;
 	}
 	.form {
-		height: calc(100vh - 300px);
+		height: calc(100vh - 284px);
 	}
 }
 
@@ -84,13 +75,6 @@
 		.btn {
 			margin-top: 10px;
 		}
-		// > small {
-		// 	font-size: $small-fs;
-		// 	line-height: $line-height-small;
-		// 	color: $text-gray;
-		// 	margin-bottom: 10px;
-		// 	display: block;
-		// }
 	}
 }
 
@@ -101,9 +85,6 @@
 		padding: 20px 15px;
 		&__title {
 			margin-top: 94px;
-		}
-		&__title-top {
-			top: 40px;
 		}
 		.logo {
 			margin: 20px auto;
@@ -136,9 +117,6 @@
 			> br {
 				display: none;
 			}
-		}
-		&__title-top {
-			top: 40px;
 		}
 		.logo {
 			margin: 30px auto;

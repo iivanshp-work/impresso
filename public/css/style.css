@@ -311,9 +311,9 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 .sign-up .logo > img, .login .logo > img, .password .logo > img { width: 100%; height: 100%; -o-object-fit: cover; object-fit: cover; }
 
-.sign-up__title { margin-top: 90px; }
+.sign-up__title { margin-top: 76px; }
 
-.sign-up .form { height: calc(100vh - 300px); }
+.sign-up .form { height: calc(100vh - 284px); }
 
 .form { width: 100%; height: calc(100vh - 336px); display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; }
 
@@ -341,7 +341,6 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 @media only screen and (max-width: 370px) { .sign-up, .login, .password { padding: 20px 15px; }
   .sign-up__title, .login__title, .password__title { margin-top: 94px; }
-  .sign-up__title-top, .login__title-top, .password__title-top { top: 40px; }
   .sign-up .logo, .login .logo, .password .logo { margin: 20px auto; }
   .sign-up .form { height: auto; }
   .form { height: calc(100vh - 265px); }
@@ -350,7 +349,6 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 @media only screen and (max-height: 490px) { .sign-up, .login, .password { height: auto; }
   .sign-up__title, .login__title, .password__title { margin-top: 100px; }
   .sign-up__title > br, .login__title > br, .password__title > br { display: none; }
-  .sign-up__title-top, .login__title-top, .password__title-top { top: 40px; }
   .sign-up .logo, .login .logo, .password .logo { margin: 30px auto; }
   .sign-up .form { height: auto; }
   .form { height: auto; } }
