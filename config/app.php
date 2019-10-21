@@ -156,7 +156,8 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         Dwij\Laraadmin\LAProvider::class,
-        Laravel\Socialite\SocialiteServiceProvider::class,
+        //Laravel\Socialite\SocialiteServiceProvider::class,
+        \SocialiteProviders\Manager\ServiceProvider::class,
         Cartalyst\Stripe\Laravel\StripeServiceProvider::class,
         //Intervention\Image\ImageServiceProvider::class
     ],
