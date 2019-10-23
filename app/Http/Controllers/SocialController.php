@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use Socialite;
+use App\Http\Controllers\LA\UploadsController as UploadsController;
 
 class SocialController extends Controller
 {
@@ -43,13 +44,26 @@ class SocialController extends Controller
             $userSocial = null;
             //dd($exception->getMessage());
         }
-        //test($userSocial);
         if ($userSocial) {
             $user = User::where(['email' => $userSocial->getEmail()])->first();
             if ($user) {
                 Auth::login($user, 1);
                 return redirect(getenv('BASE_LOGEDIN_PAGE'));
             } else {
+                // copy image
+                $image = $userSocial->getAvatar();
+                $photo = 0;
+
+                if ($image) {
+                    try {
+                        $uploadController = new UploadsController;
+                        $responseImage = $uploadController->upload_files(true, $image, ["width" => 200, "height" => 200], true);
+                        if ($responseImage["status"] == "success") {
+                            $photo = $responseImage["upload"]->id;;
+                        }
+                    }catch (Exception $exception) {
+                    }
+                }
                 $user = User::create([
                     'name' => $userSocial->getName(),
                     'email' => $userSocial->getEmail(),
@@ -60,6 +74,13 @@ class SocialController extends Controller
                 Auth::login($user, 1);
                 return redirect(getenv('BASE_LOGEDIN_PAGE'));
             }
+        } else {
+            return view('frontend.pages.signin', [
+                'failed_social_login' => true,
+                'provider' => $provider
+            ]);
         }
+
+
     }
 }

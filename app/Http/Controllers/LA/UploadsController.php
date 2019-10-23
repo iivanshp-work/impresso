@@ -16,6 +16,7 @@ use Collective\Html\FormFacade as Form;
 
 use Dwij\Laraadmin\Models\Module;
 use Dwij\Laraadmin\Helpers\LAHelper;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Zizaco\Entrust\EntrustFacade as Entrust;
 
 use Auth;
@@ -498,7 +499,7 @@ class UploadsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function upload_files($returnToCode = false, $file = null, $cropParams = []) {
+    public function upload_files($returnToCode = false, $file = null, $cropParams = [], $fromURL = false) {
 
         if (1) {
             $input = Input::all();
@@ -513,7 +514,13 @@ class UploadsController extends Controller
                     return response()->json($validation->errors()->first(), 400);
                 }
                 */
-                if (!$file) {
+                if ($fromURL) {
+                    $info = pathinfo($file);
+                    $contents = file_get_contents($file);
+                    $file = storage_path('uploads') . date("Y-m-d-His-") . $info['basename'];
+                    file_put_contents($file, $contents);
+                    $file = new UploadedFile($file, $info['basename']);
+                }else if (!$file) {
                     $file = Input::file('file');
                 }
                 // print_r($file);
@@ -553,7 +560,7 @@ class UploadsController extends Controller
                         "caption" => "",
                         "hash" => "",
                         "public" => $public,
-                        "user_id" => Auth::user()->id
+                        "user_id" => Auth::user() ? Auth::user()->id : 1
                     ];
                     $upload = Upload::create($uploadData);
                     // apply unique random hash to file
