@@ -314,6 +314,12 @@ $document.ready(function(){
         });
     });
 
+    //show failed social signin popup
+    if($('#failedSocialLogin').length){
+        var text = $('#failedSocialLogin').text();
+        showError(text ? text : 'Login: An error occurred, please try again or select another login option.');
+    }
+
     //validation profile start
     $('[data-validation-step]').on('click', function(e){
         e.preventDefault();

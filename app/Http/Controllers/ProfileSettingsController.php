@@ -564,14 +564,21 @@ class ProfileSettingsController extends Controller
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function settingsChangePassword(Request $request) {
+        $id = Auth::id();
+        $user = UserModel::find($id);
+
         $responseData = [
             'has_error' => false,
             'message' => ''
         ];
+
         $rules = array(
             'old_password' => 'required|string',
             'password' => 'required|confirmed|min:3|regex:' . getenv('PASSWORD_REGEX'),
         );
+        if ($user->provider != 'site') {
+            unset($rules['old_password']);
+        }
         $validator = Validator::make($request->all(), $rules);
         if ($validator->fails()) {
             $responseData['has_error'] = true;
@@ -580,9 +587,7 @@ class ProfileSettingsController extends Controller
                 $responseData['message'] .= $message . '<br>';
             }
         } else {
-            $id = Auth::id();
-            $user = UserModel::find($id);
-            if (!Hash::check($request->input('old_password'), $user->password)) {
+            if ($user->provider == 'site' && !Hash::check($request->input('old_password'), $user->password)) {
                 $responseData['has_error'] = true;
                 $responseData['message'] .= 'Wrong old password.<br>';
                 return response()->json($responseData);
@@ -964,7 +969,7 @@ class ProfileSettingsController extends Controller
 
         $session_start = Session::has('session_start') ? Session::get('session_start') : null;
         if (!$session_start || ($session_start && (Carbon::now()->timestamp - Carbon::parse($session_start)->timestamp) > 2 * 60)) {
-            return redirect(url('/logout?redirect=') . urlencode(url('/sign-up')));
+            //return redirect(url('/logout?redirect=') . urlencode(url('/sign-up')));
         }
         $countries = Country::orderBy('country', 'asc')->get();
         //select current country start

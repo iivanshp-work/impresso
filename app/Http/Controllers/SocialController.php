@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Http\Requests;
 use Auth;
 use Socialite;
+use App\Http\Controllers\LA\UploadsController as UploadsController;
 
 class SocialController extends Controller
 {
@@ -41,22 +42,45 @@ class SocialController extends Controller
             $userSocial = Socialite::driver($provider)->stateless()->user();
         } catch (Exception $exception) {
             $userSocial = null;
-            dd($exception->getMessage());
+            //dd($exception->getMessage());
         }
         if ($userSocial) {
             $user = User::where(['email' => $userSocial->getEmail()])->first();
             if ($user) {
-                Auth::login($user);
-                return redirect()->route('home');
+                Auth::login($user, 1);
+                return redirect(getenv('BASE_LOGEDIN_PAGE'));
             } else {
+                // copy image
+                $image = $userSocial->getAvatar();
+                $photo = 0;
+
+                if ($image) {
+                    try {
+                        $uploadController = new UploadsController;
+                        $responseImage = $uploadController->upload_files(true, $image, ["width" => 200, "height" => 200], true);
+                        if ($responseImage["status"] == "success") {
+                            $photo = $responseImage["upload"]->id;;
+                        }
+                    }catch (Exception $exception) {
+                    }
+                }
                 $user = User::create([
                     'name' => $userSocial->getName(),
                     'email' => $userSocial->getEmail(),
+                    'type' => getenv('USERS_TYPE_USER'),
                     'provider_id' => $userSocial->getId(),
                     'provider' => $provider,
                 ]);
-                return redirect()->route('home');
+                Auth::login($user, 1);
+                return redirect(getenv('BASE_LOGEDIN_PAGE'));
             }
+        } else {
+            return view('frontend.pages.signin', [
+                'failed_social_login' => true,
+                'provider' => $provider
+            ]);
         }
+
+
     }
 }
