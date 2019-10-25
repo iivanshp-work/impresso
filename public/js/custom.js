@@ -1,3 +1,4 @@
+var disableClosePopup = false;
 $(window).on("load", function() {
 	if (/Android|webOS|iPhone|iPad|iPod|BlackBerry/i.test(navigator.userAgent)) {
 		$("body").addClass("ios");
@@ -84,11 +85,13 @@ $(document).ready(function() {
 	// close modal window
 	$(".close-modal, .modal-window__content").click(function(e) {
 		e.preventDefault();
-		$(".modal-window")
-			.fadeOut(400)
-			.removeClass("show");
-		$(".main").removeClass("filter-blur");
-		$("body").removeClass("overflow-hidden");
+		if (!disableClosePopup) {
+            $(".modal-window")
+                .fadeOut(400)
+                .removeClass("show");
+            $(".main").removeClass("filter-blur");
+            $("body").removeClass("overflow-hidden");
+        }
 	});
 
 	$(".modal-window__body").click(function(e) {

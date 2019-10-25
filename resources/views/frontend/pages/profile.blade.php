@@ -456,8 +456,7 @@
                 <div class="modal-window__body text-center">
                     <img src="{{asset('img/icons/smile.svg')}}" alt="like" class="modal-window__img-top">
                     <h3 class="title mb-34">Your validation is in progress.</h3>
-                    <p>Once your profile is approved, you will have access to all our features.</p>
-                    <p>It’s a perfect opportunity to meditate, water your plants or share IMPRESSO with your friends!</p>
+                    <p>Please check your Inbox (Spam/Junk) for your SignUp Confirmation.</p>
                     <a href="#" type="button" class="btn btn-violet close-modal">
                         Close
                     </a>
@@ -472,8 +471,10 @@
             <div class="modal-window__content">
                 <div class="modal-window__body text-center">
                     <h5 class="modal-window__subtitle">Complete Your Profile</h5>
-                    <p>Get Validated Quicker!</p>
-                    <p>Meetup with Professionals<br /> for business and career opportunities.</p>
+                    <p>To receive $3 worth of Credits<br>
+                        for MEETUPs.
+                    </p>
+                    <br>
                     <a href="{{url('/profile/edit')}}" class="btn btn-violet">
                         Go to Profile
                     </a>

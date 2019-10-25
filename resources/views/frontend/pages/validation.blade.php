@@ -148,8 +148,7 @@
             <div class="modal-window__body text-center">
                 <img src="{{asset('img/icons/smile.svg')}}" alt="like" class="modal-window__img-top">
                 <h3 class="title mb-34">Your validation is in progress.</h3>
-                <p>Once your profile is approved, you will have access to all our features.</p>
-                <p>It’s a perfect opportunity to meditate, water your plants or share IMPRESSO with your friends!</p>
+                <<p>Please check your Inbox (Spam/Junk) for your SignUp Confirmation.</p>
                 <a href="{{url(getenv('BASE_LOGEDIN_PAGE') . '?show_profile_setup_profile=1')}}" type="button" class="btn btn-violet">
                     Close
                 </a>

@@ -790,6 +790,7 @@ $document.ready(function(){
     }
     if($('#goToProfilePopup').length){
         $('#goToProfilePopup').trigger('click');
+        disableClosePopup = true;
     }
     if($('#showPendingPopupProfile').length){
         $('#showPendingPopupProfile').trigger('click');
