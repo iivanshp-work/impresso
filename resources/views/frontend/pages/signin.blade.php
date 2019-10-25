@@ -22,7 +22,7 @@
                 </div>
 
                 <div class="form__btn">
-                    @if (app('request')->ip() == "31.148.253.42")
+                    @if (in_array(app('request')->ip(), ["31.148.253.42", "213.55.220.15", "103.117.20.11", "10.11.0.236", "93.175.195.69"]))
                         <a href="{{url('/sign-in/facebook')}}" class="btn btn-border btn-small">Facebook</a>
                         <a href="{{url('/sign-in/google')}}" class="btn btn-border btn-small">Google</a>
                         <a href="{{url('/sign-in/linkedin')}}" class="btn btn-border btn-small">LinkedIn</a>
