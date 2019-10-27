@@ -394,7 +394,8 @@ customValidateConfirm{
 }
 
 #upload .spinner,
-#upload2 .spinner {
+#upload2 .spinner,
+.spinner.spinner-colored{
     color: #7e20c8;
 }
 #upload .spinner,
@@ -402,8 +403,16 @@ customValidateConfirm{
 #upload .spinner:after,
 #upload2 .spinner,
 #upload2 .spinner:before,
-#upload2 .spinner:after {
+#upload2 .spinner:after,
+.spinner.spinner-colored,
+.spinner.spinner-colored:before,
+.spinner.spinner-colored:after{
     background: #7e20c8;
+}
+
+.feed .tab-content .spinner-wrapper{
+    position: relative;
+    height: 50px;
 }
 
 .btn-meetup-connected:hover {
@@ -437,6 +446,7 @@ customValidateConfirm{
 .cards-professionals.fake-professionals-cards .fake-professionals-cards__link {
     margin: 0 auto;
 }
-.cards-professionals__info span {
+.cards-professionals__info span.cards-professionals__info__job_title {
     word-break: break-word;
 }
+

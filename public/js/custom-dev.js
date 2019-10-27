@@ -643,29 +643,34 @@ $document.ready(function(){
                 if(busy) return;
                 busy = true;
                 loadingStart();
-                $.ajax({
-                    url: targetLink,
-                    type: 'post',
-                    data: frm.serialize(),
-                    dataType: 'json',
-                    success: function(response){
-                        if(response.html){
-                            container.find('[data-page="' + response.page + '"]').remove();
-                            container.append(response.html);
-                            element = container.find("[data-load-more-jobs]").last();
-                            let page = response.page || frm.find('[data-feeds-search-page]').val();
-                            $('[data-feeds-search-page]').val((parseInt(page) + 1));
-                        }else error();
+                container.find('.spinner-wrapper').remove();
+                container.append('<div class="spinner-wrapper"><div class="spinner spinner-colored"></div></div>');
+                setTimeout(function(){
+                    $.ajax({
+                        url: targetLink,
+                        type: 'post',
+                        data: frm.serialize(),
+                        dataType: 'json',
+                        success: function(response){
+                            if(response.html){
+                                container.find('[data-page="' + response.page + '"]').remove();
+                                container.append(response.html);
+                                element = container.find("[data-load-more-jobs]").last();
+                                let page = response.page || frm.find('[data-feeds-search-page]').val();
+                                $('[data-feeds-search-page]').val((parseInt(page) + 1));
+                            }else error();
 
-                        if(response.has_more) check();
-                        else unbind();
-                    },
-                    error: error,
-                    complete: function(response){
-                        busy = false;
-                        loadingEnd();
-                    }
-                });
+                            if(response.has_more) check();
+                            else unbind();
+                        },
+                        error: error,
+                        complete: function(response){
+                            busy = false;
+                            container.find('.spinner-wrapper').remove();
+                            loadingEnd();
+                        }
+                    });
+                }, 1000);
             }
 
             win.bind('scroll resize orientationchange', check);
@@ -696,29 +701,34 @@ $document.ready(function(){
                 if(busy) return;
                 busy = true;
                 loadingStart();
-                $.ajax({
-                    url: targetLink,
-                    type: 'post',
-                    data: frm.serialize(),
-                    dataType: 'json',
-                    success: function(response){
-                        if(response.html){
-                            container.find('[data-page="' + response.page + '"]').remove();
-                            container.append(response.html);
-                            element = container.find("[data-load-more-professionals]").last();
-                            let page = response.page || frm.find('[data-feeds-search-page]').val();
-                            $('[data-feeds-search-page]').val((parseInt(page) + 1));
-                        }else error();
+                container.find('.spinner-wrapper').remove();
+                container.append('<div class="spinner-wrapper"><div class="spinner spinner-colored"></div></div>');
+                setTimeout(function(){
+                    $.ajax({
+                        url: targetLink,
+                        type: 'post',
+                        data: frm.serialize(),
+                        dataType: 'json',
+                        success: function(response){
+                            if(response.html){
+                                container.find('[data-page="' + response.page + '"]').remove();
+                                container.append(response.html);
+                                element = container.find("[data-load-more-professionals]").last();
+                                let page = response.page || frm.find('[data-feeds-search-page]').val();
+                                $('[data-feeds-search-page]').val((parseInt(page) + 1));
+                            }else error();
 
-                        if(response.has_more) check();
-                        else unbind();
-                    },
-                    error: error,
-                    complete: function(response){
-                        busy = false;
-                        loadingEnd();
-                    }
-                });
+                            if(response.has_more) check();
+                            else unbind();
+                        },
+                        error: error,
+                        complete: function(response){
+                            busy = false;
+                            container.find('.spinner-wrapper').remove();
+                            loadingEnd();
+                        }
+                    });
+                }, 1000);
             }
 
             win.bind('scroll resize orientationchange', check);
@@ -749,29 +759,34 @@ $document.ready(function(){
                 if(busy) return;
                 busy = true;
                 loadingStart();
-                $.ajax({
-                    url: targetLink,
-                    type: 'post',
-                    data: frm.serialize(),
-                    dataType: 'json',
-                    success: function(response){
-                        if(response.html){
-                            container.find('[data-page="' + response.page + '"]').remove();
-                            container.append(response.html);
-                            element = container.find("[data-load-more-promos]").last();
-                            let page = response.page || frm.find('[data-feeds-search-page]').val();
-                            $('[data-feeds-search-page]').val((parseInt(page) + 1));
-                        }else error();
+                container.find('.spinner-wrapper').remove();
+                container.append('<div class="spinner-wrapper"><div class="spinner spinner-colored"></div></div>');
+                setTimeout(function(){
+                    $.ajax({
+                        url: targetLink,
+                        type: 'post',
+                        data: frm.serialize(),
+                        dataType: 'json',
+                        success: function(response){
+                            if(response.html){
+                                container.find('[data-page="' + response.page + '"]').remove();
+                                container.append(response.html);
+                                element = container.find("[data-load-more-promos]").last();
+                                let page = response.page || frm.find('[data-feeds-search-page]').val();
+                                $('[data-feeds-search-page]').val((parseInt(page) + 1));
+                            }else error();
 
-                        if(response.has_more) check();
-                        else unbind();
-                    },
-                    error: error,
-                    complete: function(response){
-                        busy = false;
-                        loadingEnd();
-                    }
-                });
+                            if(response.has_more) check();
+                            else unbind();
+                        },
+                        error: error,
+                        complete: function(response){
+                            busy = false;
+                            container.find('.spinner-wrapper').remove();
+                            loadingEnd();
+                        }
+                    });
+                }, 1000);
             }
 
             win.bind('scroll resize orientationchange', check);

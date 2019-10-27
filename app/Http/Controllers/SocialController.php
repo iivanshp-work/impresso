@@ -36,13 +36,10 @@ class SocialController extends Controller
      * @return \Illuminate\Http\RedirectResponse
      */
     public function Callback($provider) {
-        ini_set("display_errors", 1);
-        error_reporting(E_ALL);
         try {
             $userSocial = Socialite::driver($provider)->stateless()->user();
         } catch (Exception $exception) {
             $userSocial = null;
-            //dd($exception->getMessage());
         }
         if ($userSocial) {
             $user = User::where(['email' => $userSocial->getEmail()])->first();
@@ -53,13 +50,13 @@ class SocialController extends Controller
                 // copy image
                 $image = $userSocial->getAvatar();
                 $photo = 0;
-
                 if ($image) {
                     try {
+                        $image = str_replace('?type=normal', 'jpg', $image);
                         $uploadController = new UploadsController;
                         $responseImage = $uploadController->upload_files(true, $image, ["width" => 200, "height" => 200], true);
                         if ($responseImage["status"] == "success") {
-                            $photo = $responseImage["upload"]->id;;
+                            $photo = $responseImage["upload"]->id;
                         }
                     }catch (Exception $exception) {
                     }
@@ -70,6 +67,7 @@ class SocialController extends Controller
                     'type' => getenv('USERS_TYPE_USER'),
                     'provider_id' => $userSocial->getId(),
                     'provider' => $provider,
+                    'photo' => $photo,
                 ]);
                 Auth::login($user, 1);
                 return redirect(getenv('BASE_LOGEDIN_PAGE'));
@@ -80,7 +78,5 @@ class SocialController extends Controller
                 'provider' => $provider
             ]);
         }
-
-
     }
 }

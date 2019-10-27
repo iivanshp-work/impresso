@@ -553,10 +553,12 @@ class UploadsController extends Controller
                     if (!$name) {
                         $name = "filename";
                     }
+                    $extension = pathinfo($filename, PATHINFO_EXTENSION);
+                    if (!$extension) $extension = 'jpg';
                     $uploadData = [
                         "name" => $name,
                         "path" => $folder . DIRECTORY_SEPARATOR . $date_append . $filename,
-                        "extension" => pathinfo($filename, PATHINFO_EXTENSION),
+                        "extension" => $extension,
                         "caption" => "",
                         "hash" => "",
                         "public" => $public,

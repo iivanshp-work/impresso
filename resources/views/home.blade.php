@@ -36,7 +36,7 @@
                         are closed via referrals.</p>
                     <span class="slider__author">Photo by Patricia Palma on Unsplash</span>
                 </div>
-                <a href="{{url('/sign-up')}}" class="btn btn-border slider__btn">Continue</a>
+                <a href="{{url('/sign-in')}}" class="btn btn-border slider__btn">Continue</a>
             </div>
         </div>
     </main>
