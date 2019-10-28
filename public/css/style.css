@@ -303,21 +303,23 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
   .slider .slick-dots { bottom: 74px; }
   .slider__author { bottom: 40px; } }
 
-.sign-up, .login, .password { background: url(../img/bg-logIn-singUp.svg) no-repeat top left/235px; width: 100%; max-width: 425px; min-height: 100vh; padding: 20px 28px; position: relative; margin: 0 auto; }
+.sign-up, .login, .password { background: url(../img/bg-logIn-singUp.svg) no-repeat top left/235px; width: 100%; max-width: 425px; min-height: 100vh; padding: 20px 28px; position: relative; margin: 0 auto; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-justify-content: flex-end; -ms-flex-pack: end; justify-content: flex-end; }
 
-.sign-up__title, .login__title, .password__title { margin-top: 125px; }
+.sign-up__title, .login__title, .password__title { margin-top: 40px; }
 
 .sign-up .logo, .login .logo, .password .logo { display: -webkit-flex; display: -ms-flexbox; display: flex; width: 55px; height: 55px; margin: 36px auto; }
 
 .sign-up .logo > img, .login .logo > img, .password .logo > img { width: 100%; height: 100%; -o-object-fit: cover; object-fit: cover; }
 
-.sign-up__title { margin-top: 76px; }
+.sign-up .logo { margin: 17px auto 58px; }
 
-.sign-up .form { height: calc(100vh - 284px); }
+.login .logo { margin: 17px auto 28px; }
 
-.form { width: 100%; height: calc(100vh - 336px); display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; }
+.form { max-width: 320px; width: 100%; min-height: 350px; display: -webkit-flex; display: -ms-flexbox; display: flex; -webkit-flex-direction: column; -ms-flex-direction: column; flex-direction: column; -webkit-justify-content: space-between; -ms-flex-pack: justify; justify-content: space-between; margin: 0 auto; }
 
 .form__body { min-height: 170px; }
+
+.form__body .btn-violet { margin-bottom: 10px; }
 
 .form__group { width: 100%; margin-bottom: 10px; }
 
@@ -335,28 +337,42 @@ h1, h2, h3, h4, h5, h6 { font-weight: 400; }
 
 .form a { color: #979797; }
 
-.form__btn { margin: 20px 0 0 !important; }
+.form__btn { margin: 35px 0 0 !important; }
 
 .form__btn .btn { margin-top: 10px; }
 
+.btn-social { padding-left: 26px; position: relative; }
+
+.btn-social img { width: 25px; position: absolute; top: 50%; left: 61px; transform: translateY(-50%); -webkit-transform: translateY(-50%); -moz-transform: translateY(-50%); -ms-transform: translateY(-50%); -o-transform: translateY(-50%); }
+
+.btn-social_instagram { width: calc(320px + 4px); height: calc(40px + 4px); background: url(../img/icons/border-instagram.svg) no-repeat center center/contain; margin-left: -2px; margin-top: -2px; }
+
+.btn-social_linkedin { border: 1px solid #0077b7; }
+
+.btn-social_facebook { border: 1px solid #4267b2; }
+
 @media only screen and (max-width: 370px) { .sign-up, .login, .password { padding: 20px 15px; }
-  .sign-up__title, .login__title, .password__title { margin-top: 94px; }
+  .sign-up__title, .login__title, .password__title { margin-top: 54px; }
   .sign-up .logo, .login .logo, .password .logo { margin: 20px auto; }
-  .sign-up .form { height: auto; }
-  .form { height: calc(100vh - 265px); }
-  .form__group > input { width: 100%; } }
+  .form { min-height: 320px; }
+  .form__group > input { width: 100%; }
+  .btn-social { height: 38px; }
+  .btn-social_instagram { width: calc(290px + 4px); height: 40px; } }
 
 @media only screen and (max-height: 490px) { .sign-up, .login, .password { height: auto; }
-  .sign-up__title, .login__title, .password__title { margin-top: 100px; }
+  .sign-up__title, .login__title, .password__title { margin-top: 80px; }
   .sign-up__title > br, .login__title > br, .password__title > br { display: none; }
-  .sign-up .logo, .login .logo, .password .logo { margin: 30px auto; }
-  .sign-up .form { height: auto; }
-  .form { height: auto; } }
+  .sign-up .logo, .login .logo, .password .logo { margin: 28px auto; }
+  .form { height: auto; min-height: 100%; } }
 
-@media only screen and (min-height: 800px) { .sign-up__title, .login__title, .password__title { margin-top: 150px; }
+@media only screen and (min-height: 700px) { .sign-up, .login, .password { display: block; }
+  .sign-up__title, .login__title, .password__title { margin-top: 90px; }
+  .sign-up .logo, .login .logo, .password .logo { margin: 36px auto; }
+  .form { height: calc(100vh - 298px); } }
+
+@media only screen and (min-height: 800px) { .sign-up__title, .login__title, .password__title { margin-top: 140px; }
   .sign-up .logo, .login .logo, .password .logo { margin: 46px auto; }
-  .sign-up .form { height: calc(100vh - 380px); }
-  .form { height: calc(100vh - 378px); } }
+  .form { height: calc(100vh - 370px); } }
 
 .validation { width: 100%; }
 
