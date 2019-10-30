@@ -450,3 +450,10 @@ customValidateConfirm{
     word-break: break-word;
 }
 
+.wizard__text {
+    max-width: 250px !important;
+    margin: 0 auto!important;
+}
+.validation__step_first {
+    padding: 0;
+}

@@ -168,7 +168,7 @@ $document.ready(function(){
         jQuery.post("https://www.googleapis.com/geolocation/v1/geolocate?key=" + google_api_key, function(success){
             apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
         }).fail(function(err){
-            showError("API Geolocation error1!");
+            //showError("API Geolocation error1!");
         });
     };
 
