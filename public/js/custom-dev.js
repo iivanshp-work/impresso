@@ -165,10 +165,12 @@ $document.ready(function(){
 
     //get geo location based on user geolocale
     function tryAPIGeolocation(){
-        jQuery.post("https://www.googleapis.com/geolocation/v1/geolocate?key=" + google_api_key, function(success){
+        let targetLink = "https://www.googleapis.com/geolocation/v1/geolocate?key=" + google_api_key;
+        //let targetLink = base_url + '/api-geo-position';
+        jQuery.post(targetLink, function(success){
             apiGeolocationSuccess({coords: {latitude: success.location.lat, longitude: success.location.lng}});
-        }).fail(function(err){
-            //showError("API Geolocation error1!");
+        }).fail(function(xhr, status, error){
+            apiGeolocationSuccess({coords: {latitude: 0.001, longitude: 0.001}});
         });
     };
 
@@ -237,7 +239,7 @@ $document.ready(function(){
                 function (position) {
                     console.log(position);
                 },
-                {desiredAccuracy:50, maxWait:20000});
+                {desiredAccuracy:100, maxWait:3000});
         }
     };
 
@@ -1769,7 +1771,7 @@ $document.ready(function(){
     //phone number validation end
 
     //allow location tell me more start
-	$(".closeAllowLocationTellMeMore").click(function(e) {
+    $(".closeAllowLocationTellMeMore").click(function(e) {
         $(this).closest(".modal-window")
             .fadeOut(400)
             .removeClass("show");

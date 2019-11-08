@@ -148,9 +148,9 @@
                 <button type="button" class="btn btn-border open-pop-up" data-target="#allowLocationTellMeMore">
                     Tell Me More
                 </button>
-                <button type="button" class="btn btn-border close-modal hide">
+                <a href="{{url('/logout?redirect=') . urlencode(url('/sign-up'))}}" type="button" class="btn btn-border">
                     Close
-                </button>
+                </a>
             </div>
         </div>
     </div>

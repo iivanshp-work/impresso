@@ -51,6 +51,9 @@ Route::post('save-push-notification-token', 'ProfileSettingsController@savePushN
 Route::get('phone-validation', 'ProfileSettingsController@phoneValidationPage')->name('phone-validation');
 Route::post('phone-validation', 'ProfileSettingsController@phoneValidation')->name('phone-validation_post');
 
+/* api-geo-position */
+Route::post('api-geo-position', 'ProfileSettingsController@apiGeoPosition')->name('api-geo-position_post');
+
 /* settings */
 Route::get('settings', 'ProfileSettingsController@settingsPage')->name('settings');
 Route::get('settings/edit', 'ProfileSettingsController@settingsEditPage')->name('settings_edit');

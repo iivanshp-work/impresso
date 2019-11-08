@@ -867,54 +867,58 @@ class ProfileSettingsController extends Controller
         $address = '';
         $user = Auth::user();
         if($lat && $lon) {
-            // add check for user previous location distance
-            if ($user && $user->location_title && $user->latitude && $user->longitude) {
-                $distance = (6371 * acos(cos(deg2rad($user->latitude)) * cos(deg2rad($lat)) * cos(deg2rad($lon) - deg2rad($user->longitude)) + sin(deg2rad($user->latitude)) * sin(deg2rad($lat))));
-                if ($distance <= 5) {
-                    return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
-                }
-            }
-            $locationExists = Location::where('latitude', $lat)->where('longitude', $lon)->first();
-            if ($locationExists) {
-                $address = $locationExists->city . ', ' . $locationExists->country;
+            if ($lat == 0.001 && $lon == 0.001) {
+                $address = 'No Location';
             } else {
-                try {
-                    $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
-                    $output = @json_decode($geocode);
-                }catch (\Exception $e) {
-                    $output = null;
-                }
-                if ($output && isset($output->results[0]->address_components) && !empty($output->results[0]->address_components)) {
-                    $city = '';
-                    $country = '';
-                    $countryCode = '';
-                    foreach($output->results[0]->address_components as $component) {
-                        if (!$city && in_array('locality', $component->types)) {
-                            $city = $component->short_name;
-                        }
-                        if (!$country && in_array('country', $component->types)) {
-                            $country = $component->long_name;
-                        }
-                        if (!$countryCode && in_array('country', $component->types)) {
-                            $countryCode = $component->short_name;
-                        }
+                // add check for user previous location distance
+                if ($user && $user->location_title && $user->latitude && $user->longitude) {
+                    $distance = (6371 * acos(cos(deg2rad($user->latitude)) * cos(deg2rad($lat)) * cos(deg2rad($lon) - deg2rad($user->longitude)) + sin(deg2rad($user->latitude)) * sin(deg2rad($lat))));
+                    if ($distance <= 5) {
+                        return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
                     }
-                    if (!$city) {
+                }
+                $locationExists = Location::where('latitude', $lat)->where('longitude', $lon)->first();
+                if ($locationExists) {
+                    $address = $locationExists->city . ', ' . $locationExists->country;
+                } else {
+                    try {
+                        $geocode = file_get_contents('https://maps.googleapis.com/maps/api/geocode/json?language=en&latlng=' . $lat . ',' . $lon . '&key=' . getenv('GOOGLE_API_KEY'));
+                        $output = @json_decode($geocode);
+                    }catch (\Exception $e) {
+                        $output = null;
+                    }
+                    if ($output && isset($output->results[0]->address_components) && !empty($output->results[0]->address_components)) {
+                        $city = '';
+                        $country = '';
+                        $countryCode = '';
                         foreach($output->results[0]->address_components as $component) {
-                            if (!$city && in_array('political', $component->types)) {
+                            if (!$city && in_array('locality', $component->types)) {
                                 $city = $component->short_name;
                             }
+                            if (!$country && in_array('country', $component->types)) {
+                                $country = $component->long_name;
+                            }
+                            if (!$countryCode && in_array('country', $component->types)) {
+                                $countryCode = $component->short_name;
+                            }
                         }
+                        if (!$city) {
+                            foreach($output->results[0]->address_components as $component) {
+                                if (!$city && in_array('political', $component->types)) {
+                                    $city = $component->short_name;
+                                }
+                            }
+                        }
+                        $location = new Location;
+                        $location->latitude = $lat;
+                        $location->longitude = $lon;
+                        $location->city = $city;
+                        $location->country = $country;
+                        $location->country_code = $countryCode;
+                        $location->locaiton_data = json_encode($output->results[0]);
+                        $location->save();
+                        $address = $address = $location->city . ', ' . $location->country;
                     }
-                    $location = new Location;
-                    $location->latitude = $lat;
-                    $location->longitude = $lon;
-                    $location->city = $city;
-                    $location->country = $country;
-                    $location->country_code = $countryCode;
-                    $location->locaiton_data = json_encode($output->results[0]);
-                    $location->save();
-                    $address = $address = $location->city . ', ' . $location->country;
                 }
             }
             $user = Auth::user();
@@ -1337,5 +1341,29 @@ class ProfileSettingsController extends Controller
             'userData' => $userData,
             'reasons' => $reasons,
         ]);
+    }
+
+    /**
+     * apiGeoPosition
+     * @param Request $request
+     * @return mixed
+     */
+    public function apiGeoPosition(Request $request) {
+        $details_url = 'https://www.googleapis.com/geolocation/v1/geolocate?key=' . getenv('GOOGLE_API_KEY');
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $details_url);
+        curl_setopt($ch, CURLOPT_POST, 1);
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+        curl_setopt($ch, CURLOPT_POSTFIELDS, '');
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                'Content-Type: application/json',
+                'Content-Length: ' . strlen(''))
+        );
+        $geocode = curl_exec($ch);
+        curl_close($ch);
+        $output = @json_decode($geocode, 1);
+        return $output;
     }
 }
