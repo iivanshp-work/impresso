@@ -868,7 +868,19 @@ class ProfileSettingsController extends Controller
         $user = Auth::user();
         if($lat && $lon) {
             if ($lat == 0.001 && $lon == 0.001) {
-                $address = 'No Location';
+                $ip = $request->ip();
+                $locationInfo = @file_get_contents("https://ipinfo.io/{$ip}/json");
+                if ($locationInfo) {
+                    $locationInfo = @json_decode($locationInfo, 1);
+                    if ($locationInfo && isset($locationInfo['city']) && isset($locationInfo['country']) && isset($locationInfo['loc'])) {
+                        $locationLatLon = explode(',', $locationInfo['loc']);
+                        $lat = $locationLatLon[0];
+                        $lon = $locationLatLon[1];
+                        $address = $locationInfo['city'] . ', ' . $locationInfo['country'];
+                    }
+                } else {
+                    $address = 'No Location';
+                }
             } else {
                 // add check for user previous location distance
                 if ($user && $user->location_title && $user->latitude && $user->longitude) {
