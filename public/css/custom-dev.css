@@ -457,3 +457,6 @@ customValidateConfirm{
 .validation__step_first {
     padding: 0;
 }
+.modal-window#ximPurchase {
+    z-index: 110;
+}

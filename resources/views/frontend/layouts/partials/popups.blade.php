@@ -128,6 +128,21 @@
     </div>
 </div>
 
+<button class="btn btn-violet hide open-pop-up XimPurchasePopup" data-target="#ximPurchase">XimPurchase</button>
+
+<div class="modal-window" id="ximPurchase">
+    <div class="modal-window__content">
+        <div class="modal-window__body text-center">
+            <h3 class="title mb-34">Xim Purchase</h3>
+            <p>Thank you for your interest in purchasing more XIMs.  </p>
+            <p class="mb-34">For your support we are rewarding you  with more XIMs FREE once you run out !</p>
+            <a href="{{url(getenv('BASE_LOGEDIN_PAGE'))}}" class="btn btn-violet">
+                Close
+            </a>
+        </div>
+    </div>
+</div>
+
 @php
     $user = Auth::user();
 @endphp

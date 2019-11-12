@@ -987,7 +987,7 @@ class ProfileSettingsController extends Controller
         if (!$session_start || ($session_start && (Carbon::now()->timestamp - Carbon::parse($session_start)->timestamp) > 2 * 60)) {
             //return redirect(url('/logout?redirect=') . urlencode(url('/sign-up')));
         }
-        $countries = Country::orderBy('country', 'asc')->get();
+        $countries = Country::orderBy('country_iso_code', 'asc')->get();
         //select current country start
         $lat = $user->latitude;
         $lon = $user->longitude;
