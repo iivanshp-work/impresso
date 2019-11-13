@@ -446,7 +446,7 @@ customValidateConfirm{
 .cards-professionals.fake-professionals-cards .fake-professionals-cards__link {
     margin: 0 auto;
 }
-.cards-professionals__info span.cards-professionals__info__job_title {
+.cards-professionals__info span.cards-professionals__info__job_title.break-words {
     word-break: break-word;
 }
 

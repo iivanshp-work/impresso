@@ -35,7 +35,7 @@
                     <div class="cards-professionals__info">
                         <a href="{{url('/profile/' . $professional->id)}}">@if($professional->name){{$professional->name}}@else{{$professional->email}}@endif</a>
                         <div class="d-flex justify-content-between">
-                            @if($professional->job_title)<span class="cards-professionals__info__job_title">{{$professional->job_title}}</span>@endif
+                            @if($professional->job_title)<span class="cards-professionals__info__job_title @if(strlen($professional->job_title) > 15) break-words @endif">{{$professional->job_title}}</span>@endif
                             @if($professional->location_title)<span>{{$professional->location_title}}</span>@endif
                         </div>
                         @if($professional->company_title)<span>@ {{$professional->company_title}}</span>@endif
