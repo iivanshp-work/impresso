@@ -57,6 +57,7 @@ class User_Transaction extends Model
             'meetup_inviting' => 'Meetup Invitation',
             'meetup_accept' => 'Meetup Accept',
             'meetup_declined' => 'Meetup Rejection',
+            'daily_xims' => 'Daily Xims',
             'other' => 'Other',
         ];
     }

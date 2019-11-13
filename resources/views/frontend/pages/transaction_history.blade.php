@@ -45,7 +45,7 @@
                                     @php
                                         $imageColor = ($userTransaction->id % 13) + 1;
                                     @endphp
-                                    @if (in_array($userTransaction->type, ['user_validation', 'purchase', 'share', 'validation_education', 'validation_certificate', 'validation_resume', 'other']))
+                                    @if (in_array($userTransaction->type, ['user_validation', 'purchase', 'share', 'validation_education', 'validation_certificate', 'validation_resume', 'other', 'daily_xims']))
                                         <img src="{{asset('img/logo-circle.png')}}" alt="" />
                                     @elseif(in_array($userTransaction->type, ['meetup_inviting', 'meetup_accept', 'meetup_declined']))
                                         @if ($userTransaction->type == "meetup_inviting")
@@ -102,6 +102,8 @@
                                         <a href="{{url('/profile/' . $userTransaction->meetup->user_id_inviting)}}">{{$userTransaction->meetup->invitingUser ? ($userTransaction->meetup->invitingUser->name ? $userTransaction->meetup->invitingUser->name :$userTransaction->meetup->invitingUser->email) : ( 'Profile #' . $userTransaction->meetup->user_id_inviting ) }} {!!$userTransaction->meetup->invitingUser && $userTransaction->meetup->invitingUser->job_title ? '<span>' . $userTransaction->meetup->invitingUser->job_title . '</span>' : ''!!}</a>
                                     @elseif($userTransaction->type == 'meetup_declined')
                                         <a href="{{url('/profile/' . $userTransaction->meetup->user_id_invited)}}">{{$userTransaction->meetup->invitedUser ? ($userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name :$userTransaction->meetup->invitedUser->email) : ('Profile #' . $userTransaction->meetup->user_id_invited ) }} {!!$userTransaction->meetup->invitedUser && $userTransaction->meetup->invitedUser->job_title ? '<span>' . $userTransaction->meetup->invitedUser->job_title . '</span>' : ''!!}</a>
+                                    @elseif($userTransaction->type == 'daily_xims')
+                                        <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
                                     @elseif($userTransaction->type == 'other')
                                         <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
                                     @endif
@@ -144,6 +146,8 @@
                             @elseif($userTransaction->type == 'meetup_declined')
                                 <p>You have received back {{abs($userTransaction->amount)}} XIMS, due to Meetup rejection. @if($userTransaction->notes == "meetup_expired"){{'(Expired)'}}@endif</p>
                                 <p>Meetup: {{$userTransaction->meetup->statusLabel}}</p>
+                            @elseif($userTransaction->type == 'daily_xims')
+                                <p>Daily Xims. You received {{$userTransaction->amount}} XIMs.</p>
                             @elseif($userTransaction->type == 'other')
                                 <p>{{$userTransaction->notes}}</p>
                             @endif

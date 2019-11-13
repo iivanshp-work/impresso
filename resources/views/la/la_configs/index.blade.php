@@ -106,6 +106,11 @@
                 <input type="text" class="form-control" placeholder="New Jobs notification radius" maxlength="100" name="new_jobs_radius" value="{{$configs->new_jobs_radius}}">
             </div>
 
+			<div class="form-group">
+				<label>Daily Credits Amount(XIMS)</label>
+				<input type="text" class="form-control" placeholder="Daily Credits Amount(XIMS)" maxlength="100" name="daily_xims_amount" value="{{$configs->daily_xims_amount}}">
+			</div>
+
 
 		</div><!-- /.box-body -->
 		<div class="box-footer">

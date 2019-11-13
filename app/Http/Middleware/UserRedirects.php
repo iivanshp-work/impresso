@@ -90,6 +90,10 @@ class UserRedirects
                     $path = '/profile?show_profile_setup_profile=1';
                     $needRedirect = true;
                 }
+                $urlRedirect = $user->checkUserDailyXims($request);
+                if ($urlRedirect) {
+                    return redirect($urlRedirect);
+                }
             }
         }
         if ($needRedirect) {

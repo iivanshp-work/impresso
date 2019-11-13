@@ -315,4 +315,46 @@ class User extends Model
         return $responses;
     }
 
+    /**
+     * check User Daily Xims
+     * @param $request
+     * @return string
+     */
+    public function checkUserDailyXims($request) {
+        if ($this->id && $this->is_verified && !$request->has('show_daily_xims_popup')) {
+            //check last daily Xims date
+            if (!$this->daily_xims_date || ($this->daily_xims_date && Carbon::parse($this->daily_xims_date)->timestamp < Carbon::now()->subHours(24)->timestamp)) {
+                //save notification
+                //Users_Notification::saveNotification('daily_xims', '', $this->id);
+
+                //add credits to User
+                $neededCredits = LAConfigs::getByKey('daily_xims_amount');
+                if (!$neededCredits) {
+                    $neededCredits = 10;
+                }
+                $amount = $neededCredits;
+                $User_Transaction = new User_Transaction;
+                $User_Transaction->user_id = $this->id;
+                $User_Transaction->amount = $amount;
+                $User_Transaction->type = 'daily_xims';
+                $User_Transaction->notes = 'Daily Xims';
+
+                $User_Transaction->by_user_id = $this->id;
+                $User_Transaction->old_credits_amount = $this->credits_count_value;
+                $User_Transaction->new_credits_amount = floatval($this->credits_count_value) + $amount;
+                $User_Transaction->save();
+
+                //adding balance to user
+                $this->credits_count = $this->credits_count_value + $amount;
+                //update last daily Xims date
+                $this->daily_xims_date = Carbon::now();
+                $this->save();
+                //redirect user with param to show daily Xims popup
+                $redirectUrl = $request->getPathInfo() . (empty($request->query()) ? '?' : '&') . 'show_daily_xims_popup=1';
+                return $redirectUrl;
+            }
+        }
+        return '';
+    }
+
 }
