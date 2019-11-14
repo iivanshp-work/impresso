@@ -35,7 +35,7 @@
                 </li>
                 <li>
                     <span>Upgrade:</span>
-                    <a href="{{url('/settings/credits')}}" style="color:#000;" class="open-pop-up" data-target="#ximPurchase">Buy XIM</a>
+                    <a href="{{url('/settings/credits')}}" style="color:#000;" class="{{--open-pop-up--}}" {{--data-target="#ximPurchase"--}}>Buy XIM</a>
                 </li>
                 <li>
                     <span>Legal:</span>

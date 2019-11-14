@@ -119,7 +119,7 @@
                 <p>
                     Looks like you don’t have enough XIMs.
                 </p>
-                <a href="{{url('/settings/credits')}}" type="button" class="btn btn-violet open-pop-up" data-target="#ximPurchase">
+                <a href="{{url('/settings/credits')}}" type="button" class="btn btn-violet {{--open-pop-up--}}" {{--data-target="#ximPurchase"--}}>
                     Buy XIMs
                 </a>
                 <button type="button" class="btn btn-border close-modal">
