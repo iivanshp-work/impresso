@@ -322,6 +322,10 @@ class User extends Model
      */
     public function checkUserDailyXims($request) {
         if ($this->id && $this->is_verified && !$request->has('show_daily_xims_popup')) {
+            if ($this->daily_xims_date == "0000-00-00 00:00:00") {
+                $this->daily_xims_date = null;
+            }
+            //check last daily Xims date
             //check last daily Xims date
             if (!$this->daily_xims_date || ($this->daily_xims_date && Carbon::parse($this->daily_xims_date)->timestamp < Carbon::now()->subHours(24)->timestamp)) {
                 //save notification

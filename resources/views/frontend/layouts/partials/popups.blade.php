@@ -188,4 +188,17 @@
         </div>
     </div>
 @endif
+@if ($user && $user->is_verified && app('request')->has('show_daily_xims_popup'))
+    <div class="modal-window" id="welcomeBack">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <img src="{{asset('img/icons/icon.svg')}}" alt="" class="modal-window__img-top" />
+                <h3 class="title">Welcome Back !</h3>
+                <p>Here are 10 XIMs FREE for being IMPRESSIVE</p>
+                <button type="button" class="btn btn-violet close-modal">Close</button>
+            </div>
+        </div>
+    </div>
+    <button class="btn btn-violet open-pop-up hide welcomeBackPopup" data-target="#welcomeBack">welcomeBack</button>
+@endif
 @stack('popups')

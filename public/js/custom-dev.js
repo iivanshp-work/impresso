@@ -814,6 +814,11 @@ $document.ready(function(){
     }
     //profile end
 
+    //welcome back popup
+    if ($('.welcomeBackPopup').length) {
+        $('.welcomeBackPopup').trigger('click');
+    }
+
     //edit profile start
     $document.on('submit', '[data-edit-profile-form]', function(e){
         e.preventDefault();
