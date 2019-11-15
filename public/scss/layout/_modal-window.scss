@@ -179,6 +179,39 @@
 	}
 }
 
+#inviteFriends {
+	img {
+		margin: 0 0 19px;
+	}
+	p {
+		b {
+			font-weight: 700;
+		}
+	}
+}
+
+#sharingCaring {
+	img {
+		margin: 0 0 6px;
+	}
+	.title {
+		margin-bottom: 43px;
+	}
+}
+
+#welcomeBack {
+	img {
+		margin: 0 0 15px;
+	}
+	.title {
+		margin-bottom: 15px;
+		font-weight: 300;
+	}
+	p {
+		padding-bottom: 10px;
+	}
+}
+
 @media only screen and (max-height: 480px) {
 	.modal-window {
 		overflow: auto;

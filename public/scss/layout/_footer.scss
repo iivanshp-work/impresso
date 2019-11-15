@@ -12,14 +12,28 @@
 		box-shadow: -4px 0px 8px rgba(86, 91, 123, 0.2);
 	}
 	&__body {
-		padding: 18px 10px;
+		height: 61px;
 		display: flex;
 		align-items: center;
-		justify-content: space-around;
 		font-weight: 400;
-		font-size: $small-fs + 2px;
+		font-size: $small-fs;
 		> a {
+			padding: 0 6px;
+			text-align: center;
+			height: inherit;
+			width: 20%;
+			flex: 0 0 20%;
 			display: flex;
+			align-items: center;
+			justify-content: center;
+			@include radius(10px 10px 0px 0px);
+			&.active {
+				background-color: $violet;
+				color: $text-white;
+				> svg {
+					fill: $white;
+				}
+			}
 		}
 	}
 }

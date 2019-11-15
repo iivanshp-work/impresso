@@ -35,9 +35,12 @@
 		}
 	}
 	&__avatar {
-		@include circle-img(30px, 30px);
-		min-width: 30px;
+		@include circle-img(50px, 50px);
+		min-width: 50px;
 		margin-right: 10px;
+		> img {
+			width: 100%;
+		}
 	}
 	&__text {
 		color: $text-color;
@@ -47,12 +50,13 @@
 			display: block;
 		}
 		span {
-			color: $text-gray;
-			display: inline-block;
-			&::before {
-				content: "|";
-				margin: 0 4px 0 2px;
-			}
+			display: none;
+			// color: $text-gray;
+			// display: inline-block;
+			// &::before {
+			// 	content: "|";
+			// 	margin: 0 4px 0 2px;
+			// }
 		}
 		> small {
 			font-size: $small-fs;
@@ -62,7 +66,6 @@
 	&__body {
 		display: none;
 		margin-top: 13px;
-		padding-left: 40px;
 		font-size: $small-fs;
 		line-height: $line-height-small;
 		p {

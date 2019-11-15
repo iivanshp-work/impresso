@@ -83,21 +83,24 @@
 		margin-bottom: 28px;
 	}
 	&__avatar {
-		min-width: 60px;
+		min-width: 88px;
 		margin-right: 15px;
 		position: relative;
 		.avatar {
-			@include circle-img(60px, 60px);
+			@include circle-img(88px, 88px);
+			> img {
+				width: 100%;
+			}
 		}
 		&.checked {
 			&::after {
 				content: "";
 				position: absolute;
-				bottom: -7.8px;
+				bottom: -9.5px;
 				left: 50%;
-				margin-left: -7.8px;
-				width: 13.6px;
-				height: 13.6px;
+				margin-left: -9.5px;
+				width: 19px;
+				height: 19px;
 				background: url(../img/icons/checked.svg) no-repeat center center / 100% 100%;
 			}
 		}
@@ -105,6 +108,7 @@
 	&__info {
 		width: 80%;
 		a {
+			display: block;
 			color: $text-color;
 			font-size: $base-fs;
 			line-height: $base-line-height;
@@ -115,7 +119,7 @@
 			font-size: $small-fs;
 			line-height: $line-height-small;
 			color: $text-gray;
-			display: inline-block;
+			display: block;
 			letter-spacing: -0.07px;
 		}
 	}
@@ -130,6 +134,8 @@
 				color: $text-gray;
 				font-size: $small-fs;
 				line-height: $line-height-small;
+				margin-bottom: 7px;
+				display: block;
 			}
 			.border-violet {
 				margin-top: 7px;

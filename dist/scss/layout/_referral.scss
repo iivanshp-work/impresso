@@ -1,0 +1,71 @@
+.referral {
+	position: relative;
+	width: 100%;
+	height: 100vh;
+	overflow: hidden;
+	background: url(../img/slider/slider-1.png) no-repeat center center/cover;
+	&__content {
+		width: 100%;
+		height: 100%;
+		padding: 143px 30px 94px;
+		position: relative;
+		z-index: 1;
+		color: $text-white;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+	}
+	&__title {
+		font-size: $big-fs + 2px;
+		color: $text-white;
+		font-weight: 900;
+		width: 100%;
+		max-width: 320px;
+		margin: 0 auto;
+	}
+	p {
+		font-weight: 600;
+		max-width: 320px;
+		margin: 0 auto;
+	}
+	&__btn {
+		position: absolute;
+		left: 50%;
+		@include transform(translateX(-50%));
+		bottom: 20px;
+		z-index: 10;
+		color: $white;
+		font-weight: 700;
+		border-color: $white;
+		text-transform: uppercase;
+		background: $violet;
+		mix-blend-mode: hard-light;
+	}
+	&__author {
+		position: absolute;
+		right: 5px;
+		top: 16px;
+		color: $text-white;
+		font-size: $small-fs;
+		writing-mode: vertical-rl;
+		text-orientation: mixed;
+		@include rotate(180deg);
+		opacity: 0.5;
+	}
+}
+
+@media only screen and (max-width: 370px) {
+	.referral {
+		&__content {
+			padding: 110px 26px 84px;
+		}
+	}
+}
+
+@media only screen and (max-width: 860px) and (orientation: landscape) {
+	.referral {
+		&__content {
+			padding: 30px 20px 90px;
+		}
+	}
+}

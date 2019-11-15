@@ -19,6 +19,9 @@
 		> img {
 			margin-left: 10px;
 			width: 18px;
+			&.cloud {
+				width: 23px;
+			}
 		}
 		> a {
 			display: flex;

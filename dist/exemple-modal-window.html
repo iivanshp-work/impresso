@@ -57,6 +57,9 @@
         <button class="btn btn-violet open-pop-up" data-target="#passwordChangedCancelled">Password Changed
             Cancelled</button>
 
+        <button class="btn btn-violet open-pop-up" data-target="#inviteFriends">Invite Friends</button>
+        <button class="btn btn-violet open-pop-up" data-target="#sharingCaring">Sharing is caring</button>
+        <button class="btn btn-violet open-pop-up" data-target="#welcomeBack">Welcome Back</button>
 
     </main>
 
@@ -399,6 +402,7 @@
             </div>
         </div>
     </div>
+
     <div class="modal-window" id="passwordChanged">
         <div class="modal-window__content">
             <div class="modal-window__body text-center">
@@ -408,11 +412,52 @@
             </div>
         </div>
     </div>
+
     <div class="modal-window" id="passwordChangedCancelled">
         <div class="modal-window__content">
             <div class="modal-window__body text-center">
                 <h5 class="modal-window__subtitle">Password changed<br /> cancelled</h5>
                 <p>Your password has not been changed.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- new modal window 14.11.2019 -->
+    <div class="modal-window" id="inviteFriends">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <img src="img/icons/icon-share-modal.svg" alt="" class="modal-window__img-top" />
+                <p><b>Invite Friends</b></p>
+                <p>Get $5 worth of XIMs<br /> for your next meetup</p>
+                <button type="button" class="btn btn-violet">
+                    Share your link
+                </button>
+                <button type="button" class="btn btn-border close-modal">
+                    Cancel
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-window" id="sharingCaring">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <img src="img/icons/icon-share-modal.svg" alt="" class="modal-window__img-top" />
+                <h3 class="title">Sharing is caring</h3>
+                <p>When your friend is a validated user on the App, you’ll get $5 worth of XIMs.</p>
+                <p>Your friends signing up with your link will receive $3 worth of XIMs.</p>
+                <button type="button" class="btn btn-violet">Copy Link</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal-window" id="welcomeBack">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <img src="img/icons/icon.svg" alt="" class="modal-window__img-top" />
+                <h3 class="title">Welcome Back !</h3>
+                <p>Here are 10 XIMs FREE for being IMPRESSIVE</p>
+                <button type="button" class="btn btn-violet close-modal">Close</button>
             </div>
         </div>
     </div>

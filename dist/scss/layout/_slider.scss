@@ -35,14 +35,16 @@
 		justify-content: space-between;
 	}
 	&__title {
+		font-size: $big-fs + 2px;
 		color: $text-white;
-		font-weight: 700;
+		font-weight: 900;
 		text-align: left;
 		width: 100%;
 		max-width: 310px;
 		margin: 0 auto;
 	}
 	p {
+		font-weight: 600;
 		min-height: 40px;
 	}
 	.slick-dots {
@@ -75,16 +77,20 @@
 		color: $white;
 		font-weight: 700;
 		border-color: $white;
+		text-transform: uppercase;
+		background: $violet;
+		mix-blend-mode: hard-light;
 	}
 	&__author {
 		position: absolute;
 		right: 5px;
-		bottom: 94px;
+		top: 16px;
 		color: $text-white;
 		font-size: $small-fs;
 		writing-mode: vertical-rl;
 		text-orientation: mixed;
 		@include rotate(180deg);
+		opacity: 0.5;
 	}
 }
 
@@ -103,9 +109,6 @@
 		}
 		.slick-dots {
 			bottom: 74px;
-		}
-		&__author {
-			bottom: 40px;
 		}
 	}
 }
