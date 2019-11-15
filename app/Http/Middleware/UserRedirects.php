@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\View;
 use Mockery\Exception;
 use Session;
 class UserRedirects
@@ -104,6 +105,42 @@ class UserRedirects
             }
         }
 
+        $this->addActiveMenuLink($request);
         return $next($request);
+    }
+
+    public function addActiveMenuLink($request) {
+        $requstUrl = trim($request->getPathInfo(), '/');
+        $activeMenuItem = '';
+        if ($requstUrl) {
+            if (strpos($requstUrl, 'profile') !== false && (preg_match('/profile\/(\d)/', $requstUrl) || preg_match('/profile\/(\d)\/meetup/', $requstUrl))) {
+                $requstUrl = 'feed_profile';
+            }
+            switch ($requstUrl) {
+                case 'feeds':
+                case 'feed_profile':
+                    $activeMenuItem = 'feed';
+                    break;
+                case 'profile/edit/step/3':
+                    $activeMenuItem = 'resume';
+                    break;
+                case 'transaction-history':
+                case 'settings/credits':
+                case 'settings/credits/checkout':
+                    $activeMenuItem = 'transaction';
+                    break;
+                case 'profile':
+                case 'profile/edit':
+                case 'profile/edit/step/1':
+                case 'profile/edit/step/2':
+                case 'settings':
+                case 'settings/edit':
+                    $activeMenuItem = 'profile';
+                    break;
+                default:
+                    break;
+            }
+        }
+        View::share("activeMenuItem", $activeMenuItem);
     }
 }
