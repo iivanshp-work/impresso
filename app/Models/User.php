@@ -327,7 +327,7 @@ class User extends Model
             }
             //check last daily Xims date
             //check last daily Xims date
-            if (!$this->daily_xims_date || ($this->daily_xims_date && Carbon::parse($this->daily_xims_date)->timestamp < Carbon::now()->subHours(24)->timestamp)) {
+            if (!$this->daily_xims_date || ($this->daily_xims_date && Carbon::parse($this->daily_xims_date)->startOfDay()->timestamp < Carbon::now()->startOfDay()->timestamp)) {
                 //save notification
                 //Users_Notification::saveNotification('daily_xims', '', $this->id);
 

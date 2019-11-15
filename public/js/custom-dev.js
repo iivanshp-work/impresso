@@ -815,8 +815,9 @@ $document.ready(function(){
     //profile end
 
     //welcome back popup
-    if ($('.welcomeBackPopup').length) {
+    if ($('.welcomeBackPopup').length && !readCookie('wpsa')) {
         $('.welcomeBackPopup').trigger('click');
+        createCookie('wpsa', 1, 0.5);
     }
 
     //edit profile start
