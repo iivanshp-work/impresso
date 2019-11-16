@@ -1629,8 +1629,20 @@ $document.ready(function(){
     //share btn start
     $document.on('click change', '[data-share-open-btn]', function(e){
         e.preventDefault();
-        $('.sharePopup').click().trigger('click');
+        $('#inviteFriendsPopup').click().trigger('click');
     });
+    $('[data-open-sharing-caring-btn]').on('click change', function(e){
+        e.preventDefault();
+        $('#sharingCaringPopup').click().trigger('click');
+    });
+    $('[data-share-referral-link]').on('click change', function(e){
+        e.preventDefault();
+        let text = $(this).data('link');
+        copyToClipboard(text);
+        saveShare();
+    });
+
+    /*old share start*/
     $('[data-share-btn]').on('click change', function(e){
         e.preventDefault();
         share();
@@ -1668,6 +1680,7 @@ $document.ready(function(){
         copyToClipboard(text);
         saveShare();
     });
+    /*old share end*/
 
     function copyToClipboard(text) {
         Clipboard.copy(text);

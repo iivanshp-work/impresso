@@ -71,6 +71,8 @@ Route::get('notifications', 'NotificationsController@notificationsPage')->name('
 Route::get('feeds', 'FeedsController@feedsPage')->name('feeds');
 Route::post('feeds', 'FeedsController@feeds')->name('feeds_post');
 
+/* referral */
+Route::get('referral', 'SignController@referralPage')->name('referral');
 
 /* ================== Homepage + Admin Routes ================== */
 

@@ -131,6 +131,14 @@ class SignController extends Controller
                 $responseData['has_error'] = true;
                 $responseData['message'] .= 'User with entered email already exists.';
             } else {
+                $referringUserId = 0;
+                $referralUUID = Session::has('referral_uuid') ? Session::get('referral_uuid') : null;
+                if ($referralUUID) {
+                    $user = User::where('uuid', $referralUUID)->first();
+                    if ($user) {
+                        $referringUserId = $user->id;
+                    }
+                }
                 $user = User::create([
                     'name' => $request->input('name'),
                     'email' => $request->input('email'),
@@ -139,6 +147,8 @@ class SignController extends Controller
                     'provider' => 'site',
                     'is_verified' => 0,
                     'type' => getenv('USERS_TYPE_USER'), // default user
+                    'uuid' => str_random(20),
+                    'referring_user_id' => $referringUserId
                 ]);
                 if (isset($user->id)) {
                     $userdata = array(
@@ -149,8 +159,8 @@ class SignController extends Controller
                         $user = User::where('email', '=', $request->input('email'))->first();
                         Auth::login($user, 1);
 
-                        $mail = new Mails;
-                        $mail->signup_email($user, $request->input('password'));
+                        //$mail = new Mails;
+                        //$mail->signup_email($user, $request->input('password'));
 
                         $responseData['redirect'] = url(getenv('VALIDATION_PAGE'));
                         Session::put('session_start', Carbon::now()->format("Y-m-d H:i:s"));
@@ -273,5 +283,20 @@ class SignController extends Controller
             $responseData['message'] .= 'User with entered email already exists.';
         }
         return response()->json($responseData);
+    }
+
+    public function referralPage(Request $request) {
+        $user = Auth::user();
+        if ($user) {
+            return redirect(getenv('BASE_LOGEDIN_PAGE'));
+        } else {
+            if ($request->has('uuid')) {
+                //save referral code to session
+                Session::put('referral_uuid', ($request->input('uuid')));
+                Session::save();
+            }
+        }
+
+        return view('frontend.pages.referral');
     }
 }

@@ -111,6 +111,16 @@
 				<input type="text" class="form-control" placeholder="Daily Credits Amount(XIMS)" maxlength="100" name="daily_xims_amount" value="{{$configs->daily_xims_amount}}">
 			</div>
 
+			<div class="form-group">
+				<label>Referral Inviting User Amount(XIMS)</label>
+				<input type="text" class="form-control" placeholder="Referral Inviting User Amount(XIMS)" maxlength="100" name="referral_inviting_xims_amount" value="{{$configs->referral_inviting_xims_amount}}">
+			</div>
+
+			<div class="form-group">
+				<label>Referral Invited User Amount(XIMS)</label>
+				<input type="text" class="form-control" placeholder="Referral Invited User Amount(XIMS)" maxlength="100" name="referral_invited_xims_amount" value="{{$configs->referral_invited_xims_amount}}">
+			</div>
+
 
 		</div><!-- /.box-body -->
 		<div class="box-footer">

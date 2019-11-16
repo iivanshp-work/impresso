@@ -1,3 +1,6 @@
+@php
+    $user = Auth::user();
+@endphp
 <div class="modal-window" id="customValidateSuccess">
     <div class="modal-window__content">
         <div class="modal-window__body text-center">
@@ -40,6 +43,38 @@
 </div>
 <button class="btn btn-violet open-pop-up hide customValidateConfirm" data-target="#customValidateConfirm">Custom Validate Confirm</button>
 
+<!-- new share modal window -->
+<button class="btn btn-violet open-pop-up hide" data-target="#inviteFriends" id="inviteFriendsPopup">Invite Friends</button>
+
+<div class="modal-window" id="inviteFriends">
+    <div class="modal-window__content">
+        <div class="modal-window__body text-center">
+            <img src="{{asset('img/icons/icon-share-modal.svg')}}" alt="" class="modal-window__img-top" />
+            <p><b>Invite Friends</b></p>
+            <p>Get ${{LAConfigs::getByKey('referral_inviting_xims_amount')}} worth of XIMs<br /> for your next meetup</p>
+            <button type="button" data-open-sharing-caring-btn="" class="btn btn-violet">
+                Share your link
+            </button>
+            <button type="button" class="btn btn-border close-modal">
+                Cancel
+            </button>
+        </div>
+    </div>
+</div>
+<button class="btn btn-violet open-pop-up hide" data-target="#sharingCaring" id="sharingCaringPopup">Sharing is caring</button>
+<div class="modal-window" id="sharingCaring">
+    <div class="modal-window__content">
+        <div class="modal-window__body text-center">
+            <img src="{{asset('img/icons/icon-share-modal.svg')}}" alt="" class="modal-window__img-top" />
+            <h3 class="title">Sharing is caring</h3>
+            <p>When your friend is a validated user on the App, you’ll get ${{LAConfigs::getByKey('referral_inviting_xims_amount')}} worth of XIMs.</p>
+            <p>Your friends signing up with your link will receive ${{LAConfigs::getByKey('referral_invited_xims_amount')}} worth of XIMs.</p>
+            <button type="button" class="btn btn-violet" data-share-referral-link="" data-link="{{url('/referral?uuid=' .($user ? $user->uuid : ''))}}">Copy Link</button>
+        </div>
+    </div>
+</div>
+
+<!-- old share modal window -->
 <button class="btn btn-violet open-pop-up hide sharePopup" data-target="#share">Share</button>
 
 <div class="modal-window sharePopupData" id="share">
@@ -117,9 +152,11 @@
 <div class="modal-window" id="shareSuccess">
     <div class="modal-window__content">
         <div class="modal-window__body text-center">
-            <img src="{{asset('img/icons/like.png')}}" alt="like" class="modal-window__img-top" />
-            <h3 class="title mb-34">Success!</h3>
+            {{--<img src="{{asset('img/icons/like.png')}}" alt="like" class="modal-window__img-top" />
+            <h3 class="title mb-34">Success!</h3>--}}
             {{--<p>Your invitation has been sent.</p>--}}
+            {{--<p>You will earn the XIMs once the people you invited join IMPRESSO.</p>--}}
+            <p>Share link was copied to clipboard.</p>
             <p>You will earn the XIMs once the people you invited join IMPRESSO.</p>
             <button type="button" class="btn btn-violet close-modal">
                 Close
@@ -143,9 +180,6 @@
     </div>
 </div>
 
-@php
-    $user = Auth::user();
-@endphp
 @if ($user && (!$user->location_title || (!$user->longitude && !$user->latitude)))
     <div class="modal-window" id="allowLocationAccess">
         <div class="modal-window__content">
@@ -194,7 +228,7 @@
             <div class="modal-window__body text-center">
                 <img src="{{asset('img/icons/icon.svg')}}" alt="" class="modal-window__img-top" />
                 <h3 class="title">Welcome Back !</h3>
-                <p>Here are 10 XIMs FREE for being IMPRESSIVE</p>
+                <p>Here are {{LAConfigs::getByKey('daily_xims_amount')}} XIMs FREE for being IMPRESSIVE</p>
                 <button type="button" class="btn btn-violet close-modal">Close</button>
             </div>
         </div>

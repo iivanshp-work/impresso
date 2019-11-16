@@ -313,7 +313,7 @@
                         </div>
 
                         <div class="cards user__card" id="resumes" data-resume-wrapper="">
-                            <h5 class="user__card_title">CV/Resume:</h5>
+                            <h5 class="user__card_title">References & Recommendations:</h5>
                             <span class="edit-info" data-add-new-resume=""><img src="{{asset('img/icons/plus.svg')}}" alt="" /></span>
                             <div data-resume-template="" class="hide">
                                 <div data-resume-item="" class="user__card_info">

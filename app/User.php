@@ -38,7 +38,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password', "role", "provider", "provider_id", "type", "photo"
+        'name', 'email', 'password', "role", "provider", "provider_id", "type", "photo", "uuid", "referring_user_id"
     ];
 
     /**
@@ -370,7 +370,7 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
                 $this->daily_xims_date = null;
             }
             //check last daily Xims date
-            if (!$this->daily_xims_date || ($this->daily_xims_date && Carbon::parse($this->daily_xims_date)->startOfDay()->timestamp < Carbon::now()->startOfDay()->timestamp)) {
+            if ((!$this->daily_xims_date && Carbon::parse($this->created_at)->startOfDay()->timestamp < Carbon::now()->startOfDay()->timestamp) || ($this->daily_xims_date && Carbon::parse($this->daily_xims_date)->startOfDay()->timestamp < Carbon::now()->startOfDay()->timestamp)) {
                 //save notification
                 //Users_Notification::saveNotification('daily_xims', '', $this->id);
 
@@ -402,6 +402,19 @@ class User extends Model implements AuthenticatableContract, AuthorizableContrac
             }
         }
         return '';
+    }
+
+    /**
+     * Add UUID To Users
+     */
+    public function AddUUIDToUsers(){
+        $users = $this::all();
+        foreach($users as $user) {
+            if(!$user->uuid) {
+                $user->uuid = str_random(20);
+                $user->save();
+            }
+        }
     }
 
 }

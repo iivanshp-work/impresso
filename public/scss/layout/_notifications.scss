@@ -1,9 +1,17 @@
 .notifications {
 	margin-top: 20px;
 	&__card {
-		padding: 14px 17px 30px;
+		padding: 14px 17px 22px;
 		font-size: $small-fs;
 		line-height: $line-height-small;
+		&.meetup-accepted {
+			.notifications__arrow img {
+				display: none;
+			}
+			.notifications__body {
+				display: block;
+			}
+		}
 	}
 	&__arrow {
 		font-size: $small-fs;
@@ -36,17 +44,32 @@
 			}
 		}
 	}
+	&__info {
+		margin-top: 6px;
+	}
 	&__body {
 		display: none;
-		padding-left: 70px;
-		margin-top: 11px;
-		> a {
-			margin-bottom: 20px;
-		}
-		p {
-			margin-bottom: 20px;
-			&:last-of-type {
-				margin-bottom: 0;
+		margin-top: 16px;
+	}
+	&__btn {
+		display: flex;
+		justify-content: flex-end;
+		margin: 13px auto 0;
+		width: 150px;
+		height: 25px;
+		font-size: $small-fs;
+		padding: 0 2.5px;
+		.icon-phone {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			width: 20px;
+			height: 20px;
+			background-color: $base-bg;
+			@include radius(50%);
+			margin-left: 13px;
+			> img {
+				width: 10px;
 			}
 		}
 	}

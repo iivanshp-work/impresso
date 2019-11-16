@@ -45,7 +45,7 @@
                                     @php
                                         $imageColor = ($userTransaction->id % 13) + 1;
                                     @endphp
-                                    @if (in_array($userTransaction->type, ['user_validation', 'purchase', 'share', 'validation_education', 'validation_certificate', 'validation_resume', 'other', 'daily_xims']))
+                                    @if (in_array($userTransaction->type, ['user_validation', 'purchase', 'share', 'validation_education', 'validation_certificate', 'validation_resume', 'other', 'daily_xims', 'referral_invited', 'referral_inviting']))
                                         <img src="{{asset('img/logo-circle.png')}}" alt="" />
                                     @elseif(in_array($userTransaction->type, ['meetup_inviting', 'meetup_accept', 'meetup_declined']))
                                         @if ($userTransaction->type == "meetup_inviting")
@@ -104,6 +104,10 @@
                                         <a href="{{url('/profile/' . $userTransaction->meetup->user_id_invited)}}">{{$userTransaction->meetup->invitedUser ? ($userTransaction->meetup->invitedUser->name ? $userTransaction->meetup->invitedUser->name :$userTransaction->meetup->invitedUser->email) : ('Profile #' . $userTransaction->meetup->user_id_invited ) }} {!!$userTransaction->meetup->invitedUser && $userTransaction->meetup->invitedUser->job_title ? '<span>' . $userTransaction->meetup->invitedUser->job_title . '</span>' : ''!!}</a>
                                     @elseif($userTransaction->type == 'daily_xims')
                                         <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
+                                    @elseif($userTransaction->type == 'referral_invited')
+                                        <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
+                                    @elseif($userTransaction->type == 'referral_inviting')
+                                        <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
                                     @elseif($userTransaction->type == 'other')
                                         <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
                                     @endif
@@ -148,6 +152,10 @@
                                 <p>Meetup: {{$userTransaction->meetup->statusLabel}}</p>
                             @elseif($userTransaction->type == 'daily_xims')
                                 <p>Daily Xims. You received {{$userTransaction->amount}} XIMs.</p>
+                            @elseif($userTransaction->type == 'referral_invited')
+                                <p>Share: invited friend. You received {{$userTransaction->amount}} XIMs.</p>
+                            @elseif($userTransaction->type == 'referral_inviting')
+                                <p>Share: inviting friend. You received {{$userTransaction->amount}} XIMs.</p>
                             @elseif($userTransaction->type == 'other')
                                 <p>{{$userTransaction->notes}}</p>
                             @endif

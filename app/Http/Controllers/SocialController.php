@@ -9,6 +9,7 @@ use App\Http\Requests;
 use Auth;
 use Socialite;
 use App\Http\Controllers\LA\UploadsController as UploadsController;
+use Session;
 
 class SocialController extends Controller
 {
@@ -61,6 +62,14 @@ class SocialController extends Controller
                     }catch (Exception $exception) {
                     }
                 }
+                $referringUserId = 0;
+                $referralUUID = Session::has('referral_uuid') ? Session::get('referral_uuid') : null;
+                if ($referralUUID) {
+                    $user = User::where('uuid', $referralUUID)->first();
+                    if ($user) {
+                        $referringUserId = $user->id;
+                    }
+                }
                 $user = User::create([
                     'name' => $userSocial->getName(),
                     'email' => $userSocial->getEmail(),
@@ -68,6 +77,8 @@ class SocialController extends Controller
                     'provider_id' => $userSocial->getId(),
                     'provider' => $provider,
                     'photo' => $photo,
+                    'uuid' => str_random(20),
+                    'referring_user_id' => $referringUserId
                 ]);
                 Auth::login($user, 1);
                 return redirect(getenv('BASE_LOGEDIN_PAGE'));

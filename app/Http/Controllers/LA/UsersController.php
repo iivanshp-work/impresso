@@ -41,6 +41,9 @@ class UsersController extends Controller
 	public $listing_cols = ['id', 'name', 'email', 'is_verified', 'varification_pending', 'fail_validation'];
 
 	public function __construct() {
+
+        //(new AuthUser)->AddUUIDToUsers();//needed for prod site
+
 		// Field Access of Listing Columns
 		if(\Dwij\Laraadmin\Helpers\LAHelper::laravel_ver() == 5.3) {
 			$this->middleware(function ($request, $next) {
@@ -302,10 +305,14 @@ class UsersController extends Controller
 			}
 
 			$insert_id = Module::insert("Users", $request);
-            if ($insert_id && $mode == "admins") {
+            if ($insert_id) {
                 $user = AuthUser::find($insert_id);
-                $role = Role::where('name', 'SUPER_ADMIN')->first();
-                $user->attachRole($role);
+                if ($mode == "admins") {
+                    $role = Role::where('name', 'SUPER_ADMIN')->first();
+                    $user->attachRole($role);
+                }
+                $user->uuid = str_random(20);
+                $user->save();
             }
             if ($mode == "admins") {
                 return redirect(config('laraadmin.adminRoute')."/administrators");
@@ -468,6 +475,50 @@ class UsersController extends Controller
                 $user = User::find($id);
                 $user->credits_count = $user->credits_count_value + $amount;
                 $user->save();
+
+                if ($user->referring_user_id) {
+                    $referringUser = User::find($user->referring_user_id);
+
+                    $neededCredits = LAConfigs::getByKey('referral_invited_xims_amount');
+                    if (!$neededCredits) {
+                        $neededCredits = 3;
+                    }
+                    $amount = $neededCredits;
+                    $User_Transaction = new User_Transaction;
+                    $User_Transaction->user_id = $user->id;
+                    $User_Transaction->amount = $amount;
+                    $User_Transaction->type = 'referral_invited';
+                    $User_Transaction->notes = 'Tokens received through inviting friend.';
+                    $User_Transaction->by_user_id = $user->id;
+                    $User_Transaction->old_credits_amount = $user->credits_count_value;
+                    $User_Transaction->new_credits_amount = $user->credits_count_value + $amount;
+                    $User_Transaction->save();
+
+                    //adjust user credits amount
+                    $user->credits_count = $user->credits_count_value + $amount;
+                    $user->save();
+
+                    if ($referringUser) {
+                        $neededCredits = LAConfigs::getByKey('referral_inviting_xims_amount');
+                        if (!$neededCredits) {
+                            $neededCredits = 5;
+                        }
+                        $amount = $neededCredits;
+                        $User_Transaction = new User_Transaction;
+                        $User_Transaction->user_id = $referringUser->id;
+                        $User_Transaction->amount = $amount;
+                        $User_Transaction->type = 'referral_inviting';
+                        $User_Transaction->notes = 'Tokens received through invited friend.';
+                        $User_Transaction->by_user_id = $referringUser->id;
+                        $User_Transaction->old_credits_amount = $referringUser->credits_count_value;
+                        $User_Transaction->new_credits_amount = $referringUser->credits_count_value + $amount;
+                        $User_Transaction->save();
+
+                        //adjust user credits amount
+                        $referringUser->credits_count = $referringUser->credits_count_value + $amount;
+                        $referringUser->save();
+                    }
+                }
             }
 			if ($mode == "admins") {
                 return redirect(config('laraadmin.adminRoute')."/administrators");
