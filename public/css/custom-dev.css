@@ -460,3 +460,18 @@ customValidateConfirm{
 .modal-window#ximPurchase {
     z-index: 110;
 }
+.dashboard__text {
+    position: relative;
+    width: calc(100% - 50px);
+}
+.dashboard__text > a {
+    position: relative;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: calc(100%);
+}
+
+.notifications__btn {
+    width: 100px;
+}

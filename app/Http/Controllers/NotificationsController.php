@@ -59,7 +59,7 @@ class NotificationsController extends Controller
             $notifications = null;
         }
 
-        return view('frontend.pages.notifications', [
+        return view('frontend.pages.notifications_v2', [
             'user' => $user,
             'notifications' => $notifications
         ]);
