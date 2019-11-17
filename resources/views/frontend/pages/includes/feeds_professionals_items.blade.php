@@ -92,9 +92,9 @@
                     <a href="{{url('/profile/' . $professional->id . '/meetup')}}" class="btn btn-violet btn-meetup">Meetup</a>
                 @elseif ($meetup && $meetup->status == 2)
                     @if ($user->id == $meetup->user_id_invited)
-                        <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone)tel:{{$meetup->invitingUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">Call to Meetup</a>
+                        <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone)tel:{{$meetup->invitingUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">CALL</a>
                     @else
-                        <a href="@if ($meetup->invitedUser && $meetup->invitedUser->phone)tel:{{$meetup->invitedUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">Call to Meetup</a>
+                        <a href="@if ($meetup->invitedUser && $meetup->invitedUser->phone)tel:{{$meetup->invitedUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">CALL</a>
                     @endif
                 @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_inviting == $user->id)
                     <button type="button" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>

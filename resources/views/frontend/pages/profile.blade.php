@@ -97,15 +97,15 @@
                             <a href="{{url('/profile/' . $userData->id . '/meetup')}}" class="btn btn-violet btn-meetup">Meetup</a>
                         @elseif ($meetup && $meetup->status == 2)
                             @if ($user->id == $meetup->user_id_invited)
-                                <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone)tel:{{$meetup->invitingUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">Call to Meetup</a>
+                                <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone)tel:{{$meetup->invitingUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">CALL</a>
                             @else
-                                <a href="@if ($meetup->invitedUser && $meetup->invitedUser->phone)tel:{{$meetup->invitedUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">Call to Meetup</a>
+                                <a href="@if ($meetup->invitedUser && $meetup->invitedUser->phone)tel:{{$meetup->invitedUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">CALL</a>
                             @endif
                         @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_inviting == $user->id)
                             <button type="button" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>
                         @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_invited == $user->id)
                             <button type="button" class="btn btn-violet open-pop-up @if (app('request')->has('open_check_popup')){{'open_check_popup'}}@endif" data-target="#acceptInvite" data-meetup-check-invite="">Check invite</button>
-                            <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone)tel:{{$meetup->invitingUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected hide" data-meetup-connected="">Call to Meetup</a>
+                            <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone)tel:{{$meetup->invitingUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected hide" data-meetup-connected="">CALL</a>
                             <a href="{{url('/profile/' . $userData->id . '/meetup')}}" class="btn btn-violet btn-meetup hide" data-meetup-new-meetup="">Meetup</a>
                         @endif
                     </div>

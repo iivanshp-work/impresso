@@ -847,7 +847,7 @@ class ProfileSettingsController extends Controller
         } else {
             $userTransactions = null;
         }
-        return view('frontend.pages.transaction_history', [
+        return view('frontend.pages.transaction_history_v2', [
             'user' => $user,
             'userData' => $user,
             'userTransactions' => $userTransactions
