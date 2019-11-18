@@ -90,6 +90,18 @@
 		text-align: center;
 		margin-bottom: 20px;
 	}
+	&__bottom {
+		margin-top: 16px;
+		font-size: $small-fs;
+		line-height: $line-height-small;
+		color: $text-color;
+	}
+	.bonus {
+		text-align: center;
+		font-size: $base-fs;
+		line-height: $base-line-height + 3px;
+		margin-top: 13px;
+	}
 }
 
 @media only screen and (max-width: 370px) {
