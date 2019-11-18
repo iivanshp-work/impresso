@@ -229,7 +229,7 @@
                 <img src="{{asset('img/icons/icon.svg')}}" alt="" class="modal-window__img-top" />
                 <h3 class="title">Welcome Back !</h3>
                 <p>Here are {{LAConfigs::getByKey('daily_xims_amount')}} XIMs FREE for being IMPRESSIVE</p>
-                <button type="button" class="btn btn-violet close-modal">Close</button>
+                <a href="{{url('/transaction-history')}}" type="button" class="btn btn-violet">Close</a>
             </div>
         </div>
     </div>

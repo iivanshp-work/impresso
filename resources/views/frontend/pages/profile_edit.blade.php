@@ -328,7 +328,7 @@
                                     <div class="user__card_group-btn edit-group-btn">
                                         <button type="button" data-remove-item="" data-id="" class="btn btn-border">Remove</button>
                                         <button type="button" data-request-validation-item="" data-id="" class="btn btn-violet">
-                                            Verify My CV
+                                            Request Validation
                                         </button>
                                     </div>
                                     <span class="user__validated hide">Pending</span>
@@ -349,7 +349,7 @@
                                             <button type="button" data-remove-item="" data-id="{{$resume->id}}" class="btn btn-border">Remove</button>
                                             @if($resume->status == getenv('VERIFIED_STATUSES_NEW'))
                                                 <button type="button" data-request-validation-item="" data-id="{{$resume->id}}" class="btn btn-violet">
-                                                    Verify my CV
+                                                    Request Validation
                                                 </button>
                                             @endif
                                         </div>

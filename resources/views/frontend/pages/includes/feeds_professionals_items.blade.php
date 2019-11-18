@@ -34,41 +34,57 @@
                     </div>
                     <div class="cards-professionals__info">
                         <a href="{{url('/profile/' . $professional->id)}}">@if($professional->name){{$professional->name}}@else{{$professional->email}}@endif</a>
-                        <div class="d-flex justify-content-between">
-                            @if($professional->job_title)<span class="cards-professionals__info__job_title @if(strlen($professional->job_title) > 15) break-words @endif">{{$professional->job_title}}</span>@endif
-                            @if($professional->location_title)<span>{{$professional->location_title}}</span>@endif
-                        </div>
+                        @if($professional->job_title)<span class="cards-professionals__info__job_title @if(strlen($professional->job_title) > 15) break-words @endif">{{$professional->job_title}}</span>@endif
                         @if($professional->company_title)<span>@ {{$professional->company_title}}</span>@endif
+                        @if($professional->location_title)<span>{{$professional->location_title}}</span>@endif
                     </div>
                 </div>
                 <ul class="cards-professionals__desc">
-                    @if($professional->top_skills)
-                        @php
-                            $topSkills = explode("\n", trim($professional->top_skills));
-                            array_map('trim', $topSkills);
-                            if (!empty($topSkills) && count($topSkills) == 1 && isset($topSkills[0]) && ($topSkills[0] == "" || $topSkills[0] == " ")) {
-                                $topSkills = null;
-                            }
-                        @endphp
-                        @if(!empty($topSkills))
-                            <li>
-                                <span>Top Skills / Area of Interest</span>
-                                <ul class="list-type-circle">
-                                    @foreach($topSkills as $skill)
-                                        @if(trim($skill))
-                                            <li>{{$skill}}</li>
+                    @php
+                        $topSkills = explode("\n", trim($professional->top_skills));
+                        array_map('trim', $topSkills);
+                        if (!empty($topSkills) && count($topSkills) == 1 && isset($topSkills[0]) && ($topSkills[0] == "" || $topSkills[0] == " ")) {
+                            $topSkills = null;
+                        }
+                        $topSkillIteration = 0;
+                    @endphp
+                    <li>
+                        <span>Top Skills / Area of Interest</span>
+                        <ul class="list-type-circle">
+                            @if(!empty($topSkills))
+                                @foreach($topSkills as $skill)
+                                    @if(trim($skill))
+                                        <li>{{$skill}}</li>
+                                    @endif
+                                    @php
+                                        $topSkillIteration++;
+                                    @endphp
+                                @endforeach
+                            @endif
+                            @if ($topSkillIteration < 3)
+                                @while($topSkillIteration < 3)
+                                    <li>
+                                        @if (empty($topSkills) && !$topSkillIteration)
+                                            Being IMPRESSIVE
+                                        @else
+                                            &nbsp;
                                         @endif
-                                    @endforeach
-                                </ul>
-                            </li>
+                                    </li>
+                                    @php
+                                        $topSkillIteration++;
+                                    @endphp
+                                @endwhile
+                            @endif
+                        </ul>
+                    </li>
+                    <li>
+                        <span>IMPRESSIVE BIO:</span>
+                        @if($professional->impress)
+                            <div class="border-violet">{{str_limit($professional->impress, 180)}}</div>
+                        @else
+                            <div class="border-violet empty_impressive_bio">IMPRESSIVE during Meetup</div>
                         @endif
-                    @endif
-                    @if($professional->impress)
-                        <li>
-                            <span>IMPRESSIVE BIO:</span>
-                            <div class="border-violet">{{$professional->impress}}</div>
-                        </li>
-                    @endif
+                    </li>
                     @if($professional->educations_verified->count() || $professional->certifications_verified->count())
                         <li>
                             @if($professional->educations_verified->count())

@@ -2,8 +2,9 @@
     <div class="load__content">
         <img src="{{ asset('/img/Logo.png') }}" alt="" />
         <p>
-            Face to Face<br />
-            Professional Networking
+            No Spams<br>
+            No Swipping<br>
+            No Messaging<br>
         </p>
     </div>
 </div>
