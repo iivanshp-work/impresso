@@ -26,7 +26,7 @@
                     <div class="wizard__footer">
                         <a href="#" class="wizard__link open-pop-up" data-target="#validationMyProfile">Why do I need to do this?</a>
                         <a href="#" class="btn btn-violet" data-validation-step="step2">Start Now</a>
-                        <a href="{{url(getenv('BASE_LOGEDIN_PAGE'))}}" class="btn btn-border">Skip Validation</a>
+                        <a href="{{url(getenv('BASE_LOGEDIN_PAGE'))}}" class="btn btn-border skip-validation">Skip Validation</a>
                     </div>
                 </section>
             </div>

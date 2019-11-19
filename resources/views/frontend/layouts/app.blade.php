@@ -7,6 +7,10 @@
     <div class="application">
         <div class="application__wrap">
             @yield('main-content')
+
+            @section('popups')
+                @include('frontend.layouts.partials.popups')
+            @show
         </div>
     </div>
 @section('footer')
@@ -18,9 +22,6 @@
     @if ($controller == 'HomeController' && $action == "index")
         @include('frontend.layouts.partials.footer')
     @endif
-@show
-@section('popups')
-    @include('frontend.layouts.partials.popups')
 @show
 @section('scripts')
     @include('frontend.layouts.partials.scripts')

@@ -1085,7 +1085,11 @@ $document.ready(function(){
         uploadPopup = 'upload';
         clearUploadForm();
         if ($('.upload-modal .text-color-gray').length) {
-            $('.upload-modal .text-color-gray').width(Math.min(400, ($(window).width() - 50)));
+            let minVal = 400;
+            if ($window.width() > 978) {
+                minVal = 320;
+            }
+            $('.upload-modal .text-color-gray').width(Math.min(minVal, ($(window).width() - 50)));
         }
         openProfileEditPopup(uploadPopup);
     });
@@ -1141,7 +1145,11 @@ $document.ready(function(){
         uploadPopup = 'upload'
         clearUploadForm();
         if ($('.upload-modal .text-color-gray').length) {
-            $('.upload-modal .text-color-gray').width(Math.min(400, ($(window).width() - 50)));
+            let minVal = 400;
+            if ($window.width() > 978) {
+                minVal = 320;
+            }
+            $('.upload-modal .text-color-gray').width(Math.min(minVal, ($(window).width() - 50)));
         }
         openProfileEditPopup(uploadPopup);
     });
@@ -1197,7 +1205,11 @@ $document.ready(function(){
         uploadPopup = 'upload2'
         clearUploadForm();
         if ($('.upload-modal .text-color-gray').length) {
-            $('.upload-modal .text-color-gray').width(Math.min(400, ($(window).width() - 50)));
+            let minVal = 400;
+            if ($window.width() > 978) {
+                minVal = 320;
+            }
+            $('.upload-modal .text-color-gray').width(Math.min(minVal, ($(window).width() - 50)));
         }
         openProfileEditPopup(uploadPopup);
     });
