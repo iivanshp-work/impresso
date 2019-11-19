@@ -4,9 +4,11 @@
     @include('frontend.layouts.partials.htmlheader')
 @show
 <body class="loaded">
-{{--@include('frontend.layouts.partials.header')--}}
-{{--@hasSection('news-line')@yield('news-line')@endif--}}
-@yield('main-content')
+    <div class="application">
+        <div class="application__wrap">
+            @yield('main-content')
+        </div>
+    </div>
 @section('footer')
     @php
         $action = app('request')->route()->getAction();

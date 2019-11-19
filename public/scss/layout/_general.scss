@@ -217,6 +217,7 @@ h6 {
 	display: flex;
 	justify-content: space-between;
 	&__item {
+		cursor: pointer;
 		color: $text-gray;
 		&::before {
 			content: "";
@@ -304,5 +305,125 @@ h6 {
 	.title {
 		font-size: $big-fs - 4px;
 		line-height: $line-height-big - 4px;
+	}
+}
+
+@media only screen and (min-width: 500px) {
+	.application {
+		min-height: 100vh;
+		padding: 1px;
+		margin: 0;
+		background: url("../img/mockup-phone-bg.png") no-repeat center center/cover;
+		&__wrap {
+			position: relative;
+			height: 800px;
+			width: 436px;
+			display: block;
+			margin: 40px auto;
+			padding: 0;
+			background: url("../img/MockupPhone.png") no-repeat center center;
+			background-size: contain;
+		}
+		.main {
+			height: 684px;
+			width: 372px;
+			display: block;
+			margin: 0 auto;
+			position: absolute;
+			top: 58px;
+			left: 32px;
+			border: 0px;
+			overflow: auto;
+			overflow-y: auto;
+			background-color: $base-bg;
+		}
+		.slider,
+		.slick-list,
+		.slick-track,
+		.slider__item {
+			height: 100%;
+		}
+		.sign-up,
+		.login,
+		.password {
+			height: 100%;
+			min-height: inherit;
+			display: flex;
+		}
+		.sign-up {
+			.logo {
+				margin: 17px auto 58px;
+			}
+			.form {
+				height: 396px;
+			}
+		}
+		.login {
+			.logo {
+				margin: 17px auto 28px;
+			}
+			.form {
+				height: 430px;
+			}
+		}
+		.password {
+			.form {
+				height: 350px;
+			}
+		}
+		.sign-up__title,
+		.login__title,
+		.password__title {
+			margin-top: 40px;
+		}
+		.wizard {
+			height: inherit;
+			min-height: inherit;
+		}
+		.validation {
+			height: inherit;
+			&__step {
+				height: inherit;
+			}
+		}
+		.referral {
+			height: inherit;
+		}
+
+		.location-page {
+			height: inherit;
+			min-height: inherit;
+			&__body {
+				min-height: inherit;
+			}
+		}
+		.footer {
+			position: sticky;
+			bottom: 0;
+			left: 0;
+			right: 0;
+			z-index: 10;
+			&__fixed {
+				position: static;
+			}
+		}
+		.meetup {
+			min-height: 576px;
+		}
+		.notifications {
+			min-height: 556px;
+		}
+		.personal-details,
+		.dashboard {
+			min-height: 546px;
+		}
+	}
+}
+
+@media only screen and (min-width: 500px) and (max-height: 500px) {
+	.application {
+		.form {
+			min-height: 350px;
+		}
 	}
 }

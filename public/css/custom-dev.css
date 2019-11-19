@@ -195,6 +195,10 @@ customValidateConfirm{
     padding: 0 26px;
 }
 /*settings checkout start*/
+.checkout-page {
+    height: inherit;
+    min-height: inherit;
+}
 .checkout-page .settings__checkout__list{
     margin-top: 0;
     margin-bottom: 20px;
