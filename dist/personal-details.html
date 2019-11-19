@@ -18,78 +18,83 @@
 </head>
 
 <body class="loaded">
-    <div class="main">
-        <header class="header">
-            <h4 class="header-title">Personal Details</h4>
-            <span class="header__icon-left">
-                <a href="#"><img src="img/icons/settings.svg" alt="" class="settings-icon" /></a>
-            </span>
-            <span class="header__icon-right">
-                <img src="img/icons/bell.svg" alt="" />
-            </span>
-        </header>
-        <main class="personal-details">
-            <div class="user__header">
-                <div class="user__avatar">
-                    <img src="img/avatars/avatar-big.png" alt="" />
-                </div>
-                <span class="user__checked">
-                    <img src="img/icons/icon-checked.svg" alt="" />
-                </span>
+    <div class="application">
+        <div class="application__wrap">
+            <div class="main">
+                <header class="header">
+                    <h4 class="header-title">Personal Details</h4>
+                    <span class="header__icon-left">
+                        <a href="#"><img src="img/icons/settings.svg" alt="" class="settings-icon" /></a>
+                    </span>
+                    <span class="header__icon-right">
+                        <img src="img/icons/bell.svg" alt="" />
+                    </span>
+                </header>
+                <main class="personal-details">
+                    <div class="user__header">
+                        <div class="user__avatar">
+                            <img src="img/avatars/avatar-big.png" alt="" />
+                        </div>
+                        <span class="user__checked">
+                            <img src="img/icons/icon-checked.svg" alt="" />
+                        </span>
+                    </div>
+                    <ul class="personal-details__list">
+                        <li>
+                            <span>Full Name</span>
+                            <input type="text" class="style-input-text" value="Lilly Barton" disabled>
+                            <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
+                        </li>
+                        <li>
+                            <span>Date of Birth</span>
+                            <input type="text" class="style-input-text" value="25 Feb 1990" disabled>
+                            <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
+                        </li>
+                        <li>
+                            <span>Address</span>
+                            <input type="text" class="style-input-text" value="Avenue de Cour 5" disabled>
+                            <input type="text" class="style-input-text" value="1007" disabled>
+                            <input type="text" class="style-input-text" value="Lausanne, Switzerland" disabled>
+                            <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
+                        </li>
+                        <li>
+                            <span>Phone Number</span>
+                            <input type="text" class="style-input-text" value="+41 12 345 67 89" disabled>
+                            <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
+                        </li>
+                        <li>
+                            <span>Email</span>
+                            <input type="text" class="style-input-text" value="lilly.barton@email.com" disabled>
+                            <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
+                        </li>
+                        <li>
+                            <span>Password</span>
+                            <input type="password" class="style-input-text" value="" placeholder="Change password"
+                                disabled>
+                            <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
+                        </li>
+                    </ul>
+                </main>
+                <footer class="footer">
+                    <div class="footer__fixed">
+                        <div class="footer__body">
+                            <a href="#">
+                                <img src="img/icons/folder.svg" alt="folder">
+                            </a>
+                            <a href="#">
+                                <img src="img/icons/share.svg" alt="share">
+                            </a>
+                            <a href="#">
+                                <img src="img/icons/user.svg" alt="user">
+                            </a>
+                            <a href="#">
+                                25049 XIM
+                            </a>
+                        </div>
+                    </div>
+                </footer>
             </div>
-            <ul class="personal-details__list">
-                <li>
-                    <span>Full Name</span>
-                    <input type="text" class="style-input-text" value="Lilly Barton" disabled>
-                    <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
-                </li>
-                <li>
-                    <span>Date of Birth</span>
-                    <input type="text" class="style-input-text" value="25 Feb 1990" disabled>
-                    <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
-                </li>
-                <li>
-                    <span>Address</span>
-                    <input type="text" class="style-input-text" value="Avenue de Cour 5" disabled>
-                    <input type="text" class="style-input-text" value="1007" disabled>
-                    <input type="text" class="style-input-text" value="Lausanne, Switzerland" disabled>
-                    <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
-                </li>
-                <li>
-                    <span>Phone Number</span>
-                    <input type="text" class="style-input-text" value="+41 12 345 67 89" disabled>
-                    <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
-                </li>
-                <li>
-                    <span>Email</span>
-                    <input type="text" class="style-input-text" value="lilly.barton@email.com" disabled>
-                    <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
-                </li>
-                <li>
-                    <span>Password</span>
-                    <input type="password" class="style-input-text" value="" placeholder="Change password" disabled>
-                    <span class="edit-info"><img src="img/icons/pen.svg" alt="" /></span>
-                </li>
-            </ul>
-        </main>
-        <footer class="footer">
-            <div class="footer__fixed">
-                <div class="footer__body">
-                    <a href="#">
-                        <img src="img/icons/folder.svg" alt="folder">
-                    </a>
-                    <a href="#">
-                        <img src="img/icons/share.svg" alt="share">
-                    </a>
-                    <a href="#">
-                        <img src="img/icons/user.svg" alt="user">
-                    </a>
-                    <a href="#">
-                        25049 XIM
-                    </a>
-                </div>
-            </div>
-        </footer>
+        </div>
     </div>
 
     <div class="load">
