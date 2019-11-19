@@ -29,7 +29,7 @@
                         Nooks
                     </li>
                     <li class="tab-navigation__item active tab-navigation__item_right" data-feeds-tab="" data-ftype="professionals">
-                        Professionals
+                        MeetUp
                     </li>
                 </ul>
                 <div class="search">

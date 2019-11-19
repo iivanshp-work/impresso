@@ -39,6 +39,7 @@ class FeedsController extends Controller
     public function feedsPage() {
         $userData = Auth::user();
         $showFakeProfiles = $userData && $userData->varification_pending && !$userData->is_verified;
+        $showFakeProfiles = false;
 
         $jobs = Job::withDistance($userData)->notDeleted()->where('status', '=', 1)->orderBy('distance')->limit($this->paginationLimit)->get();
         if ($jobs->count() == 0) $jobs = null;
@@ -62,7 +63,7 @@ class FeedsController extends Controller
             ->notDeleted()
             ->users()
             ->notMe()
-            ->where('is_verified', '1')
+            //->where('is_verified', '1')
             ->orderBy('distance')
             ->limit($this->paginationLimit)
             ->isWithinMaxDistance($userData, $radius)
@@ -95,6 +96,7 @@ class FeedsController extends Controller
         ];
         $userData = Auth::user();
         $showFakeProfiles = $userData && $userData->varification_pending && !$userData->is_verified;
+        $showFakeProfiles = false;
 
         $type = $request->has('type') ? $request->input('type') : '';
         $keyword = $request->has('keyword') ? trim($request->input('keyword')) : '';
@@ -139,7 +141,7 @@ class FeedsController extends Controller
                     ->notDeleted()
                     ->users()
                     ->notMe()
-                    ->where('is_verified', '1')
+                    //->where('is_verified', '1')
                     ->where(function ($query) use ($keyword) {
                         $query->orWhere("name", "like", "%" . $keyword . "%");
                         $query->orWhere("email", "like", "%" . $keyword . "%");

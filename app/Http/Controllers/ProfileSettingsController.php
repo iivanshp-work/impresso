@@ -1071,7 +1071,7 @@ class ProfileSettingsController extends Controller
                 $user->phone = $this->formatPhoneNumber($fields['phone_number_country_code'] . ' ' . $fields['phone_number']);
                 $user->save();
                 $responseData['message'] = 'Your mobile number successfully saved.';
-                $responseData['redirect'] = url(getenv('BASE_LOGEDIN_PAGE'));
+                $responseData['redirect'] = url(getenv('VALIDATION_PAGE'));
             } else {
                 $responseData['has_error'] = true;
                 $responseData['message'] = 'Phone number cannot be saved, try again later.';

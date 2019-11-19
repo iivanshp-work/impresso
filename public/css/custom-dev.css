@@ -423,6 +423,15 @@ customValidateConfirm{
     color: #fff;
     background-color: #7e20c8;
 }
+.cards-professionals .btn-meetup-connected{
+    position: relative;
+}
+.cards-professionals .btn-meetup-connected:after{
+    content: url(../img/icons/checked-circle.svg);
+    position: absolute;
+    top: 3px;
+    right: 3px;
+}
 .cards-professionals__info a {
     word-break: break-all;
 }
@@ -477,7 +486,15 @@ customValidateConfirm{
 }
 
 .notifications__btn {
-    width: 100px;
+    position: relative;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+}
+.notifications__btn .icon-phone {
+    position: absolute;
+    right: 3px;
+    top: 1px;
 }
 .empty_impressive_bio {
     text-align: center;

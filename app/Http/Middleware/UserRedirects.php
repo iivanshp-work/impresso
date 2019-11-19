@@ -81,8 +81,8 @@ class UserRedirects
                     $path = '/phone-validation';
                     $needRedirect = true;
                 }else if (!$user->varification_pending && !$user->is_verified && $requestUrl != getenv('VALIDATION_PAGE') && !in_array($requestUrl, $skipPaths)) {
-                    $path = '/validation';
-                    $needRedirect = true;
+                    //$path = '/validation';
+                    //$needRedirect = true;
                 }else if ($user->varification_pending && !$user->is_verified && ($requestUrl == '/settings/credits' || $requestUrl == '/settings/credits/checkout' || $requestUrl == '/transaction-history') && !in_array($requestUrl, $skipPaths)) {
                     $path = '/profile?show_pending_popup=1';
                     $needRedirect = true;

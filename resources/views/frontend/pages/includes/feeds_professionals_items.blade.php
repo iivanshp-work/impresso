@@ -104,18 +104,26 @@
                     $meetup = $professional->meetup();
                     $user = Auth::user();
                 @endphp
-                @if (!$meetup || ($meetup && $meetup->status == 3) || ($meetup && $meetup->status == 4)) {{--failed-declined meetup--}}
-                    <a href="{{url('/profile/' . $professional->id . '/meetup')}}" class="btn btn-violet btn-meetup">Meetup</a>
-                @elseif ($meetup && $meetup->status == 2)
-                    @if ($user->id == $meetup->user_id_invited)
-                        <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone)tel:{{$meetup->invitingUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">CALL</a>
+                @if (!$user->is_verified)
+                    @if (!$user->varification_pending)
+                        <a href="{{url('/validation')}}" class="btn btn-violet btn-meetup">Verify Me</a>
                     @else
-                        <a href="@if ($meetup->invitedUser && $meetup->invitedUser->phone)tel:{{$meetup->invitedUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">CALL</a>
+                        <button type="button" class="btn btn-gray btn-meetup-send">Pending Verification</button>
                     @endif
-                @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_inviting == $user->id)
-                    <button type="button" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>
-                @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_invited == $user->id)
-                    <a href="{{url('/profile/' . $professional->id . '?open_check_popup=1')}}" class="btn btn-violet btn-meetup" data-meetup-new-meetup="">Check invite</a>
+                @else
+                    @if (!$meetup || ($meetup && $meetup->status == 3) || ($meetup && $meetup->status == 4)) {{--failed-declined meetup--}}
+                        <a href="{{url('/profile/' . $professional->id . '/meetup')}}" class="btn btn-violet btn-meetup">Meetup</a>
+                    @elseif ($meetup && $meetup->status == 2)
+                        @if ($user->id == $meetup->user_id_invited)
+                            <a href="@if ($meetup->invitingUser && $meetup->invitingUser->phone)tel:{{$meetup->invitingUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">CALL</a>
+                        @else
+                            <a href="@if ($meetup->invitedUser && $meetup->invitedUser->phone)tel:{{$meetup->invitedUser->phone}}@else{{"#"}}@endif" class="btn btn-violet btn-meetup-connected">CALL</a>
+                        @endif
+                    @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_inviting == $user->id)
+                        <button type="button" class="btn btn-gray btn-meetup-send">Meetup invite sent</button>
+                    @elseif ($meetup && $meetup->status == 1 && $meetup->user_id_invited == $user->id)
+                        <a href="{{url('/profile/' . $professional->id . '?open_check_popup=1')}}" class="btn btn-violet btn-meetup" data-meetup-new-meetup="">Check invite</a>
+                    @endif
                 @endif
             </div>
         @endforeach
