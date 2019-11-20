@@ -19,13 +19,16 @@ class UserRedirects
      */
     public function handle($request, Closure $next, $guard = null)
     {
-        /*if ($_SERVER['REMOTE_ADDR'] == '93.175.195.69') {
-            test($request->getPathInfo());
-        }*/
+
         $user = Auth::user();
         $path = '/';
         $needRedirect = false;
         $requestUrl = $request->getPathInfo();
+
+        if (getenv('MAINTENANCE_MODE') && $requestUrl != '/maintenance') {
+            return redirect('/maintenance');
+        }
+
         try {
             $urls['current'] = url()->current();
             if (url()->current() != url()->previous()) {

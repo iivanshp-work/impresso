@@ -74,6 +74,9 @@ Route::post('feeds', 'FeedsController@feeds')->name('feeds_post');
 /* referral */
 Route::get('referral', 'SignController@referralPage')->name('referral');
 
+/* maintenance */
+Route::get('maintenance', 'HomeController@maintenancePage')->name('maintenance');
+
 /* ================== Homepage + Admin Routes ================== */
 
 require __DIR__.'/admin_routes.php';
