@@ -72,7 +72,6 @@
                         </div>
                         <div class="cards user__card">
                             <h5 class="user__card_title">Basic Information *</h5>
-                            <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 <li>
                                     <input class="style-input-text" type="text" value="@if($userData->job_title){{$userData->job_title}}@else{{''}}@endif"
@@ -98,7 +97,6 @@
                     <div class="steps step-2 @if($step != '2') hide @endif">
                         <div class="cards user__card">
                             <h5 class="user__card_title">IMPRESSIVE BIO: *</h5>
-                            <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <textarea class="style-textarea border-violet" rows="4" cols="50" maxlength="150"
                                       name="impress" autocomplete="off" placeholder="What do you do best in your professional and non-professional life?">{{$userData->impress}}</textarea>
                         </div>
@@ -120,7 +118,6 @@
 
                         <div class="cards user__card">
                             <h5 class="user__card_title">What are your top skills or interest? *</h5>
-                            <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 @if(!empty($topSkills))
                                     @foreach($topSkills as $skill)
@@ -166,7 +163,6 @@
 
                         <div class="cards user__card">
                             <h5 class="user__card_title">What's your personality? *</h5>
-                            <span class="edit-info"><img src="{{asset('img/icons/pen.svg')}}" alt="" /></span>
                             <ul class="list-type-circle">
                                 @if(!empty($softSkills))
                                     @foreach($softSkills as $skill)

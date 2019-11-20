@@ -505,6 +505,7 @@ customValidateConfirm{
     margin-top: 10px;
 }
 @media only screen and (min-width: 1024px) {
+    .application .footer {z-index: 100;}
     .application__wrap {overflow: hidden;}
     .application .modal-window {position: absolute;top: 55px;left: 30px;right: 30px;bottom: 55px;}
     .application .modal-window .modal-window__content {min-height: 100%;height: 100%;overflow: hidden;position: relative;}
