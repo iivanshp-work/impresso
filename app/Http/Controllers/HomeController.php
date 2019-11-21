@@ -97,6 +97,9 @@ class HomeController extends Controller
      * @return Response
      */
     public function maintenancePage() {
+        if (!getenv('MAINTENANCE_MODE')) {
+            return redirect(getenv('BASE_LOGEDIN_PAGE'));
+        }
         return view('frontend.pages.maintenance');
     }
 }
