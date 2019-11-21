@@ -73,7 +73,7 @@
                                 <div class="dashboard__text">
                                     @if($userTransaction->type == 'user_validation')
                                         <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
-                                        <p>Account Validated</p>
+                                        <p>Profile Verified</p>
                                     @elseif($userTransaction->type == 'purchase')
                                         <a href="javascript:void(0);">{{'IMPRESSO'}}</a>
                                         <p>XIMs Purchase</p>

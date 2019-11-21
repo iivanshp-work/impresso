@@ -92,7 +92,7 @@
                                             </a>
                                             <div class="notifications__info">
                                                 <a href="#">IMPRESSO</a>
-                                                <p>Account Approved</p>
+                                                <p>Profile Verified</p>
                                                 @if($notification->created_at)<small>{{Carbon::parse($notification->created_at)->format('H:i')}}</small>@endif
                                             </div>
                                             <a class="full-link" href="{{url('/feeds')}}"></a>
@@ -215,7 +215,7 @@
 
                                 @elseif ($notification->type == 'user_validation_success')
                                     <div class="notifications__body">
-                                        <p>{{$notification->notification_text}}</p>
+                                        <p>Start your Meetup now!</p>
                                     </div>
                                 @elseif ($notification->type == 'admin_manual')
                                     <div class="notifications__body">

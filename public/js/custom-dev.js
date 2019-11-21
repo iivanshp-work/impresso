@@ -1749,7 +1749,7 @@ $document.ready(function(){
         let targetLink = base_url + '/save-share';
         $.ajax({
             url: targetLink,
-            type: 'post',
+            type: 'get',
             data: {'test':1},
             dataType: 'json',
             success: function(response){

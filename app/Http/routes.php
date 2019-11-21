@@ -44,7 +44,7 @@ Route::post('meetup', 'ProfileSettingsController@meetup')->name('meetup_post');
 /* diff rules */
 Route::get('transaction-history', 'ProfileSettingsController@transactionHistoryPage')->name('transaction_history');
 Route::post('save-geo-data', 'ProfileSettingsController@saveGeo')->name('save_geo_post');
-Route::post('save-share', 'ProfileSettingsController@saveShare')->name('save_share_post');
+Route::get('save-share', 'ProfileSettingsController@saveShare')->name('save_share');
 Route::post('save-push-notification-token', 'ProfileSettingsController@savePushNotificationToken')->name('save_push_notification_token_post');
 
 /* phone-validation */

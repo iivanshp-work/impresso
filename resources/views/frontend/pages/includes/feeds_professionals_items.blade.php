@@ -80,7 +80,7 @@
                     <li>
                         <span>IMPRESSIVE BIO:</span>
                         @if($professional->impress)
-                            <div class="border-violet">{{str_limit($professional->impress, 180)}}</div>
+                            <div class="border-violet impressive_bio">{{str_limit($professional->impress, 170)}}</div>
                         @else
                             <div class="border-violet empty_impressive_bio">IMPRESSIVE during Meetup</div>
                         @endif

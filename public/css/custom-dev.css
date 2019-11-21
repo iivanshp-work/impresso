@@ -498,8 +498,13 @@ customValidateConfirm{
 }
 .empty_impressive_bio {
     text-align: center;
-    padding: 32px 60px 40px;
-    font-size: 14px;
+    padding: 35px 60px 42px;
+    font-size: 15px;
+}
+.cards-professionals .impressive_bio {
+    min-height: 118px;
+    max-height: 125px;
+    overflow: hidden;
 }
 .wizard .skip-validation {
     margin-top: 10px;
