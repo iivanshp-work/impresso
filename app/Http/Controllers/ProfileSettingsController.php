@@ -864,8 +864,13 @@ class ProfileSettingsController extends Controller
         $saved = false;
         $lat = $request->has('lat') ? round($request->input('lat'), 3) : '';
         $lon = $request->has('lon') ? round($request->input('lon'), 3) : '';
+        $user_id = $request->has('user_id') ? intval($request->input('user_id')) : 0;
         $address = '';
-        $user = Auth::user();
+        if ($user_id) {
+            $user = User::find($user_id);
+        } else {
+            $user = Auth::user();
+        }
         if($lat && $lon) {
             if ($lat == 0.001 && $lon == 0.001) {
                 $ip = $request->ip();
@@ -933,14 +938,22 @@ class ProfileSettingsController extends Controller
                     }
                 }
             }
-            $user = Auth::user();
-            $user->location_title = $address ? $address : "(" . $lat . ", " . $lon . ")";
-            $user->latitude = $lat;
-            $user->longitude = $lon;
-            $user->save();
-            $saved = true;
+            if ($user_id) {
+                $user = User::find($user_id);
+            } else {
+                $user = Auth::user();
+            }
+            if ($user) {
+                $user->location_title = $address ? $address : "(" . $lat . ", " . $lon . ")";
+                $user->latitude = $lat;
+                $user->longitude = $lon;
+                $user->save();
+                $saved = true;
+            }  else {
+                $saved = false;
+            }
         }
-        return response()->json(['saved' => $saved, 'user_address' => $user->location_title]);
+        return response()->json(['saved' => $saved, 'user_address' => isset($user->location_title) ? $user->location_title : null]);
     }
 
     /**
