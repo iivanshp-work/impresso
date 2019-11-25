@@ -104,7 +104,7 @@
                     $meetup = $professional->meetup();
                     $user = Auth::user();
                 @endphp
-                @if (!$user->is_verified)
+                @if ($professional->id == $user->id && !$user->is_verified)
                     @if (!$user->varification_pending)
                         <a href="{{url('/validation')}}" class="btn btn-violet btn-meetup">Verify Me</a>
                     @else

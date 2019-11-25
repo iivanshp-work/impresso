@@ -59,15 +59,18 @@ class FeedsController extends Controller
             ->get();
 
 
-        $professionals = User::withDistance($userData)
+        $professionalsQuery = User::withDistance($userData)
             ->notDeleted()
             ->users()
-            ->notMe()
             //->where('is_verified', '1')
             ->orderBy('distance')
             ->limit($this->paginationLimit)
-            ->isWithinMaxDistance($userData, $radius)
-            ->get();
+            ->isWithinMaxDistance($userData, $radius);
+        if ($userData && $userData->is_verified) {
+            $professionalsQuery = $professionalsQuery->notMe();
+        }
+
+        $professionals = $professionalsQuery->get();
         if ($professionals->count() == 0) $professionals = null;
         if ($showFakeProfiles) {
             $professionals = range(1, 5);
@@ -140,7 +143,6 @@ class FeedsController extends Controller
                 $query = User::withDistance($userData)
                     ->notDeleted()
                     ->users()
-                    ->notMe()
                     //->where('is_verified', '1')
                     ->where(function ($query) use ($keyword) {
                         $query->orWhere("name", "like", "%" . $keyword . "%");
@@ -154,6 +156,9 @@ class FeedsController extends Controller
                     });
                 if (!$keyword) {
                     $query = $query->isWithinMaxDistance($userData, $radius);
+                }
+                if ($userData && $userData->is_verified) {
+                    $query = $query->notMe();
                 }
                 $query = $query->orderBy('distance')
                     ->offset($offset)
