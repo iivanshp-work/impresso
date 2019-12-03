@@ -350,6 +350,12 @@ $document.ready(function(){
         let $this = $(this), item = $this.parent(), btn = item.find('[data-validation-send-file]'),
             id = $this.data('image-id'), formData = new FormData(), targetLink = base_url + '/validation';
         let reader = new FileReader(), file = $this.get(0).files[0];
+        let maxSize = 10 * 1024 * 1024;
+        console.log(file.size);
+        if (file.size > maxSize) {
+            $('[btn-validate-max_file_size-popup]').click().trigger('click');
+            return;
+        }
         let checkBtn = $('[data-validation-check]');
         let checkBtn2 = $('[data-validation-step="step4"]');
         reader.onloadend = function () {
@@ -1297,6 +1303,7 @@ $document.ready(function(){
             if(maxSizeLimit) {
                 closeProfileEditPopup(uploadPopup);
                 openProfileEditPopup('validate-max_file_size');
+                return;
             }
         }else{
             showError('No files selected.', 'Error!', function(){

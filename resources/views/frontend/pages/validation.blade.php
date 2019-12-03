@@ -193,6 +193,20 @@
             </div>
         </div>
     @endif
+
+    <button btn-validate-max_file_size-popup="" class="hide btn btn-violet open-pop-up" data-target="#notEnoughMinerals">notEnoughMinerals</button>
+    <div class="modal-window" id="notEnoughMinerals" data-validate-max_file_size-popup="">
+        <div class="modal-window__content">
+            <div class="modal-window__body text-center">
+                <h3>Uh-oh!</h3>
+                <p>Looks like your file size is too big.</p>
+                <p>Maximum file size is 10MB</p>
+                <button type="button" class="btn btn-violet close-modal">
+                    Close
+                </button>
+            </div>
+        </div>
+    </div>
 @endpush
 
 @push('styles')

@@ -1,5 +1,13 @@
 <?php
 function test($value, $exit = 1) {echo "<pre>"; print_r($value); if ($exit) exit;}
+
+ini_set('max_execution_time', 300);
+ini_set('max_input_time', 300);
+ini_set('memory_limit', '1536M');
+ini_set('post_max_size', '50M');
+ini_set('upload_max_filesize', '50M');
+ini_set("display_errors", 1);
+error_reporting(E_ALL);
 /*
 |--------------------------------------------------------------------------
 | Create The Application

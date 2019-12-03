@@ -53,7 +53,7 @@ class SocialController extends Controller
                 $photo = 0;
                 if ($image) {
                     try {
-                        $image = str_replace('?type=normal', 'jpg', $image);
+                        //$image = str_replace('?type=normal', 'jpg', $image);
                         $uploadController = new UploadsController;
                         $responseImage = $uploadController->upload_files(true, $image, ["width" => 200, "height" => 200], true);
                         if ($responseImage["status"] == "success") {
