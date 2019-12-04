@@ -87,7 +87,7 @@
                     </p>
                     <p>
                         <img src="{{asset('img/icons/multiple-users-silhouette.png')}}" alt="" />
-                        <a href="https://www.impressoapp.com/meetups/">@if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif @if($userData->meetup_count == 1){{'Meetup'}}@else{{'Meetups'}}@endif</a>
+                        <a href="javascript:void(0);">@if($userData->meetup_count){{$userData->meetup_count}}@else{{'0'}}@endif @if($userData->meetup_count == 1){{'Meetup'}}@else{{'Meetups'}}@endif</a>
                     </p>
                 </div>
 
