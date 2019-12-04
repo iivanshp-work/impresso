@@ -483,6 +483,7 @@ class UsersController extends Controller
                     if (!$neededCredits) {
                         $neededCredits = 3;
                     }
+                    $neededCredits = $neededCredits * 10;
                     $amount = $neededCredits;
                     $User_Transaction = new User_Transaction;
                     $User_Transaction->user_id = $user->id;
@@ -503,6 +504,7 @@ class UsersController extends Controller
                         if (!$neededCredits) {
                             $neededCredits = 5;
                         }
+                        $neededCredits = $neededCredits * 10;
                         $amount = $neededCredits;
                         $User_Transaction = new User_Transaction;
                         $User_Transaction->user_id = $referringUser->id;
