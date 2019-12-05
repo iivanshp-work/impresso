@@ -574,6 +574,10 @@ $document.ready(function(){
 
     // general feed submit Load items function
     function feedsLoadItems(){
+        mixpanel.track(
+            "feeds page",
+            {"url": window.location.href}
+        );
         let frm = $('[data-feeds-search-form]'), targetLink = base_url + '/feeds';
         let data = frm.serialize();
         let type = frm.find('[data-feeds-search-type]').val();
@@ -1659,6 +1663,10 @@ $document.ready(function(){
         let text = $(this).data('link');
         copyToClipboard(text);
         saveShare();
+        mixpanel.track(
+            "Share Clicked",
+            {"url": window.location.href}
+        );
     });
 
     /*old share start*/
@@ -1949,4 +1957,9 @@ $document.ready(function(){
         }
     }
     //meetup end
+
+    mixpanel.track(
+        "Page visited",
+        {"url": window.location.href}
+    );
 });
