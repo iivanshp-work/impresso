@@ -41,7 +41,7 @@
                     <span>Legal:</span>
                     <a href="https://www.impressoapp.com/app-terms-conditions">Terms and Conditions</a>
                     <a href="https://www.impressoapp.com/privacy">Privacy Policy</a>
-                    <a href="https://www.impressoapp.com/copyrights">Credits & Copyrights</a>
+                    <a href="https://www.impressoapp.com/credits">Credits & Copyrights</a>
                 </li>
                 <li>
                     <span>Contact:</span>

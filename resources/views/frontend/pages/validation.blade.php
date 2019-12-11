@@ -20,8 +20,7 @@
                         <div class="wizard__image">
                             <img src="{{ asset('img/wizard-img.png') }}" alt="wizard">
                         </div>
-                        <h2 class="wizard__title">YOU SHALL NOT PASS!</h2>
-                        <p class="wizard__text">Unless you take a selfie with your valid identity card.</p>
+                        <p class="validation__text-big"><strong>Upload your ID & selfie <br> to get verified ID</strong></p>
                     </div>
                     <div class="wizard__footer">
                         <a href="#" class="wizard__link open-pop-up" data-target="#validationMyProfile">Why do I need to do this?</a>
@@ -42,9 +41,9 @@
                     <img src="{{ asset('img/validate-image-1.png') }}" alt=""/>
                 </div>
 
-                <p class="validation__text-big">Take a clear photo of your <strong>ID</strong></p>
+                <p class="validation__text-big"><strong>Prepare your ID</strong></p>
                 <p>We Accept Only:<br />
-                    Driver’s license or any institutional government issued ID <strong>with photo</strong>.</p>
+                    Driver’s license or any institutional government issued ID with photo.</p>
                 <div class="validation__group-btn">
                     <input type="file"  capture="capture" accept="image/*" class="hide" data-validation-send-file-hidden="" data-image-id="photo_id">
                     <button type="button" class="btn btn-violet" data-validation-send-file="">
@@ -87,7 +86,7 @@
                 <div class="validation__icon">
                     <img src="{{ asset('img/validate-image-2.png') }}" alt=""/>
                 </div>
-                <p class="validation__text-big">Take a selfie</p>
+                <p class="validation__text-big"><strong>Take a selfie</strong></p>
                 <p>This will not be used as your profile photo and will not be visible on the App.</p>
                 <div class="validation__group-btn">
                     <input type="file"  capture="capture" accept="image/*" class="hide" data-validation-send-file-hidden="" data-image-id="photo_selfie">
