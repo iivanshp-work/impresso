@@ -754,6 +754,18 @@ class ProfileSettingsController extends Controller
     }
 
     /**
+     * Settings Credits Copyright Page
+     * @param Request $request
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function settingsCreditsCopyrightPage(Request $request) {
+        $user = Auth::user();
+        return view('frontend.pages.settings_credits_copyright', [
+            'userData' => $user
+        ]);
+    }
+
+    /**
      * Transaction History Page
      * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View

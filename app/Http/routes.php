@@ -63,6 +63,7 @@ Route::post('settings/change-password', 'ProfileSettingsController@settingsChang
 Route::get('settings/credits', 'ProfileSettingsController@settingsCreditsPage')->name('settings_credits');
 Route::get('settings/credits/checkout', 'ProfileSettingsController@settingsCreditsCheckoutPage')->name('settings_credits_checkout');
 Route::post('settings/credits/checkout', 'ProfileSettingsController@settingsCreditsCheckout')->name('settings_credits_checkout_post');
+Route::get('settings/credits_copyright', 'ProfileSettingsController@settingsCreditsCopyrightPage')->name('settings_credits_copyright');
 
 /* notifications */
 Route::get('notifications', 'NotificationsController@notificationsPage')->name('notifications');
